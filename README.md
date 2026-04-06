@@ -1,5 +1,8 @@
 # ExecuTorch Observatory Demo
 
+Live demo:
+https://github.qualcomm.com/pages/boyuc/Executorch_Observatory_Demo/
+
 This repo is a demo host for Observatory HTML reports generated from:
 
 - XNNPack export flow (`examples/xnnpack/aot_compiler.py`)
@@ -7,18 +10,18 @@ This repo is a demo host for Observatory HTML reports generated from:
 - Qualcomm LLM flow (`examples/qualcomm/oss_scripts/roberta.py`)
 
 It also documents how this relates to `fx_viewer`:
-`~/executorch/backends/qualcomm/utils/fx_viewer`, which powers the graph panes inside Observatory reports.
+`backends/qualcomm/utils/fx_viewer` in your ExecuTorch workspace, which powers the graph panes inside Observatory reports.
 
 ## What is included
 
-- [index.html](/home/boyucwsl/Executorch_Observatory_Demo/index.html): GitHub Pages entry page with project intro and report links.
-- [scripts/generate_observatory_demo.py](/home/boyucwsl/Executorch_Observatory_Demo/scripts/generate_observatory_demo.py): batch generator + manifest writer + index updater.
+- `index.html`: GitHub Pages entry page with project intro and report links.
+- `scripts/generate_observatory_demo.py`: batch generator + manifest writer + index updater.
 - `generated_reports/manifest.json`: generated job/report metadata.
 
 ## Important CLI fix (implemented)
 
 Observatory CLI in ExecuTorch was patched here:
-[cli.py](/home/boyucwsl/executorch/backends/qualcomm/debugger/observatory/cli.py)
+`backends/qualcomm/debugger/observatory/cli.py`
 
 Changes:
 
@@ -30,12 +33,12 @@ This addresses the report-path/arg-mixing issue for XNNPack-style commands.
 
 ## Prerequisites
 
-Run commands in `/home/boyucwsl/executorch` (the generator enforces this via `--executorch-root`).
+Run commands in your ExecuTorch root directory (the generator enforces this via `--executorch-root`).
 
 Typical environment setup:
 
 ```bash
-cd ~/executorch
+cd /path/to/executorch
 source .venv/bin/activate
 source qairt/2.37.0.250724/bin/envsetup.sh
 export PYTHONPATH=~/:$PYTHONPATH
@@ -51,7 +54,7 @@ Datasets expected by default:
 XNNPack (switch model with `--model_name=...`, defaults here are demo-style and quantized):
 
 ```bash
-cd ~/executorch
+cd /path/to/executorch
 python -m backends.qualcomm.debugger.observatory.cli \
   --report-dir /tmp/obs_xnn_ic4 \
   examples/xnnpack/aot_compiler.py \
@@ -61,7 +64,7 @@ python -m backends.qualcomm.debugger.observatory.cli \
 Qualcomm vision (`torchvision_vit.py`, compile only):
 
 ```bash
-cd ~/executorch
+cd /path/to/executorch
 python -m backends.qualcomm.debugger.observatory.cli \
   --report-dir /tmp/obs_qnn_vit \
   examples/qualcomm/scripts/torchvision_vit.py \
@@ -72,7 +75,7 @@ python -m backends.qualcomm.debugger.observatory.cli \
 Qualcomm LLM (your requested RoBERTa wiki command, compile only):
 
 ```bash
-cd ~/executorch
+cd /path/to/executorch
 python -m backends.qualcomm.debugger.observatory.cli \
   --report-dir /tmp/obs_qnn_roberta \
   examples/qualcomm/oss_scripts/roberta.py \
@@ -92,7 +95,7 @@ Additional wiki-text LLM scripts included in batch mode:
 From this demo repo:
 
 ```bash
-cd /home/boyucwsl/Executorch_Observatory_Demo
+cd /path/to/Executorch_Observatory_Demo
 python scripts/generate_observatory_demo.py --dry-run
 ```
 
