@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+
+generated_reports/**/run.log
+generated_reports/**/artifacts/
+generated_reports/**/*.pte

@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ExecuTorch Observatory Demo</title>
+  <style>
+    :root {
+      --bg: #f4f2ec;
+      --card: #fffdf8;
+      --ink: #1f1b16;
+      --muted: #6b6258;
+      --accent: #0a6f68;
+      --border: #d8d1c7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: radial-gradient(circle at 10% 0%, #efe7da 0, var(--bg) 40%);
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+    h1, h2 { font-family: "Space Grotesk", "Segoe UI", sans-serif; margin: 0 0 .6rem; }
+    p { margin: .4rem 0 1rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .chip {
+      display: inline-block;
+      border-radius: 999px;
+      padding: .15rem .55rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .86rem;
+      margin-right: .35rem;
+      margin-bottom: .35rem;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+    th, td { text-align: left; border-bottom: 1px solid var(--border); padding: .5rem .35rem; vertical-align: top; }
+    th { font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    code { font-size: .86rem; background: #f2ece3; padding: .15rem .35rem; border-radius: 6px; }
+    .muted { color: var(--muted); font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>ExecuTorch Observatory Demo</h1>
+      <p>
+        This repo hosts batch-generated Observatory reports for XNNPack and Qualcomm backends, plus
+        a focused path for quick first-time review.
+      </p>
+      <p>
+        Observatory captures graph snapshots and analysis records across export/lowering passes.
+        It embeds <code>fx_viewer</code> for graph visualization layers, compare view, and node-level diagnostics.
+      </p>
+      <p class="muted">Generated at: 2026-04-06 23:49:28 CST</p>
+    </section>
+
+    <section class="card">
+      <h2>Start Here</h2>
+      <p>Use these two links first for the guided demo path:</p>
+      <p><strong>XNNPack primary:</strong> <a href="generated_reports/xnnpack/mv2/observatory_report.html">mv2</a></p>
+      <p><strong>Qualcomm primary:</strong> <a href="generated_reports/qualcomm/torchvision_vit/observatory_report.html">torchvision_vit</a></p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Primary XNNPack Journey</h2>
+        <p><span class="chip">guided first click</span> <strong>mv2</strong></p>
+        <p><a href="generated_reports/xnnpack/mv2/observatory_report.html">Open primary XNNPack report</a></p>
+      </article>
+      <article class="card">
+        <h2>Primary Qualcomm Journey</h2>
+        <p><span class="chip">stable starter</span> <strong>torchvision_vit</strong></p>
+        <p><a href="generated_reports/qualcomm/torchvision_vit/observatory_report.html">Open primary Qualcomm report</a></p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>XNNPack Models</h2>
+      <table>
+        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <tbody>
+          <tr><td>mv2</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a href="generated_reports/xnnpack/mv2/observatory_report.html">report</a></td><td><a href="generated_reports/xnnpack/mv2/run.log">log</a></td></tr>
+<tr><td>add</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/add/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>add_mul</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/add_mul/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>dl3</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/dl3/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>edsr</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/edsr/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>emformer_join</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/emformer_join/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>emformer_predict</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/emformer_predict/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>emformer_transcribe</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/emformer_transcribe/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>ic3</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/ic3/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>ic4</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/ic4/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>linear</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/linear/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>llama2</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/llama2/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>mobilebert</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/mobilebert/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>mv3</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/mv3/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>resnet18</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/resnet18/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>resnet50</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/resnet50/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>vit</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/vit/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>w2l</td><td>xnnpack</td><td>planned</td><td><code>examples/xnnpack/aot_compiler.py</code></td><td><a class="muted" href="generated_reports/xnnpack/w2l/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>Qualcomm Models</h2>
+      <table>
+        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <tbody>
+          <tr><td>torchvision_vit</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/scripts/torchvision_vit.py</code></td><td><a href="generated_reports/qualcomm/torchvision_vit/observatory_report.html">report</a></td><td><a href="generated_reports/qualcomm/torchvision_vit/run.log">log</a></td></tr>
+<tr><td>albert</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/oss_scripts/albert.py</code></td><td><a href="generated_reports/qualcomm/albert/observatory_report.html">report</a></td><td><a href="generated_reports/qualcomm/albert/run.log">log</a></td></tr>
+<tr><td>bert</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/oss_scripts/bert.py</code></td><td><a href="generated_reports/qualcomm/bert/observatory_report.html">report</a></td><td><a href="generated_reports/qualcomm/bert/run.log">log</a></td></tr>
+<tr><td>distilbert</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/oss_scripts/distilbert.py</code></td><td><a href="generated_reports/qualcomm/distilbert/observatory_report.html">report</a></td><td><a href="generated_reports/qualcomm/distilbert/run.log">log</a></td></tr>
+<tr><td>eurobert</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/oss_scripts/eurobert.py</code></td><td><a class="muted" href="generated_reports/qualcomm/eurobert/observatory_report.html">report (pending)</a></td><td><a href="generated_reports/qualcomm/eurobert/run.log">log</a></td></tr>
+<tr><td>inception_v3</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/scripts/inception_v3.py</code></td><td><a class="muted" href="generated_reports/qualcomm/inception_v3/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>inception_v4</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/scripts/inception_v4.py</code></td><td><a class="muted" href="generated_reports/qualcomm/inception_v4/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>mobilenet_v2</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/scripts/mobilenet_v2.py</code></td><td><a class="muted" href="generated_reports/qualcomm/mobilenet_v2/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>mobilenet_v3</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/scripts/mobilenet_v3.py</code></td><td><a class="muted" href="generated_reports/qualcomm/mobilenet_v3/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+<tr><td>roberta</td><td>qualcomm</td><td>planned</td><td><code>examples/qualcomm/oss_scripts/roberta.py</code></td><td><a class="muted" href="generated_reports/qualcomm/roberta/observatory_report.html">report (pending)</a></td><td>-</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>fx_viewer Notes</h2>
+      <p>
+        The graph panes in Observatory reports are powered by <code>backends/qualcomm/utils/fx_viewer</code>.
+        For standalone viewer API examples, run the fx_viewer demos in the ExecuTorch repo and add generated HTML under this repo if desired.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
