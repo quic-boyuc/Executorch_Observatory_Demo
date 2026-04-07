@@ -220,7 +220,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
     return jobs
 
 
-def run_job(job: dict, cwd: Path, dry_run: bool) -> dict:
+def run_job(job: dict, cwd: Path, plan_only: bool) -> dict:
     job["started_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     job["return_code"] = None
     job["status"] = "planned"
@@ -229,9 +229,11 @@ def run_job(job: dict, cwd: Path, dry_run: bool) -> dict:
     job["report_html"].parent.mkdir(parents=True, exist_ok=True)
     job["artifact_dir"].mkdir(parents=True, exist_ok=True)
 
-    if dry_run:
+    if plan_only:
+        print(f"[plan]  {job['id']}")
         return job
 
+    print(f"[start] {job['id']}")
     start = time.time()
     cmd_text = " ".join(shlex.quote(token) for token in job["command"])
     with job["log_path"].open("w", encoding="utf-8") as log_file:
@@ -262,6 +264,8 @@ def run_job(job: dict, cwd: Path, dry_run: bool) -> dict:
         job["status"] = "success"
     else:
         job["status"] = "failed"
+    status_tag = "ok  " if job["status"] == "success" else "FAIL"
+    print(f"[{status_tag}] {job['id']}  ({job['duration_sec']:.1f}s)")
     return job
 
 
@@ -484,33 +488,117 @@ def order_jobs(jobs: list[dict], primary_xnn: str, primary_qnn: str) -> list[dic
     return sorted(jobs, key=rank)
 
 
+def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
+    """Regenerate HTML from existing JSON for all jobs listed in manifest.json."""
+    if not manifest_path.exists():
+        print(f"Error: manifest not found: {manifest_path}", file=__import__("sys").stderr)
+        print(
+            "Run without --visualize-only first to generate the manifest.",
+            file=__import__("sys").stderr,
+        )
+        return 1
+
+    import sys as _sys
+
+    data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    repo_root = manifest_path.parent.parent
+
+    jobs = data.get("jobs", [])
+    if not jobs:
+        print("No jobs found in manifest.", file=_sys.stderr)
+        return 1
+
+    failed = 0
+    for job in jobs:
+        json_path = repo_root / job["report_json"]
+        html_path = repo_root / job["report_html"]
+        title = f"{job['backend'].capitalize()} Observatory - {job['name']}"
+
+        if not json_path.exists():
+            print(f"[skip]  {job['id']}: JSON not found at {json_path}", file=_sys.stderr)
+            failed += 1
+            continue
+
+        cmd = [
+            "python",
+            "-m",
+            "backends.qualcomm.debugger.observatory.cli",
+            "visualize",
+            "--input",
+            str(json_path),
+            "--output",
+            str(html_path),
+            "--title",
+            title,
+        ]
+        print(f"[vis]   {job['id']}: {json_path.name} -> {html_path.name}")
+        result = subprocess.run(
+            cmd,
+            cwd=str(executorch_root),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            print(
+                f"  FAILED (rc={result.returncode}): {result.stderr.strip()}",
+                file=_sys.stderr,
+            )
+            failed += 1
+        else:
+            print(f"  -> {html_path}")
+
+    # Reconstruct rich job dicts (with Path objects) for write_index
+    manifest_jobs_rich = []
+    for job in jobs:
+        rich = dict(job)
+        rich["report_html"] = repo_root / job["report_html"]
+        rich["report_json"] = repo_root / job["report_json"]
+        rich["log_path"] = repo_root / job["log_path"]
+        rich["artifact_dir"] = repo_root / job["artifact_dir"]
+        manifest_jobs_rich.append(rich)
+
+    write_index({**data, "jobs": manifest_jobs_rich}, repo_root=repo_root)
+    index_path = repo_root / "index.html"
+    print(f"Refreshed index: {index_path}")
+    ok = len(jobs) - failed
+    print(f"Done. {ok}/{len(jobs)} jobs visualized successfully.")
+    return 0 if failed == 0 else 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--executorch-root",
         default="~/executorch",
-        help="Path to the ExecuTorch repo root where commands are executed.",
+        help="Path to the ExecuTorch repo root. Commands are run from this directory.",
     )
     parser.add_argument(
         "--output-root",
         default="generated_reports",
-        help="Output directory inside this demo repo.",
+        help="Output directory inside this demo repo (relative path; created if missing).",
     )
     parser.add_argument(
         "--xnn-models",
         default="all",
-        help="XNN model selector: all | all-except-mv2 | comma-separated list.",
+        help=(
+            "XNN model selector: all | all-except-mv2 | comma-separated list. "
+            f"Valid names: {', '.join(XNN_MODELS_ALL)}."
+        ),
     )
     parser.add_argument(
         "--qualcomm-models",
         default="default",
-        help="Qualcomm selector: default | all | comma-separated list.",
+        help=(
+            "Qualcomm selector: default | all | comma-separated list. "
+            f"Valid recipes: {', '.join(sorted(QUALCOMM_RECIPES))}."
+        ),
     )
     parser.add_argument("--primary-seed", type=int, default=1126)
     parser.add_argument(
         "--primary-xnn-model",
         default="mv2",
-        help="Primary XNN model for the Start Here card. Use 'random' for seeded random pick.",
+        help="Primary XNN model for the Start Here card. Use 'random' for seeded random pick from selected models.",
     )
     parser.add_argument("--primary-qualcomm-model", default="torchvision_vit")
     parser.add_argument("--soc-model", default="SM8650")
@@ -523,15 +611,34 @@ def main() -> int:
     parser.add_argument(
         "--qnn-sdk-root",
         default="",
-        help="QNN SDK root path. For Qualcomm jobs, envsetup.sh at <root>/bin/envsetup.sh is sourced before each command.",
+        help="QNN SDK root path. Also read from $QNN_SDK_ROOT if unset. envsetup.sh at <root>/bin/envsetup.sh is sourced before each Qualcomm command.",
     )
-    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--plan-only",
+        action="store_true",
+        help=(
+            "Register all jobs in manifest.json and index.html without executing them. "
+            "Output directories are created and job status is set to 'planned'."
+        ),
+    )
+    parser.add_argument(
+        "--visualize-only",
+        action="store_true",
+        help=(
+            "Re-generate HTML reports from existing JSON files listed in manifest.json. "
+            "Does not re-run any export scripts. Requires a prior non-plan-only run."
+        ),
+    )
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
     executorch_root = Path(args.executorch_root).expanduser().resolve()
     if not (executorch_root / "examples").exists():
         raise FileNotFoundError(f"Not an ExecuTorch root: {executorch_root}")
+
+    if args.visualize_only:
+        manifest_path = repo_root / args.output_root / "manifest.json"
+        return run_visualize_only(manifest_path, executorch_root)
 
     xnn_models = parse_model_selector(args.xnn_models, XNN_MODELS_ALL)
     qualcomm_models = parse_qualcomm_selector(args.qualcomm_models)
@@ -560,13 +667,13 @@ def main() -> int:
     jobs = build_xnn_jobs(args, reports_root) + build_qualcomm_jobs(args, reports_root)
     jobs = order_jobs(jobs, primary_xnn, primary_qnn)
     for job in jobs:
-        run_job(job, cwd=executorch_root, dry_run=args.dry_run)
+        run_job(job, cwd=executorch_root, plan_only=args.plan_only)
 
     manifest = {
         "generated_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "generated_at_local": dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z"),
         "executorch_root": str(executorch_root),
-        "dry_run": args.dry_run,
+        "plan_only": args.plan_only,
         "primary_models": {
             "xnnpack": primary_xnn,
             "qualcomm": primary_qnn,
