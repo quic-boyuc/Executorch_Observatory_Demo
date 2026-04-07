@@ -127,7 +127,7 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
         artifact_dir = model_dir / "artifacts"
         html_path = model_dir / "observatory_report.html"
         json_path = model_dir / "observatory_report.json"
-        log_path = model_dir / "run.log"
+        log_path = model_dir / "run.log.txt"
         cmd = [
             "python",
             "-m",
@@ -173,7 +173,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
         artifact_dir = model_dir / "artifacts"
         html_path = model_dir / "observatory_report.html"
         json_path = model_dir / "observatory_report.json"
-        log_path = model_dir / "run.log"
+        log_path = model_dir / "run.log.txt"
 
         cmd = [
             "python",
@@ -390,13 +390,6 @@ def write_index(manifest: dict, repo_root: Path) -> None:
         Pick a model below to explore its compilation pipeline, or start with the guided path.
       </p>
       <p class="muted">Generated at: {html.escape(manifest["generated_at_local"])}</p>
-    </section>
-
-    <section class="card">
-      <h2>Start Here</h2>
-      <p>Use these two links first for the guided demo path:</p>
-      <p><strong>XNNPack primary:</strong> <a href="{html.escape(xnn_primary_href)}">{html.escape(primary_xnn)}</a></p>
-      <p><strong>Qualcomm primary:</strong> <a href="{html.escape(qnn_primary_href)}">{html.escape(primary_qnn)}</a></p>
     </section>
 
     <section class="grid">
