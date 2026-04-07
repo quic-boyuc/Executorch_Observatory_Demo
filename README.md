@@ -1,158 +1,146 @@
 # ExecuTorch Observatory Demo
 
-Live demo:
-https://github.qualcomm.com/pages/boyuc/Executorch_Observatory_Demo/
+This repository hosts batch-generated Observatory reports for ExecuTorch models, served via GitHub Pages.
 
-This repo is a demo host for Observatory HTML reports generated from:
+**Live demo**: https://github.qualcomm.com/pages/boyuc/Executorch_Observatory_Demo/
 
-- XNNPack export flow (`examples/xnnpack/aot_compiler.py`)
-- Qualcomm backend export flow (`examples/qualcomm/scripts/...`)
-- Qualcomm LLM flow (`examples/qualcomm/oss_scripts/roberta.py`)
+## What is Observatory?
 
-It also documents how this relates to `fx_viewer`:
-`backends/qualcomm/utils/fx_viewer` in your ExecuTorch workspace, which powers the graph panes inside Observatory reports.
+Observatory is a unified debugging framework for ExecuTorch. It wraps your model export script and automatically captures graph snapshots, accuracy metrics, and per-layer analysis at each compilation stage (export, quantize, lower). The output is a standalone HTML report that anyone can open in a browser to inspect the full compilation pipeline.
 
-## What is included
+The workflow: **capture -> store -> analyze -> visualize -> share**.
 
-- `index.html`: GitHub Pages entry page with project intro and report links.
-- `scripts/generate_observatory_demo.py`: batch generator + manifest writer + index updater.
-- `generated_reports/manifest.json`: generated job/report metadata.
+Each report contains:
+- Interactive graph views with color-coded overlays (accuracy error, op type, per-layer metrics)
+- Accuracy metrics at each pipeline stage (PSNR, cosine similarity, MSE, top-k)
+- Side-by-side graph comparison with synchronized node selection
+- Session-level dashboard with navigation and badges
 
-## Important CLI fix (implemented)
+## What is in this repo
 
-Observatory CLI in ExecuTorch was patched here:
-`backends/qualcomm/debugger/observatory/cli.py`
+| Path | Purpose |
+|------|---------|
+| `index.html` | GitHub Pages landing page with report links |
+| `scripts/generate_observatory_demo.py` | Batch generator: runs Observatory CLI for each model, writes manifest and index |
+| `generated_reports/` | Per-model report directories (HTML, JSON, logs) |
+| `generated_reports/manifest.json` | Job metadata (status, paths, timing) |
 
-Changes:
+## Quick start (XNNPack, no device needed)
 
-- Added explicit output flags: `--report-dir`, `--report-html`, `--report-json`
-- Observatory flags are now parsed only before `SCRIPT`, so script args no longer get accidentally consumed
-- Default report-dir inference supports both `-a/--artifact` and `-o/--output_dir`
-
-This addresses the report-path/arg-mixing issue for XNNPack-style commands.
-
-## Prerequisites
-
-Run commands in your ExecuTorch root directory (the generator enforces this via `--executorch-root`).
-For Qualcomm jobs, set QNN SDK root via `--qnn-sdk-root` (or `QNN_SDK_ROOT` env var).
-
-Typical environment setup:
+From your ExecuTorch root:
 
 ```bash
-cd /path/to/executorch
 source .venv/bin/activate
-source qairt/2.37.0.250724/bin/envsetup.sh
-export PYTHONPATH=~/:$PYTHONPATH
+python -m backends.qualcomm.debugger.observatory.cli \
+    examples/xnnpack/aot_compiler.py \
+    --model_name=mv2 --delegate --quantize --output_dir /tmp/mv2
 ```
 
-Datasets expected by default:
+Open `/tmp/mv2/observatory_report.html` in a browser.
 
-- ImageNet mini val: `imagenet-mini-val/`
-- Wiki sentences: `wikisent2.txt`
+## Running with Qualcomm backend
 
-## Single-command examples
-
-XNNPack (switch model with `--model_name=...`, defaults here are demo-style and quantized):
+Prerequisites:
+- ExecuTorch repo with `.venv` activated
+- QNN SDK (set `--qnn-sdk-root` or `QNN_SDK_ROOT` env var)
+- Datasets: `imagenet-mini-val/` (vision), `wikisent2.txt` (LLM)
 
 ```bash
-cd /path/to/executorch
+source .venv/bin/activate
+source /path/to/qairt/<version>/bin/envsetup.sh
+
 python -m backends.qualcomm.debugger.observatory.cli \
-  --report-dir /tmp/obs_xnn_ic4 \
-  examples/xnnpack/aot_compiler.py \
-  --model_name=ic4 --delegate --quantize
+    --report-dir /tmp/obs_vit \
+    examples/qualcomm/scripts/torchvision_vit.py \
+    -m SM8650 -b ./build-android --dataset imagenet-mini-val/ \
+    -H mlgtw-linux -s <device_serial> -a /tmp/obs_vit --seed 1126 --compile_only
 ```
-
-Qualcomm vision (`torchvision_vit.py`, compile only):
-
-```bash
-cd /path/to/executorch
-python -m backends.qualcomm.debugger.observatory.cli \
-  --report-dir /tmp/obs_qnn_vit \
-  examples/qualcomm/scripts/torchvision_vit.py \
-  -m SM8650 -b ./build-android --dataset imagenet-mini-val/ \
-  -H mlgtw-linux -s bebcca9b -a TorchVision_Lanai --seed 1126 --compile_only
-```
-
-Qualcomm LLM (your requested RoBERTa wiki command, compile only):
-
-```bash
-cd /path/to/executorch
-python -m backends.qualcomm.debugger.observatory.cli \
-  --report-dir /tmp/obs_qnn_roberta \
-  examples/qualcomm/oss_scripts/roberta.py \
-  -m SM8650 -b ./build-android --dataset wikisent2.txt \
-  -H mlgtw-linux -s bebcca9b -a Roberta_Lanai --seed 1126 --compile_only
-```
-
-Additional wiki-text LLM scripts included in batch mode:
-
-- `examples/qualcomm/oss_scripts/bert.py`
-- `examples/qualcomm/oss_scripts/albert.py`
-- `examples/qualcomm/oss_scripts/distilbert.py`
-- `examples/qualcomm/oss_scripts/eurobert.py`
 
 ## Batch generation
 
-From this demo repo:
+Generate reports for all supported models at once.
+
+### Preview what would run (no execution)
 
 ```bash
-cd /path/to/Executorch_Observatory_Demo
-python scripts/generate_observatory_demo.py --dry-run
+python scripts/generate_observatory_demo.py --plan-only
 ```
 
-Real generation:
+Creates output directories, writes `manifest.json` and `index.html` with all jobs listed as "planned". No scripts are executed.
 
-```bash
-python scripts/generate_observatory_demo.py --qnn-sdk-root /path/to/qairt/<version>
-```
-
-Current default behavior:
-
-- Includes all XNN models (including `mv2`)
-- Includes Qualcomm vision + wiki-text LLM models (`roberta`, `bert`, `albert`, `distilbert`, `eurobert`)
-- Primary demo models are explicit:
-  - XNNPack: `mv2`
-  - Qualcomm: `torchvision_vit`
-
-Useful selectors:
-
-```bash
-# Include all XNN models (including mv2)
-python scripts/generate_observatory_demo.py --xnn-models all
-
-# Run only selected Qualcomm recipes
-python scripts/generate_observatory_demo.py --qualcomm-models torchvision_vit,roberta
-```
-
-QNN SDK setup behavior:
-
-- For every Qualcomm job, the generator runs:
-  - `source <qnn-sdk-root>/bin/envsetup.sh`
-  - then executes the observatory command
-- This avoids Qualcomm backend failures caused by missing QNN runtime environment.
-
-Outputs:
-
-- Reports under `generated_reports/xnnpack/...` and `generated_reports/qualcomm/...`
-- Per-model logs under `generated_reports/**/run.log`
-- Manifest in `generated_reports/manifest.json`
-- `index.html` auto-refreshed with current links/status
-
-## Primary journey defaults
-
-- Primary XNN model defaults to `mv2`.
-- Primary Qualcomm model defaults to `torchvision_vit`.
-
-You can override:
+### Run all jobs
 
 ```bash
 python scripts/generate_observatory_demo.py \
-  --primary-xnn-model resnet18 \
-  --primary-qualcomm-model roberta
+    --qnn-sdk-root /path/to/qairt/<version>
 ```
 
-Use seeded random primary selection:
+### Re-render HTML from existing JSON (no re-execution)
 
 ```bash
-python scripts/generate_observatory_demo.py --primary-xnn-model random --primary-seed 1126
+python scripts/generate_observatory_demo.py --visualize-only
 ```
+
+Reads `manifest.json`, calls `cli visualize` for each job that has an existing JSON file, and refreshes `index.html`. Use this after updating Observatory lens code to regenerate all reports without re-running the expensive export scripts.
+
+### Model selectors
+
+```bash
+# Only specific XNN models
+python scripts/generate_observatory_demo.py --xnn-models mv2,resnet18
+
+# Only specific Qualcomm recipes
+python scripts/generate_observatory_demo.py --qualcomm-models torchvision_vit,roberta
+
+# Override primary demo models
+python scripts/generate_observatory_demo.py \
+    --primary-xnn-model resnet18 \
+    --primary-qualcomm-model roberta
+```
+
+## Output structure
+
+```
+generated_reports/
+  manifest.json
+  xnnpack/
+    mv2/
+      observatory_report.html
+      observatory_report.json
+      run.log
+      artifacts/
+    resnet18/
+      ...
+  qualcomm/
+    torchvision_vit/
+      ...
+    roberta/
+      ...
+index.html
+```
+
+## Regenerating HTML from JSON (2-step workflow)
+
+Observatory separates data collection from report generation. This is useful when you want to:
+- Collect data in CI and generate reports locally
+- Update lens code and re-render without re-running scripts
+
+**Step 1**: Collect data (JSON only)
+```bash
+python -m backends.qualcomm.debugger.observatory.cli \
+    --json-only --report-json /tmp/report.json \
+    my_script.py [script_args...]
+```
+
+**Step 2**: Generate HTML from JSON
+```bash
+python -m backends.qualcomm.debugger.observatory.cli visualize \
+    --input /tmp/report.json --output /tmp/report.html --title "My Report"
+```
+
+## Primary journey defaults
+
+- XNNPack primary: `mv2`
+- Qualcomm primary: `torchvision_vit`
+
+These are highlighted in the "Start Here" section of `index.html`.

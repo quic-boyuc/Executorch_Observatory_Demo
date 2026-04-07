@@ -376,12 +376,18 @@ def write_index(manifest: dict, repo_root: Path) -> None:
     <section class="card">
       <h1>ExecuTorch Observatory Demo</h1>
       <p>
-        This repo hosts batch-generated Observatory reports for XNNPack and Qualcomm backends, plus
-        a focused path for quick first-time review.
+        <strong>Observatory</strong> is a unified debugging framework for ExecuTorch that captures graph snapshots
+        and analysis data across compilation stages, then exports the results as a standalone, shareable HTML report.
       </p>
       <p>
-        Observatory captures graph snapshots and analysis records across export/lowering passes.
-        It embeds <code>fx_viewer</code> for graph visualization layers, compare view, and node-level diagnostics.
+        The workflow: <strong>capture &rarr; store &rarr; analyze &rarr; visualize &rarr; share</strong>.
+        Each report contains interactive graph views with color-coded overlays, accuracy metrics at each pipeline stage,
+        side-by-side graph comparison, and per-layer analysis. The graph panes are powered by
+        <code>fx_viewer</code> (<code>backends/qualcomm/utils/fx_viewer</code>).
+      </p>
+      <p>
+        This page hosts batch-generated reports for XNNPack and Qualcomm backends.
+        Pick a model below to explore its compilation pipeline, or start with the guided path.
       </p>
       <p class="muted">Generated at: {html.escape(manifest["generated_at_local"])}</p>
     </section>
