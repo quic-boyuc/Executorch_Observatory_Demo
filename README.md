@@ -34,6 +34,7 @@ This addresses the report-path/arg-mixing issue for XNNPack-style commands.
 ## Prerequisites
 
 Run commands in your ExecuTorch root directory (the generator enforces this via `--executorch-root`).
+For Qualcomm jobs, set QNN SDK root via `--qnn-sdk-root` (or `QNN_SDK_ROOT` env var).
 
 Typical environment setup:
 
@@ -102,7 +103,7 @@ python scripts/generate_observatory_demo.py --dry-run
 Real generation:
 
 ```bash
-python scripts/generate_observatory_demo.py
+python scripts/generate_observatory_demo.py --qnn-sdk-root /path/to/qairt/<version>
 ```
 
 Current default behavior:
@@ -122,6 +123,13 @@ python scripts/generate_observatory_demo.py --xnn-models all
 # Run only selected Qualcomm recipes
 python scripts/generate_observatory_demo.py --qualcomm-models torchvision_vit,roberta
 ```
+
+QNN SDK setup behavior:
+
+- For every Qualcomm job, the generator runs:
+  - `source <qnn-sdk-root>/bin/envsetup.sh`
+  - then executes the observatory command
+- This avoids Qualcomm backend failures caused by missing QNN runtime environment.
 
 Outputs:
 

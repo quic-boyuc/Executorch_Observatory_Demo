@@ -7,7 +7,9 @@ import argparse
 import datetime as dt
 import html
 import json
+import os
 import random
+import shlex
 import subprocess
 import time
 from pathlib import Path
@@ -208,6 +210,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
                 "name": name,
                 "script": recipe["script"],
                 "command": cmd,
+                "qnn_envsetup": str(args.qnn_envsetup),
                 "report_html": html_path,
                 "report_json": json_path,
                 "artifact_dir": artifact_dir,
@@ -230,16 +233,29 @@ def run_job(job: dict, cwd: Path, dry_run: bool) -> dict:
         return job
 
     start = time.time()
+    cmd_text = " ".join(shlex.quote(token) for token in job["command"])
     with job["log_path"].open("w", encoding="utf-8") as log_file:
-        log_file.write(f"$ {' '.join(job['command'])}\n\n")
-        proc = subprocess.run(
-            job["command"],
-            cwd=str(cwd),
-            stdout=log_file,
-            stderr=subprocess.STDOUT,
-            text=True,
-            check=False,
-        )
+        if job["backend"] == "qualcomm":
+            shell_cmd = f"source {shlex.quote(job['qnn_envsetup'])} && {cmd_text}"
+            log_file.write(f"$ bash -lc {shlex.quote(shell_cmd)}\n\n")
+            proc = subprocess.run(
+                ["bash", "-lc", shell_cmd],
+                cwd=str(cwd),
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+                text=True,
+                check=False,
+            )
+        else:
+            log_file.write(f"$ {cmd_text}\n\n")
+            proc = subprocess.run(
+                job["command"],
+                cwd=str(cwd),
+                stdout=log_file,
+                stderr=subprocess.STDOUT,
+                text=True,
+                check=False,
+            )
     job["duration_sec"] = round(time.time() - start, 3)
     job["return_code"] = proc.returncode
     if proc.returncode == 0 and job["report_html"].exists():
@@ -421,7 +437,7 @@ def write_index(manifest: dict, repo_root: Path) -> None:
 
 
 def normalize_for_json(job: dict, repo_root: Path) -> dict:
-    return {
+    data = {
         "id": job["id"],
         "backend": job["backend"],
         "name": job["name"],
@@ -436,6 +452,25 @@ def normalize_for_json(job: dict, repo_root: Path) -> dict:
         "artifact_dir": relpath(job["artifact_dir"], repo_root),
         "log_path": relpath(job["log_path"], repo_root),
     }
+    if "qnn_envsetup" in job:
+        data["qnn_envsetup"] = job["qnn_envsetup"]
+    return data
+
+
+def resolve_qnn_envsetup(qnn_sdk_root: str, needs_qualcomm: bool) -> Path | None:
+    raw = (qnn_sdk_root or "").strip() or os.getenv("QNN_SDK_ROOT", "").strip()
+    if not needs_qualcomm and not raw:
+        return None
+    if not raw:
+        raise ValueError(
+            "Qualcomm jobs selected but QNN SDK is not configured. "
+            "Set --qnn-sdk-root or export QNN_SDK_ROOT."
+        )
+    sdk_root = Path(raw).expanduser().resolve()
+    envsetup = sdk_root / "bin" / "envsetup.sh"
+    if not envsetup.exists():
+        raise FileNotFoundError(f"Missing QNN envsetup script: {envsetup}")
+    return envsetup
 
 
 def order_jobs(jobs: list[dict], primary_xnn: str, primary_qnn: str) -> list[dict]:
@@ -485,6 +520,11 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=1126)
     parser.add_argument("--imagenet-dataset", default="imagenet-mini-val/")
     parser.add_argument("--wiki-dataset", default="wikisent2.txt")
+    parser.add_argument(
+        "--qnn-sdk-root",
+        default="",
+        help="QNN SDK root path. For Qualcomm jobs, envsetup.sh at <root>/bin/envsetup.sh is sourced before each command.",
+    )
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
@@ -509,6 +549,10 @@ def main() -> int:
 
     args.xnn_models = list(dict.fromkeys(xnn_models))
     args.qualcomm_models = list(dict.fromkeys(qualcomm_models))
+    args.qnn_envsetup = resolve_qnn_envsetup(
+        qnn_sdk_root=args.qnn_sdk_root,
+        needs_qualcomm=bool(args.qualcomm_models),
+    )
 
     reports_root = repo_root / args.output_root
     reports_root.mkdir(parents=True, exist_ok=True)
