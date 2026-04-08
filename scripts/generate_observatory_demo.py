@@ -547,22 +547,41 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
         else:
             print(f"  -> {html_path}")
 
-    # Reconstruct rich job dicts (with Path objects) for write_index
-    manifest_jobs_rich = []
-    for job in jobs:
-        rich = dict(job)
-        rich["report_html"] = repo_root / job["report_html"]
-        rich["report_json"] = repo_root / job["report_json"]
-        rich["log_path"] = repo_root / job["log_path"]
-        rich["artifact_dir"] = repo_root / job["artifact_dir"]
-        manifest_jobs_rich.append(rich)
+    output_root = relpath(manifest_path.parent, repo_root)
+    if not refresh_index_via_script(repo_root=repo_root, output_root=output_root):
+        # Fallback: keep previous behavior if standalone renderer is unavailable.
+        manifest_jobs_rich = []
+        for job in jobs:
+            rich = dict(job)
+            rich["report_html"] = repo_root / job["report_html"]
+            rich["report_json"] = repo_root / job["report_json"]
+            rich["log_path"] = repo_root / job["log_path"]
+            rich["artifact_dir"] = repo_root / job["artifact_dir"]
+            manifest_jobs_rich.append(rich)
+        write_index({**data, "jobs": manifest_jobs_rich}, repo_root=repo_root)
 
-    write_index({**data, "jobs": manifest_jobs_rich}, repo_root=repo_root)
     index_path = repo_root / "index.html"
     print(f"Refreshed index: {index_path}")
     ok = len(jobs) - failed
     print(f"Done. {ok}/{len(jobs)} jobs visualized successfully.")
     return 0 if failed == 0 else 1
+
+
+def refresh_index_via_script(repo_root: Path, output_root: str) -> bool:
+    render_script = repo_root / "scripts" / "render_demo_index.py"
+    if not render_script.exists():
+        return False
+    result = subprocess.run(
+        [
+            "python",
+            str(render_script),
+            "--output-root",
+            output_root,
+        ],
+        cwd=str(repo_root),
+        check=False,
+    )
+    return result.returncode == 0
 
 
 def main() -> int:
@@ -672,6 +691,7 @@ def main() -> int:
         "generated_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "generated_at_local": dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z"),
         "executorch_root": str(executorch_root),
+        "output_root": args.output_root,
         "plan_only": args.plan_only,
         "primary_models": {
             "xnnpack": primary_xnn,
@@ -682,14 +702,11 @@ def main() -> int:
     manifest_path = reports_root / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
-    # For index rendering, reuse rich in-memory paths.
-    write_index(
-        {
-            **manifest,
-            "jobs": jobs,
-        },
-        repo_root=repo_root,
-    )
+    # Prefer standalone renderer so index content stays decoupled from this script.
+    if not refresh_index_via_script(repo_root=repo_root, output_root=args.output_root):
+        # Fallback to local rendering if standalone renderer is unavailable.
+        write_index({**manifest, "jobs": jobs}, repo_root=repo_root)
+
     print(f"Wrote manifest: {manifest_path}")
     print(f"Wrote index: {repo_root / 'index.html'}")
     return 0

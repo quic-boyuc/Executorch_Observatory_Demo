@@ -71,8 +71,7 @@
         <code>fx_viewer</code> (<code>backends/qualcomm/utils/fx_viewer</code>).
       </p>
       <p>
-        This page hosts batch-generated reports for XNNPack and Qualcomm backends.
-        Pick a model below to explore its compilation pipeline, or start with the guided path.
+        This page hosts batch-generated reports for XNNPack and Qualcomm backends, plus standalone fx_viewer demo artifacts.
       </p>
       <p class="muted">Generated at: 2026-04-08 01:05:14 CST</p>
     </section>
@@ -110,13 +109,25 @@
       </table>
     </section>
 
+    
     <section class="card">
-      <h2>fx_viewer Notes</h2>
+      <h2>fx_viewer Demos</h2>
       <p>
-        The graph panes in Observatory reports are powered by <code>backends/qualcomm/utils/fx_viewer</code>.
-        For standalone viewer API examples, run the fx_viewer demos in the ExecuTorch repo and add generated HTML under this repo if desired.
+        Standalone fx_viewer validation artifacts generated from
+        <code>backends/qualcomm/utils/fx_viewer/examples</code>.
+        These HTML files are tracked in this repo and published on GitHub Pages.
       </p>
+      <p class="muted">fx_viewer demos generated at: 2026-04-08 08:50:41 CST</p>
+      <table>
+        <thead><tr><th>Demo</th><th>Status</th><th>What It Covers</th><th>Key Tests</th><th>Source Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <tbody>
+          <tr><td>API Harness (Portable)</td><td>success</td><td>Unified fx_viewer API harness without Qualcomm SDK requirements.</td><td>js_01..js_08, adv_01..adv_04, js_99 (portable tutorial sequence).</td><td><code>backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py</code></td><td><a href="generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_portable.html">report</a></td><td><a href="generated_reports/fx_viewer/harness/run.log.txt">log</a></td></tr>
+<tr><td>API Harness (Qualcomm)</td><td>success</td><td>Harness with Qualcomm PTQ path and Qualcomm metadata testcase.</td><td>All tutorial cases plus qualcomm_metadata when env is available.</td><td><code>backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py</code></td><td><a href="generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_qualcomm.html">report</a></td><td><a href="generated_reports/fx_viewer/harness/run.log.txt">log</a></td></tr>
+<tr><td>3-Graph Compare Demo</td><td>success</td><td>Reference vs decomposed (1-&gt;many) vs fused (many-&gt;1) sync behavior.</td><td>Auto sync order from_node_root -&gt; debug_handle -&gt; id; highlight/clear demo.</td><td><code>backends/qualcomm/utils/fx_viewer/examples/demo_3graph_compare.py</code></td><td><a href="generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html">report</a></td><td><a href="generated_reports/fx_viewer/three_graph_compare/run.log.txt">log</a></td></tr>
+        </tbody>
+      </table>
     </section>
+
   </main>
 </body>
 </html>

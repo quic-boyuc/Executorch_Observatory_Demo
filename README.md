@@ -22,8 +22,11 @@ Each report contains:
 |------|---------|
 | `index.html` | GitHub Pages landing page with report links |
 | `scripts/generate_observatory_demo.py` | Batch generator: runs Observatory CLI for each model, writes manifest and index |
+| `scripts/generate_fx_viewer_demos.py` | Generates standalone fx_viewer demo HTML artifacts + fx manifest |
+| `scripts/render_demo_index.py` | Standalone index renderer (reads observatory + fx manifests) |
 | `generated_reports/` | Per-model report directories (HTML, JSON, logs) |
 | `generated_reports/manifest.json` | Job metadata (status, paths, timing) |
+| `generated_reports/fx_viewer/manifest.json` | fx_viewer demo metadata (status, links, descriptions) |
 
 ## Quick start (XNNPack, no device needed)
 
@@ -82,6 +85,35 @@ python scripts/generate_observatory_demo.py --visualize-only
 ```
 
 Reads `manifest.json`, calls `cli visualize` for each job that has an existing JSON file, and refreshes `index.html`. Use this after updating Observatory lens code to regenerate all reports without re-running the expensive export scripts.
+
+### Render index only
+
+```bash
+python scripts/render_demo_index.py
+```
+
+Rebuilds `index.html` from manifests. This is useful when only metadata/artifacts changed.
+
+## fx_viewer standalone demos
+
+Generate and track standalone fx_viewer example artifacts in this repo:
+
+```bash
+python scripts/generate_fx_viewer_demos.py \
+    --executorch-root ~/executorch
+```
+
+This runs:
+- `backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py`
+- `backends/qualcomm/utils/fx_viewer/examples/demo_3graph_compare.py`
+
+Outputs:
+- `generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_portable.html`
+- `generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_qualcomm.html`
+- `generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html`
+- `generated_reports/fx_viewer/manifest.json`
+
+Then `index.html` is refreshed via `scripts/render_demo_index.py`.
 
 ### Model selectors
 

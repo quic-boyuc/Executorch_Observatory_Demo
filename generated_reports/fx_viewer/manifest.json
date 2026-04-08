@@ -1,0 +1,41 @@
+{
+  "generated_at_utc": "2026-04-08T00:50:41.637237+00:00",
+  "generated_at_local": "2026-04-08 08:50:41 CST",
+  "executorch_root": "/home/boyucwsl/executorch",
+  "output_root": "generated_reports/fx_viewer",
+  "demos": [
+    {
+      "id": "harness_portable",
+      "name": "API Harness (Portable)",
+      "status": "success",
+      "summary": "Unified fx_viewer API harness without Qualcomm SDK requirements.",
+      "tests": "js_01..js_08, adv_01..adv_04, js_99 (portable tutorial sequence).",
+      "script": "backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py",
+      "return_code": 0,
+      "artifact_html": "generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_portable.html",
+      "log_path": "generated_reports/fx_viewer/harness/run.log.txt"
+    },
+    {
+      "id": "harness_qualcomm",
+      "name": "API Harness (Qualcomm)",
+      "status": "success",
+      "summary": "Harness with Qualcomm PTQ path and Qualcomm metadata testcase.",
+      "tests": "All tutorial cases plus qualcomm_metadata when env is available.",
+      "script": "backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py",
+      "return_code": 0,
+      "artifact_html": "generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_qualcomm.html",
+      "log_path": "generated_reports/fx_viewer/harness/run.log.txt"
+    },
+    {
+      "id": "three_graph_compare",
+      "name": "3-Graph Compare Demo",
+      "status": "success",
+      "summary": "Reference vs decomposed (1->many) vs fused (many->1) sync behavior.",
+      "tests": "Auto sync order from_node_root -> debug_handle -> id; highlight/clear demo.",
+      "script": "backends/qualcomm/utils/fx_viewer/examples/demo_3graph_compare.py",
+      "return_code": 0,
+      "artifact_html": "generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html",
+      "log_path": "generated_reports/fx_viewer/three_graph_compare/run.log.txt"
+    }
+  ]
+}
