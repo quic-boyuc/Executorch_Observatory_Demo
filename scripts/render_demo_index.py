@@ -101,12 +101,14 @@ def build_fx_section(
         These HTML files are tracked in this repo and published on GitHub Pages.
       </p>
       {generated_line}
-      <table>
+      <div class="table-wrap">
+      <table class="fx-table">
         <thead><tr><th>Demo</th><th>Status</th><th>What It Covers</th><th>Key Tests</th><th>Source Script</th><th>HTML</th><th>Log</th></tr></thead>
         <tbody>
           {rows}
         </tbody>
       </table>
+      </div>
     </section>
 """
 
@@ -171,6 +173,7 @@ def render_index(
       border-radius: 14px;
       padding: 1rem 1.1rem;
       margin-bottom: 1rem;
+      box-shadow: 0 6px 18px rgba(31, 27, 22, 0.06);
     }}
     .grid {{
       display: grid;
@@ -190,11 +193,26 @@ def render_index(
     }}
     a {{ color: var(--accent); text-decoration: none; }}
     a:hover {{ text-decoration: underline; }}
-    table {{ width: 100%; border-collapse: collapse; font-size: .95rem; }}
+    .table-wrap {{ width: 100%; overflow-x: auto; }}
+    table {{ width: 100%; border-collapse: collapse; font-size: .95rem; table-layout: fixed; }}
     th, td {{ text-align: left; border-bottom: 1px solid var(--border); padding: .5rem .35rem; vertical-align: top; }}
     th {{ font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }}
     code {{ font-size: .86rem; background: #f2ece3; padding: .15rem .35rem; border-radius: 6px; }}
+    td code {{ white-space: normal; word-break: break-word; overflow-wrap: anywhere; line-height: 1.35; }}
     .muted {{ color: var(--muted); font-size: .9rem; }}
+    .fx-table th:nth-child(1), .fx-table td:nth-child(1) {{ width: 14%; }}
+    .fx-table th:nth-child(2), .fx-table td:nth-child(2) {{ width: 8%; }}
+    .fx-table th:nth-child(3), .fx-table td:nth-child(3) {{ width: 20%; }}
+    .fx-table th:nth-child(4), .fx-table td:nth-child(4) {{ width: 20%; }}
+    .fx-table th:nth-child(5), .fx-table td:nth-child(5) {{ width: 24%; }}
+    .fx-table th:nth-child(6), .fx-table td:nth-child(6) {{ width: 7%; }}
+    .fx-table th:nth-child(7), .fx-table td:nth-child(7) {{ width: 7%; }}
+    .obs-table th:nth-child(1), .obs-table td:nth-child(1) {{ width: 13%; }}
+    .obs-table th:nth-child(2), .obs-table td:nth-child(2) {{ width: 11%; }}
+    .obs-table th:nth-child(3), .obs-table td:nth-child(3) {{ width: 10%; }}
+    .obs-table th:nth-child(4), .obs-table td:nth-child(4) {{ width: 40%; }}
+    .obs-table th:nth-child(5), .obs-table td:nth-child(5) {{ width: 13%; }}
+    .obs-table th:nth-child(6), .obs-table td:nth-child(6) {{ width: 13%; }}
   </style>
 </head>
 <body>
@@ -232,22 +250,26 @@ def render_index(
 
     <section class="card">
       <h2>XNNPack Models</h2>
-      <table>
+      <div class="table-wrap">
+      <table class="obs-table">
         <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
         <tbody>
           {render_observatory_rows(xnn_jobs, repo_root)}
         </tbody>
       </table>
+      </div>
     </section>
 
     <section class="card">
       <h2>Qualcomm Models</h2>
-      <table>
+      <div class="table-wrap">
+      <table class="obs-table">
         <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
         <tbody>
           {render_observatory_rows(qnn_jobs, repo_root)}
         </tbody>
       </table>
+      </div>
     </section>
 
     {build_fx_section(fx_manifest_path, repo_root)}
