@@ -150,22 +150,22 @@ def main() -> int:
             log_path=harness_log,
             rc=harness_rc,
         ),
-        make_demo(
-            repo_root=repo_root,
-            demo_id="harness_qualcomm",
-            name="API Harness (Qualcomm)",
-            status="success" if qualcomm_html.exists() else "failed",
-            summary=(
-                "Harness with Qualcomm PTQ path and Qualcomm metadata testcase."
-            ),
-            tests=(
-                "All tutorial cases plus qualcomm_metadata when env is available."
-            ),
-            script="backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py",
-            artifact_html=qualcomm_html,
-            log_path=harness_log,
-            rc=harness_rc,
-        ),
+        # make_demo(
+        #     repo_root=repo_root,
+        #     demo_id="harness_qualcomm",
+        #     name="API Harness (Qualcomm)",
+        #     status="success" if qualcomm_html.exists() else "failed",
+        #     summary=(
+        #         "Harness with Qualcomm PTQ path and Qualcomm metadata testcase."
+        #     ),
+        #     tests=(
+        #         "All tutorial cases plus qualcomm_metadata when env is available."
+        #     ),
+        #     script="backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py",
+        #     artifact_html=qualcomm_html,
+        #     log_path=harness_log,
+        #     rc=harness_rc,
+        # ),
         make_demo(
             repo_root=repo_root,
             demo_id="three_graph_compare",

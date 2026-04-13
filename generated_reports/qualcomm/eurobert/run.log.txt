@@ -1,0 +1,1912 @@
+[INFO] QAIRT_SDK_ROOT=/home/boyucwsl/executorch/qairt/2.37.0.250724
+[WARN] QNN_SDK_ROOT/SNPE_ROOT set to QAIRT_SDK_ROOT for backwards compatibility and will be deprecated in a future release.
+[INFO] QAIRT SDK environment setup complete
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+[PipelineGraphCollector] Installed patch: prepare_pt2e
+[PipelineGraphCollector] Installed patch: convert_pt2e
+[PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
+[PipelineGraphCollector] Installed ETRecord patches
+The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
+[PipelineGraphCollector] Installed QNN patch: ptq_calibrate
+[PipelineGraphCollector] Installed XNNPACK patch: quantize
+[AccuracyLens] Installed patch: get_imagenet_dataset
+[AccuracyLens] Installed patch: get_masked_language_model_dataset
+PyTorch version 2.11.0+cpu available.
+HTTP Request: HEAD https://huggingface.co/EuroBERT/EuroBERT-210m/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/EuroBERT/EuroBERT-210m/39b51e15dd1f1a06f58b5cbf6a8a188cec60bd0e/tokenizer_config.json "HTTP/1.1 200 OK"
+HTTP Request: GET https://huggingface.co/api/models/EuroBERT/EuroBERT-210m/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+HTTP Request: GET https://huggingface.co/api/models/EuroBERT/EuroBERT-210m/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+HTTP Request: GET https://huggingface.co/api/models/EuroBERT/EuroBERT-210m "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/EuroBERT/EuroBERT-210m/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/EuroBERT/EuroBERT-210m/39b51e15dd1f1a06f58b5cbf6a8a188cec60bd0e/config.json "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/EuroBERT/EuroBERT-210m/resolve/main/configuration_eurobert.py "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/EuroBERT/EuroBERT-210m/39b51e15dd1f1a06f58b5cbf6a8a188cec60bd0e/configuration_eurobert.py "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/EuroBERT/EuroBERT-210m/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/EuroBERT/EuroBERT-210m/39b51e15dd1f1a06f58b5cbf6a8a188cec60bd0e/config.json "HTTP/1.1 200 OK"
+HTTP Request: HEAD https://huggingface.co/EuroBERT/EuroBERT-210m/resolve/main/modeling_eurobert.py "HTTP/1.1 307 Temporary Redirect"
+HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/EuroBERT/EuroBERT-210m/39b51e15dd1f1a06f58b5cbf6a8a188cec60bd0e/modeling_eurobert.py "HTTP/1.1 200 OK"
+QNN_SDK_ROOT=/home/boyucwsl/executorch/qairt/2.37.0.250724
+Loading weights:   0%|          | 0/111 [00:00<?, ?it/s]Loading weights:   1%|          | 1/111 [00:00<00:00, 7639.90it/s, Materializing param=lm_head.weight]Loading weights:   1%|          | 1/111 [00:00<00:00, 4271.19it/s, Materializing param=lm_head.weight]Loading weights:   2%|▏         | 2/111 [00:00<00:00, 3792.32it/s, Materializing param=model.embed_tokens.weight]Loading weights:   2%|▏         | 2/111 [00:00<00:00, 3184.74it/s, Materializing param=model.embed_tokens.weight]Loading weights:   3%|▎         | 3/111 [00:00<00:00, 1455.18it/s, Materializing param=model.layers.0.input_layernorm.weight]Loading weights:   3%|▎         | 3/111 [00:00<00:00, 1162.29it/s, Materializing param=model.layers.0.input_layernorm.weight]Loading weights:   4%|▎         | 4/111 [00:00<00:00, 676.80it/s, Materializing param=model.layers.0.mlp.down_proj.weight]   Loading weights:   4%|▎         | 4/111 [00:00<00:00, 655.67it/s, Materializing param=model.layers.0.mlp.down_proj.weight]Loading weights:   5%|▍         | 5/111 [00:00<00:00, 655.05it/s, Materializing param=model.layers.0.mlp.gate_proj.weight]Loading weights:   5%|▍         | 5/111 [00:00<00:00, 638.79it/s, Materializing param=model.layers.0.mlp.gate_proj.weight]Loading weights:   5%|▌         | 6/111 [00:00<00:00, 629.46it/s, Materializing param=model.layers.0.mlp.up_proj.weight]  Loading weights:   5%|▌         | 6/111 [00:00<00:00, 622.79it/s, Materializing param=model.layers.0.mlp.up_proj.weight]Loading weights:   6%|▋         | 7/111 [00:00<00:00, 680.10it/s, Materializing param=model.layers.0.post_attention_layernorm.weight]Loading weights:   6%|▋         | 7/111 [00:00<00:00, 673.07it/s, Materializing param=model.layers.0.post_attention_layernorm.weight]Loading weights:   7%|▋         | 8/111 [00:00<00:00, 624.58it/s, Materializing param=model.layers.0.self_attn.k_proj.weight]        Loading weights:   7%|▋         | 8/111 [00:00<00:00, 619.22it/s, Materializing param=model.layers.0.self_attn.k_proj.weight]Loading weights:   8%|▊         | 9/111 [00:00<00:00, 655.80it/s, Materializing param=model.layers.0.self_attn.o_proj.weight]Loading weights:   8%|▊         | 9/111 [00:00<00:00, 651.20it/s, Materializing param=model.layers.0.self_attn.o_proj.weight]Loading weights:   9%|▉         | 10/111 [00:00<00:00, 697.08it/s, Materializing param=model.layers.0.self_attn.q_proj.weight]Loading weights:   9%|▉         | 10/111 [00:00<00:00, 691.97it/s, Materializing param=model.layers.0.self_attn.q_proj.weight]Loading weights:  10%|▉         | 11/111 [00:00<00:00, 466.49it/s, Materializing param=model.layers.0.self_attn.v_proj.weight]Loading weights:  10%|▉         | 11/111 [00:00<00:00, 463.51it/s, Materializing param=model.layers.0.self_attn.v_proj.weight]Loading weights:  11%|█         | 12/111 [00:00<00:00, 493.03it/s, Materializing param=model.layers.1.input_layernorm.weight] Loading weights:  11%|█         | 12/111 [00:00<00:00, 489.04it/s, Materializing param=model.layers.1.input_layernorm.weight]Loading weights:  12%|█▏        | 13/111 [00:00<00:00, 519.44it/s, Materializing param=model.layers.1.mlp.down_proj.weight]  Loading weights:  12%|█▏        | 13/111 [00:00<00:00, 517.41it/s, Materializing param=model.layers.1.mlp.down_proj.weight]Loading weights:  13%|█▎        | 14/111 [00:00<00:00, 497.14it/s, Materializing param=model.layers.1.mlp.gate_proj.weight]Loading weights:  13%|█▎        | 14/111 [00:00<00:00, 494.24it/s, Materializing param=model.layers.1.mlp.gate_proj.weight]Loading weights:  14%|█▎        | 15/111 [00:00<00:00, 512.52it/s, Materializing param=model.layers.1.mlp.up_proj.weight]  Loading weights:  14%|█▎        | 15/111 [00:00<00:00, 510.74it/s, Materializing param=model.layers.1.mlp.up_proj.weight]Loading weights:  14%|█▍        | 16/111 [00:00<00:00, 496.06it/s, Materializing param=model.layers.1.post_attention_layernorm.weight]Loading weights:  14%|█▍        | 16/111 [00:00<00:00, 494.23it/s, Materializing param=model.layers.1.post_attention_layernorm.weight]Loading weights:  15%|█▌        | 17/111 [00:00<00:00, 468.99it/s, Materializing param=model.layers.1.self_attn.k_proj.weight]        Loading weights:  15%|█▌        | 17/111 [00:00<00:00, 467.63it/s, Materializing param=model.layers.1.self_attn.k_proj.weight]Loading weights:  16%|█▌        | 18/111 [00:00<00:00, 488.71it/s, Materializing param=model.layers.1.self_attn.o_proj.weight]Loading weights:  16%|█▌        | 18/111 [00:00<00:00, 487.42it/s, Materializing param=model.layers.1.self_attn.o_proj.weight]Loading weights:  17%|█▋        | 19/111 [00:00<00:00, 502.47it/s, Materializing param=model.layers.1.self_attn.q_proj.weight]Loading weights:  17%|█▋        | 19/111 [00:00<00:00, 438.12it/s, Materializing param=model.layers.1.self_attn.q_proj.weight]Loading weights:  18%|█▊        | 20/111 [00:00<00:00, 404.46it/s, Materializing param=model.layers.1.self_attn.v_proj.weight]Loading weights:  18%|█▊        | 20/111 [00:00<00:00, 403.57it/s, Materializing param=model.layers.1.self_attn.v_proj.weight]Loading weights:  19%|█▉        | 21/111 [00:00<00:00, 420.94it/s, Materializing param=model.layers.2.input_layernorm.weight] Loading weights:  19%|█▉        | 21/111 [00:00<00:00, 420.21it/s, Materializing param=model.layers.2.input_layernorm.weight]Loading weights:  20%|█▉        | 22/111 [00:00<00:00, 429.63it/s, Materializing param=model.layers.2.mlp.down_proj.weight]  Loading weights:  20%|█▉        | 22/111 [00:00<00:00, 428.89it/s, Materializing param=model.layers.2.mlp.down_proj.weight]Loading weights:  21%|██        | 23/111 [00:00<00:00, 422.96it/s, Materializing param=model.layers.2.mlp.gate_proj.weight]Loading weights:  21%|██        | 23/111 [00:00<00:00, 421.82it/s, Materializing param=model.layers.2.mlp.gate_proj.weight]Loading weights:  22%|██▏       | 24/111 [00:00<00:00, 408.06it/s, Materializing param=model.layers.2.mlp.up_proj.weight]  Loading weights:  22%|██▏       | 24/111 [00:00<00:00, 384.16it/s, Materializing param=model.layers.2.mlp.up_proj.weight]Loading weights:  23%|██▎       | 25/111 [00:00<00:00, 386.51it/s, Materializing param=model.layers.2.post_attention_layernorm.weight]Loading weights:  23%|██▎       | 25/111 [00:00<00:00, 385.76it/s, Materializing param=model.layers.2.post_attention_layernorm.weight]Loading weights:  23%|██▎       | 26/111 [00:00<00:00, 387.49it/s, Materializing param=model.layers.2.self_attn.k_proj.weight]        Loading weights:  23%|██▎       | 26/111 [00:00<00:00, 386.98it/s, Materializing param=model.layers.2.self_attn.k_proj.weight]Loading weights:  24%|██▍       | 27/111 [00:00<00:00, 391.15it/s, Materializing param=model.layers.2.self_attn.o_proj.weight]Loading weights:  24%|██▍       | 27/111 [00:00<00:00, 390.67it/s, Materializing param=model.layers.2.self_attn.o_proj.weight]Loading weights:  25%|██▌       | 28/111 [00:00<00:00, 402.77it/s, Materializing param=model.layers.2.self_attn.q_proj.weight]Loading weights:  25%|██▌       | 28/111 [00:00<00:00, 402.29it/s, Materializing param=model.layers.2.self_attn.q_proj.weight]Loading weights:  26%|██▌       | 29/111 [00:00<00:00, 414.92it/s, Materializing param=model.layers.2.self_attn.v_proj.weight]Loading weights:  26%|██▌       | 29/111 [00:00<00:00, 414.41it/s, Materializing param=model.layers.2.self_attn.v_proj.weight]Loading weights:  27%|██▋       | 30/111 [00:00<00:00, 426.56it/s, Materializing param=model.layers.3.input_layernorm.weight] Loading weights:  27%|██▋       | 30/111 [00:00<00:00, 426.06it/s, Materializing param=model.layers.3.input_layernorm.weight]Loading weights:  28%|██▊       | 31/111 [00:00<00:00, 434.56it/s, Materializing param=model.layers.3.mlp.down_proj.weight]  Loading weights:  28%|██▊       | 31/111 [00:00<00:00, 434.05it/s, Materializing param=model.layers.3.mlp.down_proj.weight]Loading weights:  29%|██▉       | 32/111 [00:00<00:00, 429.52it/s, Materializing param=model.layers.3.mlp.gate_proj.weight]Loading weights:  29%|██▉       | 32/111 [00:00<00:00, 428.99it/s, Materializing param=model.layers.3.mlp.gate_proj.weight]Loading weights:  30%|██▉       | 33/111 [00:00<00:00, 438.03it/s, Materializing param=model.layers.3.mlp.up_proj.weight]  Loading weights:  30%|██▉       | 33/111 [00:00<00:00, 437.54it/s, Materializing param=model.layers.3.mlp.up_proj.weight]Loading weights:  31%|███       | 34/111 [00:00<00:00, 426.27it/s, Materializing param=model.layers.3.post_attention_layernorm.weight]Loading weights:  31%|███       | 34/111 [00:00<00:00, 425.54it/s, Materializing param=model.layers.3.post_attention_layernorm.weight]Loading weights:  32%|███▏      | 35/111 [00:00<00:00, 433.09it/s, Materializing param=model.layers.3.self_attn.k_proj.weight]        Loading weights:  32%|███▏      | 35/111 [00:00<00:00, 432.59it/s, Materializing param=model.layers.3.self_attn.k_proj.weight]Loading weights:  32%|███▏      | 36/111 [00:00<00:00, 442.23it/s, Materializing param=model.layers.3.self_attn.o_proj.weight]Loading weights:  32%|███▏      | 36/111 [00:00<00:00, 441.78it/s, Materializing param=model.layers.3.self_attn.o_proj.weight]Loading weights:  33%|███▎      | 37/111 [00:00<00:00, 451.67it/s, Materializing param=model.layers.3.self_attn.q_proj.weight]Loading weights:  33%|███▎      | 37/111 [00:00<00:00, 451.15it/s, Materializing param=model.layers.3.self_attn.q_proj.weight]Loading weights:  34%|███▍      | 38/111 [00:00<00:00, 459.84it/s, Materializing param=model.layers.3.self_attn.v_proj.weight]Loading weights:  34%|███▍      | 38/111 [00:00<00:00, 459.37it/s, Materializing param=model.layers.3.self_attn.v_proj.weight]Loading weights:  35%|███▌      | 39/111 [00:00<00:00, 463.67it/s, Materializing param=model.layers.4.input_layernorm.weight] Loading weights:  35%|███▌      | 39/111 [00:00<00:00, 463.21it/s, Materializing param=model.layers.4.input_layernorm.weight]Loading weights:  36%|███▌      | 40/111 [00:00<00:00, 472.21it/s, Materializing param=model.layers.4.mlp.down_proj.weight]  Loading weights:  36%|███▌      | 40/111 [00:00<00:00, 471.75it/s, Materializing param=model.layers.4.mlp.down_proj.weight]Loading weights:  37%|███▋      | 41/111 [00:00<00:00, 480.88it/s, Materializing param=model.layers.4.mlp.gate_proj.weight]Loading weights:  37%|███▋      | 41/111 [00:00<00:00, 480.42it/s, Materializing param=model.layers.4.mlp.gate_proj.weight]Loading weights:  38%|███▊      | 42/111 [00:00<00:00, 490.55it/s, Materializing param=model.layers.4.mlp.up_proj.weight]  Loading weights:  38%|███▊      | 42/111 [00:00<00:00, 490.02it/s, Materializing param=model.layers.4.mlp.up_proj.weight]Loading weights:  39%|███▊      | 43/111 [00:00<00:00, 488.55it/s, Materializing param=model.layers.4.post_attention_layernorm.weight]Loading weights:  39%|███▊      | 43/111 [00:00<00:00, 488.02it/s, Materializing param=model.layers.4.post_attention_layernorm.weight]Loading weights:  40%|███▉      | 44/111 [00:00<00:00, 497.56it/s, Materializing param=model.layers.4.self_attn.k_proj.weight]        Loading weights:  40%|███▉      | 44/111 [00:00<00:00, 497.05it/s, Materializing param=model.layers.4.self_attn.k_proj.weight]Loading weights:  41%|████      | 45/111 [00:00<00:00, 506.19it/s, Materializing param=model.layers.4.self_attn.o_proj.weight]Loading weights:  41%|████      | 45/111 [00:00<00:00, 505.72it/s, Materializing param=model.layers.4.self_attn.o_proj.weight]Loading weights:  41%|████▏     | 46/111 [00:00<00:00, 509.18it/s, Materializing param=model.layers.4.self_attn.q_proj.weight]Loading weights:  41%|████▏     | 46/111 [00:00<00:00, 508.68it/s, Materializing param=model.layers.4.self_attn.q_proj.weight]Loading weights:  42%|████▏     | 47/111 [00:00<00:00, 517.73it/s, Materializing param=model.layers.4.self_attn.v_proj.weight]Loading weights:  42%|████▏     | 47/111 [00:00<00:00, 517.27it/s, Materializing param=model.layers.4.self_attn.v_proj.weight]Loading weights:  43%|████▎     | 48/111 [00:00<00:00, 511.70it/s, Materializing param=model.layers.5.input_layernorm.weight] Loading weights:  43%|████▎     | 48/111 [00:00<00:00, 510.66it/s, Materializing param=model.layers.5.input_layernorm.weight]Loading weights:  44%|████▍     | 49/111 [00:00<00:00, 505.57it/s, Materializing param=model.layers.5.mlp.down_proj.weight]  Loading weights:  44%|████▍     | 49/111 [00:00<00:00, 505.10it/s, Materializing param=model.layers.5.mlp.down_proj.weight]Loading weights:  45%|████▌     | 50/111 [00:00<00:00, 513.59it/s, Materializing param=model.layers.5.mlp.gate_proj.weight]Loading weights:  45%|████▌     | 50/111 [00:00<00:00, 513.10it/s, Materializing param=model.layers.5.mlp.gate_proj.weight]Loading weights:  46%|████▌     | 51/111 [00:00<00:00, 520.63it/s, Materializing param=model.layers.5.mlp.up_proj.weight]  Loading weights:  46%|████▌     | 51/111 [00:00<00:00, 518.89it/s, Materializing param=model.layers.5.mlp.up_proj.weight]Loading weights:  47%|████▋     | 52/111 [00:00<00:00, 527.69it/s, Materializing param=model.layers.5.post_attention_layernorm.weight]Loading weights:  47%|████▋     | 52/111 [00:00<00:00, 527.25it/s, Materializing param=model.layers.5.post_attention_layernorm.weight]Loading weights:  48%|████▊     | 53/111 [00:00<00:00, 534.00it/s, Materializing param=model.layers.5.self_attn.k_proj.weight]        Loading weights:  48%|████▊     | 53/111 [00:00<00:00, 533.26it/s, Materializing param=model.layers.5.self_attn.k_proj.weight]Loading weights:  49%|████▊     | 54/111 [00:00<00:00, 540.33it/s, Materializing param=model.layers.5.self_attn.o_proj.weight]Loading weights:  49%|████▊     | 54/111 [00:00<00:00, 539.88it/s, Materializing param=model.layers.5.self_attn.o_proj.weight]Loading weights:  50%|████▉     | 55/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.5.self_attn.o_proj.weight]Loading weights:  50%|████▉     | 55/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.5.self_attn.q_proj.weight]Loading weights:  50%|████▉     | 55/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.5.self_attn.q_proj.weight]Loading weights:  50%|█████     | 56/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.5.self_attn.v_proj.weight]Loading weights:  50%|█████     | 56/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.5.self_attn.v_proj.weight]Loading weights:  51%|█████▏    | 57/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.input_layernorm.weight] Loading weights:  51%|█████▏    | 57/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.input_layernorm.weight]Loading weights:  52%|█████▏    | 58/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.mlp.down_proj.weight]  Loading weights:  52%|█████▏    | 58/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.mlp.down_proj.weight]Loading weights:  53%|█████▎    | 59/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.mlp.gate_proj.weight]Loading weights:  53%|█████▎    | 59/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.mlp.gate_proj.weight]Loading weights:  54%|█████▍    | 60/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.mlp.up_proj.weight]  Loading weights:  54%|█████▍    | 60/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.mlp.up_proj.weight]Loading weights:  55%|█████▍    | 61/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.post_attention_layernorm.weight]Loading weights:  55%|█████▍    | 61/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.post_attention_layernorm.weight]Loading weights:  56%|█████▌    | 62/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.k_proj.weight]        Loading weights:  56%|█████▌    | 62/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.k_proj.weight]Loading weights:  57%|█████▋    | 63/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.o_proj.weight]Loading weights:  57%|█████▋    | 63/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.o_proj.weight]Loading weights:  58%|█████▊    | 64/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.q_proj.weight]Loading weights:  58%|█████▊    | 64/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.q_proj.weight]Loading weights:  59%|█████▊    | 65/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.v_proj.weight]Loading weights:  59%|█████▊    | 65/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.6.self_attn.v_proj.weight]Loading weights:  59%|█████▉    | 66/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.input_layernorm.weight] Loading weights:  59%|█████▉    | 66/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.input_layernorm.weight]Loading weights:  60%|██████    | 67/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.mlp.down_proj.weight]  Loading weights:  60%|██████    | 67/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.mlp.down_proj.weight]Loading weights:  61%|██████▏   | 68/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.mlp.gate_proj.weight]Loading weights:  61%|██████▏   | 68/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.mlp.gate_proj.weight]Loading weights:  62%|██████▏   | 69/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.mlp.up_proj.weight]  Loading weights:  62%|██████▏   | 69/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.mlp.up_proj.weight]Loading weights:  63%|██████▎   | 70/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.post_attention_layernorm.weight]Loading weights:  63%|██████▎   | 70/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.post_attention_layernorm.weight]Loading weights:  64%|██████▍   | 71/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.k_proj.weight]        Loading weights:  64%|██████▍   | 71/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.k_proj.weight]Loading weights:  65%|██████▍   | 72/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.o_proj.weight]Loading weights:  65%|██████▍   | 72/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.o_proj.weight]Loading weights:  66%|██████▌   | 73/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.q_proj.weight]Loading weights:  66%|██████▌   | 73/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.q_proj.weight]Loading weights:  67%|██████▋   | 74/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.v_proj.weight]Loading weights:  67%|██████▋   | 74/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.7.self_attn.v_proj.weight]Loading weights:  68%|██████▊   | 75/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.input_layernorm.weight] Loading weights:  68%|██████▊   | 75/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.input_layernorm.weight]Loading weights:  68%|██████▊   | 76/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.mlp.down_proj.weight]  Loading weights:  68%|██████▊   | 76/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.mlp.down_proj.weight]Loading weights:  69%|██████▉   | 77/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.mlp.gate_proj.weight]Loading weights:  69%|██████▉   | 77/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.mlp.gate_proj.weight]Loading weights:  70%|███████   | 78/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.mlp.up_proj.weight]  Loading weights:  70%|███████   | 78/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.mlp.up_proj.weight]Loading weights:  71%|███████   | 79/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.post_attention_layernorm.weight]Loading weights:  71%|███████   | 79/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.post_attention_layernorm.weight]Loading weights:  72%|███████▏  | 80/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.k_proj.weight]        Loading weights:  72%|███████▏  | 80/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.k_proj.weight]Loading weights:  73%|███████▎  | 81/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.o_proj.weight]Loading weights:  73%|███████▎  | 81/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.o_proj.weight]Loading weights:  74%|███████▍  | 82/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.q_proj.weight]Loading weights:  74%|███████▍  | 82/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.q_proj.weight]Loading weights:  75%|███████▍  | 83/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.v_proj.weight]Loading weights:  75%|███████▍  | 83/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.8.self_attn.v_proj.weight]Loading weights:  76%|███████▌  | 84/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.input_layernorm.weight] Loading weights:  76%|███████▌  | 84/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.input_layernorm.weight]Loading weights:  77%|███████▋  | 85/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.mlp.down_proj.weight]  Loading weights:  77%|███████▋  | 85/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.mlp.down_proj.weight]Loading weights:  77%|███████▋  | 86/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.mlp.gate_proj.weight]Loading weights:  77%|███████▋  | 86/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.mlp.gate_proj.weight]Loading weights:  78%|███████▊  | 87/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.mlp.up_proj.weight]  Loading weights:  78%|███████▊  | 87/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.mlp.up_proj.weight]Loading weights:  79%|███████▉  | 88/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.post_attention_layernorm.weight]Loading weights:  79%|███████▉  | 88/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.post_attention_layernorm.weight]Loading weights:  80%|████████  | 89/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.k_proj.weight]        Loading weights:  80%|████████  | 89/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.k_proj.weight]Loading weights:  81%|████████  | 90/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.o_proj.weight]Loading weights:  81%|████████  | 90/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.o_proj.weight]Loading weights:  82%|████████▏ | 91/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.q_proj.weight]Loading weights:  82%|████████▏ | 91/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.q_proj.weight]Loading weights:  83%|████████▎ | 92/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.v_proj.weight]Loading weights:  83%|████████▎ | 92/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.9.self_attn.v_proj.weight]Loading weights:  84%|████████▍ | 93/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.input_layernorm.weight]Loading weights:  84%|████████▍ | 93/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.input_layernorm.weight]Loading weights:  85%|████████▍ | 94/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.mlp.down_proj.weight]  Loading weights:  85%|████████▍ | 94/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.mlp.down_proj.weight]Loading weights:  86%|████████▌ | 95/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.mlp.gate_proj.weight]Loading weights:  86%|████████▌ | 95/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.mlp.gate_proj.weight]Loading weights:  86%|████████▋ | 96/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.mlp.up_proj.weight]  Loading weights:  86%|████████▋ | 96/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.mlp.up_proj.weight]Loading weights:  87%|████████▋ | 97/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.post_attention_layernorm.weight]Loading weights:  87%|████████▋ | 97/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.post_attention_layernorm.weight]Loading weights:  88%|████████▊ | 98/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.k_proj.weight]        Loading weights:  88%|████████▊ | 98/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.k_proj.weight]Loading weights:  89%|████████▉ | 99/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.o_proj.weight]Loading weights:  89%|████████▉ | 99/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.o_proj.weight]Loading weights:  90%|█████████ | 100/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.q_proj.weight]Loading weights:  90%|█████████ | 100/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.q_proj.weight]Loading weights:  91%|█████████ | 101/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.v_proj.weight]Loading weights:  91%|█████████ | 101/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.10.self_attn.v_proj.weight]Loading weights:  92%|█████████▏| 102/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.input_layernorm.weight] Loading weights:  92%|█████████▏| 102/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.input_layernorm.weight]Loading weights:  93%|█████████▎| 103/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.mlp.down_proj.weight]  Loading weights:  93%|█████████▎| 103/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.mlp.down_proj.weight]Loading weights:  94%|█████████▎| 104/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.mlp.gate_proj.weight]Loading weights:  94%|█████████▎| 104/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.mlp.gate_proj.weight]Loading weights:  95%|█████████▍| 105/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.mlp.up_proj.weight]  Loading weights:  95%|█████████▍| 105/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.mlp.up_proj.weight]Loading weights:  95%|█████████▌| 106/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.post_attention_layernorm.weight]Loading weights:  95%|█████████▌| 106/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.post_attention_layernorm.weight]Loading weights:  96%|█████████▋| 107/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.k_proj.weight]        Loading weights:  96%|█████████▋| 107/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.k_proj.weight]Loading weights:  97%|█████████▋| 108/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.o_proj.weight]Loading weights:  97%|█████████▋| 108/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.o_proj.weight]Loading weights:  98%|█████████▊| 109/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.q_proj.weight]Loading weights:  98%|█████████▊| 109/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.q_proj.weight]Loading weights:  99%|█████████▉| 110/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.v_proj.weight]Loading weights:  99%|█████████▉| 110/111 [00:00<00:00, 548.00it/s, Materializing param=model.layers.11.self_attn.v_proj.weight]Loading weights: 100%|██████████| 111/111 [00:00<00:00, 548.00it/s, Materializing param=model.norm.weight]                      Loading weights: 100%|██████████| 111/111 [00:00<00:00, 548.00it/s, Materializing param=model.norm.weight]Loading weights: 100%|██████████| 111/111 [00:00<00:00, 737.43it/s, Materializing param=model.norm.weight]
+[AccuracyLens] Captured MLM targets (10 samples)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[AccuracyLens] Using backend-captured fallback dataset from PipelineGraphCollectorLens
+[AccuracyLens] Auto-configured mlm evaluator with 5 metrics
+[Observatory] Collected Exported Float in 23957.7 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected Annotated Model in 20440.9 ms
+[Observatory] Collected Calibrated Model in 19925.7 ms
+[Observatory] Collected Quantized Model in 53566.9 ms
+[INFO] [Qnn ExecuTorch]: Creating new backend bundle.
+[INFO] [Qnn ExecuTorch]: create QNN Logger with log_level 1
+[Observatory] Collected Pre-EdgeTransform/forward in 51326.4 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Exported/forward in 40149.4 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Edge/forward in 52700.1 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Extra/edge_after_transform/forward in 60971.0 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+No quant config is implemented for op, aten.lift_fresh_copy.default
+No quant config is implemented for op, aten.detach_.default
+No quant config is implemented for op, aten.to.dtype_layout
+No quant config is implemented for op, aten._assert_tensor_metadata.default
+No quant config is implemented for op, aten._assert_tensor_metadata.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+No quant config is implemented for op, aten.clone.default
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Quantizing(PTQ) the model...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.sigmoid.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten._safe_softmax.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+Qnn partitioner will delegate torch mutable buffer with the same I/O address during the runtime, so if your model contains mutable buffer, then you can get the better performance with skip_mutable_buffer=False. If you encounter accuracy issue during the runtime, then please set `skip_mutable_buffer=True` and try again.
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[INFO] [Qnn ExecuTorch]: Initialize Qnn backend parameters for Qnn executorch backend type 2
+[INFO] [Qnn ExecuTorch]: Caching: Caching is in SAVE MODE.
+[INFO] [Qnn ExecuTorch]: Running level=3 optimization.
+Processing Method(0): (1/1)
+Visiting: quantized_decomposed_quantize_per_tensor_default, quantized_decomposed.quantize_per_tensor.default
+Visiting: aten_unsqueeze_copy_default, aten.unsqueeze_copy.default
+Visiting: aten_arange_start_step, aten.arange.start_step
+Visiting: aten_unsqueeze_copy_default_1, aten.unsqueeze_copy.default
+Visiting: aten__to_copy_default, aten._to_copy.default
+Visiting: aten_embedding_default, aten.embedding.default
+Visiting: aten__to_copy_default_1, aten._to_copy.default
+Visiting: aten_unsqueeze_copy_default_3, aten.unsqueeze_copy.default
+Visiting: aten_view_copy_default, aten.view_copy.default
+Visiting: aten_view_copy_default_1, aten.view_copy.default
+Visiting: aten_view_copy_default_2, aten.view_copy.default
+Visiting: aten_view_copy_default_12, aten.view_copy.default
+Visiting: aten_view_copy_default_13, aten.view_copy.default
+Visiting: aten_view_copy_default_38, aten.view_copy.default
+Visiting: aten_view_copy_default_39, aten.view_copy.default
+Visiting: aten_view_copy_default_64, aten.view_copy.default
+Visiting: aten_view_copy_default_65, aten.view_copy.default
+Visiting: aten_view_copy_default_90, aten.view_copy.default
+Visiting: aten_view_copy_default_91, aten.view_copy.default
+Visiting: aten_view_copy_default_116, aten.view_copy.default
+Visiting: aten_view_copy_default_117, aten.view_copy.default
+Visiting: aten_view_copy_default_142, aten.view_copy.default
+Visiting: aten_view_copy_default_143, aten.view_copy.default
+Visiting: aten_view_copy_default_168, aten.view_copy.default
+Visiting: aten_view_copy_default_169, aten.view_copy.default
+Visiting: aten_view_copy_default_194, aten.view_copy.default
+Visiting: aten_view_copy_default_195, aten.view_copy.default
+Visiting: aten_view_copy_default_220, aten.view_copy.default
+Visiting: aten_view_copy_default_221, aten.view_copy.default
+Visiting: aten_view_copy_default_246, aten.view_copy.default
+Visiting: aten_view_copy_default_247, aten.view_copy.default
+Visiting: aten_view_copy_default_272, aten.view_copy.default
+Visiting: aten_view_copy_default_273, aten.view_copy.default
+Visiting: aten_view_copy_default_298, aten.view_copy.default
+Visiting: aten_view_copy_default_299, aten.view_copy.default
+Visiting: aten_expand_copy_default, aten.expand_copy.default
+Visiting: aten_unsqueeze_copy_default_2, aten.unsqueeze_copy.default
+Visiting: aten_rms_norm_default, aten.rms_norm.default
+Visiting: aten_unsqueeze_copy_default_4, aten.unsqueeze_copy.default
+Visiting: aten_sub_tensor, aten.sub.Tensor
+Visiting: aten_unsqueeze_copy_default_5, aten.unsqueeze_copy.default
+Visiting: aten_view_copy_default_3, aten.view_copy.default
+Visiting: aten_view_copy_default_4, aten.view_copy.default
+Visiting: aten_view_copy_default_5, aten.view_copy.default
+Visiting: dim_order_ops__to_dim_order_copy_default, dim_order_ops._to_dim_order_copy.default
+Visiting: aten__to_copy_default_2, aten._to_copy.default
+Visiting: aten_linear_default_2, aten.linear.default
+Visiting: aten_linear_default_1, aten.linear.default
+Visiting: aten_linear_default, aten.linear.default
+Visiting: aten_where_self, aten.where.self
+Visiting: aten_matmul_default, aten.matmul.default
+Visiting: aten_view_copy_default_10, aten.view_copy.default
+Visiting: aten_view_copy_default_8, aten.view_copy.default
+Visiting: aten_view_copy_default_6, aten.view_copy.default
+Visiting: aten_permute_copy_default, aten.permute_copy.default
+Visiting: aten_view_copy_default_11, aten.view_copy.default
+Visiting: aten_view_copy_default_9, aten.view_copy.default
+Visiting: aten_view_copy_default_7, aten.view_copy.default
+Visiting: aten_cat_default, aten.cat.default
+Visiting: aten_permute_copy_default_3, aten.permute_copy.default
+Visiting: aten_permute_copy_default_2, aten.permute_copy.default
+Visiting: aten_permute_copy_default_1, aten.permute_copy.default
+Visiting: aten_cos_default, aten.cos.default
+Visiting: aten_sin_default, aten.sin.default
+Visiting: aten_view_copy_default_18, aten.view_copy.default
+Visiting: aten__to_copy_default_3, aten._to_copy.default
+Visiting: aten_slice_copy_tensor_2, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_3, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_1, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor, aten.mul.Tensor
+Visiting: aten_mul_tensor_1, aten.mul.Tensor
+Visiting: aten_neg_default_1, aten.neg.default
+Visiting: aten_neg_default, aten.neg.default
+Visiting: aten_unsqueeze_copy_default_6, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_8, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_10, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_12, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_14, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_16, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_18, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_20, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_22, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_24, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_26, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_28, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_7, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_9, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_11, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_13, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_15, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_17, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_19, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_21, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_23, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_25, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_27, aten.unsqueeze_copy.default
+Visiting: aten_unsqueeze_copy_default_29, aten.unsqueeze_copy.default
+Visiting: aten_cat_default_2, aten.cat.default
+Visiting: aten_cat_default_1, aten.cat.default
+Visiting: aten_mul_tensor_2, aten.mul.Tensor
+Visiting: aten_mul_tensor_4, aten.mul.Tensor
+Visiting: aten_mul_tensor_5, aten.mul.Tensor
+Visiting: aten_mul_tensor_3, aten.mul.Tensor
+Visiting: aten_add_tensor_1, aten.add.Tensor
+Visiting: aten_add_tensor, aten.add.Tensor
+Visiting: aten_permute_copy_default_4, aten.permute_copy.default
+Visiting: aten_mul_tensor_6, aten.mul.Tensor
+Visiting: aten_mul_tensor_7, aten.mul.Tensor
+Visiting: aten_view_copy_default_14, aten.view_copy.default
+Visiting: aten_view_copy_default_15, aten.view_copy.default
+Visiting: aten__to_copy_default_4, aten._to_copy.default
+Visiting: aten_bmm_default, aten.bmm.default
+Visiting: aten_view_copy_default_16, aten.view_copy.default
+Visiting: aten_add_tensor_2, aten.add.Tensor
+Visiting: aten__safe_softmax_default, aten._safe_softmax.default
+Visiting: aten_view_copy_default_17, aten.view_copy.default
+Visiting: aten_bmm_default_1, aten.bmm.default
+Visiting: aten_view_copy_default_19, aten.view_copy.default
+Visiting: aten_permute_copy_default_5, aten.permute_copy.default
+Visiting: aten__to_copy_default_5, aten._to_copy.default
+Visiting: aten_permute_copy_default_85, aten.permute_copy.default
+Visiting: aten_view_copy_default_20, aten.view_copy.default
+Visiting: aten_view_copy_default_21, aten.view_copy.default
+Visiting: aten_linear_default_3, aten.linear.default
+Visiting: aten_view_copy_default_22, aten.view_copy.default
+Visiting: aten_add_tensor_3, aten.add.Tensor
+Visiting: aten_rms_norm_default_1, aten.rms_norm.default
+Visiting: aten_view_copy_default_23, aten.view_copy.default
+Visiting: aten_view_copy_default_24, aten.view_copy.default
+Visiting: aten_linear_default_5, aten.linear.default
+Visiting: aten_linear_default_4, aten.linear.default
+Visiting: aten_view_copy_default_26, aten.view_copy.default
+Visiting: aten_view_copy_default_25, aten.view_copy.default
+Visiting: aten_sigmoid_default, aten.sigmoid.default
+Visiting: aten_mul_tensor_8, aten.mul.Tensor
+Visiting: aten_mul_tensor_9, aten.mul.Tensor
+Visiting: aten_view_copy_default_27, aten.view_copy.default
+Visiting: aten_linear_default_6, aten.linear.default
+Visiting: aten_view_copy_default_28, aten.view_copy.default
+Visiting: aten_add_tensor_4, aten.add.Tensor
+Visiting: aten_rms_norm_default_2, aten.rms_norm.default
+Visiting: aten_view_copy_default_29, aten.view_copy.default
+Visiting: aten_view_copy_default_30, aten.view_copy.default
+Visiting: aten_view_copy_default_31, aten.view_copy.default
+Visiting: aten_linear_default_9, aten.linear.default
+Visiting: aten_linear_default_8, aten.linear.default
+Visiting: aten_linear_default_7, aten.linear.default
+Visiting: aten_view_copy_default_36, aten.view_copy.default
+Visiting: aten_view_copy_default_34, aten.view_copy.default
+Visiting: aten_view_copy_default_32, aten.view_copy.default
+Visiting: aten_view_copy_default_37, aten.view_copy.default
+Visiting: aten_view_copy_default_35, aten.view_copy.default
+Visiting: aten_view_copy_default_33, aten.view_copy.default
+Visiting: aten_permute_copy_default_10, aten.permute_copy.default
+Visiting: aten_permute_copy_default_9, aten.permute_copy.default
+Visiting: aten_permute_copy_default_8, aten.permute_copy.default
+Visiting: aten_view_copy_default_44, aten.view_copy.default
+Visiting: aten__to_copy_default_6, aten._to_copy.default
+Visiting: aten_mul_tensor_12, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_6, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_7, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_10, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_4, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_5, aten.slice_copy.Tensor
+Visiting: aten_neg_default_3, aten.neg.default
+Visiting: aten_neg_default_2, aten.neg.default
+Visiting: aten_cat_default_4, aten.cat.default
+Visiting: aten_cat_default_3, aten.cat.default
+Visiting: aten_mul_tensor_13, aten.mul.Tensor
+Visiting: aten_mul_tensor_11, aten.mul.Tensor
+Visiting: aten_add_tensor_6, aten.add.Tensor
+Visiting: aten_add_tensor_5, aten.add.Tensor
+Visiting: aten_permute_copy_default_11, aten.permute_copy.default
+Visiting: aten_mul_tensor_14, aten.mul.Tensor
+Visiting: aten_mul_tensor_15, aten.mul.Tensor
+Visiting: aten_view_copy_default_40, aten.view_copy.default
+Visiting: aten_view_copy_default_41, aten.view_copy.default
+Visiting: aten__to_copy_default_7, aten._to_copy.default
+Visiting: aten_bmm_default_2, aten.bmm.default
+Visiting: aten_view_copy_default_42, aten.view_copy.default
+Visiting: aten_add_tensor_7, aten.add.Tensor
+Visiting: aten__safe_softmax_default_1, aten._safe_softmax.default
+Visiting: aten_view_copy_default_43, aten.view_copy.default
+Visiting: aten_bmm_default_3, aten.bmm.default
+Visiting: aten_view_copy_default_45, aten.view_copy.default
+Visiting: aten_permute_copy_default_12, aten.permute_copy.default
+Visiting: aten__to_copy_default_8, aten._to_copy.default
+Visiting: aten_permute_copy_default_86, aten.permute_copy.default
+Visiting: aten_view_copy_default_46, aten.view_copy.default
+Visiting: aten_view_copy_default_47, aten.view_copy.default
+Visiting: aten_linear_default_10, aten.linear.default
+Visiting: aten_view_copy_default_48, aten.view_copy.default
+Visiting: aten_add_tensor_8, aten.add.Tensor
+Visiting: aten_rms_norm_default_3, aten.rms_norm.default
+Visiting: aten_view_copy_default_49, aten.view_copy.default
+Visiting: aten_view_copy_default_50, aten.view_copy.default
+Visiting: aten_linear_default_12, aten.linear.default
+Visiting: aten_linear_default_11, aten.linear.default
+Visiting: aten_view_copy_default_52, aten.view_copy.default
+Visiting: aten_view_copy_default_51, aten.view_copy.default
+Visiting: aten_sigmoid_default_1, aten.sigmoid.default
+Visiting: aten_mul_tensor_16, aten.mul.Tensor
+Visiting: aten_mul_tensor_17, aten.mul.Tensor
+Visiting: aten_view_copy_default_53, aten.view_copy.default
+Visiting: aten_linear_default_13, aten.linear.default
+Visiting: aten_view_copy_default_54, aten.view_copy.default
+Visiting: aten_add_tensor_9, aten.add.Tensor
+Visiting: aten_rms_norm_default_4, aten.rms_norm.default
+Visiting: aten_view_copy_default_55, aten.view_copy.default
+Visiting: aten_view_copy_default_56, aten.view_copy.default
+Visiting: aten_view_copy_default_57, aten.view_copy.default
+Visiting: aten_linear_default_16, aten.linear.default
+Visiting: aten_linear_default_15, aten.linear.default
+Visiting: aten_linear_default_14, aten.linear.default
+Visiting: aten_view_copy_default_62, aten.view_copy.default
+Visiting: aten_view_copy_default_60, aten.view_copy.default
+Visiting: aten_view_copy_default_58, aten.view_copy.default
+Visiting: aten_view_copy_default_63, aten.view_copy.default
+Visiting: aten_view_copy_default_61, aten.view_copy.default
+Visiting: aten_view_copy_default_59, aten.view_copy.default
+Visiting: aten_permute_copy_default_17, aten.permute_copy.default
+Visiting: aten_permute_copy_default_16, aten.permute_copy.default
+Visiting: aten_permute_copy_default_15, aten.permute_copy.default
+Visiting: aten_view_copy_default_70, aten.view_copy.default
+Visiting: aten__to_copy_default_9, aten._to_copy.default
+Visiting: aten_mul_tensor_20, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_10, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_11, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_18, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_8, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_9, aten.slice_copy.Tensor
+Visiting: aten_neg_default_5, aten.neg.default
+Visiting: aten_neg_default_4, aten.neg.default
+Visiting: aten_cat_default_6, aten.cat.default
+Visiting: aten_cat_default_5, aten.cat.default
+Visiting: aten_mul_tensor_21, aten.mul.Tensor
+Visiting: aten_mul_tensor_19, aten.mul.Tensor
+Visiting: aten_add_tensor_11, aten.add.Tensor
+Visiting: aten_add_tensor_10, aten.add.Tensor
+Visiting: aten_permute_copy_default_18, aten.permute_copy.default
+Visiting: aten_mul_tensor_22, aten.mul.Tensor
+Visiting: aten_mul_tensor_23, aten.mul.Tensor
+Visiting: aten_view_copy_default_66, aten.view_copy.default
+Visiting: aten_view_copy_default_67, aten.view_copy.default
+Visiting: aten__to_copy_default_10, aten._to_copy.default
+Visiting: aten_bmm_default_4, aten.bmm.default
+Visiting: aten_view_copy_default_68, aten.view_copy.default
+Visiting: aten_add_tensor_12, aten.add.Tensor
+Visiting: aten__safe_softmax_default_2, aten._safe_softmax.default
+Visiting: aten_view_copy_default_69, aten.view_copy.default
+Visiting: aten_bmm_default_5, aten.bmm.default
+Visiting: aten_view_copy_default_71, aten.view_copy.default
+Visiting: aten_permute_copy_default_19, aten.permute_copy.default
+Visiting: aten__to_copy_default_11, aten._to_copy.default
+Visiting: aten_permute_copy_default_87, aten.permute_copy.default
+Visiting: aten_view_copy_default_72, aten.view_copy.default
+Visiting: aten_view_copy_default_73, aten.view_copy.default
+Visiting: aten_linear_default_17, aten.linear.default
+Visiting: aten_view_copy_default_74, aten.view_copy.default
+Visiting: aten_add_tensor_13, aten.add.Tensor
+Visiting: aten_rms_norm_default_5, aten.rms_norm.default
+Visiting: aten_view_copy_default_75, aten.view_copy.default
+Visiting: aten_view_copy_default_76, aten.view_copy.default
+Visiting: aten_linear_default_19, aten.linear.default
+Visiting: aten_linear_default_18, aten.linear.default
+Visiting: aten_view_copy_default_78, aten.view_copy.default
+Visiting: aten_view_copy_default_77, aten.view_copy.default
+Visiting: aten_sigmoid_default_2, aten.sigmoid.default
+Visiting: aten_mul_tensor_24, aten.mul.Tensor
+Visiting: aten_mul_tensor_25, aten.mul.Tensor
+Visiting: aten_view_copy_default_79, aten.view_copy.default
+Visiting: aten_linear_default_20, aten.linear.default
+Visiting: aten_view_copy_default_80, aten.view_copy.default
+Visiting: aten_add_tensor_14, aten.add.Tensor
+Visiting: aten_rms_norm_default_6, aten.rms_norm.default
+Visiting: aten_view_copy_default_81, aten.view_copy.default
+Visiting: aten_view_copy_default_82, aten.view_copy.default
+Visiting: aten_view_copy_default_83, aten.view_copy.default
+Visiting: aten_linear_default_23, aten.linear.default
+Visiting: aten_linear_default_22, aten.linear.default
+Visiting: aten_linear_default_21, aten.linear.default
+Visiting: aten_view_copy_default_88, aten.view_copy.default
+Visiting: aten_view_copy_default_86, aten.view_copy.default
+Visiting: aten_view_copy_default_84, aten.view_copy.default
+Visiting: aten_view_copy_default_89, aten.view_copy.default
+Visiting: aten_view_copy_default_87, aten.view_copy.default
+Visiting: aten_view_copy_default_85, aten.view_copy.default
+Visiting: aten_permute_copy_default_24, aten.permute_copy.default
+Visiting: aten_permute_copy_default_23, aten.permute_copy.default
+Visiting: aten_permute_copy_default_22, aten.permute_copy.default
+Visiting: aten_view_copy_default_96, aten.view_copy.default
+Visiting: aten__to_copy_default_12, aten._to_copy.default
+Visiting: aten_mul_tensor_28, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_14, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_15, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_26, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_12, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_13, aten.slice_copy.Tensor
+Visiting: aten_neg_default_7, aten.neg.default
+Visiting: aten_neg_default_6, aten.neg.default
+Visiting: aten_cat_default_8, aten.cat.default
+Visiting: aten_cat_default_7, aten.cat.default
+Visiting: aten_mul_tensor_29, aten.mul.Tensor
+Visiting: aten_mul_tensor_27, aten.mul.Tensor
+Visiting: aten_add_tensor_16, aten.add.Tensor
+Visiting: aten_add_tensor_15, aten.add.Tensor
+Visiting: aten_permute_copy_default_25, aten.permute_copy.default
+Visiting: aten_mul_tensor_30, aten.mul.Tensor
+Visiting: aten_mul_tensor_31, aten.mul.Tensor
+Visiting: aten_view_copy_default_92, aten.view_copy.default
+Visiting: aten_view_copy_default_93, aten.view_copy.default
+Visiting: aten__to_copy_default_13, aten._to_copy.default
+Visiting: aten_bmm_default_6, aten.bmm.default
+Visiting: aten_view_copy_default_94, aten.view_copy.default
+Visiting: aten_add_tensor_17, aten.add.Tensor
+Visiting: aten__safe_softmax_default_3, aten._safe_softmax.default
+Visiting: aten_view_copy_default_95, aten.view_copy.default
+Visiting: aten_bmm_default_7, aten.bmm.default
+Visiting: aten_view_copy_default_97, aten.view_copy.default
+Visiting: aten_permute_copy_default_26, aten.permute_copy.default
+Visiting: aten__to_copy_default_14, aten._to_copy.default
+Visiting: aten_permute_copy_default_88, aten.permute_copy.default
+Visiting: aten_view_copy_default_98, aten.view_copy.default
+Visiting: aten_view_copy_default_99, aten.view_copy.default
+Visiting: aten_linear_default_24, aten.linear.default
+Visiting: aten_view_copy_default_100, aten.view_copy.default
+Visiting: aten_add_tensor_18, aten.add.Tensor
+Visiting: aten_rms_norm_default_7, aten.rms_norm.default
+Visiting: aten_view_copy_default_101, aten.view_copy.default
+Visiting: aten_view_copy_default_102, aten.view_copy.default
+Visiting: aten_linear_default_26, aten.linear.default
+Visiting: aten_linear_default_25, aten.linear.default
+Visiting: aten_view_copy_default_104, aten.view_copy.default
+Visiting: aten_view_copy_default_103, aten.view_copy.default
+Visiting: aten_sigmoid_default_3, aten.sigmoid.default
+Visiting: aten_mul_tensor_32, aten.mul.Tensor
+Visiting: aten_mul_tensor_33, aten.mul.Tensor
+Visiting: aten_view_copy_default_105, aten.view_copy.default
+Visiting: aten_linear_default_27, aten.linear.default
+Visiting: aten_view_copy_default_106, aten.view_copy.default
+Visiting: aten_add_tensor_19, aten.add.Tensor
+Visiting: aten_rms_norm_default_8, aten.rms_norm.default
+Visiting: aten_view_copy_default_107, aten.view_copy.default
+Visiting: aten_view_copy_default_108, aten.view_copy.default
+Visiting: aten_view_copy_default_109, aten.view_copy.default
+Visiting: aten_linear_default_30, aten.linear.default
+Visiting: aten_linear_default_29, aten.linear.default
+Visiting: aten_linear_default_28, aten.linear.default
+Visiting: aten_view_copy_default_114, aten.view_copy.default
+Visiting: aten_view_copy_default_112, aten.view_copy.default
+Visiting: aten_view_copy_default_110, aten.view_copy.default
+Visiting: aten_view_copy_default_115, aten.view_copy.default
+Visiting: aten_view_copy_default_113, aten.view_copy.default
+Visiting: aten_view_copy_default_111, aten.view_copy.default
+Visiting: aten_permute_copy_default_31, aten.permute_copy.default
+Visiting: aten_permute_copy_default_30, aten.permute_copy.default
+Visiting: aten_permute_copy_default_29, aten.permute_copy.default
+Visiting: aten_view_copy_default_122, aten.view_copy.default
+Visiting: aten__to_copy_default_15, aten._to_copy.default
+Visiting: aten_mul_tensor_36, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_18, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_19, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_34, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_16, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_17, aten.slice_copy.Tensor
+Visiting: aten_neg_default_9, aten.neg.default
+Visiting: aten_neg_default_8, aten.neg.default
+Visiting: aten_cat_default_10, aten.cat.default
+Visiting: aten_cat_default_9, aten.cat.default
+Visiting: aten_mul_tensor_37, aten.mul.Tensor
+Visiting: aten_mul_tensor_35, aten.mul.Tensor
+Visiting: aten_add_tensor_21, aten.add.Tensor
+Visiting: aten_add_tensor_20, aten.add.Tensor
+Visiting: aten_permute_copy_default_32, aten.permute_copy.default
+Visiting: aten_mul_tensor_38, aten.mul.Tensor
+Visiting: aten_mul_tensor_39, aten.mul.Tensor
+Visiting: aten_view_copy_default_118, aten.view_copy.default
+Visiting: aten_view_copy_default_119, aten.view_copy.default
+Visiting: aten__to_copy_default_16, aten._to_copy.default
+Visiting: aten_bmm_default_8, aten.bmm.default
+Visiting: aten_view_copy_default_120, aten.view_copy.default
+Visiting: aten_add_tensor_22, aten.add.Tensor
+Visiting: aten__safe_softmax_default_4, aten._safe_softmax.default
+Visiting: aten_view_copy_default_121, aten.view_copy.default
+Visiting: aten_bmm_default_9, aten.bmm.default
+Visiting: aten_view_copy_default_123, aten.view_copy.default
+Visiting: aten_permute_copy_default_33, aten.permute_copy.default
+Visiting: aten__to_copy_default_17, aten._to_copy.default
+Visiting: aten_permute_copy_default_89, aten.permute_copy.default
+Visiting: aten_view_copy_default_124, aten.view_copy.default
+Visiting: aten_view_copy_default_125, aten.view_copy.default
+Visiting: aten_linear_default_31, aten.linear.default
+Visiting: aten_view_copy_default_126, aten.view_copy.default
+Visiting: aten_add_tensor_23, aten.add.Tensor
+Visiting: aten_rms_norm_default_9, aten.rms_norm.default
+Visiting: aten_view_copy_default_127, aten.view_copy.default
+Visiting: aten_view_copy_default_128, aten.view_copy.default
+Visiting: aten_linear_default_33, aten.linear.default
+Visiting: aten_linear_default_32, aten.linear.default
+Visiting: aten_view_copy_default_130, aten.view_copy.default
+Visiting: aten_view_copy_default_129, aten.view_copy.default
+Visiting: aten_sigmoid_default_4, aten.sigmoid.default
+Visiting: aten_mul_tensor_40, aten.mul.Tensor
+Visiting: aten_mul_tensor_41, aten.mul.Tensor
+Visiting: aten_view_copy_default_131, aten.view_copy.default
+Visiting: aten_linear_default_34, aten.linear.default
+Visiting: aten_view_copy_default_132, aten.view_copy.default
+Visiting: aten_add_tensor_24, aten.add.Tensor
+Visiting: aten_rms_norm_default_10, aten.rms_norm.default
+Visiting: aten_view_copy_default_133, aten.view_copy.default
+Visiting: aten_view_copy_default_134, aten.view_copy.default
+Visiting: aten_view_copy_default_135, aten.view_copy.default
+Visiting: aten_linear_default_37, aten.linear.default
+Visiting: aten_linear_default_36, aten.linear.default
+Visiting: aten_linear_default_35, aten.linear.default
+Visiting: aten_view_copy_default_140, aten.view_copy.default
+Visiting: aten_view_copy_default_138, aten.view_copy.default
+Visiting: aten_view_copy_default_136, aten.view_copy.default
+Visiting: aten_view_copy_default_141, aten.view_copy.default
+Visiting: aten_view_copy_default_139, aten.view_copy.default
+Visiting: aten_view_copy_default_137, aten.view_copy.default
+Visiting: aten_permute_copy_default_38, aten.permute_copy.default
+Visiting: aten_permute_copy_default_37, aten.permute_copy.default
+Visiting: aten_permute_copy_default_36, aten.permute_copy.default
+Visiting: aten_view_copy_default_148, aten.view_copy.default
+Visiting: aten__to_copy_default_18, aten._to_copy.default
+Visiting: aten_mul_tensor_44, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_22, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_23, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_42, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_20, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_21, aten.slice_copy.Tensor
+Visiting: aten_neg_default_11, aten.neg.default
+Visiting: aten_neg_default_10, aten.neg.default
+Visiting: aten_cat_default_12, aten.cat.default
+Visiting: aten_cat_default_11, aten.cat.default
+Visiting: aten_mul_tensor_45, aten.mul.Tensor
+Visiting: aten_mul_tensor_43, aten.mul.Tensor
+Visiting: aten_add_tensor_26, aten.add.Tensor
+Visiting: aten_add_tensor_25, aten.add.Tensor
+Visiting: aten_permute_copy_default_39, aten.permute_copy.default
+Visiting: aten_mul_tensor_46, aten.mul.Tensor
+Visiting: aten_mul_tensor_47, aten.mul.Tensor
+Visiting: aten_view_copy_default_144, aten.view_copy.default
+Visiting: aten_view_copy_default_145, aten.view_copy.default
+Visiting: aten__to_copy_default_19, aten._to_copy.default
+Visiting: aten_bmm_default_10, aten.bmm.default
+Visiting: aten_view_copy_default_146, aten.view_copy.default
+Visiting: aten_add_tensor_27, aten.add.Tensor
+Visiting: aten__safe_softmax_default_5, aten._safe_softmax.default
+Visiting: aten_view_copy_default_147, aten.view_copy.default
+Visiting: aten_bmm_default_11, aten.bmm.default
+Visiting: aten_view_copy_default_149, aten.view_copy.default
+Visiting: aten_permute_copy_default_40, aten.permute_copy.default
+Visiting: aten__to_copy_default_20, aten._to_copy.default
+Visiting: aten_permute_copy_default_90, aten.permute_copy.default
+Visiting: aten_view_copy_default_150, aten.view_copy.default
+Visiting: aten_view_copy_default_151, aten.view_copy.default
+Visiting: aten_linear_default_38, aten.linear.default
+Visiting: aten_view_copy_default_152, aten.view_copy.default
+Visiting: aten_add_tensor_28, aten.add.Tensor
+Visiting: aten_rms_norm_default_11, aten.rms_norm.default
+Visiting: aten_view_copy_default_153, aten.view_copy.default
+Visiting: aten_view_copy_default_154, aten.view_copy.default
+Visiting: aten_linear_default_40, aten.linear.default
+Visiting: aten_linear_default_39, aten.linear.default
+Visiting: aten_view_copy_default_156, aten.view_copy.default
+Visiting: aten_view_copy_default_155, aten.view_copy.default
+Visiting: aten_sigmoid_default_5, aten.sigmoid.default
+Visiting: aten_mul_tensor_48, aten.mul.Tensor
+Visiting: aten_mul_tensor_49, aten.mul.Tensor
+Visiting: aten_view_copy_default_157, aten.view_copy.default
+Visiting: aten_linear_default_41, aten.linear.default
+Visiting: aten_view_copy_default_158, aten.view_copy.default
+Visiting: aten_add_tensor_29, aten.add.Tensor
+Visiting: aten_rms_norm_default_12, aten.rms_norm.default
+Visiting: aten_view_copy_default_159, aten.view_copy.default
+Visiting: aten_view_copy_default_160, aten.view_copy.default
+Visiting: aten_view_copy_default_161, aten.view_copy.default
+Visiting: aten_linear_default_44, aten.linear.default
+Visiting: aten_linear_default_43, aten.linear.default
+Visiting: aten_linear_default_42, aten.linear.default
+Visiting: aten_view_copy_default_166, aten.view_copy.default
+Visiting: aten_view_copy_default_164, aten.view_copy.default
+Visiting: aten_view_copy_default_162, aten.view_copy.default
+Visiting: aten_view_copy_default_167, aten.view_copy.default
+Visiting: aten_view_copy_default_165, aten.view_copy.default
+Visiting: aten_view_copy_default_163, aten.view_copy.default
+Visiting: aten_permute_copy_default_45, aten.permute_copy.default
+Visiting: aten_permute_copy_default_44, aten.permute_copy.default
+Visiting: aten_permute_copy_default_43, aten.permute_copy.default
+Visiting: aten_view_copy_default_174, aten.view_copy.default
+Visiting: aten__to_copy_default_21, aten._to_copy.default
+Visiting: aten_mul_tensor_52, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_26, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_27, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_50, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_24, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_25, aten.slice_copy.Tensor
+Visiting: aten_neg_default_13, aten.neg.default
+Visiting: aten_neg_default_12, aten.neg.default
+Visiting: aten_cat_default_14, aten.cat.default
+Visiting: aten_cat_default_13, aten.cat.default
+Visiting: aten_mul_tensor_53, aten.mul.Tensor
+Visiting: aten_mul_tensor_51, aten.mul.Tensor
+Visiting: aten_add_tensor_31, aten.add.Tensor
+Visiting: aten_add_tensor_30, aten.add.Tensor
+Visiting: aten_permute_copy_default_46, aten.permute_copy.default
+Visiting: aten_mul_tensor_54, aten.mul.Tensor
+Visiting: aten_mul_tensor_55, aten.mul.Tensor
+Visiting: aten_view_copy_default_170, aten.view_copy.default
+Visiting: aten_view_copy_default_171, aten.view_copy.default
+Visiting: aten__to_copy_default_22, aten._to_copy.default
+Visiting: aten_bmm_default_12, aten.bmm.default
+Visiting: aten_view_copy_default_172, aten.view_copy.default
+Visiting: aten_add_tensor_32, aten.add.Tensor
+Visiting: aten__safe_softmax_default_6, aten._safe_softmax.default
+Visiting: aten_view_copy_default_173, aten.view_copy.default
+Visiting: aten_bmm_default_13, aten.bmm.default
+Visiting: aten_view_copy_default_175, aten.view_copy.default
+Visiting: aten_permute_copy_default_47, aten.permute_copy.default
+Visiting: aten__to_copy_default_23, aten._to_copy.default
+Visiting: aten_permute_copy_default_91, aten.permute_copy.default
+Visiting: aten_view_copy_default_176, aten.view_copy.default
+Visiting: aten_view_copy_default_177, aten.view_copy.default
+Visiting: aten_linear_default_45, aten.linear.default
+Visiting: aten_view_copy_default_178, aten.view_copy.default
+Visiting: aten_add_tensor_33, aten.add.Tensor
+Visiting: aten_rms_norm_default_13, aten.rms_norm.default
+Visiting: aten_view_copy_default_179, aten.view_copy.default
+Visiting: aten_view_copy_default_180, aten.view_copy.default
+Visiting: aten_linear_default_47, aten.linear.default
+Visiting: aten_linear_default_46, aten.linear.default
+Visiting: aten_view_copy_default_182, aten.view_copy.default
+Visiting: aten_view_copy_default_181, aten.view_copy.default
+Visiting: aten_sigmoid_default_6, aten.sigmoid.default
+Visiting: aten_mul_tensor_56, aten.mul.Tensor
+Visiting: aten_mul_tensor_57, aten.mul.Tensor
+Visiting: aten_view_copy_default_183, aten.view_copy.default
+Visiting: aten_linear_default_48, aten.linear.default
+Visiting: aten_view_copy_default_184, aten.view_copy.default
+Visiting: aten_add_tensor_34, aten.add.Tensor
+Visiting: aten_rms_norm_default_14, aten.rms_norm.default
+Visiting: aten_view_copy_default_185, aten.view_copy.default
+Visiting: aten_view_copy_default_186, aten.view_copy.default
+Visiting: aten_view_copy_default_187, aten.view_copy.default
+Visiting: aten_linear_default_51, aten.linear.default
+Visiting: aten_linear_default_50, aten.linear.default
+Visiting: aten_linear_default_49, aten.linear.default
+Visiting: aten_view_copy_default_192, aten.view_copy.default
+Visiting: aten_view_copy_default_190, aten.view_copy.default
+Visiting: aten_view_copy_default_188, aten.view_copy.default
+Visiting: aten_view_copy_default_193, aten.view_copy.default
+Visiting: aten_view_copy_default_191, aten.view_copy.default
+Visiting: aten_view_copy_default_189, aten.view_copy.default
+Visiting: aten_permute_copy_default_52, aten.permute_copy.default
+Visiting: aten_permute_copy_default_51, aten.permute_copy.default
+Visiting: aten_permute_copy_default_50, aten.permute_copy.default
+Visiting: aten_view_copy_default_200, aten.view_copy.default
+Visiting: aten__to_copy_default_24, aten._to_copy.default
+Visiting: aten_mul_tensor_60, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_30, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_31, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_58, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_28, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_29, aten.slice_copy.Tensor
+Visiting: aten_neg_default_15, aten.neg.default
+Visiting: aten_neg_default_14, aten.neg.default
+Visiting: aten_cat_default_16, aten.cat.default
+Visiting: aten_cat_default_15, aten.cat.default
+Visiting: aten_mul_tensor_61, aten.mul.Tensor
+Visiting: aten_mul_tensor_59, aten.mul.Tensor
+Visiting: aten_add_tensor_36, aten.add.Tensor
+Visiting: aten_add_tensor_35, aten.add.Tensor
+Visiting: aten_permute_copy_default_53, aten.permute_copy.default
+Visiting: aten_mul_tensor_62, aten.mul.Tensor
+Visiting: aten_mul_tensor_63, aten.mul.Tensor
+Visiting: aten_view_copy_default_196, aten.view_copy.default
+Visiting: aten_view_copy_default_197, aten.view_copy.default
+Visiting: aten__to_copy_default_25, aten._to_copy.default
+Visiting: aten_bmm_default_14, aten.bmm.default
+Visiting: aten_view_copy_default_198, aten.view_copy.default
+Visiting: aten_add_tensor_37, aten.add.Tensor
+Visiting: aten__safe_softmax_default_7, aten._safe_softmax.default
+Visiting: aten_view_copy_default_199, aten.view_copy.default
+Visiting: aten_bmm_default_15, aten.bmm.default
+Visiting: aten_view_copy_default_201, aten.view_copy.default
+Visiting: aten_permute_copy_default_54, aten.permute_copy.default
+Visiting: aten__to_copy_default_26, aten._to_copy.default
+Visiting: aten_permute_copy_default_92, aten.permute_copy.default
+Visiting: aten_view_copy_default_202, aten.view_copy.default
+Visiting: aten_view_copy_default_203, aten.view_copy.default
+Visiting: aten_linear_default_52, aten.linear.default
+Visiting: aten_view_copy_default_204, aten.view_copy.default
+Visiting: aten_add_tensor_38, aten.add.Tensor
+Visiting: aten_rms_norm_default_15, aten.rms_norm.default
+Visiting: aten_view_copy_default_205, aten.view_copy.default
+Visiting: aten_view_copy_default_206, aten.view_copy.default
+Visiting: aten_linear_default_54, aten.linear.default
+Visiting: aten_linear_default_53, aten.linear.default
+Visiting: aten_view_copy_default_208, aten.view_copy.default
+Visiting: aten_view_copy_default_207, aten.view_copy.default
+Visiting: aten_sigmoid_default_7, aten.sigmoid.default
+Visiting: aten_mul_tensor_64, aten.mul.Tensor
+Visiting: aten_mul_tensor_65, aten.mul.Tensor
+Visiting: aten_view_copy_default_209, aten.view_copy.default
+Visiting: aten_linear_default_55, aten.linear.default
+Visiting: aten_view_copy_default_210, aten.view_copy.default
+Visiting: aten_add_tensor_39, aten.add.Tensor
+Visiting: aten_rms_norm_default_16, aten.rms_norm.default
+Visiting: aten_view_copy_default_211, aten.view_copy.default
+Visiting: aten_view_copy_default_212, aten.view_copy.default
+Visiting: aten_view_copy_default_213, aten.view_copy.default
+Visiting: aten_linear_default_58, aten.linear.default
+Visiting: aten_linear_default_57, aten.linear.default
+Visiting: aten_linear_default_56, aten.linear.default
+Visiting: aten_view_copy_default_218, aten.view_copy.default
+Visiting: aten_view_copy_default_216, aten.view_copy.default
+Visiting: aten_view_copy_default_214, aten.view_copy.default
+Visiting: aten_view_copy_default_219, aten.view_copy.default
+Visiting: aten_view_copy_default_217, aten.view_copy.default
+Visiting: aten_view_copy_default_215, aten.view_copy.default
+Visiting: aten_permute_copy_default_59, aten.permute_copy.default
+Visiting: aten_permute_copy_default_58, aten.permute_copy.default
+Visiting: aten_permute_copy_default_57, aten.permute_copy.default
+Visiting: aten_view_copy_default_226, aten.view_copy.default
+Visiting: aten__to_copy_default_27, aten._to_copy.default
+Visiting: aten_mul_tensor_68, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_34, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_35, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_66, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_32, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_33, aten.slice_copy.Tensor
+Visiting: aten_neg_default_17, aten.neg.default
+Visiting: aten_neg_default_16, aten.neg.default
+Visiting: aten_cat_default_18, aten.cat.default
+Visiting: aten_cat_default_17, aten.cat.default
+Visiting: aten_mul_tensor_69, aten.mul.Tensor
+Visiting: aten_mul_tensor_67, aten.mul.Tensor
+Visiting: aten_add_tensor_41, aten.add.Tensor
+Visiting: aten_add_tensor_40, aten.add.Tensor
+Visiting: aten_permute_copy_default_60, aten.permute_copy.default
+Visiting: aten_mul_tensor_70, aten.mul.Tensor
+Visiting: aten_mul_tensor_71, aten.mul.Tensor
+Visiting: aten_view_copy_default_222, aten.view_copy.default
+Visiting: aten_view_copy_default_223, aten.view_copy.default
+Visiting: aten__to_copy_default_28, aten._to_copy.default
+Visiting: aten_bmm_default_16, aten.bmm.default
+Visiting: aten_view_copy_default_224, aten.view_copy.default
+Visiting: aten_add_tensor_42, aten.add.Tensor
+Visiting: aten__safe_softmax_default_8, aten._safe_softmax.default
+Visiting: aten_view_copy_default_225, aten.view_copy.default
+Visiting: aten_bmm_default_17, aten.bmm.default
+Visiting: aten_view_copy_default_227, aten.view_copy.default
+Visiting: aten_permute_copy_default_61, aten.permute_copy.default
+Visiting: aten__to_copy_default_29, aten._to_copy.default
+Visiting: aten_permute_copy_default_93, aten.permute_copy.default
+Visiting: aten_view_copy_default_228, aten.view_copy.default
+Visiting: aten_view_copy_default_229, aten.view_copy.default
+Visiting: aten_linear_default_59, aten.linear.default
+Visiting: aten_view_copy_default_230, aten.view_copy.default
+Visiting: aten_add_tensor_43, aten.add.Tensor
+Visiting: aten_rms_norm_default_17, aten.rms_norm.default
+Visiting: aten_view_copy_default_231, aten.view_copy.default
+Visiting: aten_view_copy_default_232, aten.view_copy.default
+Visiting: aten_linear_default_61, aten.linear.default
+Visiting: aten_linear_default_60, aten.linear.default
+Visiting: aten_view_copy_default_234, aten.view_copy.default
+Visiting: aten_view_copy_default_233, aten.view_copy.default
+Visiting: aten_sigmoid_default_8, aten.sigmoid.default
+Visiting: aten_mul_tensor_72, aten.mul.Tensor
+Visiting: aten_mul_tensor_73, aten.mul.Tensor
+Visiting: aten_view_copy_default_235, aten.view_copy.default
+Visiting: aten_linear_default_62, aten.linear.default
+Visiting: aten_view_copy_default_236, aten.view_copy.default
+Visiting: aten_add_tensor_44, aten.add.Tensor
+Visiting: aten_rms_norm_default_18, aten.rms_norm.default
+Visiting: aten_view_copy_default_237, aten.view_copy.default
+Visiting: aten_view_copy_default_238, aten.view_copy.default
+Visiting: aten_view_copy_default_239, aten.view_copy.default
+Visiting: aten_linear_default_65, aten.linear.default
+Visiting: aten_linear_default_64, aten.linear.default
+Visiting: aten_linear_default_63, aten.linear.default
+Visiting: aten_view_copy_default_244, aten.view_copy.default
+Visiting: aten_view_copy_default_242, aten.view_copy.default
+Visiting: aten_view_copy_default_240, aten.view_copy.default
+Visiting: aten_view_copy_default_245, aten.view_copy.default
+Visiting: aten_view_copy_default_243, aten.view_copy.default
+Visiting: aten_view_copy_default_241, aten.view_copy.default
+Visiting: aten_permute_copy_default_66, aten.permute_copy.default
+Visiting: aten_permute_copy_default_65, aten.permute_copy.default
+Visiting: aten_permute_copy_default_64, aten.permute_copy.default
+Visiting: aten_view_copy_default_252, aten.view_copy.default
+Visiting: aten__to_copy_default_30, aten._to_copy.default
+Visiting: aten_mul_tensor_76, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_38, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_39, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_74, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_36, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_37, aten.slice_copy.Tensor
+Visiting: aten_neg_default_19, aten.neg.default
+Visiting: aten_neg_default_18, aten.neg.default
+Visiting: aten_cat_default_20, aten.cat.default
+Visiting: aten_cat_default_19, aten.cat.default
+Visiting: aten_mul_tensor_77, aten.mul.Tensor
+Visiting: aten_mul_tensor_75, aten.mul.Tensor
+Visiting: aten_add_tensor_46, aten.add.Tensor
+Visiting: aten_add_tensor_45, aten.add.Tensor
+Visiting: aten_permute_copy_default_67, aten.permute_copy.default
+Visiting: aten_mul_tensor_78, aten.mul.Tensor
+Visiting: aten_mul_tensor_79, aten.mul.Tensor
+Visiting: aten_view_copy_default_248, aten.view_copy.default
+Visiting: aten_view_copy_default_249, aten.view_copy.default
+Visiting: aten__to_copy_default_31, aten._to_copy.default
+Visiting: aten_bmm_default_18, aten.bmm.default
+Visiting: aten_view_copy_default_250, aten.view_copy.default
+Visiting: aten_add_tensor_47, aten.add.Tensor
+Visiting: aten__safe_softmax_default_9, aten._safe_softmax.default
+Visiting: aten_view_copy_default_251, aten.view_copy.default
+Visiting: aten_bmm_default_19, aten.bmm.default
+Visiting: aten_view_copy_default_253, aten.view_copy.default
+Visiting: aten_permute_copy_default_68, aten.permute_copy.default
+Visiting: aten__to_copy_default_32, aten._to_copy.default
+Visiting: aten_permute_copy_default_94, aten.permute_copy.default
+Visiting: aten_view_copy_default_254, aten.view_copy.default
+Visiting: aten_view_copy_default_255, aten.view_copy.default
+Visiting: aten_linear_default_66, aten.linear.default
+Visiting: aten_view_copy_default_256, aten.view_copy.default
+Visiting: aten_add_tensor_48, aten.add.Tensor
+Visiting: aten_rms_norm_default_19, aten.rms_norm.default
+Visiting: aten_view_copy_default_257, aten.view_copy.default
+Visiting: aten_view_copy_default_258, aten.view_copy.default
+Visiting: aten_linear_default_68, aten.linear.default
+Visiting: aten_linear_default_67, aten.linear.default
+Visiting: aten_view_copy_default_260, aten.view_copy.default
+Visiting: aten_view_copy_default_259, aten.view_copy.default
+Visiting: aten_sigmoid_default_9, aten.sigmoid.default
+Visiting: aten_mul_tensor_80, aten.mul.Tensor
+Visiting: aten_mul_tensor_81, aten.mul.Tensor
+Visiting: aten_view_copy_default_261, aten.view_copy.default
+Visiting: aten_linear_default_69, aten.linear.default
+Visiting: aten_view_copy_default_262, aten.view_copy.default
+Visiting: aten_add_tensor_49, aten.add.Tensor
+Visiting: aten_rms_norm_default_20, aten.rms_norm.default
+Visiting: aten_view_copy_default_263, aten.view_copy.default
+Visiting: aten_view_copy_default_264, aten.view_copy.default
+Visiting: aten_view_copy_default_265, aten.view_copy.default
+Visiting: aten_linear_default_72, aten.linear.default
+Visiting: aten_linear_default_71, aten.linear.default
+Visiting: aten_linear_default_70, aten.linear.default
+Visiting: aten_view_copy_default_270, aten.view_copy.default
+Visiting: aten_view_copy_default_268, aten.view_copy.default
+Visiting: aten_view_copy_default_266, aten.view_copy.default
+Visiting: aten_view_copy_default_271, aten.view_copy.default
+Visiting: aten_view_copy_default_269, aten.view_copy.default
+Visiting: aten_view_copy_default_267, aten.view_copy.default
+Visiting: aten_permute_copy_default_73, aten.permute_copy.default
+Visiting: aten_permute_copy_default_72, aten.permute_copy.default
+Visiting: aten_permute_copy_default_71, aten.permute_copy.default
+Visiting: aten_view_copy_default_278, aten.view_copy.default
+Visiting: aten__to_copy_default_33, aten._to_copy.default
+Visiting: aten_mul_tensor_84, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_42, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_43, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_82, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_40, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_41, aten.slice_copy.Tensor
+Visiting: aten_neg_default_21, aten.neg.default
+Visiting: aten_neg_default_20, aten.neg.default
+Visiting: aten_cat_default_22, aten.cat.default
+Visiting: aten_cat_default_21, aten.cat.default
+Visiting: aten_mul_tensor_85, aten.mul.Tensor
+Visiting: aten_mul_tensor_83, aten.mul.Tensor
+Visiting: aten_add_tensor_51, aten.add.Tensor
+Visiting: aten_add_tensor_50, aten.add.Tensor
+Visiting: aten_permute_copy_default_74, aten.permute_copy.default
+Visiting: aten_mul_tensor_86, aten.mul.Tensor
+Visiting: aten_mul_tensor_87, aten.mul.Tensor
+Visiting: aten_view_copy_default_274, aten.view_copy.default
+Visiting: aten_view_copy_default_275, aten.view_copy.default
+Visiting: aten__to_copy_default_34, aten._to_copy.default
+Visiting: aten_bmm_default_20, aten.bmm.default
+Visiting: aten_view_copy_default_276, aten.view_copy.default
+Visiting: aten_add_tensor_52, aten.add.Tensor
+Visiting: aten__safe_softmax_default_10, aten._safe_softmax.default
+Visiting: aten_view_copy_default_277, aten.view_copy.default
+Visiting: aten_bmm_default_21, aten.bmm.default
+Visiting: aten_view_copy_default_279, aten.view_copy.default
+Visiting: aten_permute_copy_default_75, aten.permute_copy.default
+Visiting: aten__to_copy_default_35, aten._to_copy.default
+Visiting: aten_permute_copy_default_95, aten.permute_copy.default
+Visiting: aten_view_copy_default_280, aten.view_copy.default
+Visiting: aten_view_copy_default_281, aten.view_copy.default
+Visiting: aten_linear_default_73, aten.linear.default
+Visiting: aten_view_copy_default_282, aten.view_copy.default
+Visiting: aten_add_tensor_53, aten.add.Tensor
+Visiting: aten_rms_norm_default_21, aten.rms_norm.default
+Visiting: aten_view_copy_default_283, aten.view_copy.default
+Visiting: aten_view_copy_default_284, aten.view_copy.default
+Visiting: aten_linear_default_75, aten.linear.default
+Visiting: aten_linear_default_74, aten.linear.default
+Visiting: aten_view_copy_default_286, aten.view_copy.default
+Visiting: aten_view_copy_default_285, aten.view_copy.default
+Visiting: aten_sigmoid_default_10, aten.sigmoid.default
+Visiting: aten_mul_tensor_88, aten.mul.Tensor
+Visiting: aten_mul_tensor_89, aten.mul.Tensor
+Visiting: aten_view_copy_default_287, aten.view_copy.default
+Visiting: aten_linear_default_76, aten.linear.default
+Visiting: aten_view_copy_default_288, aten.view_copy.default
+Visiting: aten_add_tensor_54, aten.add.Tensor
+Visiting: aten_rms_norm_default_22, aten.rms_norm.default
+Visiting: aten_view_copy_default_289, aten.view_copy.default
+Visiting: aten_view_copy_default_290, aten.view_copy.default
+Visiting: aten_view_copy_default_291, aten.view_copy.default
+Visiting: aten_linear_default_79, aten.linear.default
+Visiting: aten_linear_default_78, aten.linear.default
+Visiting: aten_linear_default_77, aten.linear.default
+Visiting: aten_view_copy_default_296, aten.view_copy.default
+Visiting: aten_view_copy_default_294, aten.view_copy.default
+Visiting: aten_view_copy_default_292, aten.view_copy.default
+Visiting: aten_view_copy_default_297, aten.view_copy.default
+Visiting: aten_view_copy_default_295, aten.view_copy.default
+Visiting: aten_view_copy_default_293, aten.view_copy.default
+Visiting: aten_permute_copy_default_80, aten.permute_copy.default
+Visiting: aten_permute_copy_default_79, aten.permute_copy.default
+Visiting: aten_permute_copy_default_78, aten.permute_copy.default
+Visiting: aten_view_copy_default_304, aten.view_copy.default
+Visiting: aten__to_copy_default_36, aten._to_copy.default
+Visiting: aten_mul_tensor_92, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_46, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_47, aten.slice_copy.Tensor
+Visiting: aten_mul_tensor_90, aten.mul.Tensor
+Visiting: aten_slice_copy_tensor_44, aten.slice_copy.Tensor
+Visiting: aten_slice_copy_tensor_45, aten.slice_copy.Tensor
+Visiting: aten_neg_default_23, aten.neg.default
+Visiting: aten_neg_default_22, aten.neg.default
+Visiting: aten_cat_default_24, aten.cat.default
+Visiting: aten_cat_default_23, aten.cat.default
+Visiting: aten_mul_tensor_93, aten.mul.Tensor
+Visiting: aten_mul_tensor_91, aten.mul.Tensor
+Visiting: aten_add_tensor_56, aten.add.Tensor
+Visiting: aten_add_tensor_55, aten.add.Tensor
+Visiting: aten_permute_copy_default_81, aten.permute_copy.default
+Visiting: aten_mul_tensor_94, aten.mul.Tensor
+Visiting: aten_mul_tensor_95, aten.mul.Tensor
+Visiting: aten_view_copy_default_300, aten.view_copy.default
+Visiting: aten_view_copy_default_301, aten.view_copy.default
+Visiting: aten__to_copy_default_37, aten._to_copy.default
+Visiting: aten_bmm_default_22, aten.bmm.default
+Visiting: aten_view_copy_default_302, aten.view_copy.default
+Visiting: aten_add_tensor_57, aten.add.Tensor
+Visiting: aten__safe_softmax_default_11, aten._safe_softmax.default
+Visiting: aten_view_copy_default_303, aten.view_copy.default
+Visiting: aten_bmm_default_23, aten.bmm.default
+Visiting: aten_view_copy_default_305, aten.view_copy.default
+Visiting: aten_permute_copy_default_82, aten.permute_copy.default
+Visiting: aten__to_copy_default_38, aten._to_copy.default
+Visiting: aten_permute_copy_default_96, aten.permute_copy.default
+Visiting: aten_view_copy_default_306, aten.view_copy.default
+Visiting: aten_view_copy_default_307, aten.view_copy.default
+Visiting: aten_linear_default_80, aten.linear.default
+Visiting: aten_view_copy_default_308, aten.view_copy.default
+Visiting: aten_add_tensor_58, aten.add.Tensor
+Visiting: aten_rms_norm_default_23, aten.rms_norm.default
+Visiting: aten_view_copy_default_309, aten.view_copy.default
+Visiting: aten_view_copy_default_310, aten.view_copy.default
+Visiting: aten_linear_default_82, aten.linear.default
+Visiting: aten_linear_default_81, aten.linear.default
+Visiting: aten_view_copy_default_312, aten.view_copy.default
+Visiting: aten_view_copy_default_311, aten.view_copy.default
+Visiting: aten_sigmoid_default_11, aten.sigmoid.default
+Visiting: aten_mul_tensor_96, aten.mul.Tensor
+Visiting: aten_mul_tensor_97, aten.mul.Tensor
+Visiting: aten_view_copy_default_313, aten.view_copy.default
+Visiting: aten_linear_default_83, aten.linear.default
+Visiting: aten_view_copy_default_314, aten.view_copy.default
+Visiting: aten_add_tensor_59, aten.add.Tensor
+Visiting: aten_rms_norm_default_24, aten.rms_norm.default
+Visiting: aten_view_copy_default_315, aten.view_copy.default
+Visiting: aten_linear_default_84, aten.linear.default
+Visiting: aten_view_copy_default_316, aten.view_copy.default
+Visiting: quantized_decomposed_dequantize_per_tensor_tensor, quantized_decomposed.dequantize_per_tensor.tensor
+
+====== DDR bandwidth summary ======
+spill_bytes=282849280
+fill_bytes=1349939200
+write_total_bytes=353134592
+read_total_bytes=1778069504
+
+[INFO] [Qnn ExecuTorch]: Destroy Qnn context
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
+[Observatory] Collected EdgeProgramManager EP in 28434.4 ms
+[INFO] [Qnn ExecuTorch]: Destroy Qnn device
+[INFO] [Qnn ExecuTorch]: Destroy Qnn backend
+/home/boyucwsl/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+[PipelineGraphCollector] Uninstalled all patches
+[AccuracyLens] Uninstalled all patches
+[Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.json
+[Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.html
+[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.json (9 records: Exported Float, Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, ETRecord Extra/edge_after_transform/forward, EdgeProgramManager EP)
+[QNN Partitioner Op Support]: aten.bmm.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.neg.default | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.slice_copy.Tensor | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.rms_norm.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.mul.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.sin.default | True
+[QNN Partitioner Op Support]: aten.cos.default | True
+[QNN Partitioner Op Support]: aten.cat.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.matmul.default | True
+[QNN Partitioner Op Support]: dim_order_ops._to_dim_order_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten._to_copy.default | True
+[QNN Partitioner Op Support]: aten.where.self | True
+[QNN Partitioner Op Support]: dim_order_ops._to_dim_order_copy.default | True
+[QNN Partitioner Op Support]: aten.sub.Tensor | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.expand_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.unsqueeze_copy.default | True
+[QNN Partitioner Op Support]: aten.embedding.default | True
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+$ bash -lc 'source /home/boyucwsl/executorch/qairt/2.37.0.250724/bin/envsetup.sh && python -m backends.qualcomm.debugger.observatory.cli --report-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.html --report-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.json --report-title '"'"'Qualcomm Observatory - eurobert'"'"' examples/qualcomm/oss_scripts/eurobert.py -m SM8650 -b ./build-android --dataset wikisent2.txt -H mlgtw-linux -s bebcca9b -a /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/artifacts --seed 1126 --compile_only'
+
