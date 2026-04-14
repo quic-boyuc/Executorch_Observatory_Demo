@@ -132,12 +132,10 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
             "python",
             "-m",
             "backends.qualcomm.debugger.observatory.cli",
-            "--report-html",
+            "--output-html",
             str(html_path),
-            "--report-json",
+            "--output-json",
             str(json_path),
-            "--report-title",
-            f"XNNPack Observatory - {model}",
             "examples/xnnpack/aot_compiler.py",
             f"--model_name={model}",
             "--delegate",
@@ -179,12 +177,10 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
             "python",
             "-m",
             "backends.qualcomm.debugger.observatory.cli",
-            "--report-html",
+            "--output-html",
             str(html_path),
-            "--report-json",
+            "--output-json",
             str(json_path),
-            "--report-title",
-            f"Qualcomm Observatory - {name}",
             recipe["script"],
             "-m",
             args.soc_model,
@@ -511,7 +507,6 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
     for job in jobs:
         json_path = repo_root / job["report_json"]
         html_path = repo_root / job["report_html"]
-        title = f"{job['backend'].capitalize()} Observatory - {job['name']}"
 
         if not json_path.exists():
             print(f"[skip]  {job['id']}: JSON not found at {json_path}", file=_sys.stderr)
@@ -523,12 +518,10 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
             "-m",
             "backends.qualcomm.debugger.observatory.cli",
             "visualize",
-            "--input",
+            "--input-json",
             str(json_path),
-            "--output",
+            "--output-html",
             str(html_path),
-            "--title",
-            title,
         ]
         print(f"[vis]   {job['id']}: {json_path.name} -> {html_path.name}")
         result = subprocess.run(

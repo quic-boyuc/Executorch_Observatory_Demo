@@ -34,7 +34,8 @@ From your ExecuTorch root:
 
 ```bash
 source .venv/bin/activate
-python -m backends.qualcomm.debugger.observatory.cli \
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --output-html /tmp/mv2/observatory_report.html \
     examples/xnnpack/aot_compiler.py \
     --model_name=mv2 --delegate --quantize --output_dir /tmp/mv2
 ```
@@ -52,8 +53,9 @@ Prerequisites:
 source .venv/bin/activate
 source /path/to/qairt/<version>/bin/envsetup.sh
 
-python -m backends.qualcomm.debugger.observatory.cli \
-    --report-dir /tmp/obs_vit \
+python -m executorch.backends.qualcomm.debugger.observatory \
+    --output-html /tmp/obs_vit/observatory_report.html \
+    --output-json /tmp/obs_vit/observatory_report.json \
     examples/qualcomm/scripts/torchvision_vit.py \
     -m SM8650 -b ./build-android --dataset imagenet-mini-val/ \
     -H mlgtw-linux -s <device_serial> -a /tmp/obs_vit --seed 1126 --compile_only
@@ -157,17 +159,18 @@ Observatory separates data collection from report generation. This is useful whe
 - Collect data in CI and generate reports locally
 - Update lens code and re-render without re-running scripts
 
-**Step 1**: Collect data (JSON only)
+**Step 1**: Collect data
 ```bash
-python -m backends.qualcomm.debugger.observatory.cli \
-    --json-only --report-json /tmp/report.json \
+python -m executorch.backends.qualcomm.debugger.observatory \
+    --output-html /tmp/report.html \
+    --output-json /tmp/report.json \
     my_script.py [script_args...]
 ```
 
 **Step 2**: Generate HTML from JSON
 ```bash
-python -m backends.qualcomm.debugger.observatory.cli visualize \
-    --input /tmp/report.json --output /tmp/report.html --title "My Report"
+python -m executorch.backends.qualcomm.debugger.observatory visualize \
+    --input-json /tmp/report.json --output-html /tmp/report.html
 ```
 
 ## Primary journey defaults
