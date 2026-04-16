@@ -1,0 +1,672 @@
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+[PipelineGraphCollector] Installed patch: prepare_pt2e
+[PipelineGraphCollector] Installed patch: convert_pt2e
+[PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
+[PipelineGraphCollector] Installed ETRecord patches
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
+[PipelineGraphCollector] Installed QNN patch: ptq_calibrate
+Loading torchvision resnet18 model
+Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /home/boyucwsl/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth
+  0%|          | 0.00/44.7M [00:00<?, ?B/s]  1%|          | 384k/44.7M [00:00<00:12, 3.69MB/s]  3%|▎         | 1.12M/44.7M [00:00<00:07, 5.80MB/s]  7%|▋         | 3.00M/44.7M [00:00<00:03, 11.7MB/s] 11%|█▏        | 5.12M/44.7M [00:00<00:02, 15.3MB/s] 20%|██        | 9.00M/44.7M [00:00<00:01, 23.8MB/s] 28%|██▊       | 12.6M/44.7M [00:00<00:01, 28.4MB/s] 36%|███▌      | 16.0M/44.7M [00:00<00:00, 30.6MB/s] 43%|████▎     | 19.0M/44.7M [00:00<00:00, 30.0MB/s] 49%|████▉     | 21.9M/44.7M [00:00<00:00, 27.9MB/s] 55%|█████▌    | 24.6M/44.7M [00:01<00:00, 23.8MB/s] 61%|██████    | 27.1M/44.7M [00:01<00:00, 20.6MB/s] 65%|██████▌   | 29.2M/44.7M [00:01<00:00, 20.4MB/s] 70%|███████   | 31.4M/44.7M [00:01<00:00, 19.6MB/s] 75%|███████▍  | 33.4M/44.7M [00:01<00:00, 19.2MB/s] 79%|███████▉  | 35.4M/44.7M [00:01<00:00, 19.6MB/s] 84%|████████▎ | 37.4M/44.7M [00:01<00:00, 19.8MB/s] 88%|████████▊ | 39.4M/44.7M [00:01<00:00, 18.7MB/s] 92%|█████████▏| 41.2M/44.7M [00:02<00:00, 17.6MB/s] 96%|█████████▋| 43.0M/44.7M [00:02<00:00, 15.8MB/s]100%|█████████▉| 44.6M/44.7M [00:02<00:00, 13.3MB/s]100%|██████████| 44.7M/44.7M [00:02<00:00, 19.1MB/s]
+Loaded torchvision resnet18 model
+Quantizing Model...
+Original model: GraphModule(
+  (conv1): Module()
+  (bn1): Module()
+  (layer1): Module(
+    (0): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+    )
+    (1): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+    )
+  )
+  (layer2): Module(
+    (0): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+      (downsample): Module(
+        (0): Module()
+        (1): Module()
+      )
+    )
+    (1): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+    )
+  )
+  (layer3): Module(
+    (0): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+      (downsample): Module(
+        (0): Module()
+        (1): Module()
+      )
+    )
+    (1): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+    )
+  )
+  (layer4): Module(
+    (0): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+      (downsample): Module(
+        (0): Module()
+        (1): Module()
+      )
+    )
+    (1): Module(
+      (conv1): Module()
+      (bn1): Module()
+      (conv2): Module()
+      (bn2): Module()
+    )
+  )
+  (fc): Module()
+)
+
+
+
+def forward(self, x):
+    x, = fx_pytree.tree_flatten_spec(([x], {}), self._in_spec)
+    conv1_weight = self.conv1.weight
+    bn1_weight = self.bn1.weight
+    bn1_bias = self.bn1.bias
+    layer1_0_conv1_weight = getattr(self.layer1, "0").conv1.weight
+    layer1_0_bn1_weight = getattr(self.layer1, "0").bn1.weight
+    layer1_0_bn1_bias = getattr(self.layer1, "0").bn1.bias
+    layer1_0_conv2_weight = getattr(self.layer1, "0").conv2.weight
+    layer1_0_bn2_weight = getattr(self.layer1, "0").bn2.weight
+    layer1_0_bn2_bias = getattr(self.layer1, "0").bn2.bias
+    layer1_1_conv1_weight = getattr(self.layer1, "1").conv1.weight
+    layer1_1_bn1_weight = getattr(self.layer1, "1").bn1.weight
+    layer1_1_bn1_bias = getattr(self.layer1, "1").bn1.bias
+    layer1_1_conv2_weight = getattr(self.layer1, "1").conv2.weight
+    layer1_1_bn2_weight = getattr(self.layer1, "1").bn2.weight
+    layer1_1_bn2_bias = getattr(self.layer1, "1").bn2.bias
+    layer2_0_conv1_weight = getattr(self.layer2, "0").conv1.weight
+    layer2_0_bn1_weight = getattr(self.layer2, "0").bn1.weight
+    layer2_0_bn1_bias = getattr(self.layer2, "0").bn1.bias
+    layer2_0_conv2_weight = getattr(self.layer2, "0").conv2.weight
+    layer2_0_bn2_weight = getattr(self.layer2, "0").bn2.weight
+    layer2_0_bn2_bias = getattr(self.layer2, "0").bn2.bias
+    layer2_0_downsample_0_weight = getattr(getattr(self.layer2, "0").downsample, "0").weight
+    layer2_0_downsample_1_weight = getattr(getattr(self.layer2, "0").downsample, "1").weight
+    layer2_0_downsample_1_bias = getattr(getattr(self.layer2, "0").downsample, "1").bias
+    layer2_1_conv1_weight = getattr(self.layer2, "1").conv1.weight
+    layer2_1_bn1_weight = getattr(self.layer2, "1").bn1.weight
+    layer2_1_bn1_bias = getattr(self.layer2, "1").bn1.bias
+    layer2_1_conv2_weight = getattr(self.layer2, "1").conv2.weight
+    layer2_1_bn2_weight = getattr(self.layer2, "1").bn2.weight
+    layer2_1_bn2_bias = getattr(self.layer2, "1").bn2.bias
+    layer3_0_conv1_weight = getattr(self.layer3, "0").conv1.weight
+    layer3_0_bn1_weight = getattr(self.layer3, "0").bn1.weight
+    layer3_0_bn1_bias = getattr(self.layer3, "0").bn1.bias
+    layer3_0_conv2_weight = getattr(self.layer3, "0").conv2.weight
+    layer3_0_bn2_weight = getattr(self.layer3, "0").bn2.weight
+    layer3_0_bn2_bias = getattr(self.layer3, "0").bn2.bias
+    layer3_0_downsample_0_weight = getattr(getattr(self.layer3, "0").downsample, "0").weight
+    layer3_0_downsample_1_weight = getattr(getattr(self.layer3, "0").downsample, "1").weight
+    layer3_0_downsample_1_bias = getattr(getattr(self.layer3, "0").downsample, "1").bias
+    layer3_1_conv1_weight = getattr(self.layer3, "1").conv1.weight
+    layer3_1_bn1_weight = getattr(self.layer3, "1").bn1.weight
+    layer3_1_bn1_bias = getattr(self.layer3, "1").bn1.bias
+    layer3_1_conv2_weight = getattr(self.layer3, "1").conv2.weight
+    layer3_1_bn2_weight = getattr(self.layer3, "1").bn2.weight
+    layer3_1_bn2_bias = getattr(self.layer3, "1").bn2.bias
+    layer4_0_conv1_weight = getattr(self.layer4, "0").conv1.weight
+    layer4_0_bn1_weight = getattr(self.layer4, "0").bn1.weight
+    layer4_0_bn1_bias = getattr(self.layer4, "0").bn1.bias
+    layer4_0_conv2_weight = getattr(self.layer4, "0").conv2.weight
+    layer4_0_bn2_weight = getattr(self.layer4, "0").bn2.weight
+    layer4_0_bn2_bias = getattr(self.layer4, "0").bn2.bias
+    layer4_0_downsample_0_weight = getattr(getattr(self.layer4, "0").downsample, "0").weight
+    layer4_0_downsample_1_weight = getattr(getattr(self.layer4, "0").downsample, "1").weight
+    layer4_0_downsample_1_bias = getattr(getattr(self.layer4, "0").downsample, "1").bias
+    layer4_1_conv1_weight = getattr(self.layer4, "1").conv1.weight
+    layer4_1_bn1_weight = getattr(self.layer4, "1").bn1.weight
+    layer4_1_bn1_bias = getattr(self.layer4, "1").bn1.bias
+    layer4_1_conv2_weight = getattr(self.layer4, "1").conv2.weight
+    layer4_1_bn2_weight = getattr(self.layer4, "1").bn2.weight
+    layer4_1_bn2_bias = getattr(self.layer4, "1").bn2.bias
+    fc_weight = self.fc.weight
+    fc_bias = self.fc.bias
+    bn1_running_mean = self.bn1.running_mean
+    bn1_running_var = self.bn1.running_var
+    bn1_num_batches_tracked = self.bn1.num_batches_tracked;  bn1_num_batches_tracked = None
+    layer1_0_bn1_running_mean = getattr(self.layer1, "0").bn1.running_mean
+    layer1_0_bn1_running_var = getattr(self.layer1, "0").bn1.running_var
+    layer1_0_bn1_num_batches_tracked = getattr(self.layer1, "0").bn1.num_batches_tracked;  layer1_0_bn1_num_batches_tracked = None
+    layer1_0_bn2_running_mean = getattr(self.layer1, "0").bn2.running_mean
+    layer1_0_bn2_running_var = getattr(self.layer1, "0").bn2.running_var
+    layer1_0_bn2_num_batches_tracked = getattr(self.layer1, "0").bn2.num_batches_tracked;  layer1_0_bn2_num_batches_tracked = None
+    layer1_1_bn1_running_mean = getattr(self.layer1, "1").bn1.running_mean
+    layer1_1_bn1_running_var = getattr(self.layer1, "1").bn1.running_var
+    layer1_1_bn1_num_batches_tracked = getattr(self.layer1, "1").bn1.num_batches_tracked;  layer1_1_bn1_num_batches_tracked = None
+    layer1_1_bn2_running_mean = getattr(self.layer1, "1").bn2.running_mean
+    layer1_1_bn2_running_var = getattr(self.layer1, "1").bn2.running_var
+    layer1_1_bn2_num_batches_tracked = getattr(self.layer1, "1").bn2.num_batches_tracked;  layer1_1_bn2_num_batches_tracked = None
+    layer2_0_bn1_running_mean = getattr(self.layer2, "0").bn1.running_mean
+    layer2_0_bn1_running_var = getattr(self.layer2, "0").bn1.running_var
+    layer2_0_bn1_num_batches_tracked = getattr(self.layer2, "0").bn1.num_batches_tracked;  layer2_0_bn1_num_batches_tracked = None
+    layer2_0_bn2_running_mean = getattr(self.layer2, "0").bn2.running_mean
+    layer2_0_bn2_running_var = getattr(self.layer2, "0").bn2.running_var
+    layer2_0_bn2_num_batches_tracked = getattr(self.layer2, "0").bn2.num_batches_tracked;  layer2_0_bn2_num_batches_tracked = None
+    layer2_0_downsample_1_running_mean = getattr(getattr(self.layer2, "0").downsample, "1").running_mean
+    layer2_0_downsample_1_running_var = getattr(getattr(self.layer2, "0").downsample, "1").running_var
+    layer2_0_downsample_1_num_batches_tracked = getattr(getattr(self.layer2, "0").downsample, "1").num_batches_tracked;  layer2_0_downsample_1_num_batches_tracked = None
+    layer2_1_bn1_running_mean = getattr(self.layer2, "1").bn1.running_mean
+    layer2_1_bn1_running_var = getattr(self.layer2, "1").bn1.running_var
+    layer2_1_bn1_num_batches_tracked = getattr(self.layer2, "1").bn1.num_batches_tracked;  layer2_1_bn1_num_batches_tracked = None
+    layer2_1_bn2_running_mean = getattr(self.layer2, "1").bn2.running_mean
+    layer2_1_bn2_running_var = getattr(self.layer2, "1").bn2.running_var
+    layer2_1_bn2_num_batches_tracked = getattr(self.layer2, "1").bn2.num_batches_tracked;  layer2_1_bn2_num_batches_tracked = None
+    layer3_0_bn1_running_mean = getattr(self.layer3, "0").bn1.running_mean
+    layer3_0_bn1_running_var = getattr(self.layer3, "0").bn1.running_var
+    layer3_0_bn1_num_batches_tracked = getattr(self.layer3, "0").bn1.num_batches_tracked;  layer3_0_bn1_num_batches_tracked = None
+    layer3_0_bn2_running_mean = getattr(self.layer3, "0").bn2.running_mean
+    layer3_0_bn2_running_var = getattr(self.layer3, "0").bn2.running_var
+    layer3_0_bn2_num_batches_tracked = getattr(self.layer3, "0").bn2.num_batches_tracked;  layer3_0_bn2_num_batches_tracked = None
+    layer3_0_downsample_1_running_mean = getattr(getattr(self.layer3, "0").downsample, "1").running_mean
+    layer3_0_downsample_1_running_var = getattr(getattr(self.layer3, "0").downsample, "1").running_var
+    layer3_0_downsample_1_num_batches_tracked = getattr(getattr(self.layer3, "0").downsample, "1").num_batches_tracked;  layer3_0_downsample_1_num_batches_tracked = None
+    layer3_1_bn1_running_mean = getattr(self.layer3, "1").bn1.running_mean
+    layer3_1_bn1_running_var = getattr(self.layer3, "1").bn1.running_var
+    layer3_1_bn1_num_batches_tracked = getattr(self.layer3, "1").bn1.num_batches_tracked;  layer3_1_bn1_num_batches_tracked = None
+    layer3_1_bn2_running_mean = getattr(self.layer3, "1").bn2.running_mean
+    layer3_1_bn2_running_var = getattr(self.layer3, "1").bn2.running_var
+    layer3_1_bn2_num_batches_tracked = getattr(self.layer3, "1").bn2.num_batches_tracked;  layer3_1_bn2_num_batches_tracked = None
+    layer4_0_bn1_running_mean = getattr(self.layer4, "0").bn1.running_mean
+    layer4_0_bn1_running_var = getattr(self.layer4, "0").bn1.running_var
+    layer4_0_bn1_num_batches_tracked = getattr(self.layer4, "0").bn1.num_batches_tracked;  layer4_0_bn1_num_batches_tracked = None
+    layer4_0_bn2_running_mean = getattr(self.layer4, "0").bn2.running_mean
+    layer4_0_bn2_running_var = getattr(self.layer4, "0").bn2.running_var
+    layer4_0_bn2_num_batches_tracked = getattr(self.layer4, "0").bn2.num_batches_tracked;  layer4_0_bn2_num_batches_tracked = None
+    layer4_0_downsample_1_running_mean = getattr(getattr(self.layer4, "0").downsample, "1").running_mean
+    layer4_0_downsample_1_running_var = getattr(getattr(self.layer4, "0").downsample, "1").running_var
+    layer4_0_downsample_1_num_batches_tracked = getattr(getattr(self.layer4, "0").downsample, "1").num_batches_tracked;  layer4_0_downsample_1_num_batches_tracked = None
+    layer4_1_bn1_running_mean = getattr(self.layer4, "1").bn1.running_mean
+    layer4_1_bn1_running_var = getattr(self.layer4, "1").bn1.running_var
+    layer4_1_bn1_num_batches_tracked = getattr(self.layer4, "1").bn1.num_batches_tracked;  layer4_1_bn1_num_batches_tracked = None
+    layer4_1_bn2_running_mean = getattr(self.layer4, "1").bn2.running_mean
+    layer4_1_bn2_running_var = getattr(self.layer4, "1").bn2.running_var
+    layer4_1_bn2_num_batches_tracked = getattr(self.layer4, "1").bn2.num_batches_tracked;  layer4_1_bn2_num_batches_tracked = None
+    conv2d = torch.ops.aten.conv2d.default(x, conv1_weight, None, [2, 2], [3, 3]);  x = conv1_weight = None
+    batch_norm = torch.ops.aten.batch_norm.default(conv2d, bn1_weight, bn1_bias, bn1_running_mean, bn1_running_var, False, 0.1, 1e-05, False);  conv2d = bn1_weight = bn1_bias = bn1_running_mean = bn1_running_var = None
+    relu_ = torch.ops.aten.relu_.default(batch_norm);  batch_norm = None
+    max_pool2d = torch.ops.aten.max_pool2d.default(relu_, [3, 3], [2, 2], [1, 1]);  relu_ = None
+    conv2d_1 = torch.ops.aten.conv2d.default(max_pool2d, layer1_0_conv1_weight, None, [1, 1], [1, 1]);  layer1_0_conv1_weight = None
+    batch_norm_1 = torch.ops.aten.batch_norm.default(conv2d_1, layer1_0_bn1_weight, layer1_0_bn1_bias, layer1_0_bn1_running_mean, layer1_0_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_1 = layer1_0_bn1_weight = layer1_0_bn1_bias = layer1_0_bn1_running_mean = layer1_0_bn1_running_var = None
+    relu__1 = torch.ops.aten.relu_.default(batch_norm_1);  batch_norm_1 = None
+    conv2d_2 = torch.ops.aten.conv2d.default(relu__1, layer1_0_conv2_weight, None, [1, 1], [1, 1]);  relu__1 = layer1_0_conv2_weight = None
+    batch_norm_2 = torch.ops.aten.batch_norm.default(conv2d_2, layer1_0_bn2_weight, layer1_0_bn2_bias, layer1_0_bn2_running_mean, layer1_0_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_2 = layer1_0_bn2_weight = layer1_0_bn2_bias = layer1_0_bn2_running_mean = layer1_0_bn2_running_var = None
+    add_ = torch.ops.aten.add_.Tensor(batch_norm_2, max_pool2d);  batch_norm_2 = max_pool2d = None
+    relu__2 = torch.ops.aten.relu_.default(add_);  add_ = None
+    conv2d_3 = torch.ops.aten.conv2d.default(relu__2, layer1_1_conv1_weight, None, [1, 1], [1, 1]);  layer1_1_conv1_weight = None
+    batch_norm_3 = torch.ops.aten.batch_norm.default(conv2d_3, layer1_1_bn1_weight, layer1_1_bn1_bias, layer1_1_bn1_running_mean, layer1_1_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_3 = layer1_1_bn1_weight = layer1_1_bn1_bias = layer1_1_bn1_running_mean = layer1_1_bn1_running_var = None
+    relu__3 = torch.ops.aten.relu_.default(batch_norm_3);  batch_norm_3 = None
+    conv2d_4 = torch.ops.aten.conv2d.default(relu__3, layer1_1_conv2_weight, None, [1, 1], [1, 1]);  relu__3 = layer1_1_conv2_weight = None
+    batch_norm_4 = torch.ops.aten.batch_norm.default(conv2d_4, layer1_1_bn2_weight, layer1_1_bn2_bias, layer1_1_bn2_running_mean, layer1_1_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_4 = layer1_1_bn2_weight = layer1_1_bn2_bias = layer1_1_bn2_running_mean = layer1_1_bn2_running_var = None
+    add__1 = torch.ops.aten.add_.Tensor(batch_norm_4, relu__2);  batch_norm_4 = relu__2 = None
+    relu__4 = torch.ops.aten.relu_.default(add__1);  add__1 = None
+    conv2d_5 = torch.ops.aten.conv2d.default(relu__4, layer2_0_conv1_weight, None, [2, 2], [1, 1]);  layer2_0_conv1_weight = None
+    batch_norm_5 = torch.ops.aten.batch_norm.default(conv2d_5, layer2_0_bn1_weight, layer2_0_bn1_bias, layer2_0_bn1_running_mean, layer2_0_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_5 = layer2_0_bn1_weight = layer2_0_bn1_bias = layer2_0_bn1_running_mean = layer2_0_bn1_running_var = None
+    relu__5 = torch.ops.aten.relu_.default(batch_norm_5);  batch_norm_5 = None
+    conv2d_6 = torch.ops.aten.conv2d.default(relu__5, layer2_0_conv2_weight, None, [1, 1], [1, 1]);  relu__5 = layer2_0_conv2_weight = None
+    batch_norm_6 = torch.ops.aten.batch_norm.default(conv2d_6, layer2_0_bn2_weight, layer2_0_bn2_bias, layer2_0_bn2_running_mean, layer2_0_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_6 = layer2_0_bn2_weight = layer2_0_bn2_bias = layer2_0_bn2_running_mean = layer2_0_bn2_running_var = None
+    conv2d_7 = torch.ops.aten.conv2d.default(relu__4, layer2_0_downsample_0_weight, None, [2, 2]);  relu__4 = layer2_0_downsample_0_weight = None
+    batch_norm_7 = torch.ops.aten.batch_norm.default(conv2d_7, layer2_0_downsample_1_weight, layer2_0_downsample_1_bias, layer2_0_downsample_1_running_mean, layer2_0_downsample_1_running_var, False, 0.1, 1e-05, False);  conv2d_7 = layer2_0_downsample_1_weight = layer2_0_downsample_1_bias = layer2_0_downsample_1_running_mean = layer2_0_downsample_1_running_var = None
+    add__2 = torch.ops.aten.add_.Tensor(batch_norm_6, batch_norm_7);  batch_norm_6 = batch_norm_7 = None
+    relu__6 = torch.ops.aten.relu_.default(add__2);  add__2 = None
+    conv2d_8 = torch.ops.aten.conv2d.default(relu__6, layer2_1_conv1_weight, None, [1, 1], [1, 1]);  layer2_1_conv1_weight = None
+    batch_norm_8 = torch.ops.aten.batch_norm.default(conv2d_8, layer2_1_bn1_weight, layer2_1_bn1_bias, layer2_1_bn1_running_mean, layer2_1_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_8 = layer2_1_bn1_weight = layer2_1_bn1_bias = layer2_1_bn1_running_mean = layer2_1_bn1_running_var = None
+    relu__7 = torch.ops.aten.relu_.default(batch_norm_8);  batch_norm_8 = None
+    conv2d_9 = torch.ops.aten.conv2d.default(relu__7, layer2_1_conv2_weight, None, [1, 1], [1, 1]);  relu__7 = layer2_1_conv2_weight = None
+    batch_norm_9 = torch.ops.aten.batch_norm.default(conv2d_9, layer2_1_bn2_weight, layer2_1_bn2_bias, layer2_1_bn2_running_mean, layer2_1_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_9 = layer2_1_bn2_weight = layer2_1_bn2_bias = layer2_1_bn2_running_mean = layer2_1_bn2_running_var = None
+    add__3 = torch.ops.aten.add_.Tensor(batch_norm_9, relu__6);  batch_norm_9 = relu__6 = None
+    relu__8 = torch.ops.aten.relu_.default(add__3);  add__3 = None
+    conv2d_10 = torch.ops.aten.conv2d.default(relu__8, layer3_0_conv1_weight, None, [2, 2], [1, 1]);  layer3_0_conv1_weight = None
+    batch_norm_10 = torch.ops.aten.batch_norm.default(conv2d_10, layer3_0_bn1_weight, layer3_0_bn1_bias, layer3_0_bn1_running_mean, layer3_0_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_10 = layer3_0_bn1_weight = layer3_0_bn1_bias = layer3_0_bn1_running_mean = layer3_0_bn1_running_var = None
+    relu__9 = torch.ops.aten.relu_.default(batch_norm_10);  batch_norm_10 = None
+    conv2d_11 = torch.ops.aten.conv2d.default(relu__9, layer3_0_conv2_weight, None, [1, 1], [1, 1]);  relu__9 = layer3_0_conv2_weight = None
+    batch_norm_11 = torch.ops.aten.batch_norm.default(conv2d_11, layer3_0_bn2_weight, layer3_0_bn2_bias, layer3_0_bn2_running_mean, layer3_0_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_11 = layer3_0_bn2_weight = layer3_0_bn2_bias = layer3_0_bn2_running_mean = layer3_0_bn2_running_var = None
+    conv2d_12 = torch.ops.aten.conv2d.default(relu__8, layer3_0_downsample_0_weight, None, [2, 2]);  relu__8 = layer3_0_downsample_0_weight = None
+    batch_norm_12 = torch.ops.aten.batch_norm.default(conv2d_12, layer3_0_downsample_1_weight, layer3_0_downsample_1_bias, layer3_0_downsample_1_running_mean, layer3_0_downsample_1_running_var, False, 0.1, 1e-05, False);  conv2d_12 = layer3_0_downsample_1_weight = layer3_0_downsample_1_bias = layer3_0_downsample_1_running_mean = layer3_0_downsample_1_running_var = None
+    add__4 = torch.ops.aten.add_.Tensor(batch_norm_11, batch_norm_12);  batch_norm_11 = batch_norm_12 = None
+    relu__10 = torch.ops.aten.relu_.default(add__4);  add__4 = None
+    conv2d_13 = torch.ops.aten.conv2d.default(relu__10, layer3_1_conv1_weight, None, [1, 1], [1, 1]);  layer3_1_conv1_weight = None
+    batch_norm_13 = torch.ops.aten.batch_norm.default(conv2d_13, layer3_1_bn1_weight, layer3_1_bn1_bias, layer3_1_bn1_running_mean, layer3_1_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_13 = layer3_1_bn1_weight = layer3_1_bn1_bias = layer3_1_bn1_running_mean = layer3_1_bn1_running_var = None
+    relu__11 = torch.ops.aten.relu_.default(batch_norm_13);  batch_norm_13 = None
+    conv2d_14 = torch.ops.aten.conv2d.default(relu__11, layer3_1_conv2_weight, None, [1, 1], [1, 1]);  relu__11 = layer3_1_conv2_weight = None
+    batch_norm_14 = torch.ops.aten.batch_norm.default(conv2d_14, layer3_1_bn2_weight, layer3_1_bn2_bias, layer3_1_bn2_running_mean, layer3_1_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_14 = layer3_1_bn2_weight = layer3_1_bn2_bias = layer3_1_bn2_running_mean = layer3_1_bn2_running_var = None
+    add__5 = torch.ops.aten.add_.Tensor(batch_norm_14, relu__10);  batch_norm_14 = relu__10 = None
+    relu__12 = torch.ops.aten.relu_.default(add__5);  add__5 = None
+    conv2d_15 = torch.ops.aten.conv2d.default(relu__12, layer4_0_conv1_weight, None, [2, 2], [1, 1]);  layer4_0_conv1_weight = None
+    batch_norm_15 = torch.ops.aten.batch_norm.default(conv2d_15, layer4_0_bn1_weight, layer4_0_bn1_bias, layer4_0_bn1_running_mean, layer4_0_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_15 = layer4_0_bn1_weight = layer4_0_bn1_bias = layer4_0_bn1_running_mean = layer4_0_bn1_running_var = None
+    relu__13 = torch.ops.aten.relu_.default(batch_norm_15);  batch_norm_15 = None
+    conv2d_16 = torch.ops.aten.conv2d.default(relu__13, layer4_0_conv2_weight, None, [1, 1], [1, 1]);  relu__13 = layer4_0_conv2_weight = None
+    batch_norm_16 = torch.ops.aten.batch_norm.default(conv2d_16, layer4_0_bn2_weight, layer4_0_bn2_bias, layer4_0_bn2_running_mean, layer4_0_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_16 = layer4_0_bn2_weight = layer4_0_bn2_bias = layer4_0_bn2_running_mean = layer4_0_bn2_running_var = None
+    conv2d_17 = torch.ops.aten.conv2d.default(relu__12, layer4_0_downsample_0_weight, None, [2, 2]);  relu__12 = layer4_0_downsample_0_weight = None
+    batch_norm_17 = torch.ops.aten.batch_norm.default(conv2d_17, layer4_0_downsample_1_weight, layer4_0_downsample_1_bias, layer4_0_downsample_1_running_mean, layer4_0_downsample_1_running_var, False, 0.1, 1e-05, False);  conv2d_17 = layer4_0_downsample_1_weight = layer4_0_downsample_1_bias = layer4_0_downsample_1_running_mean = layer4_0_downsample_1_running_var = None
+    add__6 = torch.ops.aten.add_.Tensor(batch_norm_16, batch_norm_17);  batch_norm_16 = batch_norm_17 = None
+    relu__14 = torch.ops.aten.relu_.default(add__6);  add__6 = None
+    conv2d_18 = torch.ops.aten.conv2d.default(relu__14, layer4_1_conv1_weight, None, [1, 1], [1, 1]);  layer4_1_conv1_weight = None
+    batch_norm_18 = torch.ops.aten.batch_norm.default(conv2d_18, layer4_1_bn1_weight, layer4_1_bn1_bias, layer4_1_bn1_running_mean, layer4_1_bn1_running_var, False, 0.1, 1e-05, False);  conv2d_18 = layer4_1_bn1_weight = layer4_1_bn1_bias = layer4_1_bn1_running_mean = layer4_1_bn1_running_var = None
+    relu__15 = torch.ops.aten.relu_.default(batch_norm_18);  batch_norm_18 = None
+    conv2d_19 = torch.ops.aten.conv2d.default(relu__15, layer4_1_conv2_weight, None, [1, 1], [1, 1]);  relu__15 = layer4_1_conv2_weight = None
+    batch_norm_19 = torch.ops.aten.batch_norm.default(conv2d_19, layer4_1_bn2_weight, layer4_1_bn2_bias, layer4_1_bn2_running_mean, layer4_1_bn2_running_var, False, 0.1, 1e-05, False);  conv2d_19 = layer4_1_bn2_weight = layer4_1_bn2_bias = layer4_1_bn2_running_mean = layer4_1_bn2_running_var = None
+    add__7 = torch.ops.aten.add_.Tensor(batch_norm_19, relu__14);  batch_norm_19 = relu__14 = None
+    relu__16 = torch.ops.aten.relu_.default(add__7);  add__7 = None
+    adaptive_avg_pool2d = torch.ops.aten.adaptive_avg_pool2d.default(relu__16, [1, 1]);  relu__16 = None
+    flatten = torch.ops.aten.flatten.using_ints(adaptive_avg_pool2d, 1);  adaptive_avg_pool2d = None
+    linear = torch.ops.aten.linear.default(flatten, fc_weight, fc_bias);  flatten = fc_weight = fc_bias = None
+    return pytree.tree_unflatten((linear,), self._out_spec)
+    
+# To see more debug info, please use `graph_module.print_readable()`
+[Observatory] Collected Annotated Model in 317.3 ms
+[Observatory] Collected Calibrated Model in 22.1 ms
+[Observatory] Collected Quantized Model in 27.1 ms
+Quantized model: GraphModule(
+  (conv1): Module()
+  (layer1): Module(
+    (0): Module(
+      (conv1): Module()
+      (conv2): Module()
+    )
+    (1): Module(
+      (conv1): Module()
+      (conv2): Module()
+    )
+  )
+  (layer2): Module(
+    (0): Module(
+      (conv1): Module()
+      (conv2): Module()
+      (downsample): Module(
+        (0): Module()
+      )
+    )
+    (1): Module(
+      (conv1): Module()
+      (conv2): Module()
+    )
+  )
+  (layer3): Module(
+    (0): Module(
+      (conv1): Module()
+      (conv2): Module()
+      (downsample): Module(
+        (0): Module()
+      )
+    )
+    (1): Module(
+      (conv1): Module()
+      (conv2): Module()
+    )
+  )
+  (layer4): Module(
+    (0): Module(
+      (conv1): Module()
+      (conv2): Module()
+      (downsample): Module(
+        (0): Module()
+      )
+    )
+    (1): Module(
+      (conv1): Module()
+      (conv2): Module()
+    )
+  )
+  (fc): Module()
+)
+
+
+
+def forward(self, x):
+    x, = fx_pytree.tree_flatten_spec(([x], {}), self._in_spec)
+    _scale_0 = self._scale_0
+    _zero_point_0 = self._zero_point_0
+    quantize_per_channel_default = self._frozen_param0
+    dequantize_per_channel_default = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default, _scale_0, _zero_point_0, 0, -127, 127, torch.int8);  quantize_per_channel_default = _scale_0 = _zero_point_0 = None
+    _scale_1 = self._scale_1
+    _zero_point_1 = self._zero_point_1
+    quantize_per_channel_default_1 = self._frozen_param1
+    dequantize_per_channel_default_1 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_1, _scale_1, _zero_point_1, 0, -127, 127, torch.int8);  quantize_per_channel_default_1 = _scale_1 = _zero_point_1 = None
+    _scale_2 = self._scale_2
+    _zero_point_2 = self._zero_point_2
+    quantize_per_channel_default_2 = self._frozen_param2
+    dequantize_per_channel_default_2 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_2, _scale_2, _zero_point_2, 0, -127, 127, torch.int8);  quantize_per_channel_default_2 = _scale_2 = _zero_point_2 = None
+    _scale_3 = self._scale_3
+    _zero_point_3 = self._zero_point_3
+    quantize_per_channel_default_3 = self._frozen_param3
+    dequantize_per_channel_default_3 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_3, _scale_3, _zero_point_3, 0, -127, 127, torch.int8);  quantize_per_channel_default_3 = _scale_3 = _zero_point_3 = None
+    _scale_4 = self._scale_4
+    _zero_point_4 = self._zero_point_4
+    quantize_per_channel_default_4 = self._frozen_param4
+    dequantize_per_channel_default_4 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_4, _scale_4, _zero_point_4, 0, -127, 127, torch.int8);  quantize_per_channel_default_4 = _scale_4 = _zero_point_4 = None
+    _scale_5 = self._scale_5
+    _zero_point_5 = self._zero_point_5
+    quantize_per_channel_default_5 = self._frozen_param5
+    dequantize_per_channel_default_5 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_5, _scale_5, _zero_point_5, 0, -127, 127, torch.int8);  quantize_per_channel_default_5 = _scale_5 = _zero_point_5 = None
+    _scale_6 = self._scale_6
+    _zero_point_6 = self._zero_point_6
+    quantize_per_channel_default_6 = self._frozen_param6
+    dequantize_per_channel_default_6 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_6, _scale_6, _zero_point_6, 0, -127, 127, torch.int8);  quantize_per_channel_default_6 = _scale_6 = _zero_point_6 = None
+    _scale_7 = self._scale_7
+    _zero_point_7 = self._zero_point_7
+    quantize_per_channel_default_7 = self._frozen_param7
+    dequantize_per_channel_default_7 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_7, _scale_7, _zero_point_7, 0, -127, 127, torch.int8);  quantize_per_channel_default_7 = _scale_7 = _zero_point_7 = None
+    _scale_8 = self._scale_8
+    _zero_point_8 = self._zero_point_8
+    quantize_per_channel_default_8 = self._frozen_param8
+    dequantize_per_channel_default_8 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_8, _scale_8, _zero_point_8, 0, -127, 127, torch.int8);  quantize_per_channel_default_8 = _scale_8 = _zero_point_8 = None
+    _scale_9 = self._scale_9
+    _zero_point_9 = self._zero_point_9
+    quantize_per_channel_default_9 = self._frozen_param9
+    dequantize_per_channel_default_9 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_9, _scale_9, _zero_point_9, 0, -127, 127, torch.int8);  quantize_per_channel_default_9 = _scale_9 = _zero_point_9 = None
+    _scale_10 = self._scale_10
+    _zero_point_10 = self._zero_point_10
+    quantize_per_channel_default_10 = self._frozen_param10
+    dequantize_per_channel_default_10 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_10, _scale_10, _zero_point_10, 0, -127, 127, torch.int8);  quantize_per_channel_default_10 = _scale_10 = _zero_point_10 = None
+    _scale_11 = self._scale_11
+    _zero_point_11 = self._zero_point_11
+    quantize_per_channel_default_11 = self._frozen_param11
+    dequantize_per_channel_default_11 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_11, _scale_11, _zero_point_11, 0, -127, 127, torch.int8);  quantize_per_channel_default_11 = _scale_11 = _zero_point_11 = None
+    _scale_12 = self._scale_12
+    _zero_point_12 = self._zero_point_12
+    quantize_per_channel_default_12 = self._frozen_param12
+    dequantize_per_channel_default_12 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_12, _scale_12, _zero_point_12, 0, -127, 127, torch.int8);  quantize_per_channel_default_12 = _scale_12 = _zero_point_12 = None
+    _scale_13 = self._scale_13
+    _zero_point_13 = self._zero_point_13
+    quantize_per_channel_default_13 = self._frozen_param13
+    dequantize_per_channel_default_13 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_13, _scale_13, _zero_point_13, 0, -127, 127, torch.int8);  quantize_per_channel_default_13 = _scale_13 = _zero_point_13 = None
+    _scale_14 = self._scale_14
+    _zero_point_14 = self._zero_point_14
+    quantize_per_channel_default_14 = self._frozen_param14
+    dequantize_per_channel_default_14 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_14, _scale_14, _zero_point_14, 0, -127, 127, torch.int8);  quantize_per_channel_default_14 = _scale_14 = _zero_point_14 = None
+    _scale_15 = self._scale_15
+    _zero_point_15 = self._zero_point_15
+    quantize_per_channel_default_15 = self._frozen_param15
+    dequantize_per_channel_default_15 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_15, _scale_15, _zero_point_15, 0, -127, 127, torch.int8);  quantize_per_channel_default_15 = _scale_15 = _zero_point_15 = None
+    _scale_16 = self._scale_16
+    _zero_point_16 = self._zero_point_16
+    quantize_per_channel_default_16 = self._frozen_param16
+    dequantize_per_channel_default_16 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_16, _scale_16, _zero_point_16, 0, -127, 127, torch.int8);  quantize_per_channel_default_16 = _scale_16 = _zero_point_16 = None
+    _scale_17 = self._scale_17
+    _zero_point_17 = self._zero_point_17
+    quantize_per_channel_default_17 = self._frozen_param17
+    dequantize_per_channel_default_17 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_17, _scale_17, _zero_point_17, 0, -127, 127, torch.int8);  quantize_per_channel_default_17 = _scale_17 = _zero_point_17 = None
+    _scale_18 = self._scale_18
+    _zero_point_18 = self._zero_point_18
+    quantize_per_channel_default_18 = self._frozen_param18
+    dequantize_per_channel_default_18 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_18, _scale_18, _zero_point_18, 0, -127, 127, torch.int8);  quantize_per_channel_default_18 = _scale_18 = _zero_point_18 = None
+    _scale_19 = self._scale_19
+    _zero_point_19 = self._zero_point_19
+    quantize_per_channel_default_19 = self._frozen_param19
+    dequantize_per_channel_default_19 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_19, _scale_19, _zero_point_19, 0, -127, 127, torch.int8);  quantize_per_channel_default_19 = _scale_19 = _zero_point_19 = None
+    _scale_20 = self._scale_20
+    _zero_point_20 = self._zero_point_20
+    quantize_per_channel_default_20 = self._frozen_param20
+    dequantize_per_channel_default_20 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_20, _scale_20, _zero_point_20, 0, -127, 127, torch.int8);  quantize_per_channel_default_20 = _scale_20 = _zero_point_20 = None
+    fc_bias = self.fc.bias
+    quantize_per_tensor_default = torch.ops.quantized_decomposed.quantize_per_tensor.default(x, 0.033211465924978256, -7, -128, 127, torch.int8);  x = None
+    dequantize_per_tensor_default = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default, 0.033211465924978256, -7, -128, 127, torch.int8);  quantize_per_tensor_default = None
+    conv1_weight_bias = self.conv1.weight_bias
+    conv2d = torch.ops.aten.conv2d.default(dequantize_per_tensor_default, dequantize_per_channel_default, conv1_weight_bias, [2, 2], [3, 3]);  dequantize_per_tensor_default = dequantize_per_channel_default = conv1_weight_bias = None
+    relu_ = torch.ops.aten.relu_.default(conv2d);  conv2d = None
+    quantize_per_tensor_default_1 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_, 0.015309803187847137, -128, -128, 127, torch.int8);  relu_ = None
+    dequantize_per_tensor_default_1 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_1, 0.015309803187847137, -128, -128, 127, torch.int8);  quantize_per_tensor_default_1 = None
+    max_pool2d = torch.ops.aten.max_pool2d.default(dequantize_per_tensor_default_1, [3, 3], [2, 2], [1, 1]);  dequantize_per_tensor_default_1 = None
+    quantize_per_tensor_default_2 = torch.ops.quantized_decomposed.quantize_per_tensor.default(max_pool2d, 0.015309803187847137, -128, -128, 127, torch.int8);  max_pool2d = None
+    dequantize_per_tensor_default_34 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_2, 0.015309803187847137, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_33 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_2, 0.015309803187847137, -128, -128, 127, torch.int8);  quantize_per_tensor_default_2 = None
+    layer1_0_conv1_weight_bias = getattr(self.layer1, "0").conv1.weight_bias
+    conv2d_1 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_33, dequantize_per_channel_default_1, layer1_0_conv1_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_33 = dequantize_per_channel_default_1 = layer1_0_conv1_weight_bias = None
+    relu__1 = torch.ops.aten.relu_.default(conv2d_1);  conv2d_1 = None
+    quantize_per_tensor_default_3 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__1, 0.005746447015553713, -128, -128, 127, torch.int8);  relu__1 = None
+    dequantize_per_tensor_default_3 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_3, 0.005746447015553713, -128, -128, 127, torch.int8);  quantize_per_tensor_default_3 = None
+    layer1_0_conv2_weight_bias = getattr(self.layer1, "0").conv2.weight_bias
+    conv2d_2 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_3, dequantize_per_channel_default_2, layer1_0_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_3 = dequantize_per_channel_default_2 = layer1_0_conv2_weight_bias = None
+    quantize_per_tensor_default_4 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_2, 0.015566591173410416, -9, -128, 127, torch.int8);  conv2d_2 = None
+    dequantize_per_tensor_default_4 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_4, 0.015566591173410416, -9, -128, 127, torch.int8);  quantize_per_tensor_default_4 = None
+    add_ = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_4, dequantize_per_tensor_default_34);  dequantize_per_tensor_default_4 = dequantize_per_tensor_default_34 = None
+    relu__2 = torch.ops.aten.relu_.default(add_);  add_ = None
+    quantize_per_tensor_default_5 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__2, 0.01563572697341442, -128, -128, 127, torch.int8);  relu__2 = None
+    dequantize_per_tensor_default_36 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_5, 0.01563572697341442, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_35 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_5, 0.01563572697341442, -128, -128, 127, torch.int8);  quantize_per_tensor_default_5 = None
+    layer1_1_conv1_weight_bias = getattr(self.layer1, "1").conv1.weight_bias
+    conv2d_3 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_35, dequantize_per_channel_default_3, layer1_1_conv1_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_35 = dequantize_per_channel_default_3 = layer1_1_conv1_weight_bias = None
+    relu__3 = torch.ops.aten.relu_.default(conv2d_3);  conv2d_3 = None
+    quantize_per_tensor_default_6 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__3, 0.00740559957921505, -128, -128, 127, torch.int8);  relu__3 = None
+    dequantize_per_tensor_default_6 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_6, 0.00740559957921505, -128, -128, 127, torch.int8);  quantize_per_tensor_default_6 = None
+    layer1_1_conv2_weight_bias = getattr(self.layer1, "1").conv2.weight_bias
+    conv2d_4 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_6, dequantize_per_channel_default_4, layer1_1_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_6 = dequantize_per_channel_default_4 = layer1_1_conv2_weight_bias = None
+    quantize_per_tensor_default_7 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_4, 0.025713685899972916, 27, -128, 127, torch.int8);  conv2d_4 = None
+    dequantize_per_tensor_default_7 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_7, 0.025713685899972916, 27, -128, 127, torch.int8);  quantize_per_tensor_default_7 = None
+    add__1 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_7, dequantize_per_tensor_default_36);  dequantize_per_tensor_default_7 = dequantize_per_tensor_default_36 = None
+    relu__4 = torch.ops.aten.relu_.default(add__1);  add__1 = None
+    quantize_per_tensor_default_8 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__4, 0.015680626034736633, -128, -128, 127, torch.int8);  relu__4 = None
+    dequantize_per_tensor_default_38 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_8, 0.015680626034736633, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_37 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_8, 0.015680626034736633, -128, -128, 127, torch.int8);  quantize_per_tensor_default_8 = None
+    layer2_0_conv1_weight_bias = getattr(self.layer2, "0").conv1.weight_bias
+    conv2d_5 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_37, dequantize_per_channel_default_5, layer2_0_conv1_weight_bias, [2, 2], [1, 1]);  dequantize_per_tensor_default_37 = dequantize_per_channel_default_5 = layer2_0_conv1_weight_bias = None
+    relu__5 = torch.ops.aten.relu_.default(conv2d_5);  conv2d_5 = None
+    quantize_per_tensor_default_9 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__5, 0.008689609356224537, -128, -128, 127, torch.int8);  relu__5 = None
+    dequantize_per_tensor_default_9 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_9, 0.008689609356224537, -128, -128, 127, torch.int8);  quantize_per_tensor_default_9 = None
+    layer2_0_conv2_weight_bias = getattr(self.layer2, "0").conv2.weight_bias
+    conv2d_6 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_9, dequantize_per_channel_default_6, layer2_0_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_9 = dequantize_per_channel_default_6 = layer2_0_conv2_weight_bias = None
+    quantize_per_tensor_default_10 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_6, 0.016111675649881363, -17, -128, 127, torch.int8);  conv2d_6 = None
+    dequantize_per_tensor_default_10 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_10, 0.016111675649881363, -17, -128, 127, torch.int8);  quantize_per_tensor_default_10 = None
+    layer2_0_downsample_0_weight_bias = getattr(getattr(self.layer2, "0").downsample, "0").weight_bias
+    conv2d_7 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_38, dequantize_per_channel_default_7, layer2_0_downsample_0_weight_bias, [2, 2]);  dequantize_per_tensor_default_38 = dequantize_per_channel_default_7 = layer2_0_downsample_0_weight_bias = None
+    quantize_per_tensor_default_11 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_7, 0.019863611087203026, -1, -128, 127, torch.int8);  conv2d_7 = None
+    dequantize_per_tensor_default_11 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_11, 0.019863611087203026, -1, -128, 127, torch.int8);  quantize_per_tensor_default_11 = None
+    add__2 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_10, dequantize_per_tensor_default_11);  dequantize_per_tensor_default_10 = dequantize_per_tensor_default_11 = None
+    relu__6 = torch.ops.aten.relu_.default(add__2);  add__2 = None
+    quantize_per_tensor_default_12 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__6, 0.010305170901119709, -128, -128, 127, torch.int8);  relu__6 = None
+    dequantize_per_tensor_default_40 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_12, 0.010305170901119709, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_39 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_12, 0.010305170901119709, -128, -128, 127, torch.int8);  quantize_per_tensor_default_12 = None
+    layer2_1_conv1_weight_bias = getattr(self.layer2, "1").conv1.weight_bias
+    conv2d_8 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_39, dequantize_per_channel_default_8, layer2_1_conv1_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_39 = dequantize_per_channel_default_8 = layer2_1_conv1_weight_bias = None
+    relu__7 = torch.ops.aten.relu_.default(conv2d_8);  conv2d_8 = None
+    quantize_per_tensor_default_13 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__7, 0.005401809699833393, -128, -128, 127, torch.int8);  relu__7 = None
+    dequantize_per_tensor_default_13 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_13, 0.005401809699833393, -128, -128, 127, torch.int8);  quantize_per_tensor_default_13 = None
+    layer2_1_conv2_weight_bias = getattr(self.layer2, "1").conv2.weight_bias
+    conv2d_9 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_13, dequantize_per_channel_default_9, layer2_1_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_13 = dequantize_per_channel_default_9 = layer2_1_conv2_weight_bias = None
+    quantize_per_tensor_default_14 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_9, 0.015359632670879364, 28, -128, 127, torch.int8);  conv2d_9 = None
+    dequantize_per_tensor_default_14 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_14, 0.015359632670879364, 28, -128, 127, torch.int8);  quantize_per_tensor_default_14 = None
+    add__3 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_14, dequantize_per_tensor_default_40);  dequantize_per_tensor_default_14 = dequantize_per_tensor_default_40 = None
+    relu__8 = torch.ops.aten.relu_.default(add__3);  add__3 = None
+    quantize_per_tensor_default_15 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__8, 0.01049452368170023, -128, -128, 127, torch.int8);  relu__8 = None
+    dequantize_per_tensor_default_42 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_15, 0.01049452368170023, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_41 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_15, 0.01049452368170023, -128, -128, 127, torch.int8);  quantize_per_tensor_default_15 = None
+    layer3_0_conv1_weight_bias = getattr(self.layer3, "0").conv1.weight_bias
+    conv2d_10 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_41, dequantize_per_channel_default_10, layer3_0_conv1_weight_bias, [2, 2], [1, 1]);  dequantize_per_tensor_default_41 = dequantize_per_channel_default_10 = layer3_0_conv1_weight_bias = None
+    relu__9 = torch.ops.aten.relu_.default(conv2d_10);  conv2d_10 = None
+    quantize_per_tensor_default_16 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__9, 0.00467508053407073, -128, -128, 127, torch.int8);  relu__9 = None
+    dequantize_per_tensor_default_16 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_16, 0.00467508053407073, -128, -128, 127, torch.int8);  quantize_per_tensor_default_16 = None
+    layer3_0_conv2_weight_bias = getattr(self.layer3, "0").conv2.weight_bias
+    conv2d_11 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_16, dequantize_per_channel_default_11, layer3_0_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_16 = dequantize_per_channel_default_11 = layer3_0_conv2_weight_bias = None
+    quantize_per_tensor_default_17 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_11, 0.012462401762604713, -4, -128, 127, torch.int8);  conv2d_11 = None
+    dequantize_per_tensor_default_17 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_17, 0.012462401762604713, -4, -128, 127, torch.int8);  quantize_per_tensor_default_17 = None
+    layer3_0_downsample_0_weight_bias = getattr(getattr(self.layer3, "0").downsample, "0").weight_bias
+    conv2d_12 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_42, dequantize_per_channel_default_12, layer3_0_downsample_0_weight_bias, [2, 2]);  dequantize_per_tensor_default_42 = dequantize_per_channel_default_12 = layer3_0_downsample_0_weight_bias = None
+    quantize_per_tensor_default_18 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_12, 0.006172037683427334, 62, -128, 127, torch.int8);  conv2d_12 = None
+    dequantize_per_tensor_default_18 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_18, 0.006172037683427334, 62, -128, 127, torch.int8);  quantize_per_tensor_default_18 = None
+    add__4 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_17, dequantize_per_tensor_default_18);  dequantize_per_tensor_default_17 = dequantize_per_tensor_default_18 = None
+    relu__10 = torch.ops.aten.relu_.default(add__4);  add__4 = None
+    quantize_per_tensor_default_19 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__10, 0.0058174594305455685, -128, -128, 127, torch.int8);  relu__10 = None
+    dequantize_per_tensor_default_44 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_19, 0.0058174594305455685, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_43 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_19, 0.0058174594305455685, -128, -128, 127, torch.int8);  quantize_per_tensor_default_19 = None
+    layer3_1_conv1_weight_bias = getattr(self.layer3, "1").conv1.weight_bias
+    conv2d_13 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_43, dequantize_per_channel_default_13, layer3_1_conv1_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_43 = dequantize_per_channel_default_13 = layer3_1_conv1_weight_bias = None
+    relu__11 = torch.ops.aten.relu_.default(conv2d_13);  conv2d_13 = None
+    quantize_per_tensor_default_20 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__11, 0.002835569903254509, -128, -128, 127, torch.int8);  relu__11 = None
+    dequantize_per_tensor_default_20 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_20, 0.002835569903254509, -128, -128, 127, torch.int8);  quantize_per_tensor_default_20 = None
+    layer3_1_conv2_weight_bias = getattr(self.layer3, "1").conv2.weight_bias
+    conv2d_14 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_20, dequantize_per_channel_default_14, layer3_1_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_20 = dequantize_per_channel_default_14 = layer3_1_conv2_weight_bias = None
+    quantize_per_tensor_default_21 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_14, 0.011633016169071198, 49, -128, 127, torch.int8);  conv2d_14 = None
+    dequantize_per_tensor_default_21 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_21, 0.011633016169071198, 49, -128, 127, torch.int8);  quantize_per_tensor_default_21 = None
+    add__5 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_21, dequantize_per_tensor_default_44);  dequantize_per_tensor_default_21 = dequantize_per_tensor_default_44 = None
+    relu__12 = torch.ops.aten.relu_.default(add__5);  add__5 = None
+    quantize_per_tensor_default_22 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__12, 0.007749548647552729, -128, -128, 127, torch.int8);  relu__12 = None
+    dequantize_per_tensor_default_46 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_22, 0.007749548647552729, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_45 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_22, 0.007749548647552729, -128, -128, 127, torch.int8);  quantize_per_tensor_default_22 = None
+    layer4_0_conv1_weight_bias = getattr(self.layer4, "0").conv1.weight_bias
+    conv2d_15 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_45, dequantize_per_channel_default_15, layer4_0_conv1_weight_bias, [2, 2], [1, 1]);  dequantize_per_tensor_default_45 = dequantize_per_channel_default_15 = layer4_0_conv1_weight_bias = None
+    relu__13 = torch.ops.aten.relu_.default(conv2d_15);  conv2d_15 = None
+    quantize_per_tensor_default_23 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__13, 0.0027187499217689037, -128, -128, 127, torch.int8);  relu__13 = None
+    dequantize_per_tensor_default_23 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_23, 0.0027187499217689037, -128, -128, 127, torch.int8);  quantize_per_tensor_default_23 = None
+    layer4_0_conv2_weight_bias = getattr(self.layer4, "0").conv2.weight_bias
+    conv2d_16 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_23, dequantize_per_channel_default_16, layer4_0_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_23 = dequantize_per_channel_default_16 = layer4_0_conv2_weight_bias = None
+    quantize_per_tensor_default_24 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_16, 0.009309245273470879, -10, -128, 127, torch.int8);  conv2d_16 = None
+    dequantize_per_tensor_default_24 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_24, 0.009309245273470879, -10, -128, 127, torch.int8);  quantize_per_tensor_default_24 = None
+    layer4_0_downsample_0_weight_bias = getattr(getattr(self.layer4, "0").downsample, "0").weight_bias
+    conv2d_17 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_46, dequantize_per_channel_default_17, layer4_0_downsample_0_weight_bias, [2, 2]);  dequantize_per_tensor_default_46 = dequantize_per_channel_default_17 = layer4_0_downsample_0_weight_bias = None
+    quantize_per_tensor_default_25 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_17, 0.009309341199696064, 14, -128, 127, torch.int8);  conv2d_17 = None
+    dequantize_per_tensor_default_25 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_25, 0.009309341199696064, 14, -128, 127, torch.int8);  quantize_per_tensor_default_25 = None
+    add__6 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_24, dequantize_per_tensor_default_25);  dequantize_per_tensor_default_24 = dequantize_per_tensor_default_25 = None
+    relu__14 = torch.ops.aten.relu_.default(add__6);  add__6 = None
+    quantize_per_tensor_default_26 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__14, 0.004874398931860924, -128, -128, 127, torch.int8);  relu__14 = None
+    dequantize_per_tensor_default_48 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_26, 0.004874398931860924, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_47 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_26, 0.004874398931860924, -128, -128, 127, torch.int8);  quantize_per_tensor_default_26 = None
+    layer4_1_conv1_weight_bias = getattr(self.layer4, "1").conv1.weight_bias
+    conv2d_18 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_47, dequantize_per_channel_default_18, layer4_1_conv1_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_47 = dequantize_per_channel_default_18 = layer4_1_conv1_weight_bias = None
+    relu__15 = torch.ops.aten.relu_.default(conv2d_18);  conv2d_18 = None
+    quantize_per_tensor_default_27 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__15, 0.001992644974961877, -128, -128, 127, torch.int8);  relu__15 = None
+    dequantize_per_tensor_default_27 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_27, 0.001992644974961877, -128, -128, 127, torch.int8);  quantize_per_tensor_default_27 = None
+    layer4_1_conv2_weight_bias = getattr(self.layer4, "1").conv2.weight_bias
+    conv2d_19 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_27, dequantize_per_channel_default_19, layer4_1_conv2_weight_bias, [1, 1], [1, 1]);  dequantize_per_tensor_default_27 = dequantize_per_channel_default_19 = layer4_1_conv2_weight_bias = None
+    quantize_per_tensor_default_28 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_19, 0.04294949024915695, -37, -128, 127, torch.int8);  conv2d_19 = None
+    dequantize_per_tensor_default_28 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_28, 0.04294949024915695, -37, -128, 127, torch.int8);  quantize_per_tensor_default_28 = None
+    add__7 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_28, dequantize_per_tensor_default_48);  dequantize_per_tensor_default_28 = dequantize_per_tensor_default_48 = None
+    relu__16 = torch.ops.aten.relu_.default(add__7);  add__7 = None
+    quantize_per_tensor_default_29 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__16, 0.02995455078780651, -128, -128, 127, torch.int8);  relu__16 = None
+    dequantize_per_tensor_default_29 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_29, 0.02995455078780651, -128, -128, 127, torch.int8);  quantize_per_tensor_default_29 = None
+    adaptive_avg_pool2d = torch.ops.aten.adaptive_avg_pool2d.default(dequantize_per_tensor_default_29, [1, 1]);  dequantize_per_tensor_default_29 = None
+    quantize_per_tensor_default_30 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d, 0.02995455078780651, -128, -128, 127, torch.int8);  adaptive_avg_pool2d = None
+    dequantize_per_tensor_default_30 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_30, 0.02995455078780651, -128, -128, 127, torch.int8);  quantize_per_tensor_default_30 = None
+    flatten = torch.ops.aten.flatten.using_ints(dequantize_per_tensor_default_30, 1);  dequantize_per_tensor_default_30 = None
+    quantize_per_tensor_default_31 = torch.ops.quantized_decomposed.quantize_per_tensor.default(flatten, 0.02995455078780651, -128, -128, 127, torch.int8);  flatten = None
+    dequantize_per_tensor_default_31 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_31, 0.02995455078780651, -128, -128, 127, torch.int8);  quantize_per_tensor_default_31 = None
+    linear = torch.ops.aten.linear.default(dequantize_per_tensor_default_31, dequantize_per_channel_default_20, fc_bias);  dequantize_per_tensor_default_31 = dequantize_per_channel_default_20 = fc_bias = None
+    quantize_per_tensor_default_32 = torch.ops.quantized_decomposed.quantize_per_tensor.default(linear, 0.04219314455986023, -24, -128, 127, torch.int8);  linear = None
+    dequantize_per_tensor_default_32 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_32, 0.04219314455986023, -24, -128, 127, torch.int8);  quantize_per_tensor_default_32 = None
+    return pytree.tree_unflatten((dequantize_per_tensor_default_32,), self._out_spec)
+    
+# To see more debug info, please use `graph_module.print_readable()`
+[Observatory] Collected Pre-EdgeTransform/forward in 38.4 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Exported/forward in 447.0 ms
+[Observatory] Collected ETRecord Edge/forward in 45.1 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected EdgeProgramManager EP in 2.3 ms
+Exported and lowered graph:
+graph():
+    %x : [num_users=1] = placeholder[target=x]
+    %lowered_module_0 : [num_users=1] = get_attr[target=lowered_module_0]
+    %executorch_call_delegate : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_0, %x), kwargs = {})
+    %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate, 0), kwargs = {})
+    %aten_view_copy_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_1, [1, 512]), kwargs = {})
+    %lowered_module_1 : [num_users=1] = get_attr[target=lowered_module_1]
+    %executorch_call_delegate_1 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_1, %aten_view_copy_default), kwargs = {})
+    %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_1, 0), kwargs = {})
+    return (getitem,)
+/home/boyucwsl/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+Saved exported program to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/artifacts/resnet18_xnnpack_q8.pte
+[PipelineGraphCollector] Uninstalled all patches
+[Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.json
+[Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.html
+[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.json (7 records: Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+$ python -m backends.qualcomm.debugger.observatory.cli --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.json examples/xnnpack/aot_compiler.py --model_name=resnet18 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/artifacts
+

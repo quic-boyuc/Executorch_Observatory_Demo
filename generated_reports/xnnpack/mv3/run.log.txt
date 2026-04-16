@@ -1,0 +1,1590 @@
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+[PipelineGraphCollector] Installed patch: prepare_pt2e
+[PipelineGraphCollector] Installed patch: convert_pt2e
+[PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
+[PipelineGraphCollector] Installed ETRecord patches
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
+[PipelineGraphCollector] Installed QNN patch: ptq_calibrate
+Loading mobilenet_v3 model
+Loaded mobilenet_v3 model
+Quantizing Model...
+Original model: GraphModule(
+  (features): Module(
+    (0): Module(
+      (0): Module()
+      (1): Module()
+    )
+    (1): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (2): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (2): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (3): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (4): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (5): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (6): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (7): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (8): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (9): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (10): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (11): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (1): Module(
+          (0): Module()
+          (1): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+          (1): Module()
+        )
+      )
+    )
+    (12): Module(
+      (0): Module()
+      (1): Module()
+    )
+  )
+  (classifier): Module(
+    (0): Module()
+    (3): Module()
+  )
+)
+
+
+
+def forward(self, x):
+    x, = fx_pytree.tree_flatten_spec(([x], {}), self._in_spec)
+    features_0_0_weight = getattr(getattr(self.features, "0"), "0").weight
+    features_0_1_weight = getattr(getattr(self.features, "0"), "1").weight
+    features_0_1_bias = getattr(getattr(self.features, "0"), "1").bias
+    features_1_block_0_0_weight = getattr(getattr(getattr(self.features, "1").block, "0"), "0").weight
+    features_1_block_0_1_weight = getattr(getattr(getattr(self.features, "1").block, "0"), "1").weight
+    features_1_block_0_1_bias = getattr(getattr(getattr(self.features, "1").block, "0"), "1").bias
+    features_1_block_1_fc1_weight = getattr(getattr(self.features, "1").block, "1").fc1.weight
+    features_1_block_1_fc1_bias = getattr(getattr(self.features, "1").block, "1").fc1.bias
+    features_1_block_1_fc2_weight = getattr(getattr(self.features, "1").block, "1").fc2.weight
+    features_1_block_1_fc2_bias = getattr(getattr(self.features, "1").block, "1").fc2.bias
+    features_1_block_2_0_weight = getattr(getattr(getattr(self.features, "1").block, "2"), "0").weight
+    features_1_block_2_1_weight = getattr(getattr(getattr(self.features, "1").block, "2"), "1").weight
+    features_1_block_2_1_bias = getattr(getattr(getattr(self.features, "1").block, "2"), "1").bias
+    features_2_block_0_0_weight = getattr(getattr(getattr(self.features, "2").block, "0"), "0").weight
+    features_2_block_0_1_weight = getattr(getattr(getattr(self.features, "2").block, "0"), "1").weight
+    features_2_block_0_1_bias = getattr(getattr(getattr(self.features, "2").block, "0"), "1").bias
+    features_2_block_1_0_weight = getattr(getattr(getattr(self.features, "2").block, "1"), "0").weight
+    features_2_block_1_1_weight = getattr(getattr(getattr(self.features, "2").block, "1"), "1").weight
+    features_2_block_1_1_bias = getattr(getattr(getattr(self.features, "2").block, "1"), "1").bias
+    features_2_block_2_0_weight = getattr(getattr(getattr(self.features, "2").block, "2"), "0").weight
+    features_2_block_2_1_weight = getattr(getattr(getattr(self.features, "2").block, "2"), "1").weight
+    features_2_block_2_1_bias = getattr(getattr(getattr(self.features, "2").block, "2"), "1").bias
+    features_3_block_0_0_weight = getattr(getattr(getattr(self.features, "3").block, "0"), "0").weight
+    features_3_block_0_1_weight = getattr(getattr(getattr(self.features, "3").block, "0"), "1").weight
+    features_3_block_0_1_bias = getattr(getattr(getattr(self.features, "3").block, "0"), "1").bias
+    features_3_block_1_0_weight = getattr(getattr(getattr(self.features, "3").block, "1"), "0").weight
+    features_3_block_1_1_weight = getattr(getattr(getattr(self.features, "3").block, "1"), "1").weight
+    features_3_block_1_1_bias = getattr(getattr(getattr(self.features, "3").block, "1"), "1").bias
+    features_3_block_2_0_weight = getattr(getattr(getattr(self.features, "3").block, "2"), "0").weight
+    features_3_block_2_1_weight = getattr(getattr(getattr(self.features, "3").block, "2"), "1").weight
+    features_3_block_2_1_bias = getattr(getattr(getattr(self.features, "3").block, "2"), "1").bias
+    features_4_block_0_0_weight = getattr(getattr(getattr(self.features, "4").block, "0"), "0").weight
+    features_4_block_0_1_weight = getattr(getattr(getattr(self.features, "4").block, "0"), "1").weight
+    features_4_block_0_1_bias = getattr(getattr(getattr(self.features, "4").block, "0"), "1").bias
+    features_4_block_1_0_weight = getattr(getattr(getattr(self.features, "4").block, "1"), "0").weight
+    features_4_block_1_1_weight = getattr(getattr(getattr(self.features, "4").block, "1"), "1").weight
+    features_4_block_1_1_bias = getattr(getattr(getattr(self.features, "4").block, "1"), "1").bias
+    features_4_block_2_fc1_weight = getattr(getattr(self.features, "4").block, "2").fc1.weight
+    features_4_block_2_fc1_bias = getattr(getattr(self.features, "4").block, "2").fc1.bias
+    features_4_block_2_fc2_weight = getattr(getattr(self.features, "4").block, "2").fc2.weight
+    features_4_block_2_fc2_bias = getattr(getattr(self.features, "4").block, "2").fc2.bias
+    features_4_block_3_0_weight = getattr(getattr(getattr(self.features, "4").block, "3"), "0").weight
+    features_4_block_3_1_weight = getattr(getattr(getattr(self.features, "4").block, "3"), "1").weight
+    features_4_block_3_1_bias = getattr(getattr(getattr(self.features, "4").block, "3"), "1").bias
+    features_5_block_0_0_weight = getattr(getattr(getattr(self.features, "5").block, "0"), "0").weight
+    features_5_block_0_1_weight = getattr(getattr(getattr(self.features, "5").block, "0"), "1").weight
+    features_5_block_0_1_bias = getattr(getattr(getattr(self.features, "5").block, "0"), "1").bias
+    features_5_block_1_0_weight = getattr(getattr(getattr(self.features, "5").block, "1"), "0").weight
+    features_5_block_1_1_weight = getattr(getattr(getattr(self.features, "5").block, "1"), "1").weight
+    features_5_block_1_1_bias = getattr(getattr(getattr(self.features, "5").block, "1"), "1").bias
+    features_5_block_2_fc1_weight = getattr(getattr(self.features, "5").block, "2").fc1.weight
+    features_5_block_2_fc1_bias = getattr(getattr(self.features, "5").block, "2").fc1.bias
+    features_5_block_2_fc2_weight = getattr(getattr(self.features, "5").block, "2").fc2.weight
+    features_5_block_2_fc2_bias = getattr(getattr(self.features, "5").block, "2").fc2.bias
+    features_5_block_3_0_weight = getattr(getattr(getattr(self.features, "5").block, "3"), "0").weight
+    features_5_block_3_1_weight = getattr(getattr(getattr(self.features, "5").block, "3"), "1").weight
+    features_5_block_3_1_bias = getattr(getattr(getattr(self.features, "5").block, "3"), "1").bias
+    features_6_block_0_0_weight = getattr(getattr(getattr(self.features, "6").block, "0"), "0").weight
+    features_6_block_0_1_weight = getattr(getattr(getattr(self.features, "6").block, "0"), "1").weight
+    features_6_block_0_1_bias = getattr(getattr(getattr(self.features, "6").block, "0"), "1").bias
+    features_6_block_1_0_weight = getattr(getattr(getattr(self.features, "6").block, "1"), "0").weight
+    features_6_block_1_1_weight = getattr(getattr(getattr(self.features, "6").block, "1"), "1").weight
+    features_6_block_1_1_bias = getattr(getattr(getattr(self.features, "6").block, "1"), "1").bias
+    features_6_block_2_fc1_weight = getattr(getattr(self.features, "6").block, "2").fc1.weight
+    features_6_block_2_fc1_bias = getattr(getattr(self.features, "6").block, "2").fc1.bias
+    features_6_block_2_fc2_weight = getattr(getattr(self.features, "6").block, "2").fc2.weight
+    features_6_block_2_fc2_bias = getattr(getattr(self.features, "6").block, "2").fc2.bias
+    features_6_block_3_0_weight = getattr(getattr(getattr(self.features, "6").block, "3"), "0").weight
+    features_6_block_3_1_weight = getattr(getattr(getattr(self.features, "6").block, "3"), "1").weight
+    features_6_block_3_1_bias = getattr(getattr(getattr(self.features, "6").block, "3"), "1").bias
+    features_7_block_0_0_weight = getattr(getattr(getattr(self.features, "7").block, "0"), "0").weight
+    features_7_block_0_1_weight = getattr(getattr(getattr(self.features, "7").block, "0"), "1").weight
+    features_7_block_0_1_bias = getattr(getattr(getattr(self.features, "7").block, "0"), "1").bias
+    features_7_block_1_0_weight = getattr(getattr(getattr(self.features, "7").block, "1"), "0").weight
+    features_7_block_1_1_weight = getattr(getattr(getattr(self.features, "7").block, "1"), "1").weight
+    features_7_block_1_1_bias = getattr(getattr(getattr(self.features, "7").block, "1"), "1").bias
+    features_7_block_2_fc1_weight = getattr(getattr(self.features, "7").block, "2").fc1.weight
+    features_7_block_2_fc1_bias = getattr(getattr(self.features, "7").block, "2").fc1.bias
+    features_7_block_2_fc2_weight = getattr(getattr(self.features, "7").block, "2").fc2.weight
+    features_7_block_2_fc2_bias = getattr(getattr(self.features, "7").block, "2").fc2.bias
+    features_7_block_3_0_weight = getattr(getattr(getattr(self.features, "7").block, "3"), "0").weight
+    features_7_block_3_1_weight = getattr(getattr(getattr(self.features, "7").block, "3"), "1").weight
+    features_7_block_3_1_bias = getattr(getattr(getattr(self.features, "7").block, "3"), "1").bias
+    features_8_block_0_0_weight = getattr(getattr(getattr(self.features, "8").block, "0"), "0").weight
+    features_8_block_0_1_weight = getattr(getattr(getattr(self.features, "8").block, "0"), "1").weight
+    features_8_block_0_1_bias = getattr(getattr(getattr(self.features, "8").block, "0"), "1").bias
+    features_8_block_1_0_weight = getattr(getattr(getattr(self.features, "8").block, "1"), "0").weight
+    features_8_block_1_1_weight = getattr(getattr(getattr(self.features, "8").block, "1"), "1").weight
+    features_8_block_1_1_bias = getattr(getattr(getattr(self.features, "8").block, "1"), "1").bias
+    features_8_block_2_fc1_weight = getattr(getattr(self.features, "8").block, "2").fc1.weight
+    features_8_block_2_fc1_bias = getattr(getattr(self.features, "8").block, "2").fc1.bias
+    features_8_block_2_fc2_weight = getattr(getattr(self.features, "8").block, "2").fc2.weight
+    features_8_block_2_fc2_bias = getattr(getattr(self.features, "8").block, "2").fc2.bias
+    features_8_block_3_0_weight = getattr(getattr(getattr(self.features, "8").block, "3"), "0").weight
+    features_8_block_3_1_weight = getattr(getattr(getattr(self.features, "8").block, "3"), "1").weight
+    features_8_block_3_1_bias = getattr(getattr(getattr(self.features, "8").block, "3"), "1").bias
+    features_9_block_0_0_weight = getattr(getattr(getattr(self.features, "9").block, "0"), "0").weight
+    features_9_block_0_1_weight = getattr(getattr(getattr(self.features, "9").block, "0"), "1").weight
+    features_9_block_0_1_bias = getattr(getattr(getattr(self.features, "9").block, "0"), "1").bias
+    features_9_block_1_0_weight = getattr(getattr(getattr(self.features, "9").block, "1"), "0").weight
+    features_9_block_1_1_weight = getattr(getattr(getattr(self.features, "9").block, "1"), "1").weight
+    features_9_block_1_1_bias = getattr(getattr(getattr(self.features, "9").block, "1"), "1").bias
+    features_9_block_2_fc1_weight = getattr(getattr(self.features, "9").block, "2").fc1.weight
+    features_9_block_2_fc1_bias = getattr(getattr(self.features, "9").block, "2").fc1.bias
+    features_9_block_2_fc2_weight = getattr(getattr(self.features, "9").block, "2").fc2.weight
+    features_9_block_2_fc2_bias = getattr(getattr(self.features, "9").block, "2").fc2.bias
+    features_9_block_3_0_weight = getattr(getattr(getattr(self.features, "9").block, "3"), "0").weight
+    features_9_block_3_1_weight = getattr(getattr(getattr(self.features, "9").block, "3"), "1").weight
+    features_9_block_3_1_bias = getattr(getattr(getattr(self.features, "9").block, "3"), "1").bias
+    features_10_block_0_0_weight = getattr(getattr(getattr(self.features, "10").block, "0"), "0").weight
+    features_10_block_0_1_weight = getattr(getattr(getattr(self.features, "10").block, "0"), "1").weight
+    features_10_block_0_1_bias = getattr(getattr(getattr(self.features, "10").block, "0"), "1").bias
+    features_10_block_1_0_weight = getattr(getattr(getattr(self.features, "10").block, "1"), "0").weight
+    features_10_block_1_1_weight = getattr(getattr(getattr(self.features, "10").block, "1"), "1").weight
+    features_10_block_1_1_bias = getattr(getattr(getattr(self.features, "10").block, "1"), "1").bias
+    features_10_block_2_fc1_weight = getattr(getattr(self.features, "10").block, "2").fc1.weight
+    features_10_block_2_fc1_bias = getattr(getattr(self.features, "10").block, "2").fc1.bias
+    features_10_block_2_fc2_weight = getattr(getattr(self.features, "10").block, "2").fc2.weight
+    features_10_block_2_fc2_bias = getattr(getattr(self.features, "10").block, "2").fc2.bias
+    features_10_block_3_0_weight = getattr(getattr(getattr(self.features, "10").block, "3"), "0").weight
+    features_10_block_3_1_weight = getattr(getattr(getattr(self.features, "10").block, "3"), "1").weight
+    features_10_block_3_1_bias = getattr(getattr(getattr(self.features, "10").block, "3"), "1").bias
+    features_11_block_0_0_weight = getattr(getattr(getattr(self.features, "11").block, "0"), "0").weight
+    features_11_block_0_1_weight = getattr(getattr(getattr(self.features, "11").block, "0"), "1").weight
+    features_11_block_0_1_bias = getattr(getattr(getattr(self.features, "11").block, "0"), "1").bias
+    features_11_block_1_0_weight = getattr(getattr(getattr(self.features, "11").block, "1"), "0").weight
+    features_11_block_1_1_weight = getattr(getattr(getattr(self.features, "11").block, "1"), "1").weight
+    features_11_block_1_1_bias = getattr(getattr(getattr(self.features, "11").block, "1"), "1").bias
+    features_11_block_2_fc1_weight = getattr(getattr(self.features, "11").block, "2").fc1.weight
+    features_11_block_2_fc1_bias = getattr(getattr(self.features, "11").block, "2").fc1.bias
+    features_11_block_2_fc2_weight = getattr(getattr(self.features, "11").block, "2").fc2.weight
+    features_11_block_2_fc2_bias = getattr(getattr(self.features, "11").block, "2").fc2.bias
+    features_11_block_3_0_weight = getattr(getattr(getattr(self.features, "11").block, "3"), "0").weight
+    features_11_block_3_1_weight = getattr(getattr(getattr(self.features, "11").block, "3"), "1").weight
+    features_11_block_3_1_bias = getattr(getattr(getattr(self.features, "11").block, "3"), "1").bias
+    features_12_0_weight = getattr(getattr(self.features, "12"), "0").weight
+    features_12_1_weight = getattr(getattr(self.features, "12"), "1").weight
+    features_12_1_bias = getattr(getattr(self.features, "12"), "1").bias
+    classifier_0_weight = getattr(self.classifier, "0").weight
+    classifier_0_bias = getattr(self.classifier, "0").bias
+    classifier_3_weight = getattr(self.classifier, "3").weight
+    classifier_3_bias = getattr(self.classifier, "3").bias
+    features_0_1_running_mean = getattr(getattr(self.features, "0"), "1").running_mean
+    features_0_1_running_var = getattr(getattr(self.features, "0"), "1").running_var
+    features_0_1_num_batches_tracked = getattr(getattr(self.features, "0"), "1").num_batches_tracked;  features_0_1_num_batches_tracked = None
+    features_1_block_0_1_running_mean = getattr(getattr(getattr(self.features, "1").block, "0"), "1").running_mean
+    features_1_block_0_1_running_var = getattr(getattr(getattr(self.features, "1").block, "0"), "1").running_var
+    features_1_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "1").block, "0"), "1").num_batches_tracked;  features_1_block_0_1_num_batches_tracked = None
+    features_1_block_2_1_running_mean = getattr(getattr(getattr(self.features, "1").block, "2"), "1").running_mean
+    features_1_block_2_1_running_var = getattr(getattr(getattr(self.features, "1").block, "2"), "1").running_var
+    features_1_block_2_1_num_batches_tracked = getattr(getattr(getattr(self.features, "1").block, "2"), "1").num_batches_tracked;  features_1_block_2_1_num_batches_tracked = None
+    features_2_block_0_1_running_mean = getattr(getattr(getattr(self.features, "2").block, "0"), "1").running_mean
+    features_2_block_0_1_running_var = getattr(getattr(getattr(self.features, "2").block, "0"), "1").running_var
+    features_2_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "2").block, "0"), "1").num_batches_tracked;  features_2_block_0_1_num_batches_tracked = None
+    features_2_block_1_1_running_mean = getattr(getattr(getattr(self.features, "2").block, "1"), "1").running_mean
+    features_2_block_1_1_running_var = getattr(getattr(getattr(self.features, "2").block, "1"), "1").running_var
+    features_2_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "2").block, "1"), "1").num_batches_tracked;  features_2_block_1_1_num_batches_tracked = None
+    features_2_block_2_1_running_mean = getattr(getattr(getattr(self.features, "2").block, "2"), "1").running_mean
+    features_2_block_2_1_running_var = getattr(getattr(getattr(self.features, "2").block, "2"), "1").running_var
+    features_2_block_2_1_num_batches_tracked = getattr(getattr(getattr(self.features, "2").block, "2"), "1").num_batches_tracked;  features_2_block_2_1_num_batches_tracked = None
+    features_3_block_0_1_running_mean = getattr(getattr(getattr(self.features, "3").block, "0"), "1").running_mean
+    features_3_block_0_1_running_var = getattr(getattr(getattr(self.features, "3").block, "0"), "1").running_var
+    features_3_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "3").block, "0"), "1").num_batches_tracked;  features_3_block_0_1_num_batches_tracked = None
+    features_3_block_1_1_running_mean = getattr(getattr(getattr(self.features, "3").block, "1"), "1").running_mean
+    features_3_block_1_1_running_var = getattr(getattr(getattr(self.features, "3").block, "1"), "1").running_var
+    features_3_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "3").block, "1"), "1").num_batches_tracked;  features_3_block_1_1_num_batches_tracked = None
+    features_3_block_2_1_running_mean = getattr(getattr(getattr(self.features, "3").block, "2"), "1").running_mean
+    features_3_block_2_1_running_var = getattr(getattr(getattr(self.features, "3").block, "2"), "1").running_var
+    features_3_block_2_1_num_batches_tracked = getattr(getattr(getattr(self.features, "3").block, "2"), "1").num_batches_tracked;  features_3_block_2_1_num_batches_tracked = None
+    features_4_block_0_1_running_mean = getattr(getattr(getattr(self.features, "4").block, "0"), "1").running_mean
+    features_4_block_0_1_running_var = getattr(getattr(getattr(self.features, "4").block, "0"), "1").running_var
+    features_4_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "4").block, "0"), "1").num_batches_tracked;  features_4_block_0_1_num_batches_tracked = None
+    features_4_block_1_1_running_mean = getattr(getattr(getattr(self.features, "4").block, "1"), "1").running_mean
+    features_4_block_1_1_running_var = getattr(getattr(getattr(self.features, "4").block, "1"), "1").running_var
+    features_4_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "4").block, "1"), "1").num_batches_tracked;  features_4_block_1_1_num_batches_tracked = None
+    features_4_block_3_1_running_mean = getattr(getattr(getattr(self.features, "4").block, "3"), "1").running_mean
+    features_4_block_3_1_running_var = getattr(getattr(getattr(self.features, "4").block, "3"), "1").running_var
+    features_4_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "4").block, "3"), "1").num_batches_tracked;  features_4_block_3_1_num_batches_tracked = None
+    features_5_block_0_1_running_mean = getattr(getattr(getattr(self.features, "5").block, "0"), "1").running_mean
+    features_5_block_0_1_running_var = getattr(getattr(getattr(self.features, "5").block, "0"), "1").running_var
+    features_5_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "5").block, "0"), "1").num_batches_tracked;  features_5_block_0_1_num_batches_tracked = None
+    features_5_block_1_1_running_mean = getattr(getattr(getattr(self.features, "5").block, "1"), "1").running_mean
+    features_5_block_1_1_running_var = getattr(getattr(getattr(self.features, "5").block, "1"), "1").running_var
+    features_5_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "5").block, "1"), "1").num_batches_tracked;  features_5_block_1_1_num_batches_tracked = None
+    features_5_block_3_1_running_mean = getattr(getattr(getattr(self.features, "5").block, "3"), "1").running_mean
+    features_5_block_3_1_running_var = getattr(getattr(getattr(self.features, "5").block, "3"), "1").running_var
+    features_5_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "5").block, "3"), "1").num_batches_tracked;  features_5_block_3_1_num_batches_tracked = None
+    features_6_block_0_1_running_mean = getattr(getattr(getattr(self.features, "6").block, "0"), "1").running_mean
+    features_6_block_0_1_running_var = getattr(getattr(getattr(self.features, "6").block, "0"), "1").running_var
+    features_6_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "6").block, "0"), "1").num_batches_tracked;  features_6_block_0_1_num_batches_tracked = None
+    features_6_block_1_1_running_mean = getattr(getattr(getattr(self.features, "6").block, "1"), "1").running_mean
+    features_6_block_1_1_running_var = getattr(getattr(getattr(self.features, "6").block, "1"), "1").running_var
+    features_6_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "6").block, "1"), "1").num_batches_tracked;  features_6_block_1_1_num_batches_tracked = None
+    features_6_block_3_1_running_mean = getattr(getattr(getattr(self.features, "6").block, "3"), "1").running_mean
+    features_6_block_3_1_running_var = getattr(getattr(getattr(self.features, "6").block, "3"), "1").running_var
+    features_6_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "6").block, "3"), "1").num_batches_tracked;  features_6_block_3_1_num_batches_tracked = None
+    features_7_block_0_1_running_mean = getattr(getattr(getattr(self.features, "7").block, "0"), "1").running_mean
+    features_7_block_0_1_running_var = getattr(getattr(getattr(self.features, "7").block, "0"), "1").running_var
+    features_7_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "7").block, "0"), "1").num_batches_tracked;  features_7_block_0_1_num_batches_tracked = None
+    features_7_block_1_1_running_mean = getattr(getattr(getattr(self.features, "7").block, "1"), "1").running_mean
+    features_7_block_1_1_running_var = getattr(getattr(getattr(self.features, "7").block, "1"), "1").running_var
+    features_7_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "7").block, "1"), "1").num_batches_tracked;  features_7_block_1_1_num_batches_tracked = None
+    features_7_block_3_1_running_mean = getattr(getattr(getattr(self.features, "7").block, "3"), "1").running_mean
+    features_7_block_3_1_running_var = getattr(getattr(getattr(self.features, "7").block, "3"), "1").running_var
+    features_7_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "7").block, "3"), "1").num_batches_tracked;  features_7_block_3_1_num_batches_tracked = None
+    features_8_block_0_1_running_mean = getattr(getattr(getattr(self.features, "8").block, "0"), "1").running_mean
+    features_8_block_0_1_running_var = getattr(getattr(getattr(self.features, "8").block, "0"), "1").running_var
+    features_8_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "8").block, "0"), "1").num_batches_tracked;  features_8_block_0_1_num_batches_tracked = None
+    features_8_block_1_1_running_mean = getattr(getattr(getattr(self.features, "8").block, "1"), "1").running_mean
+    features_8_block_1_1_running_var = getattr(getattr(getattr(self.features, "8").block, "1"), "1").running_var
+    features_8_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "8").block, "1"), "1").num_batches_tracked;  features_8_block_1_1_num_batches_tracked = None
+    features_8_block_3_1_running_mean = getattr(getattr(getattr(self.features, "8").block, "3"), "1").running_mean
+    features_8_block_3_1_running_var = getattr(getattr(getattr(self.features, "8").block, "3"), "1").running_var
+    features_8_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "8").block, "3"), "1").num_batches_tracked;  features_8_block_3_1_num_batches_tracked = None
+    features_9_block_0_1_running_mean = getattr(getattr(getattr(self.features, "9").block, "0"), "1").running_mean
+    features_9_block_0_1_running_var = getattr(getattr(getattr(self.features, "9").block, "0"), "1").running_var
+    features_9_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "9").block, "0"), "1").num_batches_tracked;  features_9_block_0_1_num_batches_tracked = None
+    features_9_block_1_1_running_mean = getattr(getattr(getattr(self.features, "9").block, "1"), "1").running_mean
+    features_9_block_1_1_running_var = getattr(getattr(getattr(self.features, "9").block, "1"), "1").running_var
+    features_9_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "9").block, "1"), "1").num_batches_tracked;  features_9_block_1_1_num_batches_tracked = None
+    features_9_block_3_1_running_mean = getattr(getattr(getattr(self.features, "9").block, "3"), "1").running_mean
+    features_9_block_3_1_running_var = getattr(getattr(getattr(self.features, "9").block, "3"), "1").running_var
+    features_9_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "9").block, "3"), "1").num_batches_tracked;  features_9_block_3_1_num_batches_tracked = None
+    features_10_block_0_1_running_mean = getattr(getattr(getattr(self.features, "10").block, "0"), "1").running_mean
+    features_10_block_0_1_running_var = getattr(getattr(getattr(self.features, "10").block, "0"), "1").running_var
+    features_10_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "10").block, "0"), "1").num_batches_tracked;  features_10_block_0_1_num_batches_tracked = None
+    features_10_block_1_1_running_mean = getattr(getattr(getattr(self.features, "10").block, "1"), "1").running_mean
+    features_10_block_1_1_running_var = getattr(getattr(getattr(self.features, "10").block, "1"), "1").running_var
+    features_10_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "10").block, "1"), "1").num_batches_tracked;  features_10_block_1_1_num_batches_tracked = None
+    features_10_block_3_1_running_mean = getattr(getattr(getattr(self.features, "10").block, "3"), "1").running_mean
+    features_10_block_3_1_running_var = getattr(getattr(getattr(self.features, "10").block, "3"), "1").running_var
+    features_10_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "10").block, "3"), "1").num_batches_tracked;  features_10_block_3_1_num_batches_tracked = None
+    features_11_block_0_1_running_mean = getattr(getattr(getattr(self.features, "11").block, "0"), "1").running_mean
+    features_11_block_0_1_running_var = getattr(getattr(getattr(self.features, "11").block, "0"), "1").running_var
+    features_11_block_0_1_num_batches_tracked = getattr(getattr(getattr(self.features, "11").block, "0"), "1").num_batches_tracked;  features_11_block_0_1_num_batches_tracked = None
+    features_11_block_1_1_running_mean = getattr(getattr(getattr(self.features, "11").block, "1"), "1").running_mean
+    features_11_block_1_1_running_var = getattr(getattr(getattr(self.features, "11").block, "1"), "1").running_var
+    features_11_block_1_1_num_batches_tracked = getattr(getattr(getattr(self.features, "11").block, "1"), "1").num_batches_tracked;  features_11_block_1_1_num_batches_tracked = None
+    features_11_block_3_1_running_mean = getattr(getattr(getattr(self.features, "11").block, "3"), "1").running_mean
+    features_11_block_3_1_running_var = getattr(getattr(getattr(self.features, "11").block, "3"), "1").running_var
+    features_11_block_3_1_num_batches_tracked = getattr(getattr(getattr(self.features, "11").block, "3"), "1").num_batches_tracked;  features_11_block_3_1_num_batches_tracked = None
+    features_12_1_running_mean = getattr(getattr(self.features, "12"), "1").running_mean
+    features_12_1_running_var = getattr(getattr(self.features, "12"), "1").running_var
+    features_12_1_num_batches_tracked = getattr(getattr(self.features, "12"), "1").num_batches_tracked;  features_12_1_num_batches_tracked = None
+    conv2d = torch.ops.aten.conv2d.default(x, features_0_0_weight, None, [2, 2], [1, 1]);  x = features_0_0_weight = None
+    batch_norm = torch.ops.aten.batch_norm.default(conv2d, features_0_1_weight, features_0_1_bias, features_0_1_running_mean, features_0_1_running_var, False, 0.01, 0.001, False);  conv2d = features_0_1_weight = features_0_1_bias = features_0_1_running_mean = features_0_1_running_var = None
+    hardswish_ = torch.ops.aten.hardswish_.default(batch_norm);  batch_norm = None
+    conv2d_1 = torch.ops.aten.conv2d.default(hardswish_, features_1_block_0_0_weight, None, [2, 2], [1, 1], [1, 1], 16);  hardswish_ = features_1_block_0_0_weight = None
+    batch_norm_1 = torch.ops.aten.batch_norm.default(conv2d_1, features_1_block_0_1_weight, features_1_block_0_1_bias, features_1_block_0_1_running_mean, features_1_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_1 = features_1_block_0_1_weight = features_1_block_0_1_bias = features_1_block_0_1_running_mean = features_1_block_0_1_running_var = None
+    relu_ = torch.ops.aten.relu_.default(batch_norm_1);  batch_norm_1 = None
+    adaptive_avg_pool2d = torch.ops.aten.adaptive_avg_pool2d.default(relu_, [1, 1])
+    conv2d_2 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d, features_1_block_1_fc1_weight, features_1_block_1_fc1_bias);  adaptive_avg_pool2d = features_1_block_1_fc1_weight = features_1_block_1_fc1_bias = None
+    relu = torch.ops.aten.relu.default(conv2d_2);  conv2d_2 = None
+    conv2d_3 = torch.ops.aten.conv2d.default(relu, features_1_block_1_fc2_weight, features_1_block_1_fc2_bias);  relu = features_1_block_1_fc2_weight = features_1_block_1_fc2_bias = None
+    hardsigmoid = torch.ops.aten.hardsigmoid.default(conv2d_3);  conv2d_3 = None
+    mul = torch.ops.aten.mul.Tensor(hardsigmoid, relu_);  hardsigmoid = relu_ = None
+    conv2d_4 = torch.ops.aten.conv2d.default(mul, features_1_block_2_0_weight);  mul = features_1_block_2_0_weight = None
+    batch_norm_2 = torch.ops.aten.batch_norm.default(conv2d_4, features_1_block_2_1_weight, features_1_block_2_1_bias, features_1_block_2_1_running_mean, features_1_block_2_1_running_var, False, 0.01, 0.001, False);  conv2d_4 = features_1_block_2_1_weight = features_1_block_2_1_bias = features_1_block_2_1_running_mean = features_1_block_2_1_running_var = None
+    conv2d_5 = torch.ops.aten.conv2d.default(batch_norm_2, features_2_block_0_0_weight);  batch_norm_2 = features_2_block_0_0_weight = None
+    batch_norm_3 = torch.ops.aten.batch_norm.default(conv2d_5, features_2_block_0_1_weight, features_2_block_0_1_bias, features_2_block_0_1_running_mean, features_2_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_5 = features_2_block_0_1_weight = features_2_block_0_1_bias = features_2_block_0_1_running_mean = features_2_block_0_1_running_var = None
+    relu__1 = torch.ops.aten.relu_.default(batch_norm_3);  batch_norm_3 = None
+    conv2d_6 = torch.ops.aten.conv2d.default(relu__1, features_2_block_1_0_weight, None, [2, 2], [1, 1], [1, 1], 72);  relu__1 = features_2_block_1_0_weight = None
+    batch_norm_4 = torch.ops.aten.batch_norm.default(conv2d_6, features_2_block_1_1_weight, features_2_block_1_1_bias, features_2_block_1_1_running_mean, features_2_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_6 = features_2_block_1_1_weight = features_2_block_1_1_bias = features_2_block_1_1_running_mean = features_2_block_1_1_running_var = None
+    relu__2 = torch.ops.aten.relu_.default(batch_norm_4);  batch_norm_4 = None
+    conv2d_7 = torch.ops.aten.conv2d.default(relu__2, features_2_block_2_0_weight);  relu__2 = features_2_block_2_0_weight = None
+    batch_norm_5 = torch.ops.aten.batch_norm.default(conv2d_7, features_2_block_2_1_weight, features_2_block_2_1_bias, features_2_block_2_1_running_mean, features_2_block_2_1_running_var, False, 0.01, 0.001, False);  conv2d_7 = features_2_block_2_1_weight = features_2_block_2_1_bias = features_2_block_2_1_running_mean = features_2_block_2_1_running_var = None
+    conv2d_8 = torch.ops.aten.conv2d.default(batch_norm_5, features_3_block_0_0_weight);  features_3_block_0_0_weight = None
+    batch_norm_6 = torch.ops.aten.batch_norm.default(conv2d_8, features_3_block_0_1_weight, features_3_block_0_1_bias, features_3_block_0_1_running_mean, features_3_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_8 = features_3_block_0_1_weight = features_3_block_0_1_bias = features_3_block_0_1_running_mean = features_3_block_0_1_running_var = None
+    relu__3 = torch.ops.aten.relu_.default(batch_norm_6);  batch_norm_6 = None
+    conv2d_9 = torch.ops.aten.conv2d.default(relu__3, features_3_block_1_0_weight, None, [1, 1], [1, 1], [1, 1], 88);  relu__3 = features_3_block_1_0_weight = None
+    batch_norm_7 = torch.ops.aten.batch_norm.default(conv2d_9, features_3_block_1_1_weight, features_3_block_1_1_bias, features_3_block_1_1_running_mean, features_3_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_9 = features_3_block_1_1_weight = features_3_block_1_1_bias = features_3_block_1_1_running_mean = features_3_block_1_1_running_var = None
+    relu__4 = torch.ops.aten.relu_.default(batch_norm_7);  batch_norm_7 = None
+    conv2d_10 = torch.ops.aten.conv2d.default(relu__4, features_3_block_2_0_weight);  relu__4 = features_3_block_2_0_weight = None
+    batch_norm_8 = torch.ops.aten.batch_norm.default(conv2d_10, features_3_block_2_1_weight, features_3_block_2_1_bias, features_3_block_2_1_running_mean, features_3_block_2_1_running_var, False, 0.01, 0.001, False);  conv2d_10 = features_3_block_2_1_weight = features_3_block_2_1_bias = features_3_block_2_1_running_mean = features_3_block_2_1_running_var = None
+    add_ = torch.ops.aten.add_.Tensor(batch_norm_8, batch_norm_5);  batch_norm_8 = batch_norm_5 = None
+    conv2d_11 = torch.ops.aten.conv2d.default(add_, features_4_block_0_0_weight);  add_ = features_4_block_0_0_weight = None
+    batch_norm_9 = torch.ops.aten.batch_norm.default(conv2d_11, features_4_block_0_1_weight, features_4_block_0_1_bias, features_4_block_0_1_running_mean, features_4_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_11 = features_4_block_0_1_weight = features_4_block_0_1_bias = features_4_block_0_1_running_mean = features_4_block_0_1_running_var = None
+    hardswish__1 = torch.ops.aten.hardswish_.default(batch_norm_9);  batch_norm_9 = None
+    conv2d_12 = torch.ops.aten.conv2d.default(hardswish__1, features_4_block_1_0_weight, None, [2, 2], [2, 2], [1, 1], 96);  hardswish__1 = features_4_block_1_0_weight = None
+    batch_norm_10 = torch.ops.aten.batch_norm.default(conv2d_12, features_4_block_1_1_weight, features_4_block_1_1_bias, features_4_block_1_1_running_mean, features_4_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_12 = features_4_block_1_1_weight = features_4_block_1_1_bias = features_4_block_1_1_running_mean = features_4_block_1_1_running_var = None
+    hardswish__2 = torch.ops.aten.hardswish_.default(batch_norm_10);  batch_norm_10 = None
+    adaptive_avg_pool2d_1 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__2, [1, 1])
+    conv2d_13 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_1, features_4_block_2_fc1_weight, features_4_block_2_fc1_bias);  adaptive_avg_pool2d_1 = features_4_block_2_fc1_weight = features_4_block_2_fc1_bias = None
+    relu_1 = torch.ops.aten.relu.default(conv2d_13);  conv2d_13 = None
+    conv2d_14 = torch.ops.aten.conv2d.default(relu_1, features_4_block_2_fc2_weight, features_4_block_2_fc2_bias);  relu_1 = features_4_block_2_fc2_weight = features_4_block_2_fc2_bias = None
+    hardsigmoid_1 = torch.ops.aten.hardsigmoid.default(conv2d_14);  conv2d_14 = None
+    mul_1 = torch.ops.aten.mul.Tensor(hardsigmoid_1, hardswish__2);  hardsigmoid_1 = hardswish__2 = None
+    conv2d_15 = torch.ops.aten.conv2d.default(mul_1, features_4_block_3_0_weight);  mul_1 = features_4_block_3_0_weight = None
+    batch_norm_11 = torch.ops.aten.batch_norm.default(conv2d_15, features_4_block_3_1_weight, features_4_block_3_1_bias, features_4_block_3_1_running_mean, features_4_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_15 = features_4_block_3_1_weight = features_4_block_3_1_bias = features_4_block_3_1_running_mean = features_4_block_3_1_running_var = None
+    conv2d_16 = torch.ops.aten.conv2d.default(batch_norm_11, features_5_block_0_0_weight);  features_5_block_0_0_weight = None
+    batch_norm_12 = torch.ops.aten.batch_norm.default(conv2d_16, features_5_block_0_1_weight, features_5_block_0_1_bias, features_5_block_0_1_running_mean, features_5_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_16 = features_5_block_0_1_weight = features_5_block_0_1_bias = features_5_block_0_1_running_mean = features_5_block_0_1_running_var = None
+    hardswish__3 = torch.ops.aten.hardswish_.default(batch_norm_12);  batch_norm_12 = None
+    conv2d_17 = torch.ops.aten.conv2d.default(hardswish__3, features_5_block_1_0_weight, None, [1, 1], [2, 2], [1, 1], 240);  hardswish__3 = features_5_block_1_0_weight = None
+    batch_norm_13 = torch.ops.aten.batch_norm.default(conv2d_17, features_5_block_1_1_weight, features_5_block_1_1_bias, features_5_block_1_1_running_mean, features_5_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_17 = features_5_block_1_1_weight = features_5_block_1_1_bias = features_5_block_1_1_running_mean = features_5_block_1_1_running_var = None
+    hardswish__4 = torch.ops.aten.hardswish_.default(batch_norm_13);  batch_norm_13 = None
+    adaptive_avg_pool2d_2 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__4, [1, 1])
+    conv2d_18 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_2, features_5_block_2_fc1_weight, features_5_block_2_fc1_bias);  adaptive_avg_pool2d_2 = features_5_block_2_fc1_weight = features_5_block_2_fc1_bias = None
+    relu_2 = torch.ops.aten.relu.default(conv2d_18);  conv2d_18 = None
+    conv2d_19 = torch.ops.aten.conv2d.default(relu_2, features_5_block_2_fc2_weight, features_5_block_2_fc2_bias);  relu_2 = features_5_block_2_fc2_weight = features_5_block_2_fc2_bias = None
+    hardsigmoid_2 = torch.ops.aten.hardsigmoid.default(conv2d_19);  conv2d_19 = None
+    mul_2 = torch.ops.aten.mul.Tensor(hardsigmoid_2, hardswish__4);  hardsigmoid_2 = hardswish__4 = None
+    conv2d_20 = torch.ops.aten.conv2d.default(mul_2, features_5_block_3_0_weight);  mul_2 = features_5_block_3_0_weight = None
+    batch_norm_14 = torch.ops.aten.batch_norm.default(conv2d_20, features_5_block_3_1_weight, features_5_block_3_1_bias, features_5_block_3_1_running_mean, features_5_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_20 = features_5_block_3_1_weight = features_5_block_3_1_bias = features_5_block_3_1_running_mean = features_5_block_3_1_running_var = None
+    add__1 = torch.ops.aten.add_.Tensor(batch_norm_14, batch_norm_11);  batch_norm_14 = batch_norm_11 = None
+    conv2d_21 = torch.ops.aten.conv2d.default(add__1, features_6_block_0_0_weight);  features_6_block_0_0_weight = None
+    batch_norm_15 = torch.ops.aten.batch_norm.default(conv2d_21, features_6_block_0_1_weight, features_6_block_0_1_bias, features_6_block_0_1_running_mean, features_6_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_21 = features_6_block_0_1_weight = features_6_block_0_1_bias = features_6_block_0_1_running_mean = features_6_block_0_1_running_var = None
+    hardswish__5 = torch.ops.aten.hardswish_.default(batch_norm_15);  batch_norm_15 = None
+    conv2d_22 = torch.ops.aten.conv2d.default(hardswish__5, features_6_block_1_0_weight, None, [1, 1], [2, 2], [1, 1], 240);  hardswish__5 = features_6_block_1_0_weight = None
+    batch_norm_16 = torch.ops.aten.batch_norm.default(conv2d_22, features_6_block_1_1_weight, features_6_block_1_1_bias, features_6_block_1_1_running_mean, features_6_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_22 = features_6_block_1_1_weight = features_6_block_1_1_bias = features_6_block_1_1_running_mean = features_6_block_1_1_running_var = None
+    hardswish__6 = torch.ops.aten.hardswish_.default(batch_norm_16);  batch_norm_16 = None
+    adaptive_avg_pool2d_3 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__6, [1, 1])
+    conv2d_23 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_3, features_6_block_2_fc1_weight, features_6_block_2_fc1_bias);  adaptive_avg_pool2d_3 = features_6_block_2_fc1_weight = features_6_block_2_fc1_bias = None
+    relu_3 = torch.ops.aten.relu.default(conv2d_23);  conv2d_23 = None
+    conv2d_24 = torch.ops.aten.conv2d.default(relu_3, features_6_block_2_fc2_weight, features_6_block_2_fc2_bias);  relu_3 = features_6_block_2_fc2_weight = features_6_block_2_fc2_bias = None
+    hardsigmoid_3 = torch.ops.aten.hardsigmoid.default(conv2d_24);  conv2d_24 = None
+    mul_3 = torch.ops.aten.mul.Tensor(hardsigmoid_3, hardswish__6);  hardsigmoid_3 = hardswish__6 = None
+    conv2d_25 = torch.ops.aten.conv2d.default(mul_3, features_6_block_3_0_weight);  mul_3 = features_6_block_3_0_weight = None
+    batch_norm_17 = torch.ops.aten.batch_norm.default(conv2d_25, features_6_block_3_1_weight, features_6_block_3_1_bias, features_6_block_3_1_running_mean, features_6_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_25 = features_6_block_3_1_weight = features_6_block_3_1_bias = features_6_block_3_1_running_mean = features_6_block_3_1_running_var = None
+    add__2 = torch.ops.aten.add_.Tensor(batch_norm_17, add__1);  batch_norm_17 = add__1 = None
+    conv2d_26 = torch.ops.aten.conv2d.default(add__2, features_7_block_0_0_weight);  add__2 = features_7_block_0_0_weight = None
+    batch_norm_18 = torch.ops.aten.batch_norm.default(conv2d_26, features_7_block_0_1_weight, features_7_block_0_1_bias, features_7_block_0_1_running_mean, features_7_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_26 = features_7_block_0_1_weight = features_7_block_0_1_bias = features_7_block_0_1_running_mean = features_7_block_0_1_running_var = None
+    hardswish__7 = torch.ops.aten.hardswish_.default(batch_norm_18);  batch_norm_18 = None
+    conv2d_27 = torch.ops.aten.conv2d.default(hardswish__7, features_7_block_1_0_weight, None, [1, 1], [2, 2], [1, 1], 120);  hardswish__7 = features_7_block_1_0_weight = None
+    batch_norm_19 = torch.ops.aten.batch_norm.default(conv2d_27, features_7_block_1_1_weight, features_7_block_1_1_bias, features_7_block_1_1_running_mean, features_7_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_27 = features_7_block_1_1_weight = features_7_block_1_1_bias = features_7_block_1_1_running_mean = features_7_block_1_1_running_var = None
+    hardswish__8 = torch.ops.aten.hardswish_.default(batch_norm_19);  batch_norm_19 = None
+    adaptive_avg_pool2d_4 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__8, [1, 1])
+    conv2d_28 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_4, features_7_block_2_fc1_weight, features_7_block_2_fc1_bias);  adaptive_avg_pool2d_4 = features_7_block_2_fc1_weight = features_7_block_2_fc1_bias = None
+    relu_4 = torch.ops.aten.relu.default(conv2d_28);  conv2d_28 = None
+    conv2d_29 = torch.ops.aten.conv2d.default(relu_4, features_7_block_2_fc2_weight, features_7_block_2_fc2_bias);  relu_4 = features_7_block_2_fc2_weight = features_7_block_2_fc2_bias = None
+    hardsigmoid_4 = torch.ops.aten.hardsigmoid.default(conv2d_29);  conv2d_29 = None
+    mul_4 = torch.ops.aten.mul.Tensor(hardsigmoid_4, hardswish__8);  hardsigmoid_4 = hardswish__8 = None
+    conv2d_30 = torch.ops.aten.conv2d.default(mul_4, features_7_block_3_0_weight);  mul_4 = features_7_block_3_0_weight = None
+    batch_norm_20 = torch.ops.aten.batch_norm.default(conv2d_30, features_7_block_3_1_weight, features_7_block_3_1_bias, features_7_block_3_1_running_mean, features_7_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_30 = features_7_block_3_1_weight = features_7_block_3_1_bias = features_7_block_3_1_running_mean = features_7_block_3_1_running_var = None
+    conv2d_31 = torch.ops.aten.conv2d.default(batch_norm_20, features_8_block_0_0_weight);  features_8_block_0_0_weight = None
+    batch_norm_21 = torch.ops.aten.batch_norm.default(conv2d_31, features_8_block_0_1_weight, features_8_block_0_1_bias, features_8_block_0_1_running_mean, features_8_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_31 = features_8_block_0_1_weight = features_8_block_0_1_bias = features_8_block_0_1_running_mean = features_8_block_0_1_running_var = None
+    hardswish__9 = torch.ops.aten.hardswish_.default(batch_norm_21);  batch_norm_21 = None
+    conv2d_32 = torch.ops.aten.conv2d.default(hardswish__9, features_8_block_1_0_weight, None, [1, 1], [2, 2], [1, 1], 144);  hardswish__9 = features_8_block_1_0_weight = None
+    batch_norm_22 = torch.ops.aten.batch_norm.default(conv2d_32, features_8_block_1_1_weight, features_8_block_1_1_bias, features_8_block_1_1_running_mean, features_8_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_32 = features_8_block_1_1_weight = features_8_block_1_1_bias = features_8_block_1_1_running_mean = features_8_block_1_1_running_var = None
+    hardswish__10 = torch.ops.aten.hardswish_.default(batch_norm_22);  batch_norm_22 = None
+    adaptive_avg_pool2d_5 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__10, [1, 1])
+    conv2d_33 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_5, features_8_block_2_fc1_weight, features_8_block_2_fc1_bias);  adaptive_avg_pool2d_5 = features_8_block_2_fc1_weight = features_8_block_2_fc1_bias = None
+    relu_5 = torch.ops.aten.relu.default(conv2d_33);  conv2d_33 = None
+    conv2d_34 = torch.ops.aten.conv2d.default(relu_5, features_8_block_2_fc2_weight, features_8_block_2_fc2_bias);  relu_5 = features_8_block_2_fc2_weight = features_8_block_2_fc2_bias = None
+    hardsigmoid_5 = torch.ops.aten.hardsigmoid.default(conv2d_34);  conv2d_34 = None
+    mul_5 = torch.ops.aten.mul.Tensor(hardsigmoid_5, hardswish__10);  hardsigmoid_5 = hardswish__10 = None
+    conv2d_35 = torch.ops.aten.conv2d.default(mul_5, features_8_block_3_0_weight);  mul_5 = features_8_block_3_0_weight = None
+    batch_norm_23 = torch.ops.aten.batch_norm.default(conv2d_35, features_8_block_3_1_weight, features_8_block_3_1_bias, features_8_block_3_1_running_mean, features_8_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_35 = features_8_block_3_1_weight = features_8_block_3_1_bias = features_8_block_3_1_running_mean = features_8_block_3_1_running_var = None
+    add__3 = torch.ops.aten.add_.Tensor(batch_norm_23, batch_norm_20);  batch_norm_23 = batch_norm_20 = None
+    conv2d_36 = torch.ops.aten.conv2d.default(add__3, features_9_block_0_0_weight);  add__3 = features_9_block_0_0_weight = None
+    batch_norm_24 = torch.ops.aten.batch_norm.default(conv2d_36, features_9_block_0_1_weight, features_9_block_0_1_bias, features_9_block_0_1_running_mean, features_9_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_36 = features_9_block_0_1_weight = features_9_block_0_1_bias = features_9_block_0_1_running_mean = features_9_block_0_1_running_var = None
+    hardswish__11 = torch.ops.aten.hardswish_.default(batch_norm_24);  batch_norm_24 = None
+    conv2d_37 = torch.ops.aten.conv2d.default(hardswish__11, features_9_block_1_0_weight, None, [2, 2], [2, 2], [1, 1], 288);  hardswish__11 = features_9_block_1_0_weight = None
+    batch_norm_25 = torch.ops.aten.batch_norm.default(conv2d_37, features_9_block_1_1_weight, features_9_block_1_1_bias, features_9_block_1_1_running_mean, features_9_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_37 = features_9_block_1_1_weight = features_9_block_1_1_bias = features_9_block_1_1_running_mean = features_9_block_1_1_running_var = None
+    hardswish__12 = torch.ops.aten.hardswish_.default(batch_norm_25);  batch_norm_25 = None
+    adaptive_avg_pool2d_6 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__12, [1, 1])
+    conv2d_38 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_6, features_9_block_2_fc1_weight, features_9_block_2_fc1_bias);  adaptive_avg_pool2d_6 = features_9_block_2_fc1_weight = features_9_block_2_fc1_bias = None
+    relu_6 = torch.ops.aten.relu.default(conv2d_38);  conv2d_38 = None
+    conv2d_39 = torch.ops.aten.conv2d.default(relu_6, features_9_block_2_fc2_weight, features_9_block_2_fc2_bias);  relu_6 = features_9_block_2_fc2_weight = features_9_block_2_fc2_bias = None
+    hardsigmoid_6 = torch.ops.aten.hardsigmoid.default(conv2d_39);  conv2d_39 = None
+    mul_6 = torch.ops.aten.mul.Tensor(hardsigmoid_6, hardswish__12);  hardsigmoid_6 = hardswish__12 = None
+    conv2d_40 = torch.ops.aten.conv2d.default(mul_6, features_9_block_3_0_weight);  mul_6 = features_9_block_3_0_weight = None
+    batch_norm_26 = torch.ops.aten.batch_norm.default(conv2d_40, features_9_block_3_1_weight, features_9_block_3_1_bias, features_9_block_3_1_running_mean, features_9_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_40 = features_9_block_3_1_weight = features_9_block_3_1_bias = features_9_block_3_1_running_mean = features_9_block_3_1_running_var = None
+    conv2d_41 = torch.ops.aten.conv2d.default(batch_norm_26, features_10_block_0_0_weight);  features_10_block_0_0_weight = None
+    batch_norm_27 = torch.ops.aten.batch_norm.default(conv2d_41, features_10_block_0_1_weight, features_10_block_0_1_bias, features_10_block_0_1_running_mean, features_10_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_41 = features_10_block_0_1_weight = features_10_block_0_1_bias = features_10_block_0_1_running_mean = features_10_block_0_1_running_var = None
+    hardswish__13 = torch.ops.aten.hardswish_.default(batch_norm_27);  batch_norm_27 = None
+    conv2d_42 = torch.ops.aten.conv2d.default(hardswish__13, features_10_block_1_0_weight, None, [1, 1], [2, 2], [1, 1], 576);  hardswish__13 = features_10_block_1_0_weight = None
+    batch_norm_28 = torch.ops.aten.batch_norm.default(conv2d_42, features_10_block_1_1_weight, features_10_block_1_1_bias, features_10_block_1_1_running_mean, features_10_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_42 = features_10_block_1_1_weight = features_10_block_1_1_bias = features_10_block_1_1_running_mean = features_10_block_1_1_running_var = None
+    hardswish__14 = torch.ops.aten.hardswish_.default(batch_norm_28);  batch_norm_28 = None
+    adaptive_avg_pool2d_7 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__14, [1, 1])
+    conv2d_43 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_7, features_10_block_2_fc1_weight, features_10_block_2_fc1_bias);  adaptive_avg_pool2d_7 = features_10_block_2_fc1_weight = features_10_block_2_fc1_bias = None
+    relu_7 = torch.ops.aten.relu.default(conv2d_43);  conv2d_43 = None
+    conv2d_44 = torch.ops.aten.conv2d.default(relu_7, features_10_block_2_fc2_weight, features_10_block_2_fc2_bias);  relu_7 = features_10_block_2_fc2_weight = features_10_block_2_fc2_bias = None
+    hardsigmoid_7 = torch.ops.aten.hardsigmoid.default(conv2d_44);  conv2d_44 = None
+    mul_7 = torch.ops.aten.mul.Tensor(hardsigmoid_7, hardswish__14);  hardsigmoid_7 = hardswish__14 = None
+    conv2d_45 = torch.ops.aten.conv2d.default(mul_7, features_10_block_3_0_weight);  mul_7 = features_10_block_3_0_weight = None
+    batch_norm_29 = torch.ops.aten.batch_norm.default(conv2d_45, features_10_block_3_1_weight, features_10_block_3_1_bias, features_10_block_3_1_running_mean, features_10_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_45 = features_10_block_3_1_weight = features_10_block_3_1_bias = features_10_block_3_1_running_mean = features_10_block_3_1_running_var = None
+    add__4 = torch.ops.aten.add_.Tensor(batch_norm_29, batch_norm_26);  batch_norm_29 = batch_norm_26 = None
+    conv2d_46 = torch.ops.aten.conv2d.default(add__4, features_11_block_0_0_weight);  features_11_block_0_0_weight = None
+    batch_norm_30 = torch.ops.aten.batch_norm.default(conv2d_46, features_11_block_0_1_weight, features_11_block_0_1_bias, features_11_block_0_1_running_mean, features_11_block_0_1_running_var, False, 0.01, 0.001, False);  conv2d_46 = features_11_block_0_1_weight = features_11_block_0_1_bias = features_11_block_0_1_running_mean = features_11_block_0_1_running_var = None
+    hardswish__15 = torch.ops.aten.hardswish_.default(batch_norm_30);  batch_norm_30 = None
+    conv2d_47 = torch.ops.aten.conv2d.default(hardswish__15, features_11_block_1_0_weight, None, [1, 1], [2, 2], [1, 1], 576);  hardswish__15 = features_11_block_1_0_weight = None
+    batch_norm_31 = torch.ops.aten.batch_norm.default(conv2d_47, features_11_block_1_1_weight, features_11_block_1_1_bias, features_11_block_1_1_running_mean, features_11_block_1_1_running_var, False, 0.01, 0.001, False);  conv2d_47 = features_11_block_1_1_weight = features_11_block_1_1_bias = features_11_block_1_1_running_mean = features_11_block_1_1_running_var = None
+    hardswish__16 = torch.ops.aten.hardswish_.default(batch_norm_31);  batch_norm_31 = None
+    adaptive_avg_pool2d_8 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__16, [1, 1])
+    conv2d_48 = torch.ops.aten.conv2d.default(adaptive_avg_pool2d_8, features_11_block_2_fc1_weight, features_11_block_2_fc1_bias);  adaptive_avg_pool2d_8 = features_11_block_2_fc1_weight = features_11_block_2_fc1_bias = None
+    relu_8 = torch.ops.aten.relu.default(conv2d_48);  conv2d_48 = None
+    conv2d_49 = torch.ops.aten.conv2d.default(relu_8, features_11_block_2_fc2_weight, features_11_block_2_fc2_bias);  relu_8 = features_11_block_2_fc2_weight = features_11_block_2_fc2_bias = None
+    hardsigmoid_8 = torch.ops.aten.hardsigmoid.default(conv2d_49);  conv2d_49 = None
+    mul_8 = torch.ops.aten.mul.Tensor(hardsigmoid_8, hardswish__16);  hardsigmoid_8 = hardswish__16 = None
+    conv2d_50 = torch.ops.aten.conv2d.default(mul_8, features_11_block_3_0_weight);  mul_8 = features_11_block_3_0_weight = None
+    batch_norm_32 = torch.ops.aten.batch_norm.default(conv2d_50, features_11_block_3_1_weight, features_11_block_3_1_bias, features_11_block_3_1_running_mean, features_11_block_3_1_running_var, False, 0.01, 0.001, False);  conv2d_50 = features_11_block_3_1_weight = features_11_block_3_1_bias = features_11_block_3_1_running_mean = features_11_block_3_1_running_var = None
+    add__5 = torch.ops.aten.add_.Tensor(batch_norm_32, add__4);  batch_norm_32 = add__4 = None
+    conv2d_51 = torch.ops.aten.conv2d.default(add__5, features_12_0_weight);  add__5 = features_12_0_weight = None
+    batch_norm_33 = torch.ops.aten.batch_norm.default(conv2d_51, features_12_1_weight, features_12_1_bias, features_12_1_running_mean, features_12_1_running_var, False, 0.01, 0.001, False);  conv2d_51 = features_12_1_weight = features_12_1_bias = features_12_1_running_mean = features_12_1_running_var = None
+    hardswish__17 = torch.ops.aten.hardswish_.default(batch_norm_33);  batch_norm_33 = None
+    adaptive_avg_pool2d_9 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__17, [1, 1]);  hardswish__17 = None
+    flatten = torch.ops.aten.flatten.using_ints(adaptive_avg_pool2d_9, 1);  adaptive_avg_pool2d_9 = None
+    linear = torch.ops.aten.linear.default(flatten, classifier_0_weight, classifier_0_bias);  flatten = classifier_0_weight = classifier_0_bias = None
+    hardswish__18 = torch.ops.aten.hardswish_.default(linear);  linear = None
+    dropout_ = torch.ops.aten.dropout_.default(hardswish__18, 0.2, False);  hardswish__18 = None
+    linear_1 = torch.ops.aten.linear.default(dropout_, classifier_3_weight, classifier_3_bias);  dropout_ = classifier_3_weight = classifier_3_bias = None
+    return pytree.tree_unflatten((linear_1,), self._out_spec)
+    
+# To see more debug info, please use `graph_module.print_readable()`
+[Observatory] Collected Annotated Model in 366.3 ms
+[Observatory] Collected Calibrated Model in 66.0 ms
+[Observatory] Collected Quantized Model in 100.8 ms
+Quantized model: GraphModule(
+  (features): Module(
+    (0): Module(
+      (0): Module()
+    )
+    (1): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (2): Module(
+          (0): Module()
+        )
+      )
+    )
+    (2): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (0): Module()
+        )
+      )
+    )
+    (3): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (0): Module()
+        )
+      )
+    )
+    (4): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (5): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (6): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (7): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (8): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (9): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (10): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (11): Module(
+      (block): Module(
+        (0): Module(
+          (0): Module()
+        )
+        (1): Module(
+          (0): Module()
+        )
+        (2): Module(
+          (fc1): Module()
+          (fc2): Module()
+        )
+        (3): Module(
+          (0): Module()
+        )
+      )
+    )
+    (12): Module(
+      (0): Module()
+    )
+  )
+  (classifier): Module(
+    (0): Module()
+    (3): Module()
+  )
+)
+
+
+
+def forward(self, x):
+    x, = fx_pytree.tree_flatten_spec(([x], {}), self._in_spec)
+    _scale_0 = self._scale_0
+    _zero_point_0 = self._zero_point_0
+    quantize_per_channel_default = self._frozen_param0
+    dequantize_per_channel_default = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default, _scale_0, _zero_point_0, 0, -127, 127, torch.int8);  quantize_per_channel_default = _scale_0 = _zero_point_0 = None
+    _scale_1 = self._scale_1
+    _zero_point_1 = self._zero_point_1
+    quantize_per_channel_default_1 = self._frozen_param1
+    dequantize_per_channel_default_1 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_1, _scale_1, _zero_point_1, 0, -127, 127, torch.int8);  quantize_per_channel_default_1 = _scale_1 = _zero_point_1 = None
+    _scale_2 = self._scale_2
+    _zero_point_2 = self._zero_point_2
+    quantize_per_channel_default_2 = self._frozen_param2
+    dequantize_per_channel_default_2 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_2, _scale_2, _zero_point_2, 0, -127, 127, torch.int8);  quantize_per_channel_default_2 = _scale_2 = _zero_point_2 = None
+    features_1_block_1_fc1_bias = getattr(getattr(self.features, "1").block, "1").fc1.bias
+    _scale_3 = self._scale_3
+    _zero_point_3 = self._zero_point_3
+    quantize_per_channel_default_3 = self._frozen_param3
+    dequantize_per_channel_default_3 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_3, _scale_3, _zero_point_3, 0, -127, 127, torch.int8);  quantize_per_channel_default_3 = _scale_3 = _zero_point_3 = None
+    features_1_block_1_fc2_bias = getattr(getattr(self.features, "1").block, "1").fc2.bias
+    _scale_4 = self._scale_4
+    _zero_point_4 = self._zero_point_4
+    quantize_per_channel_default_4 = self._frozen_param4
+    dequantize_per_channel_default_4 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_4, _scale_4, _zero_point_4, 0, -127, 127, torch.int8);  quantize_per_channel_default_4 = _scale_4 = _zero_point_4 = None
+    _scale_5 = self._scale_5
+    _zero_point_5 = self._zero_point_5
+    quantize_per_channel_default_5 = self._frozen_param5
+    dequantize_per_channel_default_5 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_5, _scale_5, _zero_point_5, 0, -127, 127, torch.int8);  quantize_per_channel_default_5 = _scale_5 = _zero_point_5 = None
+    _scale_6 = self._scale_6
+    _zero_point_6 = self._zero_point_6
+    quantize_per_channel_default_6 = self._frozen_param6
+    dequantize_per_channel_default_6 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_6, _scale_6, _zero_point_6, 0, -127, 127, torch.int8);  quantize_per_channel_default_6 = _scale_6 = _zero_point_6 = None
+    _scale_7 = self._scale_7
+    _zero_point_7 = self._zero_point_7
+    quantize_per_channel_default_7 = self._frozen_param7
+    dequantize_per_channel_default_7 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_7, _scale_7, _zero_point_7, 0, -127, 127, torch.int8);  quantize_per_channel_default_7 = _scale_7 = _zero_point_7 = None
+    _scale_8 = self._scale_8
+    _zero_point_8 = self._zero_point_8
+    quantize_per_channel_default_8 = self._frozen_param8
+    dequantize_per_channel_default_8 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_8, _scale_8, _zero_point_8, 0, -127, 127, torch.int8);  quantize_per_channel_default_8 = _scale_8 = _zero_point_8 = None
+    _scale_9 = self._scale_9
+    _zero_point_9 = self._zero_point_9
+    quantize_per_channel_default_9 = self._frozen_param9
+    dequantize_per_channel_default_9 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_9, _scale_9, _zero_point_9, 0, -127, 127, torch.int8);  quantize_per_channel_default_9 = _scale_9 = _zero_point_9 = None
+    _scale_10 = self._scale_10
+    _zero_point_10 = self._zero_point_10
+    quantize_per_channel_default_10 = self._frozen_param10
+    dequantize_per_channel_default_10 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_10, _scale_10, _zero_point_10, 0, -127, 127, torch.int8);  quantize_per_channel_default_10 = _scale_10 = _zero_point_10 = None
+    _scale_11 = self._scale_11
+    _zero_point_11 = self._zero_point_11
+    quantize_per_channel_default_11 = self._frozen_param11
+    dequantize_per_channel_default_11 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_11, _scale_11, _zero_point_11, 0, -127, 127, torch.int8);  quantize_per_channel_default_11 = _scale_11 = _zero_point_11 = None
+    _scale_12 = self._scale_12
+    _zero_point_12 = self._zero_point_12
+    quantize_per_channel_default_12 = self._frozen_param12
+    dequantize_per_channel_default_12 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_12, _scale_12, _zero_point_12, 0, -127, 127, torch.int8);  quantize_per_channel_default_12 = _scale_12 = _zero_point_12 = None
+    _scale_13 = self._scale_13
+    _zero_point_13 = self._zero_point_13
+    quantize_per_channel_default_13 = self._frozen_param13
+    dequantize_per_channel_default_13 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_13, _scale_13, _zero_point_13, 0, -127, 127, torch.int8);  quantize_per_channel_default_13 = _scale_13 = _zero_point_13 = None
+    features_4_block_2_fc1_bias = getattr(getattr(self.features, "4").block, "2").fc1.bias
+    _scale_14 = self._scale_14
+    _zero_point_14 = self._zero_point_14
+    quantize_per_channel_default_14 = self._frozen_param14
+    dequantize_per_channel_default_14 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_14, _scale_14, _zero_point_14, 0, -127, 127, torch.int8);  quantize_per_channel_default_14 = _scale_14 = _zero_point_14 = None
+    features_4_block_2_fc2_bias = getattr(getattr(self.features, "4").block, "2").fc2.bias
+    _scale_15 = self._scale_15
+    _zero_point_15 = self._zero_point_15
+    quantize_per_channel_default_15 = self._frozen_param15
+    dequantize_per_channel_default_15 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_15, _scale_15, _zero_point_15, 0, -127, 127, torch.int8);  quantize_per_channel_default_15 = _scale_15 = _zero_point_15 = None
+    _scale_16 = self._scale_16
+    _zero_point_16 = self._zero_point_16
+    quantize_per_channel_default_16 = self._frozen_param16
+    dequantize_per_channel_default_16 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_16, _scale_16, _zero_point_16, 0, -127, 127, torch.int8);  quantize_per_channel_default_16 = _scale_16 = _zero_point_16 = None
+    _scale_17 = self._scale_17
+    _zero_point_17 = self._zero_point_17
+    quantize_per_channel_default_17 = self._frozen_param17
+    dequantize_per_channel_default_17 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_17, _scale_17, _zero_point_17, 0, -127, 127, torch.int8);  quantize_per_channel_default_17 = _scale_17 = _zero_point_17 = None
+    _scale_18 = self._scale_18
+    _zero_point_18 = self._zero_point_18
+    quantize_per_channel_default_18 = self._frozen_param18
+    dequantize_per_channel_default_18 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_18, _scale_18, _zero_point_18, 0, -127, 127, torch.int8);  quantize_per_channel_default_18 = _scale_18 = _zero_point_18 = None
+    features_5_block_2_fc1_bias = getattr(getattr(self.features, "5").block, "2").fc1.bias
+    _scale_19 = self._scale_19
+    _zero_point_19 = self._zero_point_19
+    quantize_per_channel_default_19 = self._frozen_param19
+    dequantize_per_channel_default_19 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_19, _scale_19, _zero_point_19, 0, -127, 127, torch.int8);  quantize_per_channel_default_19 = _scale_19 = _zero_point_19 = None
+    features_5_block_2_fc2_bias = getattr(getattr(self.features, "5").block, "2").fc2.bias
+    _scale_20 = self._scale_20
+    _zero_point_20 = self._zero_point_20
+    quantize_per_channel_default_20 = self._frozen_param20
+    dequantize_per_channel_default_20 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_20, _scale_20, _zero_point_20, 0, -127, 127, torch.int8);  quantize_per_channel_default_20 = _scale_20 = _zero_point_20 = None
+    _scale_21 = self._scale_21
+    _zero_point_21 = self._zero_point_21
+    quantize_per_channel_default_21 = self._frozen_param21
+    dequantize_per_channel_default_21 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_21, _scale_21, _zero_point_21, 0, -127, 127, torch.int8);  quantize_per_channel_default_21 = _scale_21 = _zero_point_21 = None
+    _scale_22 = self._scale_22
+    _zero_point_22 = self._zero_point_22
+    quantize_per_channel_default_22 = self._frozen_param22
+    dequantize_per_channel_default_22 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_22, _scale_22, _zero_point_22, 0, -127, 127, torch.int8);  quantize_per_channel_default_22 = _scale_22 = _zero_point_22 = None
+    _scale_23 = self._scale_23
+    _zero_point_23 = self._zero_point_23
+    quantize_per_channel_default_23 = self._frozen_param23
+    dequantize_per_channel_default_23 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_23, _scale_23, _zero_point_23, 0, -127, 127, torch.int8);  quantize_per_channel_default_23 = _scale_23 = _zero_point_23 = None
+    features_6_block_2_fc1_bias = getattr(getattr(self.features, "6").block, "2").fc1.bias
+    _scale_24 = self._scale_24
+    _zero_point_24 = self._zero_point_24
+    quantize_per_channel_default_24 = self._frozen_param24
+    dequantize_per_channel_default_24 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_24, _scale_24, _zero_point_24, 0, -127, 127, torch.int8);  quantize_per_channel_default_24 = _scale_24 = _zero_point_24 = None
+    features_6_block_2_fc2_bias = getattr(getattr(self.features, "6").block, "2").fc2.bias
+    _scale_25 = self._scale_25
+    _zero_point_25 = self._zero_point_25
+    quantize_per_channel_default_25 = self._frozen_param25
+    dequantize_per_channel_default_25 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_25, _scale_25, _zero_point_25, 0, -127, 127, torch.int8);  quantize_per_channel_default_25 = _scale_25 = _zero_point_25 = None
+    _scale_26 = self._scale_26
+    _zero_point_26 = self._zero_point_26
+    quantize_per_channel_default_26 = self._frozen_param26
+    dequantize_per_channel_default_26 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_26, _scale_26, _zero_point_26, 0, -127, 127, torch.int8);  quantize_per_channel_default_26 = _scale_26 = _zero_point_26 = None
+    _scale_27 = self._scale_27
+    _zero_point_27 = self._zero_point_27
+    quantize_per_channel_default_27 = self._frozen_param27
+    dequantize_per_channel_default_27 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_27, _scale_27, _zero_point_27, 0, -127, 127, torch.int8);  quantize_per_channel_default_27 = _scale_27 = _zero_point_27 = None
+    _scale_28 = self._scale_28
+    _zero_point_28 = self._zero_point_28
+    quantize_per_channel_default_28 = self._frozen_param28
+    dequantize_per_channel_default_28 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_28, _scale_28, _zero_point_28, 0, -127, 127, torch.int8);  quantize_per_channel_default_28 = _scale_28 = _zero_point_28 = None
+    features_7_block_2_fc1_bias = getattr(getattr(self.features, "7").block, "2").fc1.bias
+    _scale_29 = self._scale_29
+    _zero_point_29 = self._zero_point_29
+    quantize_per_channel_default_29 = self._frozen_param29
+    dequantize_per_channel_default_29 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_29, _scale_29, _zero_point_29, 0, -127, 127, torch.int8);  quantize_per_channel_default_29 = _scale_29 = _zero_point_29 = None
+    features_7_block_2_fc2_bias = getattr(getattr(self.features, "7").block, "2").fc2.bias
+    _scale_30 = self._scale_30
+    _zero_point_30 = self._zero_point_30
+    quantize_per_channel_default_30 = self._frozen_param30
+    dequantize_per_channel_default_30 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_30, _scale_30, _zero_point_30, 0, -127, 127, torch.int8);  quantize_per_channel_default_30 = _scale_30 = _zero_point_30 = None
+    _scale_31 = self._scale_31
+    _zero_point_31 = self._zero_point_31
+    quantize_per_channel_default_31 = self._frozen_param31
+    dequantize_per_channel_default_31 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_31, _scale_31, _zero_point_31, 0, -127, 127, torch.int8);  quantize_per_channel_default_31 = _scale_31 = _zero_point_31 = None
+    _scale_32 = self._scale_32
+    _zero_point_32 = self._zero_point_32
+    quantize_per_channel_default_32 = self._frozen_param32
+    dequantize_per_channel_default_32 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_32, _scale_32, _zero_point_32, 0, -127, 127, torch.int8);  quantize_per_channel_default_32 = _scale_32 = _zero_point_32 = None
+    _scale_33 = self._scale_33
+    _zero_point_33 = self._zero_point_33
+    quantize_per_channel_default_33 = self._frozen_param33
+    dequantize_per_channel_default_33 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_33, _scale_33, _zero_point_33, 0, -127, 127, torch.int8);  quantize_per_channel_default_33 = _scale_33 = _zero_point_33 = None
+    features_8_block_2_fc1_bias = getattr(getattr(self.features, "8").block, "2").fc1.bias
+    _scale_34 = self._scale_34
+    _zero_point_34 = self._zero_point_34
+    quantize_per_channel_default_34 = self._frozen_param34
+    dequantize_per_channel_default_34 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_34, _scale_34, _zero_point_34, 0, -127, 127, torch.int8);  quantize_per_channel_default_34 = _scale_34 = _zero_point_34 = None
+    features_8_block_2_fc2_bias = getattr(getattr(self.features, "8").block, "2").fc2.bias
+    _scale_35 = self._scale_35
+    _zero_point_35 = self._zero_point_35
+    quantize_per_channel_default_35 = self._frozen_param35
+    dequantize_per_channel_default_35 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_35, _scale_35, _zero_point_35, 0, -127, 127, torch.int8);  quantize_per_channel_default_35 = _scale_35 = _zero_point_35 = None
+    _scale_36 = self._scale_36
+    _zero_point_36 = self._zero_point_36
+    quantize_per_channel_default_36 = self._frozen_param36
+    dequantize_per_channel_default_36 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_36, _scale_36, _zero_point_36, 0, -127, 127, torch.int8);  quantize_per_channel_default_36 = _scale_36 = _zero_point_36 = None
+    _scale_37 = self._scale_37
+    _zero_point_37 = self._zero_point_37
+    quantize_per_channel_default_37 = self._frozen_param37
+    dequantize_per_channel_default_37 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_37, _scale_37, _zero_point_37, 0, -127, 127, torch.int8);  quantize_per_channel_default_37 = _scale_37 = _zero_point_37 = None
+    _scale_38 = self._scale_38
+    _zero_point_38 = self._zero_point_38
+    quantize_per_channel_default_38 = self._frozen_param38
+    dequantize_per_channel_default_38 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_38, _scale_38, _zero_point_38, 0, -127, 127, torch.int8);  quantize_per_channel_default_38 = _scale_38 = _zero_point_38 = None
+    features_9_block_2_fc1_bias = getattr(getattr(self.features, "9").block, "2").fc1.bias
+    _scale_39 = self._scale_39
+    _zero_point_39 = self._zero_point_39
+    quantize_per_channel_default_39 = self._frozen_param39
+    dequantize_per_channel_default_39 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_39, _scale_39, _zero_point_39, 0, -127, 127, torch.int8);  quantize_per_channel_default_39 = _scale_39 = _zero_point_39 = None
+    features_9_block_2_fc2_bias = getattr(getattr(self.features, "9").block, "2").fc2.bias
+    _scale_40 = self._scale_40
+    _zero_point_40 = self._zero_point_40
+    quantize_per_channel_default_40 = self._frozen_param40
+    dequantize_per_channel_default_40 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_40, _scale_40, _zero_point_40, 0, -127, 127, torch.int8);  quantize_per_channel_default_40 = _scale_40 = _zero_point_40 = None
+    _scale_41 = self._scale_41
+    _zero_point_41 = self._zero_point_41
+    quantize_per_channel_default_41 = self._frozen_param41
+    dequantize_per_channel_default_41 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_41, _scale_41, _zero_point_41, 0, -127, 127, torch.int8);  quantize_per_channel_default_41 = _scale_41 = _zero_point_41 = None
+    _scale_42 = self._scale_42
+    _zero_point_42 = self._zero_point_42
+    quantize_per_channel_default_42 = self._frozen_param42
+    dequantize_per_channel_default_42 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_42, _scale_42, _zero_point_42, 0, -127, 127, torch.int8);  quantize_per_channel_default_42 = _scale_42 = _zero_point_42 = None
+    _scale_43 = self._scale_43
+    _zero_point_43 = self._zero_point_43
+    quantize_per_channel_default_43 = self._frozen_param43
+    dequantize_per_channel_default_43 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_43, _scale_43, _zero_point_43, 0, -127, 127, torch.int8);  quantize_per_channel_default_43 = _scale_43 = _zero_point_43 = None
+    features_10_block_2_fc1_bias = getattr(getattr(self.features, "10").block, "2").fc1.bias
+    _scale_44 = self._scale_44
+    _zero_point_44 = self._zero_point_44
+    quantize_per_channel_default_44 = self._frozen_param44
+    dequantize_per_channel_default_44 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_44, _scale_44, _zero_point_44, 0, -127, 127, torch.int8);  quantize_per_channel_default_44 = _scale_44 = _zero_point_44 = None
+    features_10_block_2_fc2_bias = getattr(getattr(self.features, "10").block, "2").fc2.bias
+    _scale_45 = self._scale_45
+    _zero_point_45 = self._zero_point_45
+    quantize_per_channel_default_45 = self._frozen_param45
+    dequantize_per_channel_default_45 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_45, _scale_45, _zero_point_45, 0, -127, 127, torch.int8);  quantize_per_channel_default_45 = _scale_45 = _zero_point_45 = None
+    _scale_46 = self._scale_46
+    _zero_point_46 = self._zero_point_46
+    quantize_per_channel_default_46 = self._frozen_param46
+    dequantize_per_channel_default_46 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_46, _scale_46, _zero_point_46, 0, -127, 127, torch.int8);  quantize_per_channel_default_46 = _scale_46 = _zero_point_46 = None
+    _scale_47 = self._scale_47
+    _zero_point_47 = self._zero_point_47
+    quantize_per_channel_default_47 = self._frozen_param47
+    dequantize_per_channel_default_47 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_47, _scale_47, _zero_point_47, 0, -127, 127, torch.int8);  quantize_per_channel_default_47 = _scale_47 = _zero_point_47 = None
+    _scale_48 = self._scale_48
+    _zero_point_48 = self._zero_point_48
+    quantize_per_channel_default_48 = self._frozen_param48
+    dequantize_per_channel_default_48 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_48, _scale_48, _zero_point_48, 0, -127, 127, torch.int8);  quantize_per_channel_default_48 = _scale_48 = _zero_point_48 = None
+    features_11_block_2_fc1_bias = getattr(getattr(self.features, "11").block, "2").fc1.bias
+    _scale_49 = self._scale_49
+    _zero_point_49 = self._zero_point_49
+    quantize_per_channel_default_49 = self._frozen_param49
+    dequantize_per_channel_default_49 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_49, _scale_49, _zero_point_49, 0, -127, 127, torch.int8);  quantize_per_channel_default_49 = _scale_49 = _zero_point_49 = None
+    features_11_block_2_fc2_bias = getattr(getattr(self.features, "11").block, "2").fc2.bias
+    _scale_50 = self._scale_50
+    _zero_point_50 = self._zero_point_50
+    quantize_per_channel_default_50 = self._frozen_param50
+    dequantize_per_channel_default_50 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_50, _scale_50, _zero_point_50, 0, -127, 127, torch.int8);  quantize_per_channel_default_50 = _scale_50 = _zero_point_50 = None
+    _scale_51 = self._scale_51
+    _zero_point_51 = self._zero_point_51
+    quantize_per_channel_default_51 = self._frozen_param51
+    dequantize_per_channel_default_51 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_51, _scale_51, _zero_point_51, 0, -127, 127, torch.int8);  quantize_per_channel_default_51 = _scale_51 = _zero_point_51 = None
+    _scale_52 = self._scale_52
+    _zero_point_52 = self._zero_point_52
+    quantize_per_channel_default_52 = self._frozen_param52
+    dequantize_per_channel_default_52 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_52, _scale_52, _zero_point_52, 0, -127, 127, torch.int8);  quantize_per_channel_default_52 = _scale_52 = _zero_point_52 = None
+    classifier_0_bias = getattr(self.classifier, "0").bias
+    _scale_53 = self._scale_53
+    _zero_point_53 = self._zero_point_53
+    quantize_per_channel_default_53 = self._frozen_param53
+    dequantize_per_channel_default_53 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_53, _scale_53, _zero_point_53, 0, -127, 127, torch.int8);  quantize_per_channel_default_53 = _scale_53 = _zero_point_53 = None
+    classifier_3_bias = getattr(self.classifier, "3").bias
+    quantize_per_tensor_default = torch.ops.quantized_decomposed.quantize_per_tensor.default(x, 0.032079603523015976, 0, -128, 127, torch.int8);  x = None
+    dequantize_per_tensor_default = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default, 0.032079603523015976, 0, -128, 127, torch.int8);  quantize_per_tensor_default = None
+    features_0_0_weight_bias = getattr(getattr(self.features, "0"), "0").weight_bias
+    conv2d = torch.ops.aten.conv2d.default(dequantize_per_tensor_default, dequantize_per_channel_default, features_0_0_weight_bias, [2, 2], [1, 1]);  dequantize_per_tensor_default = dequantize_per_channel_default = features_0_0_weight_bias = None
+    quantize_per_tensor_default_1 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d, 0.8981484770774841, 0, -128, 127, torch.int8);  conv2d = None
+    dequantize_per_tensor_default_1 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_1, 0.8981484770774841, 0, -128, 127, torch.int8);  quantize_per_tensor_default_1 = None
+    hardswish_ = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_1);  dequantize_per_tensor_default_1 = None
+    quantize_per_tensor_default_2 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish_, 0.46762388944625854, -127, -128, 127, torch.int8);  hardswish_ = None
+    dequantize_per_tensor_default_2 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_2, 0.46762388944625854, -127, -128, 127, torch.int8);  quantize_per_tensor_default_2 = None
+    features_1_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "1").block, "0"), "0").weight_bias
+    conv2d_1 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_2, dequantize_per_channel_default_1, features_1_block_0_0_weight_bias, [2, 2], [1, 1], [1, 1], 16);  dequantize_per_tensor_default_2 = dequantize_per_channel_default_1 = features_1_block_0_0_weight_bias = None
+    relu_ = torch.ops.aten.relu_.default(conv2d_1);  conv2d_1 = None
+    quantize_per_tensor_default_3 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_, 0.03528895974159241, -128, -128, 127, torch.int8);  relu_ = None
+    dequantize_per_tensor_default_108 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_3, 0.03528895974159241, -128, -128, 127, torch.int8)
+    dequantize_per_tensor_default_107 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_3, 0.03528895974159241, -128, -128, 127, torch.int8);  quantize_per_tensor_default_3 = None
+    adaptive_avg_pool2d = torch.ops.aten.adaptive_avg_pool2d.default(dequantize_per_tensor_default_107, [1, 1]);  dequantize_per_tensor_default_107 = None
+    quantize_per_tensor_default_4 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d, 0.03528895974159241, -128, -128, 127, torch.int8);  adaptive_avg_pool2d = None
+    dequantize_per_tensor_default_4 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_4, 0.03528895974159241, -128, -128, 127, torch.int8);  quantize_per_tensor_default_4 = None
+    conv2d_2 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_4, dequantize_per_channel_default_2, features_1_block_1_fc1_bias);  dequantize_per_tensor_default_4 = dequantize_per_channel_default_2 = features_1_block_1_fc1_bias = None
+    relu = torch.ops.aten.relu.default(conv2d_2);  conv2d_2 = None
+    quantize_per_tensor_default_5 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu, 0.000244140625, -128, -128, 127, torch.int8);  relu = None
+    dequantize_per_tensor_default_5 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_5, 0.000244140625, -128, -128, 127, torch.int8);  quantize_per_tensor_default_5 = None
+    conv2d_3 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_5, dequantize_per_channel_default_3, features_1_block_1_fc2_bias);  dequantize_per_tensor_default_5 = dequantize_per_channel_default_3 = features_1_block_1_fc2_bias = None
+    quantize_per_tensor_default_6 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_3, 0.009770921431481838, -12, -128, 127, torch.int8);  conv2d_3 = None
+    dequantize_per_tensor_default_6 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_6, 0.009770921431481838, -12, -128, 127, torch.int8);  quantize_per_tensor_default_6 = None
+    hardsigmoid = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_6);  dequantize_per_tensor_default_6 = None
+    quantize_per_tensor_default_7 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid, 0.0028459904715418816, -128, -128, 127, torch.int8);  hardsigmoid = None
+    dequantize_per_tensor_default_7 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_7, 0.0028459904715418816, -128, -128, 127, torch.int8);  quantize_per_tensor_default_7 = None
+    mul = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_7, dequantize_per_tensor_default_108);  dequantize_per_tensor_default_7 = dequantize_per_tensor_default_108 = None
+    quantize_per_tensor_default_8 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul, 0.01572808064520359, -128, -128, 127, torch.int8);  mul = None
+    dequantize_per_tensor_default_8 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_8, 0.01572808064520359, -128, -128, 127, torch.int8);  quantize_per_tensor_default_8 = None
+    features_1_block_2_0_weight_bias = getattr(getattr(getattr(self.features, "1").block, "2"), "0").weight_bias
+    conv2d_4 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_8, dequantize_per_channel_default_4, features_1_block_2_0_weight_bias);  dequantize_per_tensor_default_8 = dequantize_per_channel_default_4 = features_1_block_2_0_weight_bias = None
+    quantize_per_tensor_default_9 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_4, 0.09802507609128952, -9, -128, 127, torch.int8);  conv2d_4 = None
+    dequantize_per_tensor_default_9 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_9, 0.09802507609128952, -9, -128, 127, torch.int8);  quantize_per_tensor_default_9 = None
+    features_2_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "2").block, "0"), "0").weight_bias
+    conv2d_5 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_9, dequantize_per_channel_default_5, features_2_block_0_0_weight_bias);  dequantize_per_tensor_default_9 = dequantize_per_channel_default_5 = features_2_block_0_0_weight_bias = None
+    relu__1 = torch.ops.aten.relu_.default(conv2d_5);  conv2d_5 = None
+    quantize_per_tensor_default_10 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__1, 0.03803905472159386, -128, -128, 127, torch.int8);  relu__1 = None
+    dequantize_per_tensor_default_10 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_10, 0.03803905472159386, -128, -128, 127, torch.int8);  quantize_per_tensor_default_10 = None
+    features_2_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "2").block, "1"), "0").weight_bias
+    conv2d_6 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_10, dequantize_per_channel_default_6, features_2_block_1_0_weight_bias, [2, 2], [1, 1], [1, 1], 72);  dequantize_per_tensor_default_10 = dequantize_per_channel_default_6 = features_2_block_1_0_weight_bias = None
+    relu__2 = torch.ops.aten.relu_.default(conv2d_6);  conv2d_6 = None
+    quantize_per_tensor_default_11 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__2, 0.03561525419354439, -128, -128, 127, torch.int8);  relu__2 = None
+    dequantize_per_tensor_default_11 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_11, 0.03561525419354439, -128, -128, 127, torch.int8);  quantize_per_tensor_default_11 = None
+    features_2_block_2_0_weight_bias = getattr(getattr(getattr(self.features, "2").block, "2"), "0").weight_bias
+    conv2d_7 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_11, dequantize_per_channel_default_7, features_2_block_2_0_weight_bias);  dequantize_per_tensor_default_11 = dequantize_per_channel_default_7 = features_2_block_2_0_weight_bias = None
+    quantize_per_tensor_default_12 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_7, 0.07227552682161331, 53, -128, 127, torch.int8);  conv2d_7 = None
+    dequantize_per_tensor_default_110 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_12, 0.07227552682161331, 53, -128, 127, torch.int8)
+    dequantize_per_tensor_default_109 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_12, 0.07227552682161331, 53, -128, 127, torch.int8);  quantize_per_tensor_default_12 = None
+    features_3_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "3").block, "0"), "0").weight_bias
+    conv2d_8 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_109, dequantize_per_channel_default_8, features_3_block_0_0_weight_bias);  dequantize_per_tensor_default_109 = dequantize_per_channel_default_8 = features_3_block_0_0_weight_bias = None
+    relu__3 = torch.ops.aten.relu_.default(conv2d_8);  conv2d_8 = None
+    quantize_per_tensor_default_13 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__3, 0.015227812342345715, -128, -128, 127, torch.int8);  relu__3 = None
+    dequantize_per_tensor_default_13 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_13, 0.015227812342345715, -128, -128, 127, torch.int8);  quantize_per_tensor_default_13 = None
+    features_3_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "3").block, "1"), "0").weight_bias
+    conv2d_9 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_13, dequantize_per_channel_default_9, features_3_block_1_0_weight_bias, [1, 1], [1, 1], [1, 1], 88);  dequantize_per_tensor_default_13 = dequantize_per_channel_default_9 = features_3_block_1_0_weight_bias = None
+    relu__4 = torch.ops.aten.relu_.default(conv2d_9);  conv2d_9 = None
+    quantize_per_tensor_default_14 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu__4, 0.01633099652826786, -128, -128, 127, torch.int8);  relu__4 = None
+    dequantize_per_tensor_default_14 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_14, 0.01633099652826786, -128, -128, 127, torch.int8);  quantize_per_tensor_default_14 = None
+    features_3_block_2_0_weight_bias = getattr(getattr(getattr(self.features, "3").block, "2"), "0").weight_bias
+    conv2d_10 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_14, dequantize_per_channel_default_10, features_3_block_2_0_weight_bias);  dequantize_per_tensor_default_14 = dequantize_per_channel_default_10 = features_3_block_2_0_weight_bias = None
+    quantize_per_tensor_default_15 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_10, 0.052880991250276566, -9, -128, 127, torch.int8);  conv2d_10 = None
+    dequantize_per_tensor_default_15 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_15, 0.052880991250276566, -9, -128, 127, torch.int8);  quantize_per_tensor_default_15 = None
+    add_ = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_15, dequantize_per_tensor_default_110);  dequantize_per_tensor_default_15 = dequantize_per_tensor_default_110 = None
+    quantize_per_tensor_default_16 = torch.ops.quantized_decomposed.quantize_per_tensor.default(add_, 0.0859375074505806, 42, -128, 127, torch.int8);  add_ = None
+    dequantize_per_tensor_default_16 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_16, 0.0859375074505806, 42, -128, 127, torch.int8);  quantize_per_tensor_default_16 = None
+    features_4_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "4").block, "0"), "0").weight_bias
+    conv2d_11 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_16, dequantize_per_channel_default_11, features_4_block_0_0_weight_bias);  dequantize_per_tensor_default_16 = dequantize_per_channel_default_11 = features_4_block_0_0_weight_bias = None
+    quantize_per_tensor_default_17 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_11, 0.0760606974363327, 19, -128, 127, torch.int8);  conv2d_11 = None
+    dequantize_per_tensor_default_17 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_17, 0.0760606974363327, 19, -128, 127, torch.int8);  quantize_per_tensor_default_17 = None
+    hardswish__1 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_17);  dequantize_per_tensor_default_17 = None
+    quantize_per_tensor_default_18 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__1, 0.035142164677381516, -117, -128, 127, torch.int8);  hardswish__1 = None
+    dequantize_per_tensor_default_18 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_18, 0.035142164677381516, -117, -128, 127, torch.int8);  quantize_per_tensor_default_18 = None
+    features_4_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "4").block, "1"), "0").weight_bias
+    conv2d_12 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_18, dequantize_per_channel_default_12, features_4_block_1_0_weight_bias, [2, 2], [2, 2], [1, 1], 96);  dequantize_per_tensor_default_18 = dequantize_per_channel_default_12 = features_4_block_1_0_weight_bias = None
+    quantize_per_tensor_default_19 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_12, 0.04825711250305176, -16, -128, 127, torch.int8);  conv2d_12 = None
+    dequantize_per_tensor_default_19 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_19, 0.04825711250305176, -16, -128, 127, torch.int8);  quantize_per_tensor_default_19 = None
+    hardswish__2 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_19);  dequantize_per_tensor_default_19 = None
+    quantize_per_tensor_default_20 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__2, 0.02860080823302269, -115, -128, 127, torch.int8)
+    dequantize_per_tensor_default_20 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_20, 0.02860080823302269, -115, -128, 127, torch.int8);  quantize_per_tensor_default_20 = None
+    adaptive_avg_pool2d_1 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__2, [1, 1]);  hardswish__2 = None
+    quantize_per_tensor_default_21 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_1, 0.02097501792013645, -112, -128, 127, torch.int8);  adaptive_avg_pool2d_1 = None
+    dequantize_per_tensor_default_21 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_21, 0.02097501792013645, -112, -128, 127, torch.int8);  quantize_per_tensor_default_21 = None
+    conv2d_13 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_21, dequantize_per_channel_default_13, features_4_block_2_fc1_bias);  dequantize_per_tensor_default_21 = dequantize_per_channel_default_13 = features_4_block_2_fc1_bias = None
+    relu_1 = torch.ops.aten.relu.default(conv2d_13);  conv2d_13 = None
+    quantize_per_tensor_default_22 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_1, 0.000244140625, -128, -128, 127, torch.int8);  relu_1 = None
+    dequantize_per_tensor_default_22 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_22, 0.000244140625, -128, -128, 127, torch.int8);  quantize_per_tensor_default_22 = None
+    conv2d_14 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_22, dequantize_per_channel_default_14, features_4_block_2_fc2_bias);  dequantize_per_tensor_default_22 = dequantize_per_channel_default_14 = features_4_block_2_fc2_bias = None
+    quantize_per_tensor_default_23 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_14, 0.012354371137917042, 25, -128, 127, torch.int8);  conv2d_14 = None
+    dequantize_per_tensor_default_23 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_23, 0.012354371137917042, 25, -128, 127, torch.int8);  quantize_per_tensor_default_23 = None
+    hardsigmoid_1 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_23);  dequantize_per_tensor_default_23 = None
+    quantize_per_tensor_default_24 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_1, 0.0027818952221423388, -128, -128, 127, torch.int8);  hardsigmoid_1 = None
+    dequantize_per_tensor_default_24 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_24, 0.0027818952221423388, -128, -128, 127, torch.int8);  quantize_per_tensor_default_24 = None
+    mul_1 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_24, dequantize_per_tensor_default_20);  dequantize_per_tensor_default_24 = dequantize_per_tensor_default_20 = None
+    quantize_per_tensor_default_25 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_1, 0.016134385019540787, -112, -128, 127, torch.int8);  mul_1 = None
+    dequantize_per_tensor_default_25 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_25, 0.016134385019540787, -112, -128, 127, torch.int8);  quantize_per_tensor_default_25 = None
+    features_4_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "4").block, "3"), "0").weight_bias
+    conv2d_15 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_25, dequantize_per_channel_default_15, features_4_block_3_0_weight_bias);  dequantize_per_tensor_default_25 = dequantize_per_channel_default_15 = features_4_block_3_0_weight_bias = None
+    quantize_per_tensor_default_26 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_15, 0.022963088005781174, 7, -128, 127, torch.int8);  conv2d_15 = None
+    dequantize_per_tensor_default_112 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_26, 0.022963088005781174, 7, -128, 127, torch.int8)
+    dequantize_per_tensor_default_111 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_26, 0.022963088005781174, 7, -128, 127, torch.int8);  quantize_per_tensor_default_26 = None
+    features_5_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "5").block, "0"), "0").weight_bias
+    conv2d_16 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_111, dequantize_per_channel_default_16, features_5_block_0_0_weight_bias);  dequantize_per_tensor_default_111 = dequantize_per_channel_default_16 = features_5_block_0_0_weight_bias = None
+    quantize_per_tensor_default_27 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_16, 0.030240710824728012, 54, -128, 127, torch.int8);  conv2d_16 = None
+    dequantize_per_tensor_default_27 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_27, 0.030240710824728012, 54, -128, 127, torch.int8);  quantize_per_tensor_default_27 = None
+    hardswish__3 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_27);  dequantize_per_tensor_default_27 = None
+    quantize_per_tensor_default_28 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__3, 0.01084794569760561, -93, -128, 127, torch.int8);  hardswish__3 = None
+    dequantize_per_tensor_default_28 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_28, 0.01084794569760561, -93, -128, 127, torch.int8);  quantize_per_tensor_default_28 = None
+    features_5_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "5").block, "1"), "0").weight_bias
+    conv2d_17 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_28, dequantize_per_channel_default_17, features_5_block_1_0_weight_bias, [1, 1], [2, 2], [1, 1], 240);  dequantize_per_tensor_default_28 = dequantize_per_channel_default_17 = features_5_block_1_0_weight_bias = None
+    quantize_per_tensor_default_29 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_17, 0.042192939668893814, -6, -128, 127, torch.int8);  conv2d_17 = None
+    dequantize_per_tensor_default_29 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_29, 0.042192939668893814, -6, -128, 127, torch.int8);  quantize_per_tensor_default_29 = None
+    hardswish__4 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_29);  dequantize_per_tensor_default_29 = None
+    quantize_per_tensor_default_30 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__4, 0.02735370770096779, -114, -128, 127, torch.int8)
+    dequantize_per_tensor_default_30 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_30, 0.02735370770096779, -114, -128, 127, torch.int8);  quantize_per_tensor_default_30 = None
+    adaptive_avg_pool2d_2 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__4, [1, 1]);  hardswish__4 = None
+    quantize_per_tensor_default_31 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_2, 0.008267099037766457, -83, -128, 127, torch.int8);  adaptive_avg_pool2d_2 = None
+    dequantize_per_tensor_default_31 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_31, 0.008267099037766457, -83, -128, 127, torch.int8);  quantize_per_tensor_default_31 = None
+    conv2d_18 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_31, dequantize_per_channel_default_18, features_5_block_2_fc1_bias);  dequantize_per_tensor_default_31 = dequantize_per_channel_default_18 = features_5_block_2_fc1_bias = None
+    relu_2 = torch.ops.aten.relu.default(conv2d_18);  conv2d_18 = None
+    quantize_per_tensor_default_32 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_2, 0.015235427767038345, -128, -128, 127, torch.int8);  relu_2 = None
+    dequantize_per_tensor_default_32 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_32, 0.015235427767038345, -128, -128, 127, torch.int8);  quantize_per_tensor_default_32 = None
+    conv2d_19 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_32, dequantize_per_channel_default_19, features_5_block_2_fc2_bias);  dequantize_per_tensor_default_32 = dequantize_per_channel_default_19 = features_5_block_2_fc2_bias = None
+    quantize_per_tensor_default_33 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_19, 0.035645004361867905, 20, -128, 127, torch.int8);  conv2d_19 = None
+    dequantize_per_tensor_default_33 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_33, 0.035645004361867905, 20, -128, 127, torch.int8);  quantize_per_tensor_default_33 = None
+    hardsigmoid_2 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_33);  dequantize_per_tensor_default_33 = None
+    quantize_per_tensor_default_34 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_2, 0.003919653594493866, -128, -128, 127, torch.int8);  hardsigmoid_2 = None
+    dequantize_per_tensor_default_34 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_34, 0.003919653594493866, -128, -128, 127, torch.int8);  quantize_per_tensor_default_34 = None
+    mul_2 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_34, dequantize_per_tensor_default_30);  dequantize_per_tensor_default_34 = dequantize_per_tensor_default_30 = None
+    quantize_per_tensor_default_35 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_2, 0.005493359640240669, -60, -128, 127, torch.int8);  mul_2 = None
+    dequantize_per_tensor_default_35 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_35, 0.005493359640240669, -60, -128, 127, torch.int8);  quantize_per_tensor_default_35 = None
+    features_5_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "5").block, "3"), "0").weight_bias
+    conv2d_20 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_35, dequantize_per_channel_default_20, features_5_block_3_0_weight_bias);  dequantize_per_tensor_default_35 = dequantize_per_channel_default_20 = features_5_block_3_0_weight_bias = None
+    quantize_per_tensor_default_36 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_20, 0.018024347722530365, 2, -128, 127, torch.int8);  conv2d_20 = None
+    dequantize_per_tensor_default_36 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_36, 0.018024347722530365, 2, -128, 127, torch.int8);  quantize_per_tensor_default_36 = None
+    add__1 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_36, dequantize_per_tensor_default_112);  dequantize_per_tensor_default_36 = dequantize_per_tensor_default_112 = None
+    quantize_per_tensor_default_37 = torch.ops.quantized_decomposed.quantize_per_tensor.default(add__1, 0.026204265654087067, 2, -128, 127, torch.int8);  add__1 = None
+    dequantize_per_tensor_default_114 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_37, 0.026204265654087067, 2, -128, 127, torch.int8)
+    dequantize_per_tensor_default_113 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_37, 0.026204265654087067, 2, -128, 127, torch.int8);  quantize_per_tensor_default_37 = None
+    features_6_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "6").block, "0"), "0").weight_bias
+    conv2d_21 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_113, dequantize_per_channel_default_21, features_6_block_0_0_weight_bias);  dequantize_per_tensor_default_113 = dequantize_per_channel_default_21 = features_6_block_0_0_weight_bias = None
+    quantize_per_tensor_default_38 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_21, 0.02480023354291916, 33, -128, 127, torch.int8);  conv2d_21 = None
+    dequantize_per_tensor_default_38 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_38, 0.02480023354291916, 33, -128, 127, torch.int8);  quantize_per_tensor_default_38 = None
+    hardswish__5 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_38);  dequantize_per_tensor_default_38 = None
+    quantize_per_tensor_default_39 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__5, 0.009850453585386276, -90, -128, 127, torch.int8);  hardswish__5 = None
+    dequantize_per_tensor_default_39 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_39, 0.009850453585386276, -90, -128, 127, torch.int8);  quantize_per_tensor_default_39 = None
+    features_6_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "6").block, "1"), "0").weight_bias
+    conv2d_22 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_39, dequantize_per_channel_default_22, features_6_block_1_0_weight_bias, [1, 1], [2, 2], [1, 1], 240);  dequantize_per_tensor_default_39 = dequantize_per_channel_default_22 = features_6_block_1_0_weight_bias = None
+    quantize_per_tensor_default_40 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_22, 0.04075399413704872, -10, -128, 127, torch.int8);  conv2d_22 = None
+    dequantize_per_tensor_default_40 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_40, 0.04075399413704872, -10, -128, 127, torch.int8);  quantize_per_tensor_default_40 = None
+    hardswish__6 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_40);  dequantize_per_tensor_default_40 = None
+    quantize_per_tensor_default_41 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__6, 0.028132153674960136, -115, -128, 127, torch.int8)
+    dequantize_per_tensor_default_41 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_41, 0.028132153674960136, -115, -128, 127, torch.int8);  quantize_per_tensor_default_41 = None
+    adaptive_avg_pool2d_3 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__6, [1, 1]);  hardswish__6 = None
+    quantize_per_tensor_default_42 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_3, 0.0066468371078372, -72, -128, 127, torch.int8);  adaptive_avg_pool2d_3 = None
+    dequantize_per_tensor_default_42 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_42, 0.0066468371078372, -72, -128, 127, torch.int8);  quantize_per_tensor_default_42 = None
+    conv2d_23 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_42, dequantize_per_channel_default_23, features_6_block_2_fc1_bias);  dequantize_per_tensor_default_42 = dequantize_per_channel_default_23 = features_6_block_2_fc1_bias = None
+    relu_3 = torch.ops.aten.relu.default(conv2d_23);  conv2d_23 = None
+    quantize_per_tensor_default_43 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_3, 0.007653383072465658, -128, -128, 127, torch.int8);  relu_3 = None
+    dequantize_per_tensor_default_43 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_43, 0.007653383072465658, -128, -128, 127, torch.int8);  quantize_per_tensor_default_43 = None
+    conv2d_24 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_43, dequantize_per_channel_default_24, features_6_block_2_fc2_bias);  dequantize_per_tensor_default_43 = dequantize_per_channel_default_24 = features_6_block_2_fc2_bias = None
+    quantize_per_tensor_default_44 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_24, 0.02374323457479477, 13, -128, 127, torch.int8);  conv2d_24 = None
+    dequantize_per_tensor_default_44 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_44, 0.02374323457479477, 13, -128, 127, torch.int8);  quantize_per_tensor_default_44 = None
+    hardsigmoid_3 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_44);  dequantize_per_tensor_default_44 = None
+    quantize_per_tensor_default_45 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_3, 0.0037237973883748055, -128, -128, 127, torch.int8);  hardsigmoid_3 = None
+    dequantize_per_tensor_default_45 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_45, 0.0037237973883748055, -128, -128, 127, torch.int8);  quantize_per_tensor_default_45 = None
+    mul_3 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_45, dequantize_per_tensor_default_41);  dequantize_per_tensor_default_45 = dequantize_per_tensor_default_41 = None
+    quantize_per_tensor_default_46 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_3, 0.0062317089177668095, -74, -128, 127, torch.int8);  mul_3 = None
+    dequantize_per_tensor_default_46 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_46, 0.0062317089177668095, -74, -128, 127, torch.int8);  quantize_per_tensor_default_46 = None
+    features_6_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "6").block, "3"), "0").weight_bias
+    conv2d_25 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_46, dequantize_per_channel_default_25, features_6_block_3_0_weight_bias);  dequantize_per_tensor_default_46 = dequantize_per_channel_default_25 = features_6_block_3_0_weight_bias = None
+    quantize_per_tensor_default_47 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_25, 0.040998127311468124, -22, -128, 127, torch.int8);  conv2d_25 = None
+    dequantize_per_tensor_default_47 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_47, 0.040998127311468124, -22, -128, 127, torch.int8);  quantize_per_tensor_default_47 = None
+    add__2 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_47, dequantize_per_tensor_default_114);  dequantize_per_tensor_default_47 = dequantize_per_tensor_default_114 = None
+    quantize_per_tensor_default_48 = torch.ops.quantized_decomposed.quantize_per_tensor.default(add__2, 0.04171771928668022, -11, -128, 127, torch.int8);  add__2 = None
+    dequantize_per_tensor_default_48 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_48, 0.04171771928668022, -11, -128, 127, torch.int8);  quantize_per_tensor_default_48 = None
+    features_7_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "7").block, "0"), "0").weight_bias
+    conv2d_26 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_48, dequantize_per_channel_default_26, features_7_block_0_0_weight_bias);  dequantize_per_tensor_default_48 = dequantize_per_channel_default_26 = features_7_block_0_0_weight_bias = None
+    quantize_per_tensor_default_49 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_26, 0.036301277577877045, -8, -128, 127, torch.int8);  conv2d_26 = None
+    dequantize_per_tensor_default_49 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_49, 0.036301277577877045, -8, -128, 127, torch.int8);  quantize_per_tensor_default_49 = None
+    hardswish__7 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_49);  dequantize_per_tensor_default_49 = None
+    quantize_per_tensor_default_50 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__7, 0.021134845912456512, -110, -128, 127, torch.int8);  hardswish__7 = None
+    dequantize_per_tensor_default_50 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_50, 0.021134845912456512, -110, -128, 127, torch.int8);  quantize_per_tensor_default_50 = None
+    features_7_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "7").block, "1"), "0").weight_bias
+    conv2d_27 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_50, dequantize_per_channel_default_27, features_7_block_1_0_weight_bias, [1, 1], [2, 2], [1, 1], 120);  dequantize_per_tensor_default_50 = dequantize_per_channel_default_27 = features_7_block_1_0_weight_bias = None
+    quantize_per_tensor_default_51 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_27, 0.036399587988853455, -1, -128, 127, torch.int8);  conv2d_27 = None
+    dequantize_per_tensor_default_51 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_51, 0.036399587988853455, -1, -128, 127, torch.int8);  quantize_per_tensor_default_51 = None
+    hardswish__8 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_51);  dequantize_per_tensor_default_51 = None
+    quantize_per_tensor_default_52 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__8, 0.019798588007688522, -109, -128, 127, torch.int8)
+    dequantize_per_tensor_default_52 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_52, 0.019798588007688522, -109, -128, 127, torch.int8);  quantize_per_tensor_default_52 = None
+    adaptive_avg_pool2d_4 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__8, [1, 1]);  hardswish__8 = None
+    quantize_per_tensor_default_53 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_4, 0.009647667407989502, -93, -128, 127, torch.int8);  adaptive_avg_pool2d_4 = None
+    dequantize_per_tensor_default_53 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_53, 0.009647667407989502, -93, -128, 127, torch.int8);  quantize_per_tensor_default_53 = None
+    conv2d_28 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_53, dequantize_per_channel_default_28, features_7_block_2_fc1_bias);  dequantize_per_tensor_default_53 = dequantize_per_channel_default_28 = features_7_block_2_fc1_bias = None
+    relu_4 = torch.ops.aten.relu.default(conv2d_28);  conv2d_28 = None
+    quantize_per_tensor_default_54 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_4, 0.02357139065861702, -128, -128, 127, torch.int8);  relu_4 = None
+    dequantize_per_tensor_default_54 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_54, 0.02357139065861702, -128, -128, 127, torch.int8);  quantize_per_tensor_default_54 = None
+    conv2d_29 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_54, dequantize_per_channel_default_29, features_7_block_2_fc2_bias);  dequantize_per_tensor_default_54 = dequantize_per_channel_default_29 = features_7_block_2_fc2_bias = None
+    quantize_per_tensor_default_55 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_29, 0.03072447143495083, 3, -128, 127, torch.int8);  conv2d_29 = None
+    dequantize_per_tensor_default_55 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_55, 0.03072447143495083, 3, -128, 127, torch.int8);  quantize_per_tensor_default_55 = None
+    hardsigmoid_4 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_55);  dequantize_per_tensor_default_55 = None
+    quantize_per_tensor_default_56 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_4, 0.003919653594493866, -128, -128, 127, torch.int8);  hardsigmoid_4 = None
+    dequantize_per_tensor_default_56 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_56, 0.003919653594493866, -128, -128, 127, torch.int8);  quantize_per_tensor_default_56 = None
+    mul_4 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_56, dequantize_per_tensor_default_52);  dequantize_per_tensor_default_56 = dequantize_per_tensor_default_52 = None
+    quantize_per_tensor_default_57 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_4, 0.01594752073287964, -104, -128, 127, torch.int8);  mul_4 = None
+    dequantize_per_tensor_default_57 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_57, 0.01594752073287964, -104, -128, 127, torch.int8);  quantize_per_tensor_default_57 = None
+    features_7_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "7").block, "3"), "0").weight_bias
+    conv2d_30 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_57, dequantize_per_channel_default_30, features_7_block_3_0_weight_bias);  dequantize_per_tensor_default_57 = dequantize_per_channel_default_30 = features_7_block_3_0_weight_bias = None
+    quantize_per_tensor_default_58 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_30, 0.02618127316236496, 32, -128, 127, torch.int8);  conv2d_30 = None
+    dequantize_per_tensor_default_116 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_58, 0.02618127316236496, 32, -128, 127, torch.int8)
+    dequantize_per_tensor_default_115 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_58, 0.02618127316236496, 32, -128, 127, torch.int8);  quantize_per_tensor_default_58 = None
+    features_8_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "8").block, "0"), "0").weight_bias
+    conv2d_31 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_115, dequantize_per_channel_default_31, features_8_block_0_0_weight_bias);  dequantize_per_tensor_default_115 = dequantize_per_channel_default_31 = features_8_block_0_0_weight_bias = None
+    quantize_per_tensor_default_59 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_31, 0.026733234524726868, 25, -128, 127, torch.int8);  conv2d_31 = None
+    dequantize_per_tensor_default_59 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_59, 0.026733234524726868, 25, -128, 127, torch.int8);  quantize_per_tensor_default_59 = None
+    hardswish__9 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_59);  dequantize_per_tensor_default_59 = None
+    quantize_per_tensor_default_60 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__9, 0.011651448905467987, -96, -128, 127, torch.int8);  hardswish__9 = None
+    dequantize_per_tensor_default_60 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_60, 0.011651448905467987, -96, -128, 127, torch.int8);  quantize_per_tensor_default_60 = None
+    features_8_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "8").block, "1"), "0").weight_bias
+    conv2d_32 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_60, dequantize_per_channel_default_32, features_8_block_1_0_weight_bias, [1, 1], [2, 2], [1, 1], 144);  dequantize_per_tensor_default_60 = dequantize_per_channel_default_32 = features_8_block_1_0_weight_bias = None
+    quantize_per_tensor_default_61 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_32, 0.07097747176885605, -53, -128, 127, torch.int8);  conv2d_32 = None
+    dequantize_per_tensor_default_61 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_61, 0.07097747176885605, -53, -128, 127, torch.int8);  quantize_per_tensor_default_61 = None
+    hardswish__10 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_61);  dequantize_per_tensor_default_61 = None
+    quantize_per_tensor_default_62 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__10, 0.05151195079088211, -121, -128, 127, torch.int8)
+    dequantize_per_tensor_default_62 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_62, 0.05151195079088211, -121, -128, 127, torch.int8);  quantize_per_tensor_default_62 = None
+    adaptive_avg_pool2d_5 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__10, [1, 1]);  hardswish__10 = None
+    quantize_per_tensor_default_63 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_5, 0.0048654526472091675, -53, -128, 127, torch.int8);  adaptive_avg_pool2d_5 = None
+    dequantize_per_tensor_default_63 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_63, 0.0048654526472091675, -53, -128, 127, torch.int8);  quantize_per_tensor_default_63 = None
+    conv2d_33 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_63, dequantize_per_channel_default_33, features_8_block_2_fc1_bias);  dequantize_per_tensor_default_63 = dequantize_per_channel_default_33 = features_8_block_2_fc1_bias = None
+    relu_5 = torch.ops.aten.relu.default(conv2d_33);  conv2d_33 = None
+    quantize_per_tensor_default_64 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_5, 0.006918623577803373, -128, -128, 127, torch.int8);  relu_5 = None
+    dequantize_per_tensor_default_64 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_64, 0.006918623577803373, -128, -128, 127, torch.int8);  quantize_per_tensor_default_64 = None
+    conv2d_34 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_64, dequantize_per_channel_default_34, features_8_block_2_fc2_bias);  dequantize_per_tensor_default_64 = dequantize_per_channel_default_34 = features_8_block_2_fc2_bias = None
+    quantize_per_tensor_default_65 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_34, 0.026101605966687202, 2, -128, 127, torch.int8);  conv2d_34 = None
+    dequantize_per_tensor_default_65 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_65, 0.026101605966687202, 2, -128, 127, torch.int8);  quantize_per_tensor_default_65 = None
+    hardsigmoid_5 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_65);  dequantize_per_tensor_default_65 = None
+    quantize_per_tensor_default_66 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_5, 0.003919653594493866, -128, -128, 127, torch.int8);  hardsigmoid_5 = None
+    dequantize_per_tensor_default_66 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_66, 0.003919653594493866, -128, -128, 127, torch.int8);  quantize_per_tensor_default_66 = None
+    mul_5 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_66, dequantize_per_tensor_default_62);  dequantize_per_tensor_default_66 = dequantize_per_tensor_default_62 = None
+    quantize_per_tensor_default_67 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_5, 0.0051969909109175205, -63, -128, 127, torch.int8);  mul_5 = None
+    dequantize_per_tensor_default_67 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_67, 0.0051969909109175205, -63, -128, 127, torch.int8);  quantize_per_tensor_default_67 = None
+    features_8_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "8").block, "3"), "0").weight_bias
+    conv2d_35 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_67, dequantize_per_channel_default_35, features_8_block_3_0_weight_bias);  dequantize_per_tensor_default_67 = dequantize_per_channel_default_35 = features_8_block_3_0_weight_bias = None
+    quantize_per_tensor_default_68 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_35, 0.021151699125766754, -5, -128, 127, torch.int8);  conv2d_35 = None
+    dequantize_per_tensor_default_68 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_68, 0.021151699125766754, -5, -128, 127, torch.int8);  quantize_per_tensor_default_68 = None
+    add__3 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_68, dequantize_per_tensor_default_116);  dequantize_per_tensor_default_68 = dequantize_per_tensor_default_116 = None
+    quantize_per_tensor_default_69 = torch.ops.quantized_decomposed.quantize_per_tensor.default(add__3, 0.03137081861495972, 1, -128, 127, torch.int8);  add__3 = None
+    dequantize_per_tensor_default_69 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_69, 0.03137081861495972, 1, -128, 127, torch.int8);  quantize_per_tensor_default_69 = None
+    features_9_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "9").block, "0"), "0").weight_bias
+    conv2d_36 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_69, dequantize_per_channel_default_36, features_9_block_0_0_weight_bias);  dequantize_per_tensor_default_69 = dequantize_per_channel_default_36 = features_9_block_0_0_weight_bias = None
+    quantize_per_tensor_default_70 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_36, 0.03295411914587021, 13, -128, 127, torch.int8);  conv2d_36 = None
+    dequantize_per_tensor_default_70 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_70, 0.03295411914587021, 13, -128, 127, torch.int8);  quantize_per_tensor_default_70 = None
+    hardswish__11 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_70);  dequantize_per_tensor_default_70 = None
+    quantize_per_tensor_default_71 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__11, 0.01617947220802307, -105, -128, 127, torch.int8);  hardswish__11 = None
+    dequantize_per_tensor_default_71 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_71, 0.01617947220802307, -105, -128, 127, torch.int8);  quantize_per_tensor_default_71 = None
+    features_9_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "9").block, "1"), "0").weight_bias
+    conv2d_37 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_71, dequantize_per_channel_default_37, features_9_block_1_0_weight_bias, [2, 2], [2, 2], [1, 1], 288);  dequantize_per_tensor_default_71 = dequantize_per_channel_default_37 = features_9_block_1_0_weight_bias = None
+    quantize_per_tensor_default_72 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_37, 0.02823133021593094, 0, -128, 127, torch.int8);  conv2d_37 = None
+    dequantize_per_tensor_default_72 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_72, 0.02823133021593094, 0, -128, 127, torch.int8);  quantize_per_tensor_default_72 = None
+    hardswish__12 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_72);  dequantize_per_tensor_default_72 = None
+    quantize_per_tensor_default_73 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__12, 0.015538414008915424, -104, -128, 127, torch.int8)
+    dequantize_per_tensor_default_73 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_73, 0.015538414008915424, -104, -128, 127, torch.int8);  quantize_per_tensor_default_73 = None
+    adaptive_avg_pool2d_6 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__12, [1, 1]);  hardswish__12 = None
+    quantize_per_tensor_default_74 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_6, 0.005602050106972456, -62, -128, 127, torch.int8);  adaptive_avg_pool2d_6 = None
+    dequantize_per_tensor_default_74 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_74, 0.005602050106972456, -62, -128, 127, torch.int8);  quantize_per_tensor_default_74 = None
+    conv2d_38 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_74, dequantize_per_channel_default_38, features_9_block_2_fc1_bias);  dequantize_per_tensor_default_74 = dequantize_per_channel_default_38 = features_9_block_2_fc1_bias = None
+    relu_6 = torch.ops.aten.relu.default(conv2d_38);  conv2d_38 = None
+    quantize_per_tensor_default_75 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_6, 0.008665777742862701, -128, -128, 127, torch.int8);  relu_6 = None
+    dequantize_per_tensor_default_75 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_75, 0.008665777742862701, -128, -128, 127, torch.int8);  quantize_per_tensor_default_75 = None
+    conv2d_39 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_75, dequantize_per_channel_default_39, features_9_block_2_fc2_bias);  dequantize_per_tensor_default_75 = dequantize_per_channel_default_39 = features_9_block_2_fc2_bias = None
+    quantize_per_tensor_default_76 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_39, 0.02205861173570156, -19, -128, 127, torch.int8);  conv2d_39 = None
+    dequantize_per_tensor_default_76 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_76, 0.02205861173570156, -19, -128, 127, torch.int8);  quantize_per_tensor_default_76 = None
+    hardsigmoid_6 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_76);  dequantize_per_tensor_default_76 = None
+    quantize_per_tensor_default_77 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_6, 0.003919844515621662, -128, -128, 127, torch.int8);  hardsigmoid_6 = None
+    dequantize_per_tensor_default_77 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_77, 0.003919844515621662, -128, -128, 127, torch.int8);  quantize_per_tensor_default_77 = None
+    mul_6 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_77, dequantize_per_tensor_default_73);  dequantize_per_tensor_default_77 = dequantize_per_tensor_default_73 = None
+    quantize_per_tensor_default_78 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_6, 0.00543518690392375, -63, -128, 127, torch.int8);  mul_6 = None
+    dequantize_per_tensor_default_78 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_78, 0.00543518690392375, -63, -128, 127, torch.int8);  quantize_per_tensor_default_78 = None
+    features_9_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "9").block, "3"), "0").weight_bias
+    conv2d_40 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_78, dequantize_per_channel_default_40, features_9_block_3_0_weight_bias);  dequantize_per_tensor_default_78 = dequantize_per_channel_default_40 = features_9_block_3_0_weight_bias = None
+    quantize_per_tensor_default_79 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_40, 0.010534364730119705, 0, -128, 127, torch.int8);  conv2d_40 = None
+    dequantize_per_tensor_default_118 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_79, 0.010534364730119705, 0, -128, 127, torch.int8)
+    dequantize_per_tensor_default_117 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_79, 0.010534364730119705, 0, -128, 127, torch.int8);  quantize_per_tensor_default_79 = None
+    features_10_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "10").block, "0"), "0").weight_bias
+    conv2d_41 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_117, dequantize_per_channel_default_41, features_10_block_0_0_weight_bias);  dequantize_per_tensor_default_117 = dequantize_per_channel_default_41 = features_10_block_0_0_weight_bias = None
+    quantize_per_tensor_default_80 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_41, 0.01919872686266899, 40, -128, 127, torch.int8);  conv2d_41 = None
+    dequantize_per_tensor_default_80 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_80, 0.01919872686266899, 40, -128, 127, torch.int8);  quantize_per_tensor_default_80 = None
+    hardswish__13 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_80);  dequantize_per_tensor_default_80 = None
+    quantize_per_tensor_default_81 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__13, 0.00681278994306922, -73, -128, 127, torch.int8);  hardswish__13 = None
+    dequantize_per_tensor_default_81 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_81, 0.00681278994306922, -73, -128, 127, torch.int8);  quantize_per_tensor_default_81 = None
+    features_10_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "10").block, "1"), "0").weight_bias
+    conv2d_42 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_81, dequantize_per_channel_default_42, features_10_block_1_0_weight_bias, [1, 1], [2, 2], [1, 1], 576);  dequantize_per_tensor_default_81 = dequantize_per_channel_default_42 = features_10_block_1_0_weight_bias = None
+    quantize_per_tensor_default_82 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_42, 0.03453843668103218, 23, -128, 127, torch.int8);  conv2d_42 = None
+    dequantize_per_tensor_default_82 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_82, 0.03453843668103218, 23, -128, 127, torch.int8);  quantize_per_tensor_default_82 = None
+    hardswish__14 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_82);  dequantize_per_tensor_default_82 = None
+    quantize_per_tensor_default_83 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__14, 0.015564239583909512, -104, -128, 127, torch.int8)
+    dequantize_per_tensor_default_83 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_83, 0.015564239583909512, -104, -128, 127, torch.int8);  quantize_per_tensor_default_83 = None
+    adaptive_avg_pool2d_7 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__14, [1, 1]);  hardswish__14 = None
+    quantize_per_tensor_default_84 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_7, 0.0069009289145469666, -74, -128, 127, torch.int8);  adaptive_avg_pool2d_7 = None
+    dequantize_per_tensor_default_84 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_84, 0.0069009289145469666, -74, -128, 127, torch.int8);  quantize_per_tensor_default_84 = None
+    conv2d_43 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_84, dequantize_per_channel_default_43, features_10_block_2_fc1_bias);  dequantize_per_tensor_default_84 = dequantize_per_channel_default_43 = features_10_block_2_fc1_bias = None
+    relu_7 = torch.ops.aten.relu.default(conv2d_43);  conv2d_43 = None
+    quantize_per_tensor_default_85 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_7, 0.012534935027360916, -128, -128, 127, torch.int8);  relu_7 = None
+    dequantize_per_tensor_default_85 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_85, 0.012534935027360916, -128, -128, 127, torch.int8);  quantize_per_tensor_default_85 = None
+    conv2d_44 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_85, dequantize_per_channel_default_44, features_10_block_2_fc2_bias);  dequantize_per_tensor_default_85 = dequantize_per_channel_default_44 = features_10_block_2_fc2_bias = None
+    quantize_per_tensor_default_86 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_44, 0.027997173368930817, 19, -128, 127, torch.int8);  conv2d_44 = None
+    dequantize_per_tensor_default_86 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_86, 0.027997173368930817, 19, -128, 127, torch.int8);  quantize_per_tensor_default_86 = None
+    hardsigmoid_7 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_86);  dequantize_per_tensor_default_86 = None
+    quantize_per_tensor_default_87 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_7, 0.003919653594493866, -128, -128, 127, torch.int8);  hardsigmoid_7 = None
+    dequantize_per_tensor_default_87 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_87, 0.003919653594493866, -128, -128, 127, torch.int8);  quantize_per_tensor_default_87 = None
+    mul_7 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_87, dequantize_per_tensor_default_83);  dequantize_per_tensor_default_87 = dequantize_per_tensor_default_83 = None
+    quantize_per_tensor_default_88 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_7, 0.004208267200738192, -39, -128, 127, torch.int8);  mul_7 = None
+    dequantize_per_tensor_default_88 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_88, 0.004208267200738192, -39, -128, 127, torch.int8);  quantize_per_tensor_default_88 = None
+    features_10_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "10").block, "3"), "0").weight_bias
+    conv2d_45 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_88, dequantize_per_channel_default_45, features_10_block_3_0_weight_bias);  dequantize_per_tensor_default_88 = dequantize_per_channel_default_45 = features_10_block_3_0_weight_bias = None
+    quantize_per_tensor_default_89 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_45, 0.009445016272366047, 2, -128, 127, torch.int8);  conv2d_45 = None
+    dequantize_per_tensor_default_89 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_89, 0.009445016272366047, 2, -128, 127, torch.int8);  quantize_per_tensor_default_89 = None
+    add__4 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_89, dequantize_per_tensor_default_118);  dequantize_per_tensor_default_89 = dequantize_per_tensor_default_118 = None
+    quantize_per_tensor_default_90 = torch.ops.quantized_decomposed.quantize_per_tensor.default(add__4, 0.015207144431769848, 1, -128, 127, torch.int8);  add__4 = None
+    dequantize_per_tensor_default_120 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_90, 0.015207144431769848, 1, -128, 127, torch.int8)
+    dequantize_per_tensor_default_119 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_90, 0.015207144431769848, 1, -128, 127, torch.int8);  quantize_per_tensor_default_90 = None
+    features_11_block_0_0_weight_bias = getattr(getattr(getattr(self.features, "11").block, "0"), "0").weight_bias
+    conv2d_46 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_119, dequantize_per_channel_default_46, features_11_block_0_0_weight_bias);  dequantize_per_tensor_default_119 = dequantize_per_channel_default_46 = features_11_block_0_0_weight_bias = None
+    quantize_per_tensor_default_91 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_46, 0.02167501114308834, 47, -128, 127, torch.int8);  conv2d_46 = None
+    dequantize_per_tensor_default_91 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_91, 0.02167501114308834, 47, -128, 127, torch.int8);  quantize_per_tensor_default_91 = None
+    hardswish__15 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_91);  dequantize_per_tensor_default_91 = None
+    quantize_per_tensor_default_92 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__15, 0.007147646509110928, -76, -128, 127, torch.int8);  hardswish__15 = None
+    dequantize_per_tensor_default_92 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_92, 0.007147646509110928, -76, -128, 127, torch.int8);  quantize_per_tensor_default_92 = None
+    features_11_block_1_0_weight_bias = getattr(getattr(getattr(self.features, "11").block, "1"), "0").weight_bias
+    conv2d_47 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_92, dequantize_per_channel_default_47, features_11_block_1_0_weight_bias, [1, 1], [2, 2], [1, 1], 576);  dequantize_per_tensor_default_92 = dequantize_per_channel_default_47 = features_11_block_1_0_weight_bias = None
+    quantize_per_tensor_default_93 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_47, 0.02294010855257511, 11, -128, 127, torch.int8);  conv2d_47 = None
+    dequantize_per_tensor_default_93 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_93, 0.02294010855257511, 11, -128, 127, torch.int8);  quantize_per_tensor_default_93 = None
+    hardswish__16 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_93);  dequantize_per_tensor_default_93 = None
+    quantize_per_tensor_default_94 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardswish__16, 0.011319904588162899, -95, -128, 127, torch.int8)
+    dequantize_per_tensor_default_94 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_94, 0.011319904588162899, -95, -128, 127, torch.int8);  quantize_per_tensor_default_94 = None
+    adaptive_avg_pool2d_8 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__16, [1, 1]);  hardswish__16 = None
+    quantize_per_tensor_default_95 = torch.ops.quantized_decomposed.quantize_per_tensor.default(adaptive_avg_pool2d_8, 0.006271464750170708, -69, -128, 127, torch.int8);  adaptive_avg_pool2d_8 = None
+    dequantize_per_tensor_default_95 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_95, 0.006271464750170708, -69, -128, 127, torch.int8);  quantize_per_tensor_default_95 = None
+    conv2d_48 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_95, dequantize_per_channel_default_48, features_11_block_2_fc1_bias);  dequantize_per_tensor_default_95 = dequantize_per_channel_default_48 = features_11_block_2_fc1_bias = None
+    relu_8 = torch.ops.aten.relu.default(conv2d_48);  conv2d_48 = None
+    quantize_per_tensor_default_96 = torch.ops.quantized_decomposed.quantize_per_tensor.default(relu_8, 0.010883006267249584, -128, -128, 127, torch.int8);  relu_8 = None
+    dequantize_per_tensor_default_96 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_96, 0.010883006267249584, -128, -128, 127, torch.int8);  quantize_per_tensor_default_96 = None
+    conv2d_49 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_96, dequantize_per_channel_default_49, features_11_block_2_fc2_bias);  dequantize_per_tensor_default_96 = dequantize_per_channel_default_49 = features_11_block_2_fc2_bias = None
+    quantize_per_tensor_default_97 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_49, 0.02797512523829937, 40, -128, 127, torch.int8);  conv2d_49 = None
+    dequantize_per_tensor_default_97 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_97, 0.02797512523829937, 40, -128, 127, torch.int8);  quantize_per_tensor_default_97 = None
+    hardsigmoid_8 = torch.ops.aten.hardsigmoid.default(dequantize_per_tensor_default_97);  dequantize_per_tensor_default_97 = None
+    quantize_per_tensor_default_98 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardsigmoid_8, 0.0035432421136647463, -128, -128, 127, torch.int8);  hardsigmoid_8 = None
+    dequantize_per_tensor_default_98 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_98, 0.0035432421136647463, -128, -128, 127, torch.int8);  quantize_per_tensor_default_98 = None
+    mul_8 = torch.ops.aten.mul.Tensor(dequantize_per_tensor_default_98, dequantize_per_tensor_default_94);  dequantize_per_tensor_default_98 = dequantize_per_tensor_default_94 = None
+    quantize_per_tensor_default_99 = torch.ops.quantized_decomposed.quantize_per_tensor.default(mul_8, 0.004225790034979582, -48, -128, 127, torch.int8);  mul_8 = None
+    dequantize_per_tensor_default_99 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_99, 0.004225790034979582, -48, -128, 127, torch.int8);  quantize_per_tensor_default_99 = None
+    features_11_block_3_0_weight_bias = getattr(getattr(getattr(self.features, "11").block, "3"), "0").weight_bias
+    conv2d_50 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_99, dequantize_per_channel_default_50, features_11_block_3_0_weight_bias);  dequantize_per_tensor_default_99 = dequantize_per_channel_default_50 = features_11_block_3_0_weight_bias = None
+    quantize_per_tensor_default_100 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_50, 0.010518218390643597, -1, -128, 127, torch.int8);  conv2d_50 = None
+    dequantize_per_tensor_default_100 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_100, 0.010518218390643597, -1, -128, 127, torch.int8);  quantize_per_tensor_default_100 = None
+    add__5 = torch.ops.aten.add_.Tensor(dequantize_per_tensor_default_100, dequantize_per_tensor_default_120);  dequantize_per_tensor_default_100 = dequantize_per_tensor_default_120 = None
+    quantize_per_tensor_default_101 = torch.ops.quantized_decomposed.quantize_per_tensor.default(add__5, 0.017089076340198517, -3, -128, 127, torch.int8);  add__5 = None
+    dequantize_per_tensor_default_101 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_101, 0.017089076340198517, -3, -128, 127, torch.int8);  quantize_per_tensor_default_101 = None
+    features_12_0_weight_bias = getattr(getattr(self.features, "12"), "0").weight_bias
+    conv2d_51 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_101, dequantize_per_channel_default_51, features_12_0_weight_bias);  dequantize_per_tensor_default_101 = dequantize_per_channel_default_51 = features_12_0_weight_bias = None
+    quantize_per_tensor_default_102 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_51, 0.04340944066643715, 22, -128, 127, torch.int8);  conv2d_51 = None
+    dequantize_per_tensor_default_102 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_102, 0.04340944066643715, 22, -128, 127, torch.int8);  quantize_per_tensor_default_102 = None
+    hardswish__17 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_102);  dequantize_per_tensor_default_102 = None
+    adaptive_avg_pool2d_9 = torch.ops.aten.adaptive_avg_pool2d.default(hardswish__17, [1, 1]);  hardswish__17 = None
+    flatten = torch.ops.aten.flatten.using_ints(adaptive_avg_pool2d_9, 1);  adaptive_avg_pool2d_9 = None
+    quantize_per_tensor_default_103 = torch.ops.quantized_decomposed.quantize_per_tensor.default(flatten, 0.008286242373287678, -87, -128, 127, torch.int8);  flatten = None
+    dequantize_per_tensor_default_103 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_103, 0.008286242373287678, -87, -128, 127, torch.int8);  quantize_per_tensor_default_103 = None
+    linear = torch.ops.aten.linear.default(dequantize_per_tensor_default_103, dequantize_per_channel_default_52, classifier_0_bias);  dequantize_per_tensor_default_103 = dequantize_per_channel_default_52 = classifier_0_bias = None
+    quantize_per_tensor_default_104 = torch.ops.quantized_decomposed.quantize_per_tensor.default(linear, 0.027193168178200722, 55, -128, 127, torch.int8);  linear = None
+    dequantize_per_tensor_default_104 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_104, 0.027193168178200722, 55, -128, 127, torch.int8);  quantize_per_tensor_default_104 = None
+    hardswish__18 = torch.ops.aten.hardswish_.default(dequantize_per_tensor_default_104);  dequantize_per_tensor_default_104 = None
+    dropout_ = torch.ops.aten.dropout_.default(hardswish__18, 0.2, False);  hardswish__18 = None
+    quantize_per_tensor_default_105 = torch.ops.quantized_decomposed.quantize_per_tensor.default(dropout_, 0.007792158517986536, -80, -128, 127, torch.int8);  dropout_ = None
+    dequantize_per_tensor_default_105 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_105, 0.007792158517986536, -80, -128, 127, torch.int8);  quantize_per_tensor_default_105 = None
+    linear_1 = torch.ops.aten.linear.default(dequantize_per_tensor_default_105, dequantize_per_channel_default_53, classifier_3_bias);  dequantize_per_tensor_default_105 = dequantize_per_channel_default_53 = classifier_3_bias = None
+    quantize_per_tensor_default_106 = torch.ops.quantized_decomposed.quantize_per_tensor.default(linear_1, 0.03775613009929657, -16, -128, 127, torch.int8);  linear_1 = None
+    dequantize_per_tensor_default_106 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_106, 0.03775613009929657, -16, -128, 127, torch.int8);  quantize_per_tensor_default_106 = None
+    return pytree.tree_unflatten((dequantize_per_tensor_default_106,), self._out_spec)
+    
+# To see more debug info, please use `graph_module.print_readable()`
+[Observatory] Collected Pre-EdgeTransform/forward in 120.1 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Exported/forward in 115.0 ms
+[Observatory] Collected ETRecord Edge/forward in 125.4 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected EdgeProgramManager EP in 7.6 ms
+Exported and lowered graph:
+graph():
+    %_lifted_tensor_constant162 : [num_users=1] = placeholder[target=_lifted_tensor_constant162]
+    %_lifted_tensor_constant163 : [num_users=1] = placeholder[target=_lifted_tensor_constant163]
+    %_lifted_tensor_constant164 : [num_users=1] = placeholder[target=_lifted_tensor_constant164]
+    %_lifted_tensor_constant165 : [num_users=1] = placeholder[target=_lifted_tensor_constant165]
+    %_lifted_tensor_constant166 : [num_users=1] = placeholder[target=_lifted_tensor_constant166]
+    %_lifted_tensor_constant167 : [num_users=1] = placeholder[target=_lifted_tensor_constant167]
+    %_lifted_tensor_constant168 : [num_users=1] = placeholder[target=_lifted_tensor_constant168]
+    %_lifted_tensor_constant169 : [num_users=1] = placeholder[target=_lifted_tensor_constant169]
+    %_lifted_tensor_constant170 : [num_users=1] = placeholder[target=_lifted_tensor_constant170]
+    %_lifted_tensor_constant171 : [num_users=1] = placeholder[target=_lifted_tensor_constant171]
+    %_lifted_tensor_constant172 : [num_users=1] = placeholder[target=_lifted_tensor_constant172]
+    %_lifted_tensor_constant173 : [num_users=1] = placeholder[target=_lifted_tensor_constant173]
+    %_lifted_tensor_constant174 : [num_users=1] = placeholder[target=_lifted_tensor_constant174]
+    %_lifted_tensor_constant175 : [num_users=1] = placeholder[target=_lifted_tensor_constant175]
+    %_lifted_tensor_constant176 : [num_users=1] = placeholder[target=_lifted_tensor_constant176]
+    %_lifted_tensor_constant177 : [num_users=1] = placeholder[target=_lifted_tensor_constant177]
+    %_lifted_tensor_constant178 : [num_users=1] = placeholder[target=_lifted_tensor_constant178]
+    %_lifted_tensor_constant179 : [num_users=1] = placeholder[target=_lifted_tensor_constant179]
+    %x : [num_users=1] = placeholder[target=x]
+    %aten__to_copy_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant162,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant163,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant164,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_3 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant165,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_4 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant166,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_5 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant167,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_6 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant168,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_7 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant169,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_8 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant170,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_9 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant171,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_10 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant172,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_11 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant173,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_12 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant174,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_13 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant175,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_14 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant176,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_15 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant177,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_16 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant178,), kwargs = {dtype: torch.float32})
+    %aten__to_copy_default_17 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten._to_copy.default](args = (%_lifted_tensor_constant179,), kwargs = {dtype: torch.float32})
+    %lowered_module_0 : [num_users=1] = get_attr[target=lowered_module_0]
+    %executorch_call_delegate : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_0, %x, %aten__to_copy_default, %aten__to_copy_default_1, %aten__to_copy_default_2, %aten__to_copy_default_3, %aten__to_copy_default_4, %aten__to_copy_default_5, %aten__to_copy_default_6, %aten__to_copy_default_7, %aten__to_copy_default_8, %aten__to_copy_default_9, %aten__to_copy_default_10, %aten__to_copy_default_11, %aten__to_copy_default_12, %aten__to_copy_default_13, %aten__to_copy_default_14, %aten__to_copy_default_15, %aten__to_copy_default_16, %aten__to_copy_default_17), kwargs = {})
+    %getitem_1 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate, 0), kwargs = {})
+    %aten_view_copy_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_1, [1, 576]), kwargs = {})
+    %lowered_module_1 : [num_users=1] = get_attr[target=lowered_module_1]
+    %executorch_call_delegate_1 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_1, %aten_view_copy_default), kwargs = {})
+    %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_1, 0), kwargs = {})
+    return (getitem,)
+/home/boyucwsl/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+Saved exported program to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/artifacts/mv3_xnnpack_q8.pte
+[PipelineGraphCollector] Uninstalled all patches
+[Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.json
+[Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.html
+[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.json (7 records: Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+Converting to Grandalf graph and computing layout...
+Running Sugiyama Layout...
+$ python -m backends.qualcomm.debugger.observatory.cli --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.json examples/xnnpack/aot_compiler.py --model_name=mv3 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/artifacts
+

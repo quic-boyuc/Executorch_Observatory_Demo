@@ -1,23 +1,15 @@
 [QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
-[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
 [PipelineGraphCollector] Installed patch: prepare_pt2e
 [PipelineGraphCollector] Installed patch: convert_pt2e
 [PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
 [PipelineGraphCollector] Installed ETRecord patches
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
 The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
 [PipelineGraphCollector] Installed QNN patch: ptq_calibrate
-[PipelineGraphCollector] Installed XNNPACK patch: quantize
-[AccuracyLens] Installed patch: get_imagenet_dataset
-[AccuracyLens] Installed patch: get_masked_language_model_dataset
 Loading mobilenet_v2 model
 Loaded mobilenet_v2 model
 Loaded real input image dog.jpg
 Quantizing Model...
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
-[AccuracyLens] Using backend-captured fallback dataset from PipelineGraphCollectorLens
-[AccuracyLens] Auto-configured None evaluator with 4 metrics
-[Observatory] Collected Exported Float in 1567.1 ms
 Original model: GraphModule(
   (features): Module(
     (0): Module(
@@ -742,9 +734,9 @@ def forward(self, x):
     return pytree.tree_unflatten((linear,), self._out_spec)
     
 # To see more debug info, please use `graph_module.print_readable()`
-[Observatory] Collected Annotated Model in 621.9 ms
-[Observatory] Collected Calibrated Model in 531.3 ms
-[Observatory] Collected Quantized Model in 586.9 ms
+[Observatory] Collected Annotated Model in 563.9 ms
+[Observatory] Collected Calibrated Model in 49.0 ms
+[Observatory] Collected Quantized Model in 85.3 ms
 Quantized model: GraphModule(
   (features): Module(
     (0): Module(
@@ -1164,22 +1156,22 @@ def forward(self, x):
     dequantize_per_tensor_default = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default, 0.018455125391483307, -15, -128, 127, torch.int8);  quantize_per_tensor_default = None
     features_0_0_weight_bias = getattr(getattr(self.features, "0"), "0").weight_bias
     conv2d = torch.ops.aten.conv2d.default(dequantize_per_tensor_default, dequantize_per_channel_default, features_0_0_weight_bias, [2, 2], [1, 1]);  dequantize_per_tensor_default = dequantize_per_channel_default = features_0_0_weight_bias = None
-    quantize_per_tensor_default_1 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d, 0.16367782652378082, -10, -128, 127, torch.int8);  conv2d = None
-    dequantize_per_tensor_default_1 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_1, 0.16367782652378082, -10, -128, 127, torch.int8);  quantize_per_tensor_default_1 = None
+    quantize_per_tensor_default_1 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d, 0.16598199307918549, -12, -128, 127, torch.int8);  conv2d = None
+    dequantize_per_tensor_default_1 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_1, 0.16598199307918549, -12, -128, 127, torch.int8);  quantize_per_tensor_default_1 = None
     hardtanh_ = torch.ops.aten.hardtanh_.default(dequantize_per_tensor_default_1, 0.0, 6.0);  dequantize_per_tensor_default_1 = None
-    quantize_per_tensor_default_2 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh_, 0.16367782652378082, -10, -128, 127, torch.int8);  hardtanh_ = None
-    dequantize_per_tensor_default_2 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_2, 0.16367782652378082, -10, -128, 127, torch.int8);  quantize_per_tensor_default_2 = None
+    quantize_per_tensor_default_2 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh_, 0.16598199307918549, -12, -128, 127, torch.int8);  hardtanh_ = None
+    dequantize_per_tensor_default_2 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_2, 0.16598199307918549, -12, -128, 127, torch.int8);  quantize_per_tensor_default_2 = None
     features_1_conv_0_0_weight_bias = getattr(getattr(getattr(self.features, "1").conv, "0"), "0").weight_bias
     conv2d_1 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_2, dequantize_per_channel_default_1, features_1_conv_0_0_weight_bias, [1, 1], [1, 1], [1, 1], 32);  dequantize_per_tensor_default_2 = dequantize_per_channel_default_1 = features_1_conv_0_0_weight_bias = None
-    quantize_per_tensor_default_3 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_1, 0.41398704051971436, -29, -128, 127, torch.int8);  conv2d_1 = None
-    dequantize_per_tensor_default_3 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_3, 0.41398704051971436, -29, -128, 127, torch.int8);  quantize_per_tensor_default_3 = None
+    quantize_per_tensor_default_3 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_1, 0.4141937792301178, -29, -128, 127, torch.int8);  conv2d_1 = None
+    dequantize_per_tensor_default_3 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_3, 0.4141937792301178, -29, -128, 127, torch.int8);  quantize_per_tensor_default_3 = None
     hardtanh__1 = torch.ops.aten.hardtanh_.default(dequantize_per_tensor_default_3, 0.0, 6.0);  dequantize_per_tensor_default_3 = None
-    quantize_per_tensor_default_4 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh__1, 0.41398704051971436, -29, -128, 127, torch.int8);  hardtanh__1 = None
-    dequantize_per_tensor_default_4 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_4, 0.41398704051971436, -29, -128, 127, torch.int8);  quantize_per_tensor_default_4 = None
+    quantize_per_tensor_default_4 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh__1, 0.4141937792301178, -29, -128, 127, torch.int8);  hardtanh__1 = None
+    dequantize_per_tensor_default_4 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_4, 0.4141937792301178, -29, -128, 127, torch.int8);  quantize_per_tensor_default_4 = None
     features_1_conv_1_weight_bias = getattr(getattr(self.features, "1").conv, "1").weight_bias
     conv2d_2 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_4, dequantize_per_channel_default_2, features_1_conv_1_weight_bias);  dequantize_per_tensor_default_4 = dequantize_per_channel_default_2 = features_1_conv_1_weight_bias = None
-    quantize_per_tensor_default_5 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_2, 0.31206759810447693, 14, -128, 127, torch.int8);  conv2d_2 = None
-    dequantize_per_tensor_default_5 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_5, 0.31206759810447693, 14, -128, 127, torch.int8);  quantize_per_tensor_default_5 = None
+    quantize_per_tensor_default_5 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_2, 0.33217012882232666, 5, -128, 127, torch.int8);  conv2d_2 = None
+    dequantize_per_tensor_default_5 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_5, 0.33217012882232666, 5, -128, 127, torch.int8);  quantize_per_tensor_default_5 = None
     features_2_conv_0_0_weight_bias = getattr(getattr(getattr(self.features, "2").conv, "0"), "0").weight_bias
     conv2d_3 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_5, dequantize_per_channel_default_3, features_2_conv_0_0_weight_bias);  dequantize_per_tensor_default_5 = dequantize_per_channel_default_3 = features_2_conv_0_0_weight_bias = None
     quantize_per_tensor_default_6 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_3, 0.3169192373752594, -10, -128, 127, torch.int8);  conv2d_3 = None
@@ -1201,11 +1193,11 @@ def forward(self, x):
     dequantize_per_tensor_default_102 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_10, 0.20192185044288635, -5, -128, 127, torch.int8);  quantize_per_tensor_default_10 = None
     features_3_conv_0_0_weight_bias = getattr(getattr(getattr(self.features, "3").conv, "0"), "0").weight_bias
     conv2d_6 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_102, dequantize_per_channel_default_6, features_3_conv_0_0_weight_bias);  dequantize_per_tensor_default_102 = dequantize_per_channel_default_6 = features_3_conv_0_0_weight_bias = None
-    quantize_per_tensor_default_11 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_6, 0.10951865464448929, -4, -128, 127, torch.int8);  conv2d_6 = None
-    dequantize_per_tensor_default_11 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_11, 0.10951865464448929, -4, -128, 127, torch.int8);  quantize_per_tensor_default_11 = None
+    quantize_per_tensor_default_11 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_6, 0.11305151879787445, 1, -128, 127, torch.int8);  conv2d_6 = None
+    dequantize_per_tensor_default_11 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_11, 0.11305151879787445, 1, -128, 127, torch.int8);  quantize_per_tensor_default_11 = None
     hardtanh__4 = torch.ops.aten.hardtanh_.default(dequantize_per_tensor_default_11, 0.0, 6.0);  dequantize_per_tensor_default_11 = None
-    quantize_per_tensor_default_12 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh__4, 0.10951865464448929, -4, -128, 127, torch.int8);  hardtanh__4 = None
-    dequantize_per_tensor_default_12 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_12, 0.10951865464448929, -4, -128, 127, torch.int8);  quantize_per_tensor_default_12 = None
+    quantize_per_tensor_default_12 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh__4, 0.11305151879787445, 1, -128, 127, torch.int8);  hardtanh__4 = None
+    dequantize_per_tensor_default_12 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_12, 0.11305151879787445, 1, -128, 127, torch.int8);  quantize_per_tensor_default_12 = None
     features_3_conv_1_0_weight_bias = getattr(getattr(getattr(self.features, "3").conv, "1"), "0").weight_bias
     conv2d_7 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_12, dequantize_per_channel_default_7, features_3_conv_1_0_weight_bias, [1, 1], [1, 1], [1, 1], 144);  dequantize_per_tensor_default_12 = dequantize_per_channel_default_7 = features_3_conv_1_0_weight_bias = None
     quantize_per_tensor_default_13 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_7, 0.1556585729122162, 41, -128, 127, torch.int8);  conv2d_7 = None
@@ -1222,11 +1214,11 @@ def forward(self, x):
     dequantize_per_tensor_default_16 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_16, 0.3211611807346344, 14, -128, 127, torch.int8);  quantize_per_tensor_default_16 = None
     features_4_conv_0_0_weight_bias = getattr(getattr(getattr(self.features, "4").conv, "0"), "0").weight_bias
     conv2d_9 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_16, dequantize_per_channel_default_9, features_4_conv_0_0_weight_bias);  dequantize_per_tensor_default_16 = dequantize_per_channel_default_9 = features_4_conv_0_0_weight_bias = None
-    quantize_per_tensor_default_17 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_9, 0.14950327575206757, 3, -128, 127, torch.int8);  conv2d_9 = None
-    dequantize_per_tensor_default_17 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_17, 0.14950327575206757, 3, -128, 127, torch.int8);  quantize_per_tensor_default_17 = None
+    quantize_per_tensor_default_17 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_9, 0.1483345776796341, 4, -128, 127, torch.int8);  conv2d_9 = None
+    dequantize_per_tensor_default_17 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_17, 0.1483345776796341, 4, -128, 127, torch.int8);  quantize_per_tensor_default_17 = None
     hardtanh__6 = torch.ops.aten.hardtanh_.default(dequantize_per_tensor_default_17, 0.0, 6.0);  dequantize_per_tensor_default_17 = None
-    quantize_per_tensor_default_18 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh__6, 0.14950327575206757, 3, -128, 127, torch.int8);  hardtanh__6 = None
-    dequantize_per_tensor_default_18 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_18, 0.14950327575206757, 3, -128, 127, torch.int8);  quantize_per_tensor_default_18 = None
+    quantize_per_tensor_default_18 = torch.ops.quantized_decomposed.quantize_per_tensor.default(hardtanh__6, 0.1483345776796341, 4, -128, 127, torch.int8);  hardtanh__6 = None
+    dequantize_per_tensor_default_18 = torch.ops.quantized_decomposed.dequantize_per_tensor.default(quantize_per_tensor_default_18, 0.1483345776796341, 4, -128, 127, torch.int8);  quantize_per_tensor_default_18 = None
     features_4_conv_1_0_weight_bias = getattr(getattr(getattr(self.features, "4").conv, "1"), "0").weight_bias
     conv2d_10 = torch.ops.aten.conv2d.default(dequantize_per_tensor_default_18, dequantize_per_channel_default_10, features_4_conv_1_0_weight_bias, [2, 2], [1, 1], [1, 1], 144);  dequantize_per_tensor_default_18 = dequantize_per_channel_default_10 = features_4_conv_1_0_weight_bias = None
     quantize_per_tensor_default_19 = torch.ops.quantized_decomposed.quantize_per_tensor.default(conv2d_10, 0.08136502653360367, 34, -128, 127, torch.int8);  conv2d_10 = None
@@ -1530,21 +1522,15 @@ def forward(self, x):
     return pytree.tree_unflatten((dequantize_per_tensor_default_101,), self._out_spec)
     
 # To see more debug info, please use `graph_module.print_readable()`
-[Observatory] Collected Pre-EdgeTransform/forward in 871.4 ms
+[Observatory] Collected Pre-EdgeTransform/forward in 456.3 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected ETRecord Exported/forward in 970.3 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
-[Observatory] Collected ETRecord Edge/forward in 1803.8 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Exported/forward in 102.5 ms
+[Observatory] Collected ETRecord Edge/forward in 92.8 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
@@ -1561,7 +1547,9 @@ def forward(self, x):
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected EdgeProgramManager EP in 460.7 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected EdgeProgramManager EP in 2.2 ms
 Exported and lowered graph:
 graph():
     %x : [num_users=1] = placeholder[target=x]
@@ -1581,10 +1569,9 @@ graph():
   return guard_size_oblivious(self.stride < other.stride)
 Saved exported program to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/artifacts/mv2_xnnpack_q8.pte
 [PipelineGraphCollector] Uninstalled all patches
-[AccuracyLens] Uninstalled all patches
 [Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json
 [Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html
-[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json (8 records: Exported Float, Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
+[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json (7 records: Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
 Building graph payload model...
 Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
@@ -1620,11 +1607,6 @@ Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
-Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-[FX Graph Viewer] Compiling base graph payload...
-[ FX Graph Viewer ] Compiling extension payloads...
 Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
 Converting to Grandalf graph and computing layout...
@@ -1639,7 +1621,5 @@ Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
 Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-$ python -m backends.qualcomm.debugger.observatory.cli --report-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html --report-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json --report-title 'XNNPack Observatory - mv2' examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/artifacts
+$ python -m backends.qualcomm.debugger.observatory.cli --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/artifacts
 

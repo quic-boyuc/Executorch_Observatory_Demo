@@ -20,7 +20,7 @@ XNN_MODELS_ALL = [
     "dl3",
     "edsr",
     "emformer_join",
-    "emformer_predict",
+    # "emformer_predict", skip due to layout issue
     "emformer_transcribe",
     "ic3",
     "ic4",

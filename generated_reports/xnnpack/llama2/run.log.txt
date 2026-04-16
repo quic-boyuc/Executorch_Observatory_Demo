@@ -1,23 +1,13 @@
-$ python -m backends.qualcomm.debugger.observatory.cli --report-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html --report-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json --report-title 'XNNPack Observatory - llama2' examples/xnnpack/aot_compiler.py --model_name=llama2 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/artifacts
-
-[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
 [QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
 [PipelineGraphCollector] Installed patch: prepare_pt2e
 [PipelineGraphCollector] Installed patch: convert_pt2e
 [PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
 [PipelineGraphCollector] Installed ETRecord patches
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
 The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
 [PipelineGraphCollector] Installed QNN patch: ptq_calibrate
-[PipelineGraphCollector] Installed XNNPACK patch: quantize
-[AccuracyLens] Installed patch: get_imagenet_dataset
-[AccuracyLens] Installed patch: get_masked_language_model_dataset
 I tokenizers:regex.cpp:27] Registering override fallback regex
 Quantizing Model...
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
-[AccuracyLens] Using backend-captured fallback dataset from PipelineGraphCollectorLens
-[AccuracyLens] Auto-configured None evaluator with 4 metrics
-[Observatory] Collected Exported Float in 1187.0 ms
 Original model: GraphModule(
   (tok_embeddings): Module()
   (layers): Module(
@@ -158,9 +148,9 @@ def forward(self, tokens):
     return pytree.tree_unflatten((linear_7,), self._out_spec)
     
 # To see more debug info, please use `graph_module.print_readable()`
-[Observatory] Collected Annotated Model in 688.4 ms
-[Observatory] Collected Calibrated Model in 689.0 ms
-[Observatory] Collected Quantized Model in 5055.5 ms
+[Observatory] Collected Annotated Model in 422.4 ms
+[Observatory] Collected Calibrated Model in 23.4 ms
+[Observatory] Collected Quantized Model in 30.4 ms
 Quantized model: GraphModule(
   (tok_embeddings): Module()
   (layers): Module(
@@ -350,21 +340,15 @@ def forward(self, tokens):
     return pytree.tree_unflatten((linear_7,), self._out_spec)
     
 # To see more debug info, please use `graph_module.print_readable()`
-[Observatory] Collected Pre-EdgeTransform/forward in 5174.6 ms
+[Observatory] Collected Pre-EdgeTransform/forward in 29.8 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected ETRecord Exported/forward in 5519.3 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
-[Observatory] Collected ETRecord Edge/forward in 5578.9 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
-  return cls.__new__(cls, *args)
+[Observatory] Collected ETRecord Exported/forward in 33.5 ms
+[Observatory] Collected ETRecord Edge/forward in 37.2 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
@@ -409,7 +393,9 @@ def forward(self, tokens):
   return cls.__new__(cls, *args)
 /home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected EdgeProgramManager EP in 5917.9 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[Observatory] Collected EdgeProgramManager EP in 22.9 ms
 Exported and lowered graph:
 graph():
     %p_tok_embeddings_weight : [num_users=1] = placeholder[target=p_tok_embeddings_weight]
@@ -550,10 +536,9 @@ graph():
   return guard_size_oblivious(self.stride < other.stride)
 Saved exported program to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/artifacts/llama2_xnnpack_q8.pte
 [PipelineGraphCollector] Uninstalled all patches
-[AccuracyLens] Uninstalled all patches
 [Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json
 [Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html
-[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json (8 records: Exported Float, Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
+[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json (7 records: Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
 Checkpoint not provided, using default initialization.
 Building graph payload model...
 Converting to Grandalf graph and computing layout...
@@ -590,11 +575,6 @@ Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
-Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-[FX Graph Viewer] Compiling base graph payload...
-[ FX Graph Viewer ] Compiling extension payloads...
 Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
 Converting to Grandalf graph and computing layout...
@@ -609,5 +589,5 @@ Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
 Converting to Grandalf graph and computing layout...
 Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+$ python -m backends.qualcomm.debugger.observatory.cli --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json examples/xnnpack/aot_compiler.py --model_name=llama2 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/artifacts
+
