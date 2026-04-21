@@ -23,12 +23,16 @@ Link for demo is provided in next section.
 To actually **feels** how *observatory* and *fx_viewer* amplifies each other's value in debugging workflow please see the demo in next section.
 
 ## Demo
-
-
 This demo implemented a **zero-config (auto collection) workflow of per-layer accuracy analysis**, that works on all xnnpack and qualcomm aot examples.
 
 ### 1. Setup 
-Standard executorch dev environment is enough. No special dependency required.
+- Prepare standard executorch dev environment for your target backend.
+
+- Install [fast-sugiyama](https://github.com/austinorr/fast-sugiyama) package
+```bash
+# requires python version >= 3.11
+pip3 install fast-sugiyama[full]
+```
 
 ### 2. Command
 Simply use observaotry.cli to invoke ordinary aot script. Use `--lense_recipe=accuracy` to enable accuracy Lenses.
@@ -38,15 +42,14 @@ Simply use observaotry.cli to invoke ordinary aot script. Use `--lense_recipe=ac
         --output-html output.html \
         --lense_recipe=accuracy \
         {original xnnpack command and args}
-```
-For example
-
-```bash
+        
+# for example
 python -m executorch.backends.xnnpack.debugger.observatory \
     --output-html /tmp/mv2/obs_report.html \
     --lense_recipe=accuracy \
     examples/xnnpack/aot_compiler.py \
     --model_name=mv2 --delegate --quantize --output_dir /tmp/mv2
+
 ```
 
 ### 3. HTML Report
@@ -148,6 +151,101 @@ An external user or collaborator needs to report a problem in a way that others 
 4. AI issue analysis and triage
 Structured debugging artifacts can automated workflow also become inputs for future automated analysis.
 
+## Detail Interface Design
+### General Invokation
+**How to activate Observatory?**
+1. **CLI**: Use `devtools/observatory` to invoke any script.
+The default observatory setup we will collect meta datas, stack trace, graphs in different stages
+
+```bash
+ python -m executorch.devtools.observatory \
+        --output-html output.html \
+        {any executorch e2e script and args}
+```
+2. **Manual**: Modify your script to enable observatory context.
+
+```python
+from executorch.devtools.observatory import Observatory
+
+model = MyModel().eval()
+graph = torch.fx.symbolic_trace(model)
+
+with Observatory.enable_context():
+    Observatory.collect("original", graph)
+    # Apply a pass
+    transformed = my_pass(graph)
+    Observatory.collect("after_my_pass", transformed)
+
+Observatory.export_html_report("pass_debug.html")
+Observatory.export_json("pass_debug.json")
+
+```
+
+**How to set observatory collection point?**
+1. **Automatic** : Standard executorch API wrapped by a default lense in `observatory/lenses/pipeline_graph_collector.py`, for example 
+    - `prepare_pt2e`
+    - `convert_pt2e`, 
+    - `to_edge_transform_and_lower`
+    - `ETRecord.add_exported_program`
+    - `ETRecord.add_edge_dialect_program`
+
+2. **Pass Decorator** : Use `observe_pass` to automatically collect graphs before and after a pass. Wrap any `PassBase` subclass instance, callable, or use it as a class decorator:
+
+```python
+from executorch.devtools.observatory import Observatory, observe_pass
+from executorch.exir.pass_manager import PassManager
+from executorch.exir.passes.remove_graph_asserts_pass import RemoveGraphAssertsPass
+
+# Decorator wrap all pass instances
+from executorch.exir.pass_base import ExportPass, PassResult
+@observe_pass
+class MyPass(ExportPass):
+    def call(self, gm):
+        # process graph_module here
+        return graph_module
+
+
+pm = PassManager()
+# Wrap pass instances — default collects both input and output graphs
+pm.add_pass(observe_pass(RemoveGraphAssertsPass()))
+pm.add_pass(MyPass())
+
+with Observatory.enable_context():
+    pm._transform(graph_module)
+    
+Observatory.export_html_report("pass_debug.html")
+```
+
+3. **Manual** : 
+You can insert `Observatory.collect()` calls anywhere in your code to capture
+intermediate graph states. This is useful for debugging pass transforms or
+custom lowering steps.
+
+
+### Backend Specific CLI and Lenses
+Use backend specific observaotry.cli to invoke ordinary aot script.
+Backend can implement custom lenses and cli options, for example, use `--lens_recipe=accuracy` to enable accuracy Lenses.
+
+**XNNPack**
+
+```bash
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --output-html /tmp/mv2/obs_report.html \
+    --lens_recipe=accuracy \
+    examples/xnnpack/aot_compiler.py \
+    --model_name=mv2 --delegate --quantize --output_dir /tmp/
+```
+
+**Qualcomm** 
+
+```bash
+python -m executorch.backends.qualcomm.debugger.observatory.cli \
+    --output-html obs_report.html \
+    --lens_recipe=accuracy \
+    examples/qualcomm/oss_scripts/mobilevit_v2.py --backend htp --model SM8650 -d ./imagenet-mini-val/ -b build-android/ --compile_only
+```
+
+
 ## Maintainance and Collaboration
 
 ### Backend Agnostic Frameworks
@@ -160,7 +258,6 @@ devtools/
 │   ├── color_rules.py
 │   ├── exporter.py
 │   ├── extension.py
-│   ├── grandalf
 │   ├── models.py
 │   └── templates
 │       ├── README.md
@@ -213,6 +310,6 @@ devtools/
 
 ## Future Plan
 
-- Leverage Inspection API and support for debugging scenarios (e.g. runtime issue, performance, memory)
+- Leverage Inspection API and support more debugging scenarios (e.g. runtime issue, performance, memory)
 - Support more graph formats other than *fx graph* (e.g. Pytorch graph, QNN graph)
 - Rewrite and automate backend-specific debugging into observatory *lense* (e.g. QNN QHAS performance profiling)
