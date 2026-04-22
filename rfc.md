@@ -43,11 +43,18 @@ Simply use observaotry.cli to invoke ordinary aot script. Use `--lense_recipe=ac
         --lense_recipe=accuracy \
         {original xnnpack command and args}
         
-# for example
+# for example (aot_compiler.py auto-detected as module via __init__.py)
 python -m executorch.backends.xnnpack.debugger.observatory \
     --output-html /tmp/mv2/obs_report.html \
     --lense_recipe=accuracy \
     examples/xnnpack/aot_compiler.py \
+    --model_name=mv2 --delegate --quantize --output_dir /tmp/mv2
+
+# or pass the dotted module name explicitly
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --output-html /tmp/mv2/obs_report.html \
+    --lense_recipe=accuracy \
+    examples.xnnpack.aot_compiler \
     --model_name=mv2 --delegate --quantize --output_dir /tmp/mv2
 
 ```
@@ -228,18 +235,30 @@ Backend can implement custom lenses and cli options, for example, use `--lens_re
 
 **XNNPack**
 
+> **Note**: `examples/xnnpack/aot_compiler.py` uses relative imports (`from . import ...`), so it
+> must be run as a Python module. The Observatory CLI auto-detects this when a file path is passed
+> and its directory contains `__init__.py`. Alternatively, pass the dotted module name directly.
+
 ```bash
+# File path (auto-detected as module due to __init__.py in examples/xnnpack/)
 python -m executorch.backends.xnnpack.debugger.observatory \
     --output-html /tmp/mv2/obs_report.html \
     --lens_recipe=accuracy \
     examples/xnnpack/aot_compiler.py \
     --model_name=mv2 --delegate --quantize --output_dir /tmp/
+
+# Equivalent: explicit dotted module name
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --output-html /tmp/mv2/obs_report.html \
+    --lens_recipe=accuracy \
+    examples.xnnpack.aot_compiler \
+    --model_name=mv2 --delegate --quantize --output_dir /tmp/
 ```
 
-**Qualcomm** 
+**Qualcomm**
 
 ```bash
-python -m executorch.backends.qualcomm.debugger.observatory.cli \
+python -m executorch.backends.qualcomm.debugger.observatory \
     --output-html obs_report.html \
     --lens_recipe=accuracy \
     examples/qualcomm/oss_scripts/mobilevit_v2.py --backend htp --model SM8650 -d ./imagenet-mini-val/ -b build-android/ --compile_only
@@ -313,3 +332,5 @@ devtools/
 - Leverage Inspection API and support more debugging scenarios (e.g. runtime issue, performance, memory)
 - Support more graph formats other than *fx graph* (e.g. Pytorch graph, QNN graph)
 - Rewrite and automate backend-specific debugging into observatory *lense* (e.g. QNN QHAS performance profiling)
+- More device-specific profiler and debugger integration (e.g. ADB lense, performance profiling lense)
+

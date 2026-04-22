@@ -131,7 +131,7 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
         cmd = [
             "python",
             "-m",
-            "backends.xnnpack.debugger.observatory.cli",
+            "executorch.backends.xnnpack.debugger.observatory",
             "--output-html",
             str(html_path),
             "--output-json",
@@ -177,7 +177,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
         cmd = [
             "python",
             "-m",
-            "backends.qualcomm.debugger.observatory.cli",
+            "executorch.backends.qualcomm.debugger.observatory",
             "--output-html",
             str(html_path),
             "--output-json",
@@ -518,7 +518,7 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
         cmd = [
             "python",
             "-m",
-            "backends.qualcomm.debugger.observatory.cli",
+            "executorch.backends.qualcomm.debugger.observatory",
             "visualize",
             "--input-json",
             str(json_path),
