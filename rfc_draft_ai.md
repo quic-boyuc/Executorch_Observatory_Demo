@@ -179,13 +179,13 @@ python -m executorch.devtools.observatory SCRIPT [ARGS...]
 python -m executorch.backends.qualcomm.debugger.observatory SCRIPT [ARGS...]
 
 # Qualcomm — with accuracy debugging
-python -m executorch.backends.qualcomm.debugger.observatory --lense_recipe=accuracy SCRIPT [ARGS...]
+python -m executorch.backends.qualcomm.debugger.observatory --lense_recip=accuracy SCRIPT [ARGS...]
 
 # XNNPACK — graph collection only (default)
 python -m executorch.backends.xnnpack.debugger.observatory SCRIPT [ARGS...]
 
 # XNNPACK — with accuracy debugging
-python -m executorch.backends.xnnpack.debugger.observatory --lense_recipe=accuracy SCRIPT [ARGS...]
+python -m executorch.backends.xnnpack.debugger.observatory --lense_recip=accuracy SCRIPT [ARGS...]
 ```
 
 ### 6.7 fx_viewer Extension API

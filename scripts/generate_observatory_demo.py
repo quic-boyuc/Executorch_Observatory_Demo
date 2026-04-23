@@ -15,7 +15,6 @@ import time
 from pathlib import Path
 
 XNN_MODELS_ALL = [
-    "add",
     "add_mul",
     "dl3",
     "edsr",
@@ -76,6 +75,18 @@ QUALCOMM_RECIPES = {
         "script": "examples/qualcomm/oss_scripts/eurobert.py",
         "dataset_kind": "wiki",
     },
+    "swin_transformer": {
+        "script": "examples/qualcomm/oss_scripts/swin_transformer.py",
+        "dataset_kind": "imagenet",
+    },
+    "swin_v2_t": {
+        "script": "examples/qualcomm/oss_scripts/swin_v2_t.py",
+        "dataset_kind": "imagenet",
+    },
+    "cvt": {
+        "script": "examples/qualcomm/oss_scripts/cvt.py",
+        "dataset_kind": "imagenet",
+    },
 }
 
 QUALCOMM_DEFAULT = [
@@ -89,6 +100,11 @@ QUALCOMM_DEFAULT = [
     "albert",
     "distilbert",
     "eurobert",
+    "swin_transformer",
+    "swin_v2_t",
+    "cvt",
+    "fastvit",
+    "regnet"
 ]
 
 
