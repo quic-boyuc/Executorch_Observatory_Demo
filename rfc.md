@@ -18,29 +18,40 @@ Observatory is a unified, extensible debugging framework that turns the scattere
 2. **Backend-extensible.** Each backend contributes its own lenses and CLI runner without forking the framework.
 3. **One debugging report shape across backends.** Same left panel, same compare mode, same graph view — regardless of the backend producing it.
 4. **Standalone self-contained HTML output.** No server, no authentication, no external service.
-5. **Foundation for automation.** Structured JSON alongside HTML enables programmatic analysis and AI-assisted triage.
+5. **JSON as a first-class format.** Machine-readable canonical output for CI archives, database storage, and AI-assisted triage; HTML is a rendering of it.
 
 **Non-goals:** replacing Inspector / ETRecord / ETDump / bundled_program (Observatory *consumes* them); replacing `devtools/visualization/` (different purpose; see reference.md §B); mandating adoption (opt-in per backend); live real-time debugging UIs (post-hoc reports, not dashboards).
 
 ## 3. Feature Highlights
 
-[[MEDIA: hero-gif — full-report walkthrough: records panel → record view → compare mode → per-layer accuracy overlay, ~10s — the single "what is this" hero]]
+A narrative preview of the experience. Each bullet builds on the previous one: *how to run it → what you get → what's inside → what the advanced lenses add.*
 
-**Interactive FX graph viewer with N-way compare.** Synchronized side-by-side views of the same graph before/after a pass or across lowering stages. Click a node in one graph and the matching node highlights in all others (sync driven by `debug_handle` / `from_node`).
+**1. Zero-config command — wrap any AOT script.** Default lenses (metadata, stack trace, graph, pipeline-hook capture) are active out of the box. Opt-in deeper analysis such as accuracy via a single flag.
 
-[[MEDIA: gif — 2-graph compare mode, cross-graph node sync on click, ~5s]]
+```bash
+# Defaults — metadata, graphs at each lowering stage
+python -m executorch.backends.xnnpack.debugger.observatory \
+    examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
 
-**Per-layer accuracy as a graph overlay.** PSNR / cosine / MSE computed per operator, rendered as a color gradient on the graph. Worst-accuracy nodes stand out visually; click any node for full metrics in the info panel.
+# Add per-layer accuracy debugging with one flag
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --lense_recipe=accuracy \
+    examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
+```
 
-[[MEDIA: gif — color-coded graph with per-layer PSNR + node selection showing full metrics, ~6s]]
+[[MEDIA: png — side-by-side terminal: default run vs `--lense_recipe=accuracy`]]
 
-**Zero-config unified CLI across backends.** Same command shape for XNNPACK and Qualcomm: wrap any AOT script, get a report. Backend-specific lenses opt-in via `--lense_recipe`.
+**2. Single self-contained HTML — easy to share.** One file. No server, no login, no external service. Opens in any modern browser; attachable to issues, PRs, and email.
 
-[[MEDIA: png — side-by-side: XNNPACK CLI vs Qualcomm CLI, identical arg shape]]
+[[MEDIA: png — the generated HTML file being opened in a browser, run dashboard visible]]
 
-**Single-file HTML artifact.** One file, opens in any browser, attachable to issues and PRs — no server, no login, no external service.
+**3. Graphs + metadata inside.** Interactive FX graphs at each pipeline stage, run metadata, and an N-way synchronized compare view for any pair of records. Click a node in one graph; the corresponding node highlights in every compared graph.
 
-[[MEDIA: png — the generated HTML file being dragged into a browser tab, run dashboard visible]]
+[[MEDIA: gif — navigating records in the left panel → compare mode with cross-graph node sync, ~8s]]
+
+**4. Per-layer accuracy — overlay on the graph + merged table.** Opting into accuracy lenses adds per-operator PSNR / cosine / MSE as a color overlay on the graph, plus a merged per-layer metrics table. Worst-accuracy nodes stand out visually; click any node to see its full metric breakdown in the info panel.
+
+[[MEDIA: gif — graph with per-layer PSNR color overlay + node selection → info-panel metrics, ~6s]]
 
 ## 4. Problem Statement
 
