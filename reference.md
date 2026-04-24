@@ -24,7 +24,7 @@ Direct consequences:
 
 1. `Observatory.export_json()` is **not a debug dump**; it is the canonical report. The HTML is a rendering of it.
 2. HTML can be regenerated from stored JSON without re-running observation — useful when a template update, a styling change, or a new version of a lens's `frontend()` ships.
-3. Cross-time regression analysis is a first-class use case: a comparison lens consumes N archived JSON files and emits a regression HTML, with no re-observation needed. See rfc.md §8.2 for a worked example.
+3. Cross-time regression analysis is a first-class use case: a comparison lens consumes N archived JSON files and emits a regression HTML, with no re-observation needed. See rfc.md §6.2 for a worked example.
 4. Machine and AI triage consumers read the JSON directly — no HTML scraping required.
 
 The protocol below is shaped by this data flow.
