@@ -108,7 +108,7 @@ The two tools are complementary, not competing. They differ in input form, rende
 | Rendering | Launches Google Model-Explorer (web server + browser tab) | Renders to a **standalone HTML file**, embeddable in any page |
 | Embed in a larger report | Not supported — opens its own tab / server | First-class — Observatory's `GraphBlock` embeds the viewer |
 | Debugger-info integration API | Limited — `add_node_data()` + regex style JSON; no typed extension model, no sync-key mechanism, no lens-driven overlay layers | `GraphExtension` with color rules, label formatters, tooltip formatters, sync keys, info-panel data; consumed by lenses |
-| Dependencies | `ai-edge-model-explorer>=0.1.16` (heavy; known `numpy<2` vs ExecuTorch's `numpy>=2` conflict) | `fast-sugiyama` (pure Python layout) — nothing else |
+| Dependencies | `ai-edge-model-explorer>=0.1.16` (heavy) | `fast-sugiyama` (pure Python layout) — nothing else |
 | Invocation | Python API only (`Tester(model).export().visualize()`) | Python API + file output; consumed by Observatory's `GraphBlock` |
 | Compare / diff | Not supported | N-way synchronized compare with `debug_handle` / `from_node` sync |
 | Native FX-graph support | No (requires export step) | Yes (any `GraphModule`, any dialect) |
