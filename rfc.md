@@ -293,20 +293,20 @@ pip3 install 'fast-sugiyama[full]'
 
 ### 4.2 The command — zero-config, one flag for deeper analysis
 
-Wrap any existing AOT script with the backend-specific Observatory CLI. No code change to your script. The default lenses (metadata, stack trace, graph, pipeline-hook capture) are always active; opt into per-layer accuracy with a single flag.
+Wrap any existing AOT script with the backend-specific Observatory CLI. No code change to your script. The default lenses (metadata, stack trace, graph, pipeline-hook capture) are always active; opt into per-layer accuracy with `--lens_recipe` flag.
 
 ```bash
 # XNNPACK — aot_compiler.py auto-detected as module via __init__.py
 python -m executorch.backends.xnnpack.debugger.observatory \
     --output-html /tmp/mv2/obs_report.html \
-    --lense_recipe=accuracy \
+    --lens_recipe=accuracy \
     examples/xnnpack/aot_compiler.py \
     --model_name=mv2 --delegate --quantize --output_dir /tmp/mv2
 
 # Qualcomm
 python -m executorch.backends.qualcomm.debugger.observatory \
     --output-html obs_report.html \
-    --lense_recipe=accuracy \
+    --lens_recipe=accuracy \
     examples/qualcomm/oss_scripts/mobilevit_v2.py \
     --backend htp --model SM8650 -d ./imagenet-mini-val/ \
     -b build-android/ --compile_only
