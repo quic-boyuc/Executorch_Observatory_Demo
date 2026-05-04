@@ -1,593 +1,97 @@
-[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
-[PipelineGraphCollector] Installed patch: prepare_pt2e
-[PipelineGraphCollector] Installed patch: convert_pt2e
-[PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
-[PipelineGraphCollector] Installed ETRecord patches
-[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
-The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
-[PipelineGraphCollector] Installed QNN patch: ptq_calibrate
 I tokenizers:regex.cpp:27] Registering override fallback regex
-Quantizing Model...
-Original model: GraphModule(
-  (tok_embeddings): Module()
-  (layers): Module(
-    (0): Module(
-      (attention): Module(
-        (wq): Module()
-        (wk): Module()
-        (wv): Module()
-        (wo): Module()
-        (rope): Module()
-      )
-      (feed_forward): Module(
-        (w1): Module()
-        (w2): Module()
-        (w3): Module()
-      )
-      (attention_norm): Module()
-      (ffn_norm): Module()
-    )
-  )
-  (norm): Module()
-  (output): Module()
-  (rope): Module()
-)
-
-
-
-def forward(self, tokens):
-    tokens, = fx_pytree.tree_flatten_spec(([tokens], {}), self._in_spec)
-    tok_embeddings_weight = self.tok_embeddings.weight
-    layers_0_attention_wq_weight = getattr(self.layers, "0").attention.wq.weight
-    layers_0_attention_wk_weight = getattr(self.layers, "0").attention.wk.weight
-    layers_0_attention_wv_weight = getattr(self.layers, "0").attention.wv.weight
-    layers_0_attention_wo_weight = getattr(self.layers, "0").attention.wo.weight
-    layers_0_feed_forward_w1_weight = getattr(self.layers, "0").feed_forward.w1.weight
-    layers_0_feed_forward_w2_weight = getattr(self.layers, "0").feed_forward.w2.weight
-    layers_0_feed_forward_w3_weight = getattr(self.layers, "0").feed_forward.w3.weight
-    layers_0_attention_norm_weight = getattr(self.layers, "0").attention_norm.weight
-    layers_0_ffn_norm_weight = getattr(self.layers, "0").ffn_norm.weight
-    norm_weight = self.norm.weight
-    output_weight = self.output.weight
-    layers_0_attention_mask = getattr(self.layers, "0").attention.mask
-    layers_0_attention_rope_freqs_cos = getattr(self.layers, "0").attention.rope.freqs_cos;  layers_0_attention_rope_freqs_cos = None
-    layers_0_attention_rope_freqs_sin = getattr(self.layers, "0").attention.rope.freqs_sin;  layers_0_attention_rope_freqs_sin = None
-    rope_freqs_cos = self.rope.freqs_cos
-    rope_freqs_sin = self.rope.freqs_sin
-    embedding = torch.ops.aten.embedding.default(tok_embeddings_weight, tokens);  tok_embeddings_weight = tokens = None
-    slice_1 = torch.ops.aten.slice.Tensor(rope_freqs_cos, 0, 0, 3);  rope_freqs_cos = None
-    slice_2 = torch.ops.aten.slice.Tensor(rope_freqs_sin, 0, 0, 3);  rope_freqs_sin = None
-    _assert_tensor_metadata_default = torch.ops.aten._assert_tensor_metadata.default(embedding, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default = None
-    to = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-    mul = torch.ops.aten.mul.Tensor(to, to)
-    mean = torch.ops.aten.mean.dim(mul, [-1], True);  mul = None
-    add = torch.ops.aten.add.Tensor(mean, 1e-05);  mean = None
-    rsqrt = torch.ops.aten.rsqrt.default(add);  add = None
-    mul_1 = torch.ops.aten.mul.Tensor(to, rsqrt);  rsqrt = None
-    type_as = torch.ops.aten.type_as.default(mul_1, to);  mul_1 = None
-    type_as_1 = torch.ops.aten.type_as.default(layers_0_attention_norm_weight, to);  layers_0_attention_norm_weight = None
-    mul_2 = torch.ops.aten.mul.Tensor(type_as, type_as_1);  type_as = type_as_1 = None
-    linear = torch.ops.aten.linear.default(mul_2, layers_0_attention_wq_weight);  layers_0_attention_wq_weight = None
-    view = torch.ops.aten.view.default(linear, [1, 3, 32, 128]);  linear = None
-    linear_1 = torch.ops.aten.linear.default(mul_2, layers_0_attention_wk_weight);  layers_0_attention_wk_weight = None
-    linear_2 = torch.ops.aten.linear.default(mul_2, layers_0_attention_wv_weight);  mul_2 = layers_0_attention_wv_weight = None
-    view_1 = torch.ops.aten.view.default(linear_1, [1, 3, 32, 128]);  linear_1 = None
-    view_2 = torch.ops.aten.view.default(linear_2, [1, 3, 32, 128]);  linear_2 = None
-    _assert_tensor_metadata_default_1 = torch.ops.aten._assert_tensor_metadata.default(view, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_1 = None
-    to_1 = torch.ops.aten.to.dtype(view, torch.float32);  view = None
-    reshape = torch.ops.aten.reshape.default(to_1, [1, 3, 32, -1, 2])
-    unbind = torch.ops.aten.unbind.int(reshape, -1);  reshape = None
-    getitem = unbind[0]
-    getitem_1 = unbind[1];  unbind = None
-    _assert_tensor_metadata_default_2 = torch.ops.aten._assert_tensor_metadata.default(view_1, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_2 = None
-    to_2 = torch.ops.aten.to.dtype(view_1, torch.float32);  view_1 = None
-    reshape_1 = torch.ops.aten.reshape.default(to_2, [1, 3, 32, -1, 2])
-    unbind_1 = torch.ops.aten.unbind.int(reshape_1, -1);  reshape_1 = None
-    getitem_2 = unbind_1[0]
-    getitem_3 = unbind_1[1];  unbind_1 = None
-    view_3 = torch.ops.aten.view.default(slice_1, [1, 3, 1, 64]);  slice_1 = None
-    view_4 = torch.ops.aten.view.default(slice_2, [1, 3, 1, 64]);  slice_2 = None
-    mul_3 = torch.ops.aten.mul.Tensor(getitem, view_3)
-    mul_4 = torch.ops.aten.mul.Tensor(getitem_1, view_4)
-    sub = torch.ops.aten.sub.Tensor(mul_3, mul_4);  mul_3 = mul_4 = None
-    mul_5 = torch.ops.aten.mul.Tensor(getitem, view_4);  getitem = None
-    mul_6 = torch.ops.aten.mul.Tensor(getitem_1, view_3);  getitem_1 = None
-    add_1 = torch.ops.aten.add.Tensor(mul_5, mul_6);  mul_5 = mul_6 = None
-    mul_7 = torch.ops.aten.mul.Tensor(getitem_2, view_3)
-    mul_8 = torch.ops.aten.mul.Tensor(getitem_3, view_4)
-    sub_1 = torch.ops.aten.sub.Tensor(mul_7, mul_8);  mul_7 = mul_8 = None
-    mul_9 = torch.ops.aten.mul.Tensor(getitem_2, view_4);  getitem_2 = view_4 = None
-    mul_10 = torch.ops.aten.mul.Tensor(getitem_3, view_3);  getitem_3 = view_3 = None
-    add_2 = torch.ops.aten.add.Tensor(mul_9, mul_10);  mul_9 = mul_10 = None
-    stack = torch.ops.aten.stack.default([sub, add_1], -1);  sub = add_1 = None
-    flatten = torch.ops.aten.flatten.using_ints(stack, 3);  stack = None
-    stack_1 = torch.ops.aten.stack.default([sub_1, add_2], -1);  sub_1 = add_2 = None
-    flatten_1 = torch.ops.aten.flatten.using_ints(stack_1, 3);  stack_1 = None
-    type_as_2 = torch.ops.aten.type_as.default(flatten, to_1);  flatten = to_1 = None
-    type_as_3 = torch.ops.aten.type_as.default(flatten_1, to_2);  flatten_1 = to_2 = None
-    transpose = torch.ops.aten.transpose.int(type_as_2, 1, 2);  type_as_2 = None
-    transpose_1 = torch.ops.aten.transpose.int(type_as_3, 1, 2);  type_as_3 = None
-    transpose_2 = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-    repeat_interleave = torch.ops.aten.repeat_interleave.self_int(transpose_1, 1, 1);  transpose_1 = None
-    repeat_interleave_1 = torch.ops.aten.repeat_interleave.self_int(transpose_2, 1, 1);  transpose_2 = None
-    slice_3 = torch.ops.aten.slice.Tensor(layers_0_attention_mask, 0, 0, 3);  layers_0_attention_mask = None
-    slice_4 = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 3);  slice_3 = None
-    scaled_dot_product_attention = torch.ops.aten.scaled_dot_product_attention.default(transpose, repeat_interleave, repeat_interleave_1, slice_4);  transpose = repeat_interleave = repeat_interleave_1 = slice_4 = None
-    transpose_3 = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-    reshape_2 = torch.ops.aten.reshape.default(transpose_3, [1, 3, -1]);  transpose_3 = None
-    linear_3 = torch.ops.aten.linear.default(reshape_2, layers_0_attention_wo_weight);  reshape_2 = layers_0_attention_wo_weight = None
-    add_3 = torch.ops.aten.add.Tensor(to, linear_3);  to = linear_3 = None
-    _assert_tensor_metadata_default_3 = torch.ops.aten._assert_tensor_metadata.default(add_3, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_3 = None
-    to_3 = torch.ops.aten.to.dtype(add_3, torch.float32);  add_3 = None
-    mul_11 = torch.ops.aten.mul.Tensor(to_3, to_3)
-    mean_1 = torch.ops.aten.mean.dim(mul_11, [-1], True);  mul_11 = None
-    add_4 = torch.ops.aten.add.Tensor(mean_1, 1e-05);  mean_1 = None
-    rsqrt_1 = torch.ops.aten.rsqrt.default(add_4);  add_4 = None
-    mul_12 = torch.ops.aten.mul.Tensor(to_3, rsqrt_1);  rsqrt_1 = None
-    type_as_4 = torch.ops.aten.type_as.default(mul_12, to_3);  mul_12 = None
-    type_as_5 = torch.ops.aten.type_as.default(layers_0_ffn_norm_weight, to_3);  layers_0_ffn_norm_weight = None
-    mul_13 = torch.ops.aten.mul.Tensor(type_as_4, type_as_5);  type_as_4 = type_as_5 = None
-    linear_4 = torch.ops.aten.linear.default(mul_13, layers_0_feed_forward_w1_weight);  layers_0_feed_forward_w1_weight = None
-    silu = torch.ops.aten.silu.default(linear_4);  linear_4 = None
-    linear_5 = torch.ops.aten.linear.default(mul_13, layers_0_feed_forward_w3_weight);  mul_13 = layers_0_feed_forward_w3_weight = None
-    mul_14 = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
-    linear_6 = torch.ops.aten.linear.default(mul_14, layers_0_feed_forward_w2_weight);  mul_14 = layers_0_feed_forward_w2_weight = None
-    add_5 = torch.ops.aten.add.Tensor(to_3, linear_6);  to_3 = linear_6 = None
-    select = torch.ops.aten.select.int(add_5, 1, -1);  add_5 = None
-    _assert_tensor_metadata_default_4 = torch.ops.aten._assert_tensor_metadata.default(select, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_4 = None
-    to_4 = torch.ops.aten.to.dtype(select, torch.float32);  select = None
-    mul_15 = torch.ops.aten.mul.Tensor(to_4, to_4)
-    mean_2 = torch.ops.aten.mean.dim(mul_15, [-1], True);  mul_15 = None
-    add_6 = torch.ops.aten.add.Tensor(mean_2, 1e-05);  mean_2 = None
-    rsqrt_2 = torch.ops.aten.rsqrt.default(add_6);  add_6 = None
-    mul_16 = torch.ops.aten.mul.Tensor(to_4, rsqrt_2);  rsqrt_2 = None
-    type_as_6 = torch.ops.aten.type_as.default(mul_16, to_4);  mul_16 = None
-    type_as_7 = torch.ops.aten.type_as.default(norm_weight, to_4);  norm_weight = to_4 = None
-    mul_17 = torch.ops.aten.mul.Tensor(type_as_6, type_as_7);  type_as_6 = type_as_7 = None
-    linear_7 = torch.ops.aten.linear.default(mul_17, output_weight);  mul_17 = output_weight = None
-    return pytree.tree_unflatten((linear_7,), self._out_spec)
-    
-# To see more debug info, please use `graph_module.print_readable()`
-[Observatory] Collected Annotated Model in 422.4 ms
-[Observatory] Collected Calibrated Model in 23.4 ms
-[Observatory] Collected Quantized Model in 30.4 ms
-Quantized model: GraphModule(
-  (tok_embeddings): Module()
-  (layers): Module(
-    (0): Module(
-      (attention): Module(
-        (wq): Module()
-        (wk): Module()
-        (wv): Module()
-        (wo): Module()
-      )
-      (feed_forward): Module(
-        (w1): Module()
-        (w2): Module()
-        (w3): Module()
-      )
-      (attention_norm): Module()
-      (ffn_norm): Module()
-    )
-  )
-  (norm): Module()
-  (output): Module()
-  (rope): Module()
-)
-
-
-
-def forward(self, tokens):
-    tokens, = fx_pytree.tree_flatten_spec(([tokens], {}), self._in_spec)
-    tok_embeddings_weight = self.tok_embeddings.weight
-    _scale_0 = self._scale_0
-    _zero_point_0 = self._zero_point_0
-    quantize_per_channel_default = self._frozen_param0
-    dequantize_per_channel_default = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default, _scale_0, _zero_point_0, 0, -127, 127, torch.int8);  quantize_per_channel_default = _scale_0 = _zero_point_0 = None
-    _scale_1 = self._scale_1
-    _zero_point_1 = self._zero_point_1
-    quantize_per_channel_default_1 = self._frozen_param1
-    dequantize_per_channel_default_1 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_1, _scale_1, _zero_point_1, 0, -127, 127, torch.int8);  quantize_per_channel_default_1 = _scale_1 = _zero_point_1 = None
-    _scale_2 = self._scale_2
-    _zero_point_2 = self._zero_point_2
-    quantize_per_channel_default_2 = self._frozen_param2
-    dequantize_per_channel_default_2 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_2, _scale_2, _zero_point_2, 0, -127, 127, torch.int8);  quantize_per_channel_default_2 = _scale_2 = _zero_point_2 = None
-    _scale_3 = self._scale_3
-    _zero_point_3 = self._zero_point_3
-    quantize_per_channel_default_3 = self._frozen_param3
-    dequantize_per_channel_default_3 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_3, _scale_3, _zero_point_3, 0, -127, 127, torch.int8);  quantize_per_channel_default_3 = _scale_3 = _zero_point_3 = None
-    _scale_4 = self._scale_4
-    _zero_point_4 = self._zero_point_4
-    quantize_per_channel_default_4 = self._frozen_param4
-    dequantize_per_channel_default_4 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_4, _scale_4, _zero_point_4, 0, -127, 127, torch.int8);  quantize_per_channel_default_4 = _scale_4 = _zero_point_4 = None
-    _scale_5 = self._scale_5
-    _zero_point_5 = self._zero_point_5
-    quantize_per_channel_default_5 = self._frozen_param5
-    dequantize_per_channel_default_5 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_5, _scale_5, _zero_point_5, 0, -127, 127, torch.int8);  quantize_per_channel_default_5 = _scale_5 = _zero_point_5 = None
-    _scale_6 = self._scale_6
-    _zero_point_6 = self._zero_point_6
-    quantize_per_channel_default_6 = self._frozen_param6
-    dequantize_per_channel_default_6 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_6, _scale_6, _zero_point_6, 0, -127, 127, torch.int8);  quantize_per_channel_default_6 = _scale_6 = _zero_point_6 = None
-    layers_0_attention_norm_weight = getattr(self.layers, "0").attention_norm.weight
-    layers_0_ffn_norm_weight = getattr(self.layers, "0").ffn_norm.weight
-    norm_weight = self.norm.weight
-    _scale_7 = self._scale_7
-    _zero_point_7 = self._zero_point_7
-    quantize_per_channel_default_7 = self._frozen_param7
-    dequantize_per_channel_default_7 = torch.ops.quantized_decomposed.dequantize_per_channel.default(quantize_per_channel_default_7, _scale_7, _zero_point_7, 0, -127, 127, torch.int8);  quantize_per_channel_default_7 = _scale_7 = _zero_point_7 = None
-    layers_0_attention_mask = getattr(self.layers, "0").attention.mask
-    rope_freqs_cos = self.rope.freqs_cos
-    rope_freqs_sin = self.rope.freqs_sin
-    embedding = torch.ops.aten.embedding.default(tok_embeddings_weight, tokens);  tok_embeddings_weight = tokens = None
-    slice_1 = torch.ops.aten.slice.Tensor(rope_freqs_cos, 0, 0, 3);  rope_freqs_cos = None
-    slice_2 = torch.ops.aten.slice.Tensor(rope_freqs_sin, 0, 0, 3);  rope_freqs_sin = None
-    _assert_tensor_metadata_default = torch.ops.aten._assert_tensor_metadata.default(embedding, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default = None
-    to = torch.ops.aten.to.dtype(embedding, torch.float32);  embedding = None
-    mul = torch.ops.aten.mul.Tensor(to, to)
-    mean = torch.ops.aten.mean.dim(mul, [-1], True);  mul = None
-    _tensor_constant_0 = self._tensor_constant_0
-    add = torch.ops.aten.add.Tensor(mean, _tensor_constant_0);  mean = _tensor_constant_0 = None
-    rsqrt = torch.ops.aten.rsqrt.default(add);  add = None
-    mul_1 = torch.ops.aten.mul.Tensor(to, rsqrt);  rsqrt = None
-    type_as = torch.ops.aten.type_as.default(mul_1, to);  mul_1 = None
-    type_as_1 = torch.ops.aten.type_as.default(layers_0_attention_norm_weight, to);  layers_0_attention_norm_weight = None
-    mul_2 = torch.ops.aten.mul.Tensor(type_as, type_as_1);  type_as = type_as_1 = None
-    choose_qparams_tensor = torch.ops.quantized_decomposed.choose_qparams.tensor(mul_2, -128, 127, 0.000244140625, torch.int8)
-    getitem_4 = choose_qparams_tensor[0]
-    getitem_5 = choose_qparams_tensor[1];  choose_qparams_tensor = None
-    quantize_per_tensor_tensor = torch.ops.quantized_decomposed.quantize_per_tensor.tensor(mul_2, getitem_4, getitem_5, -128, 127, torch.int8);  mul_2 = None
-    dequantize_per_tensor_tensor = torch.ops.quantized_decomposed.dequantize_per_tensor.tensor(quantize_per_tensor_tensor, getitem_4, getitem_5, -128, 127, torch.int8);  quantize_per_tensor_tensor = getitem_4 = getitem_5 = None
-    linear = torch.ops.aten.linear.default(dequantize_per_tensor_tensor, dequantize_per_channel_default);  dequantize_per_channel_default = None
-    view = torch.ops.aten.view.default(linear, [1, 3, 32, 128]);  linear = None
-    linear_1 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor, dequantize_per_channel_default_1);  dequantize_per_channel_default_1 = None
-    linear_2 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor, dequantize_per_channel_default_2);  dequantize_per_tensor_tensor = dequantize_per_channel_default_2 = None
-    view_1 = torch.ops.aten.view.default(linear_1, [1, 3, 32, 128]);  linear_1 = None
-    view_2 = torch.ops.aten.view.default(linear_2, [1, 3, 32, 128]);  linear_2 = None
-    _assert_tensor_metadata_default_1 = torch.ops.aten._assert_tensor_metadata.default(view, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_1 = None
-    to_1 = torch.ops.aten.to.dtype(view, torch.float32);  view = None
-    reshape = torch.ops.aten.reshape.default(to_1, [1, 3, 32, -1, 2])
-    unbind = torch.ops.aten.unbind.int(reshape, -1);  reshape = None
-    getitem = unbind[0]
-    getitem_1 = unbind[1];  unbind = None
-    _assert_tensor_metadata_default_2 = torch.ops.aten._assert_tensor_metadata.default(view_1, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_2 = None
-    to_2 = torch.ops.aten.to.dtype(view_1, torch.float32);  view_1 = None
-    reshape_1 = torch.ops.aten.reshape.default(to_2, [1, 3, 32, -1, 2])
-    unbind_1 = torch.ops.aten.unbind.int(reshape_1, -1);  reshape_1 = None
-    getitem_2 = unbind_1[0]
-    getitem_3 = unbind_1[1];  unbind_1 = None
-    view_3 = torch.ops.aten.view.default(slice_1, [1, 3, 1, 64]);  slice_1 = None
-    view_4 = torch.ops.aten.view.default(slice_2, [1, 3, 1, 64]);  slice_2 = None
-    mul_3 = torch.ops.aten.mul.Tensor(getitem, view_3)
-    mul_4 = torch.ops.aten.mul.Tensor(getitem_1, view_4)
-    sub = torch.ops.aten.sub.Tensor(mul_3, mul_4);  mul_3 = mul_4 = None
-    mul_5 = torch.ops.aten.mul.Tensor(getitem, view_4);  getitem = None
-    mul_6 = torch.ops.aten.mul.Tensor(getitem_1, view_3);  getitem_1 = None
-    add_1 = torch.ops.aten.add.Tensor(mul_5, mul_6);  mul_5 = mul_6 = None
-    mul_7 = torch.ops.aten.mul.Tensor(getitem_2, view_3)
-    mul_8 = torch.ops.aten.mul.Tensor(getitem_3, view_4)
-    sub_1 = torch.ops.aten.sub.Tensor(mul_7, mul_8);  mul_7 = mul_8 = None
-    mul_9 = torch.ops.aten.mul.Tensor(getitem_2, view_4);  getitem_2 = view_4 = None
-    mul_10 = torch.ops.aten.mul.Tensor(getitem_3, view_3);  getitem_3 = view_3 = None
-    add_2 = torch.ops.aten.add.Tensor(mul_9, mul_10);  mul_9 = mul_10 = None
-    stack = torch.ops.aten.stack.default([sub, add_1], -1);  sub = add_1 = None
-    flatten = torch.ops.aten.flatten.using_ints(stack, 3);  stack = None
-    stack_1 = torch.ops.aten.stack.default([sub_1, add_2], -1);  sub_1 = add_2 = None
-    flatten_1 = torch.ops.aten.flatten.using_ints(stack_1, 3);  stack_1 = None
-    type_as_2 = torch.ops.aten.type_as.default(flatten, to_1);  flatten = to_1 = None
-    type_as_3 = torch.ops.aten.type_as.default(flatten_1, to_2);  flatten_1 = to_2 = None
-    transpose = torch.ops.aten.transpose.int(type_as_2, 1, 2);  type_as_2 = None
-    transpose_1 = torch.ops.aten.transpose.int(type_as_3, 1, 2);  type_as_3 = None
-    transpose_2 = torch.ops.aten.transpose.int(view_2, 1, 2);  view_2 = None
-    repeat_interleave = torch.ops.aten.repeat_interleave.self_int(transpose_1, 1, 1);  transpose_1 = None
-    repeat_interleave_1 = torch.ops.aten.repeat_interleave.self_int(transpose_2, 1, 1);  transpose_2 = None
-    slice_3 = torch.ops.aten.slice.Tensor(layers_0_attention_mask, 0, 0, 3);  layers_0_attention_mask = None
-    slice_4 = torch.ops.aten.slice.Tensor(slice_3, 1, 0, 3);  slice_3 = None
-    scaled_dot_product_attention = torch.ops.aten.scaled_dot_product_attention.default(transpose, repeat_interleave, repeat_interleave_1, slice_4);  transpose = repeat_interleave = repeat_interleave_1 = slice_4 = None
-    transpose_3 = torch.ops.aten.transpose.int(scaled_dot_product_attention, 1, 2);  scaled_dot_product_attention = None
-    reshape_2 = torch.ops.aten.reshape.default(transpose_3, [1, 3, -1]);  transpose_3 = None
-    choose_qparams_tensor_1 = torch.ops.quantized_decomposed.choose_qparams.tensor(reshape_2, -128, 127, 0.000244140625, torch.int8)
-    getitem_6 = choose_qparams_tensor_1[0]
-    getitem_7 = choose_qparams_tensor_1[1];  choose_qparams_tensor_1 = None
-    quantize_per_tensor_tensor_1 = torch.ops.quantized_decomposed.quantize_per_tensor.tensor(reshape_2, getitem_6, getitem_7, -128, 127, torch.int8);  reshape_2 = None
-    dequantize_per_tensor_tensor_1 = torch.ops.quantized_decomposed.dequantize_per_tensor.tensor(quantize_per_tensor_tensor_1, getitem_6, getitem_7, -128, 127, torch.int8);  quantize_per_tensor_tensor_1 = getitem_6 = getitem_7 = None
-    linear_3 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor_1, dequantize_per_channel_default_3);  dequantize_per_tensor_tensor_1 = dequantize_per_channel_default_3 = None
-    add_3 = torch.ops.aten.add.Tensor(to, linear_3);  to = linear_3 = None
-    _assert_tensor_metadata_default_3 = torch.ops.aten._assert_tensor_metadata.default(add_3, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_3 = None
-    to_3 = torch.ops.aten.to.dtype(add_3, torch.float32);  add_3 = None
-    mul_11 = torch.ops.aten.mul.Tensor(to_3, to_3)
-    mean_1 = torch.ops.aten.mean.dim(mul_11, [-1], True);  mul_11 = None
-    _tensor_constant_1 = self._tensor_constant_1
-    add_4 = torch.ops.aten.add.Tensor(mean_1, _tensor_constant_1);  mean_1 = _tensor_constant_1 = None
-    rsqrt_1 = torch.ops.aten.rsqrt.default(add_4);  add_4 = None
-    mul_12 = torch.ops.aten.mul.Tensor(to_3, rsqrt_1);  rsqrt_1 = None
-    type_as_4 = torch.ops.aten.type_as.default(mul_12, to_3);  mul_12 = None
-    type_as_5 = torch.ops.aten.type_as.default(layers_0_ffn_norm_weight, to_3);  layers_0_ffn_norm_weight = None
-    mul_13 = torch.ops.aten.mul.Tensor(type_as_4, type_as_5);  type_as_4 = type_as_5 = None
-    choose_qparams_tensor_2 = torch.ops.quantized_decomposed.choose_qparams.tensor(mul_13, -128, 127, 0.000244140625, torch.int8)
-    getitem_8 = choose_qparams_tensor_2[0]
-    getitem_9 = choose_qparams_tensor_2[1];  choose_qparams_tensor_2 = None
-    quantize_per_tensor_tensor_2 = torch.ops.quantized_decomposed.quantize_per_tensor.tensor(mul_13, getitem_8, getitem_9, -128, 127, torch.int8);  mul_13 = None
-    dequantize_per_tensor_tensor_2 = torch.ops.quantized_decomposed.dequantize_per_tensor.tensor(quantize_per_tensor_tensor_2, getitem_8, getitem_9, -128, 127, torch.int8);  quantize_per_tensor_tensor_2 = getitem_8 = getitem_9 = None
-    linear_4 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor_2, dequantize_per_channel_default_4);  dequantize_per_channel_default_4 = None
-    silu = torch.ops.aten.silu.default(linear_4);  linear_4 = None
-    linear_5 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor_2, dequantize_per_channel_default_6);  dequantize_per_tensor_tensor_2 = dequantize_per_channel_default_6 = None
-    mul_14 = torch.ops.aten.mul.Tensor(silu, linear_5);  silu = linear_5 = None
-    choose_qparams_tensor_3 = torch.ops.quantized_decomposed.choose_qparams.tensor(mul_14, -128, 127, 0.000244140625, torch.int8)
-    getitem_10 = choose_qparams_tensor_3[0]
-    getitem_11 = choose_qparams_tensor_3[1];  choose_qparams_tensor_3 = None
-    quantize_per_tensor_tensor_3 = torch.ops.quantized_decomposed.quantize_per_tensor.tensor(mul_14, getitem_10, getitem_11, -128, 127, torch.int8);  mul_14 = None
-    dequantize_per_tensor_tensor_3 = torch.ops.quantized_decomposed.dequantize_per_tensor.tensor(quantize_per_tensor_tensor_3, getitem_10, getitem_11, -128, 127, torch.int8);  quantize_per_tensor_tensor_3 = getitem_10 = getitem_11 = None
-    linear_6 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor_3, dequantize_per_channel_default_5);  dequantize_per_tensor_tensor_3 = dequantize_per_channel_default_5 = None
-    add_5 = torch.ops.aten.add.Tensor(to_3, linear_6);  to_3 = linear_6 = None
-    select = torch.ops.aten.select.int(add_5, 1, -1);  add_5 = None
-    _assert_tensor_metadata_default_4 = torch.ops.aten._assert_tensor_metadata.default(select, dtype = torch.float32, device = device(type='cpu'), layout = torch.strided);  _assert_tensor_metadata_default_4 = None
-    to_4 = torch.ops.aten.to.dtype(select, torch.float32);  select = None
-    mul_15 = torch.ops.aten.mul.Tensor(to_4, to_4)
-    mean_2 = torch.ops.aten.mean.dim(mul_15, [-1], True);  mul_15 = None
-    _tensor_constant_2 = self._tensor_constant_2
-    add_6 = torch.ops.aten.add.Tensor(mean_2, _tensor_constant_2);  mean_2 = _tensor_constant_2 = None
-    rsqrt_2 = torch.ops.aten.rsqrt.default(add_6);  add_6 = None
-    mul_16 = torch.ops.aten.mul.Tensor(to_4, rsqrt_2);  rsqrt_2 = None
-    type_as_6 = torch.ops.aten.type_as.default(mul_16, to_4);  mul_16 = None
-    type_as_7 = torch.ops.aten.type_as.default(norm_weight, to_4);  norm_weight = to_4 = None
-    mul_17 = torch.ops.aten.mul.Tensor(type_as_6, type_as_7);  type_as_6 = type_as_7 = None
-    choose_qparams_tensor_4 = torch.ops.quantized_decomposed.choose_qparams.tensor(mul_17, -128, 127, 0.000244140625, torch.int8)
-    getitem_12 = choose_qparams_tensor_4[0]
-    getitem_13 = choose_qparams_tensor_4[1];  choose_qparams_tensor_4 = None
-    quantize_per_tensor_tensor_4 = torch.ops.quantized_decomposed.quantize_per_tensor.tensor(mul_17, getitem_12, getitem_13, -128, 127, torch.int8);  mul_17 = None
-    dequantize_per_tensor_tensor_4 = torch.ops.quantized_decomposed.dequantize_per_tensor.tensor(quantize_per_tensor_tensor_4, getitem_12, getitem_13, -128, 127, torch.int8);  quantize_per_tensor_tensor_4 = getitem_12 = getitem_13 = None
-    linear_7 = torch.ops.aten.linear.default(dequantize_per_tensor_tensor_4, dequantize_per_channel_default_7);  dequantize_per_tensor_tensor_4 = dequantize_per_channel_default_7 = None
-    return pytree.tree_unflatten((linear_7,), self._out_spec)
-    
-# To see more debug info, please use `graph_module.print_readable()`
-[Observatory] Collected Pre-EdgeTransform/forward in 29.8 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected ETRecord Exported/forward in 33.5 ms
-[Observatory] Collected ETRecord Edge/forward in 37.2 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected EdgeProgramManager EP in 22.9 ms
-Exported and lowered graph:
-graph():
-    %p_tok_embeddings_weight : [num_users=1] = placeholder[target=p_tok_embeddings_weight]
-    %p_layers_0_attention_norm_weight : [num_users=1] = placeholder[target=p_layers_0_attention_norm_weight]
-    %p_layers_0_ffn_norm_weight : [num_users=1] = placeholder[target=p_layers_0_ffn_norm_weight]
-    %p_norm_weight : [num_users=1] = placeholder[target=p_norm_weight]
-    %b__tensor_constant_0 : [num_users=1] = placeholder[target=b__tensor_constant_0]
-    %b__tensor_constant_1 : [num_users=1] = placeholder[target=b__tensor_constant_1]
-    %b__tensor_constant_2 : [num_users=1] = placeholder[target=b__tensor_constant_2]
-    %b_layers_0_attention_mask : [num_users=1] = placeholder[target=b_layers_0_attention_mask]
-    %b_rope_freqs_cos : [num_users=1] = placeholder[target=b_rope_freqs_cos]
-    %b_rope_freqs_sin : [num_users=1] = placeholder[target=b_rope_freqs_sin]
-    %tokens : [num_users=1] = placeholder[target=tokens]
-    %scalar_tensor : [num_users=1] = call_function[target=torch.ops.aten.scalar_tensor.default](args = (-inf,), kwargs = {dtype: torch.float32, device: cpu})
-    %scalar_tensor_1 : [num_users=1] = call_function[target=torch.ops.aten.scalar_tensor.default](args = (0.0,), kwargs = {dtype: torch.float32, layout: torch.strided, device: cpu})
-    %aten_slice_copy_tensor_6 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.slice_copy.Tensor](args = (%b_layers_0_attention_mask, 0, 0, 3), kwargs = {})
-    %aten_embedding_default : [num_users=3] = call_function[target=executorch.exir.dialects.edge._ops.aten.embedding.default](args = (%p_tok_embeddings_weight, %tokens), kwargs = {})
-    %aten_slice_copy_tensor_7 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.slice_copy.Tensor](args = (%aten_slice_copy_tensor_6, 1, 0, 3), kwargs = {})
-    %lowered_module_0 : [num_users=1] = get_attr[target=lowered_module_0]
-    %executorch_call_delegate : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_0, %aten_embedding_default), kwargs = {})
-    %aten_where_self : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.where.self](args = (%aten_slice_copy_tensor_7, %scalar_tensor_1, %scalar_tensor), kwargs = {})
-    %getitem : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate, 0), kwargs = {})
-    %aten_mean_dim : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.mean.dim](args = (%getitem, [-1], True), kwargs = {})
-    %lowered_module_1 : [num_users=1] = get_attr[target=lowered_module_1]
-    %executorch_call_delegate_1 : [num_users=3] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_1, %aten_mean_dim, %b__tensor_constant_0, %aten_embedding_default, %p_layers_0_attention_norm_weight), kwargs = {})
-    %getitem_39 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_1, 0), kwargs = {})
-    %getitem_40 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_1, 1), kwargs = {})
-    %getitem_41 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_1, 2), kwargs = {})
-    %aten_view_copy_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_39, [1, 3, 32, 128]), kwargs = {})
-    %aten_view_copy_default_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_40, [1, 3, 32, 128]), kwargs = {})
-    %aten_view_copy_default_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_41, [1, 3, 32, 128]), kwargs = {})
-    %aten_view_copy_default_3 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_view_copy_default, [1, 3, 32, -1, 2]), kwargs = {})
-    %aten_view_copy_default_4 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_view_copy_default_1, [1, 3, 32, -1, 2]), kwargs = {})
-    %lowered_module_2 : [num_users=1] = get_attr[target=lowered_module_2]
-    %executorch_call_delegate_2 : [num_users=4] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_2, %b_rope_freqs_cos, %b_rope_freqs_sin, %aten_view_copy_default_4), kwargs = {})
-    %getitem_35 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_2, 0), kwargs = {})
-    %getitem_36 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_2, 1), kwargs = {})
-    %getitem_37 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_2, 2), kwargs = {})
-    %getitem_38 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_2, 3), kwargs = {})
-    %aten_view_copy_default_5 : [num_users=2] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_35, [1, 3, 1, 64]), kwargs = {})
-    %aten_view_copy_default_6 : [num_users=2] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_36, [1, 3, 1, 64]), kwargs = {})
-    %aten_squeeze_copy_dims_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.squeeze_copy.dims](args = (%getitem_37, [4]), kwargs = {})
-    %aten_squeeze_copy_dims_3 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.squeeze_copy.dims](args = (%getitem_38, [4]), kwargs = {})
-    %lowered_module_3 : [num_users=1] = get_attr[target=lowered_module_3]
-    %executorch_call_delegate_3 : [num_users=4] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_3, %aten_view_copy_default_3, %aten_squeeze_copy_dims_2, %aten_view_copy_default_5, %aten_view_copy_default_6, %aten_squeeze_copy_dims_3), kwargs = {})
-    %getitem_31 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_3, 0), kwargs = {})
-    %getitem_32 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_3, 1), kwargs = {})
-    %getitem_33 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_3, 2), kwargs = {})
-    %getitem_34 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_3, 3), kwargs = {})
-    %aten_squeeze_copy_dims : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.squeeze_copy.dims](args = (%getitem_31, [4]), kwargs = {})
-    %aten_squeeze_copy_dims_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.squeeze_copy.dims](args = (%getitem_32, [4]), kwargs = {})
-    %aten_unsqueeze_copy_default_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.unsqueeze_copy.default](args = (%getitem_33, 4), kwargs = {})
-    %aten_unsqueeze_copy_default_3 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.unsqueeze_copy.default](args = (%getitem_34, 4), kwargs = {})
-    %lowered_module_4 : [num_users=1] = get_attr[target=lowered_module_4]
-    %executorch_call_delegate_4 : [num_users=3] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_4, %aten_squeeze_copy_dims, %aten_view_copy_default_5, %aten_view_copy_default_6, %aten_squeeze_copy_dims_1, %aten_unsqueeze_copy_default_2, %aten_unsqueeze_copy_default_3), kwargs = {})
-    %getitem_28 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_4, 0), kwargs = {})
-    %getitem_29 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_4, 1), kwargs = {})
-    %getitem_30 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_4, 2), kwargs = {})
-    %aten_view_copy_default_8 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_28, [1, 3, 32, 128]), kwargs = {})
-    %aten_unsqueeze_copy_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.unsqueeze_copy.default](args = (%getitem_29, 4), kwargs = {})
-    %aten_unsqueeze_copy_default_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.unsqueeze_copy.default](args = (%getitem_30, 4), kwargs = {})
-    %lowered_module_5 : [num_users=1] = get_attr[target=lowered_module_5]
-    %executorch_call_delegate_5 : [num_users=2] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_5, %aten_unsqueeze_copy_default, %aten_unsqueeze_copy_default_1, %aten_view_copy_default_8), kwargs = {})
-    %getitem_26 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_5, 0), kwargs = {})
-    %getitem_27 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_5, 1), kwargs = {})
-    %aten_view_copy_default_7 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_26, [1, 3, 32, 128]), kwargs = {})
-    %aten_unsqueeze_copy_default_4 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.unsqueeze_copy.default](args = (%getitem_27, 2), kwargs = {})
-    %aten_expand_copy_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.expand_copy.default](args = (%aten_unsqueeze_copy_default_4, [1, 32, 1, 3, 128]), kwargs = {})
-    %aten_clone_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.clone.default](args = (%aten_expand_copy_default,), kwargs = {memory_format: torch.contiguous_format})
-    %aten_view_copy_default_9 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_clone_default, [1, 32, 3, 128]), kwargs = {})
-    %lowered_module_6 : [num_users=1] = get_attr[target=lowered_module_6]
-    %executorch_call_delegate_6 : [num_users=2] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_6, %aten_view_copy_default_7, %aten_view_copy_default_9), kwargs = {})
-    %getitem_24 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_6, 0), kwargs = {})
-    %getitem_25 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_6, 1), kwargs = {})
-    %aten_mul_scalar : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.mul.Scalar](args = (%getitem_24, 0.29730177875068026), kwargs = {})
-    %aten_mul_scalar_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.mul.Scalar](args = (%getitem_25, 0.29730177875068026), kwargs = {})
-    %aten_expand_copy_default_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.expand_copy.default](args = (%aten_mul_scalar, [1, 32, 3, 128]), kwargs = {})
-    %aten_expand_copy_default_3 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.expand_copy.default](args = (%aten_mul_scalar_1, [1, 32, 128, 3]), kwargs = {})
-    %aten_view_copy_default_11 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_expand_copy_default_2, [32, 3, 128]), kwargs = {})
-    %aten_view_copy_default_12 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_expand_copy_default_3, [32, 128, 3]), kwargs = {})
-    %lowered_module_7 : [num_users=1] = get_attr[target=lowered_module_7]
-    %executorch_call_delegate_7 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_7, %aten_view_copy_default_11, %aten_view_copy_default_12), kwargs = {})
-    %getitem_23 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_7, 0), kwargs = {})
-    %aten_view_copy_default_13 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_23, [1, 32, 3, 3]), kwargs = {})
-    %lowered_module_8 : [num_users=1] = get_attr[target=lowered_module_8]
-    %executorch_call_delegate_8 : [num_users=3] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_8, %aten_view_copy_default_2, %aten_view_copy_default_13, %aten_where_self), kwargs = {})
-    %getitem_20 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_8, 0), kwargs = {})
-    %getitem_21 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_8, 1), kwargs = {})
-    %getitem_22 : [num_users=2] = call_function[target=operator.getitem](args = (%executorch_call_delegate_8, 2), kwargs = {})
-    %aten_unsqueeze_copy_default_5 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.unsqueeze_copy.default](args = (%getitem_20, 2), kwargs = {})
-    %aten_eq_scalar : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.eq.Scalar](args = (%getitem_21, -inf), kwargs = {})
-    %aten_full_like_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.full_like.default](args = (%getitem_22, 0), kwargs = {pin_memory: False, memory_format: torch.preserve_format})
-    %aten_expand_copy_default_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.expand_copy.default](args = (%aten_unsqueeze_copy_default_5, [1, 32, 1, 3, 128]), kwargs = {})
-    %aten_logical_not_default : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.logical_not.default](args = (%aten_eq_scalar,), kwargs = {})
-    %aten_clone_default_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.clone.default](args = (%aten_expand_copy_default_1,), kwargs = {memory_format: torch.contiguous_format})
-    %aten_any_dim : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.any.dim](args = (%aten_logical_not_default, -1, True), kwargs = {})
-    %aten_view_copy_default_10 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_clone_default_1, [1, 32, 3, 128]), kwargs = {})
-    %aten_logical_not_default_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.logical_not.default](args = (%aten_any_dim,), kwargs = {})
-    %aten_expand_copy_default_5 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.expand_copy.default](args = (%aten_view_copy_default_10, [1, 32, 3, 128]), kwargs = {})
-    %aten_where_self_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.where.self](args = (%aten_logical_not_default_1, %aten_full_like_default, %getitem_22), kwargs = {})
-    %aten_view_copy_default_15 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_expand_copy_default_5, [32, 3, 128]), kwargs = {})
-    %aten_expand_copy_default_4 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.expand_copy.default](args = (%aten_where_self_1, [1, 32, 3, 3]), kwargs = {})
-    %aten_view_copy_default_14 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%aten_expand_copy_default_4, [32, 3, 3]), kwargs = {})
-    %lowered_module_9 : [num_users=1] = get_attr[target=lowered_module_9]
-    %executorch_call_delegate_9 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_9, %aten_view_copy_default_14, %aten_view_copy_default_15), kwargs = {})
-    %getitem_19 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_9, 0), kwargs = {})
-    %aten_view_copy_default_16 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_19, [1, 32, 3, 128]), kwargs = {})
-    %lowered_module_10 : [num_users=1] = get_attr[target=lowered_module_10]
-    %executorch_call_delegate_10 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_10, %aten_view_copy_default_16), kwargs = {})
-    %getitem_18 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_10, 0), kwargs = {})
-    %aten_clone_default_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.clone.default](args = (%getitem_18,), kwargs = {memory_format: torch.contiguous_format})
-    %lowered_module_11 : [num_users=1] = get_attr[target=lowered_module_11]
-    %executorch_call_delegate_11 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_11, %aten_clone_default_2), kwargs = {})
-    %getitem_17 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_11, 0), kwargs = {})
-    %aten_view_copy_default_17 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.view_copy.default](args = (%getitem_17, [1, 3, -1]), kwargs = {})
-    %lowered_module_12 : [num_users=1] = get_attr[target=lowered_module_12]
-    %executorch_call_delegate_12 : [num_users=2] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_12, %aten_view_copy_default_17, %aten_embedding_default), kwargs = {})
-    %getitem_15 : [num_users=2] = call_function[target=operator.getitem](args = (%executorch_call_delegate_12, 0), kwargs = {})
-    %getitem_16 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_12, 1), kwargs = {})
-    %aten_mean_dim_1 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.mean.dim](args = (%getitem_16, [-1], True), kwargs = {})
-    %lowered_module_13 : [num_users=1] = get_attr[target=lowered_module_13]
-    %executorch_call_delegate_13 : [num_users=2] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_13, %aten_mean_dim_1, %b__tensor_constant_1, %getitem_15, %p_layers_0_ffn_norm_weight), kwargs = {})
-    %getitem_13 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_13, 0), kwargs = {})
-    %getitem_14 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_13, 1), kwargs = {})
-    %lowered_module_14 : [num_users=1] = get_attr[target=lowered_module_14]
-    %executorch_call_delegate_14 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_14, %getitem_13, %getitem_14, %getitem_15), kwargs = {})
-    %getitem_12 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_14, 0), kwargs = {})
-    %aten_select_copy_int : [num_users=2] = call_function[target=executorch.exir.dialects.edge._ops.aten.select_copy.int](args = (%getitem_12, 1, -1), kwargs = {})
-    %lowered_module_15 : [num_users=1] = get_attr[target=lowered_module_15]
-    %executorch_call_delegate_15 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_15, %aten_select_copy_int), kwargs = {})
-    %getitem_11 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_15, 0), kwargs = {})
-    %aten_mean_dim_2 : [num_users=1] = call_function[target=executorch.exir.dialects.edge._ops.aten.mean.dim](args = (%getitem_11, [-1], True), kwargs = {})
-    %lowered_module_16 : [num_users=1] = get_attr[target=lowered_module_16]
-    %executorch_call_delegate_16 : [num_users=1] = call_function[target=torch.ops.higher_order.executorch_call_delegate](args = (%lowered_module_16, %aten_mean_dim_2, %b__tensor_constant_2, %aten_select_copy_int, %p_norm_weight), kwargs = {})
-    %getitem_10 : [num_users=1] = call_function[target=operator.getitem](args = (%executorch_call_delegate_16, 0), kwargs = {})
-    return (getitem_10,)
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
 /home/boyucwsl/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
   return guard_size_oblivious(self.stride < other.stride)
-Saved exported program to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/artifacts/llama2_xnnpack_q8.pte
-[PipelineGraphCollector] Uninstalled all patches
-[Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json
-[Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html
-[Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json (7 records: Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, EdgeProgramManager EP)
 Checkpoint not provided, using default initialization.
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-$ python -m backends.qualcomm.debugger.observatory.cli --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json examples/xnnpack/aot_compiler.py --model_name=llama2 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/artifacts
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+$ python -m executorch.backends.xnnpack.debugger.observatory --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.json --lens_recipe accuracy examples/xnnpack/aot_compiler.py --model_name=llama2 --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/artifacts
 

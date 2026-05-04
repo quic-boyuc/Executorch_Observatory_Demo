@@ -1,0 +1,6 @@
+ERROR:root:[Observatory CLI] 'aot_compiler.py' raised: Model whisper is not a valid name. or not quantizable right now, please contact executorch team if you want to learn why or how to support quantization for the requested modelAvailable models are ['linear', 'add', 'add_mul', 'dl3', 'ic3', 'ic4', 'mv2', 'mv3', 'resnet18', 'resnet50', 'vit', 'w2l', 'edsr', 'mobilebert', 'llama2', 'emformer_join', 'emformer_predict', 'emformer_transcribe'].  (run mode: module, target: examples.xnnpack.aot_compiler)
+WARNING:root:[Observatory] No records collected, skipping JSON export
+WARNING:root:[Observatory] No records collected, skipping HTML export
+WARNING:root:[Observatory CLI] No records collected
+$ python -m executorch.backends.xnnpack.debugger.observatory --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/whisper/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/whisper/observatory_report.json --lens_recipe accuracy examples/xnnpack/aot_compiler.py --model_name=whisper --delegate --quantize --output_dir /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/whisper/artifacts
+

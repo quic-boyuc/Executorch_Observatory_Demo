@@ -6,9 +6,11 @@
 [PipelineGraphCollector] Installed patch: convert_pt2e
 [PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
 [PipelineGraphCollector] Installed ETRecord patches
-[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
 The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
 [PipelineGraphCollector] Installed QNN patch: ptq_calibrate
+[AccuracyLens] Installed patch: get_imagenet_dataset
+[AccuracyLens] Installed patch: get_masked_language_model_dataset
+[Observatory CLI] Running as script: /home/boyucwsl/executorch/examples/qualcomm/oss_scripts/bert.py
 PyTorch version 2.11.0+cpu available.
 HTTP Request: HEAD https://huggingface.co/google-bert/bert-base-uncased/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
@@ -19,40 +21,408 @@ HTTP Request: GET https://huggingface.co/api/models/google-bert/bert-base-uncase
 HTTP Request: HEAD https://huggingface.co/google-bert/bert-base-uncased/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
 HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/google-bert/bert-base-uncased/86b5e0934494bd15c9632b12f734a8a67f723594/config.json "HTTP/1.1 200 OK"
 QNN_SDK_ROOT=/home/boyucwsl/executorch/qairt/2.37.0.250724
-Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights:   0%|          | 1/202 [00:00<00:00, 11949.58it/s, Materializing param=bert.embeddings.LayerNorm.bias]Loading weights:   0%|          | 1/202 [00:00<00:00, 6159.04it/s, Materializing param=bert.embeddings.LayerNorm.bias] Loading weights:   1%|          | 2/202 [00:00<00:00, 5133.79it/s, Materializing param=bert.embeddings.LayerNorm.weight]Loading weights:   1%|          | 2/202 [00:00<00:00, 4394.24it/s, Materializing param=bert.embeddings.LayerNorm.weight]Loading weights:   1%|▏         | 3/202 [00:00<00:00, 2607.32it/s, Materializing param=bert.embeddings.position_embeddings.weight]Loading weights:   1%|▏         | 3/202 [00:00<00:00, 2219.60it/s, Materializing param=bert.embeddings.position_embeddings.weight]Loading weights:   2%|▏         | 4/202 [00:00<00:00, 1716.87it/s, Materializing param=bert.embeddings.token_type_embeddings.weight]Loading weights:   2%|▏         | 4/202 [00:00<00:00, 1659.14it/s, Materializing param=bert.embeddings.token_type_embeddings.weight]Loading weights:   2%|▏         | 5/202 [00:00<00:00, 1853.75it/s, Materializing param=bert.embeddings.word_embeddings.weight]      Loading weights:   2%|▏         | 5/202 [00:00<00:00, 1785.57it/s, Materializing param=bert.embeddings.word_embeddings.weight]Loading weights:   3%|▎         | 6/202 [00:00<00:00, 1932.41it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.bias]Loading weights:   3%|▎         | 6/202 [00:00<00:00, 1887.91it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.bias]Loading weights:   3%|▎         | 7/202 [00:00<00:00, 1539.36it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.weight]Loading weights:   3%|▎         | 7/202 [00:00<00:00, 1474.42it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.weight]Loading weights:   4%|▍         | 8/202 [00:00<00:00, 1111.74it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.bias]      Loading weights:   4%|▍         | 8/202 [00:00<00:00, 1077.53it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.bias]Loading weights:   4%|▍         | 9/202 [00:00<00:00, 1140.14it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.weight]Loading weights:   4%|▍         | 9/202 [00:00<00:00, 1121.60it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.weight]Loading weights:   5%|▍         | 10/202 [00:00<00:00, 906.76it/s, Materializing param=bert.encoder.layer.0.attention.self.key.bias]      Loading weights:   5%|▍         | 10/202 [00:00<00:00, 899.16it/s, Materializing param=bert.encoder.layer.0.attention.self.key.bias]Loading weights:   5%|▌         | 11/202 [00:00<00:00, 963.40it/s, Materializing param=bert.encoder.layer.0.attention.self.key.weight]Loading weights:   5%|▌         | 11/202 [00:00<00:00, 957.74it/s, Materializing param=bert.encoder.layer.0.attention.self.key.weight]Loading weights:   6%|▌         | 12/202 [00:00<00:00, 1000.29it/s, Materializing param=bert.encoder.layer.0.attention.self.query.bias]Loading weights:   6%|▌         | 12/202 [00:00<00:00, 994.19it/s, Materializing param=bert.encoder.layer.0.attention.self.query.bias] Loading weights:   6%|▋         | 13/202 [00:00<00:00, 852.94it/s, Materializing param=bert.encoder.layer.0.attention.self.query.weight]Loading weights:   6%|▋         | 13/202 [00:00<00:00, 847.87it/s, Materializing param=bert.encoder.layer.0.attention.self.query.weight]Loading weights:   7%|▋         | 14/202 [00:00<00:00, 782.37it/s, Materializing param=bert.encoder.layer.0.attention.self.value.bias]  Loading weights:   7%|▋         | 14/202 [00:00<00:00, 772.32it/s, Materializing param=bert.encoder.layer.0.attention.self.value.bias]Loading weights:   7%|▋         | 15/202 [00:00<00:00, 724.87it/s, Materializing param=bert.encoder.layer.0.attention.self.value.weight]Loading weights:   7%|▋         | 15/202 [00:00<00:00, 722.20it/s, Materializing param=bert.encoder.layer.0.attention.self.value.weight]Loading weights:   8%|▊         | 16/202 [00:00<00:00, 756.43it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.bias]    Loading weights:   8%|▊         | 16/202 [00:00<00:00, 753.80it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.bias]Loading weights:   8%|▊         | 17/202 [00:00<00:00, 775.18it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.weight]Loading weights:   8%|▊         | 17/202 [00:00<00:00, 772.43it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.weight]Loading weights:   9%|▉         | 18/202 [00:00<00:00, 806.97it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.bias]    Loading weights:   9%|▉         | 18/202 [00:00<00:00, 804.58it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.bias]Loading weights:   9%|▉         | 19/202 [00:00<00:00, 732.21it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.weight]Loading weights:   9%|▉         | 19/202 [00:00<00:00, 703.33it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.weight]Loading weights:  10%|▉         | 20/202 [00:00<00:00, 708.98it/s, Materializing param=bert.encoder.layer.0.output.dense.bias]      Loading weights:  10%|▉         | 20/202 [00:00<00:00, 706.93it/s, Materializing param=bert.encoder.layer.0.output.dense.bias]Loading weights:  10%|█         | 21/202 [00:00<00:00, 723.40it/s, Materializing param=bert.encoder.layer.0.output.dense.weight]Loading weights:  10%|█         | 21/202 [00:00<00:00, 721.44it/s, Materializing param=bert.encoder.layer.0.output.dense.weight]Loading weights:  11%|█         | 22/202 [00:00<00:00, 740.42it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.bias]Loading weights:  11%|█         | 22/202 [00:00<00:00, 737.03it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.bias]Loading weights:  11%|█▏        | 23/202 [00:00<00:00, 734.19it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.weight]Loading weights:  11%|█▏        | 23/202 [00:00<00:00, 730.89it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.weight]Loading weights:  12%|█▏        | 24/202 [00:00<00:00, 745.48it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.bias]      Loading weights:  12%|█▏        | 24/202 [00:00<00:00, 743.62it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.bias]Loading weights:  12%|█▏        | 25/202 [00:00<00:00, 716.38it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.weight]Loading weights:  12%|█▏        | 25/202 [00:00<00:00, 714.23it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.weight]Loading weights:  13%|█▎        | 26/202 [00:00<00:00, 732.45it/s, Materializing param=bert.encoder.layer.1.attention.self.key.bias]      Loading weights:  13%|█▎        | 26/202 [00:00<00:00, 730.78it/s, Materializing param=bert.encoder.layer.1.attention.self.key.bias]Loading weights:  13%|█▎        | 27/202 [00:00<00:00, 721.35it/s, Materializing param=bert.encoder.layer.1.attention.self.key.weight]Loading weights:  13%|█▎        | 27/202 [00:00<00:00, 718.75it/s, Materializing param=bert.encoder.layer.1.attention.self.key.weight]Loading weights:  14%|█▍        | 28/202 [00:00<00:00, 736.52it/s, Materializing param=bert.encoder.layer.1.attention.self.query.bias]Loading weights:  14%|█▍        | 28/202 [00:00<00:00, 734.84it/s, Materializing param=bert.encoder.layer.1.attention.self.query.bias]Loading weights:  14%|█▍        | 29/202 [00:00<00:00, 747.51it/s, Materializing param=bert.encoder.layer.1.attention.self.query.weight]Loading weights:  14%|█▍        | 29/202 [00:00<00:00, 745.94it/s, Materializing param=bert.encoder.layer.1.attention.self.query.weight]Loading weights:  15%|█▍        | 30/202 [00:00<00:00, 759.81it/s, Materializing param=bert.encoder.layer.1.attention.self.value.bias]  Loading weights:  15%|█▍        | 30/202 [00:00<00:00, 758.30it/s, Materializing param=bert.encoder.layer.1.attention.self.value.bias]Loading weights:  15%|█▌        | 31/202 [00:00<00:00, 745.88it/s, Materializing param=bert.encoder.layer.1.attention.self.value.weight]Loading weights:  15%|█▌        | 31/202 [00:00<00:00, 743.25it/s, Materializing param=bert.encoder.layer.1.attention.self.value.weight]Loading weights:  16%|█▌        | 32/202 [00:00<00:00, 750.94it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.bias]    Loading weights:  16%|█▌        | 32/202 [00:00<00:00, 749.57it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.bias]Loading weights:  16%|█▋        | 33/202 [00:00<00:00, 743.43it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.weight]Loading weights:  16%|█▋        | 33/202 [00:00<00:00, 741.64it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.weight]Loading weights:  17%|█▋        | 34/202 [00:00<00:00, 731.87it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.bias]    Loading weights:  17%|█▋        | 34/202 [00:00<00:00, 730.40it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.bias]Loading weights:  17%|█▋        | 35/202 [00:00<00:00, 727.64it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.weight]Loading weights:  17%|█▋        | 35/202 [00:00<00:00, 726.35it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.weight]Loading weights:  18%|█▊        | 36/202 [00:00<00:00, 742.64it/s, Materializing param=bert.encoder.layer.1.output.dense.bias]      Loading weights:  18%|█▊        | 36/202 [00:00<00:00, 740.85it/s, Materializing param=bert.encoder.layer.1.output.dense.bias]Loading weights:  18%|█▊        | 37/202 [00:00<00:00, 735.33it/s, Materializing param=bert.encoder.layer.1.output.dense.weight]Loading weights:  18%|█▊        | 37/202 [00:00<00:00, 733.23it/s, Materializing param=bert.encoder.layer.1.output.dense.weight]Loading weights:  19%|█▉        | 38/202 [00:00<00:00, 729.59it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.bias]Loading weights:  19%|█▉        | 38/202 [00:00<00:00, 727.49it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.bias]Loading weights:  19%|█▉        | 39/202 [00:00<00:00, 736.21it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.weight]Loading weights:  19%|█▉        | 39/202 [00:00<00:00, 735.13it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.weight]Loading weights:  20%|█▉        | 40/202 [00:00<00:00, 748.27it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.bias]      Loading weights:  20%|█▉        | 40/202 [00:00<00:00, 747.24it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.bias]Loading weights:  20%|██        | 41/202 [00:00<00:00, 760.83it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.weight]Loading weights:  20%|██        | 41/202 [00:00<00:00, 759.70it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.weight]Loading weights:  21%|██        | 42/202 [00:00<00:00, 756.97it/s, Materializing param=bert.encoder.layer.2.attention.self.key.bias]      Loading weights:  21%|██        | 42/202 [00:00<00:00, 755.79it/s, Materializing param=bert.encoder.layer.2.attention.self.key.bias]Loading weights:  21%|██▏       | 43/202 [00:00<00:00, 769.07it/s, Materializing param=bert.encoder.layer.2.attention.self.key.weight]Loading weights:  21%|██▏       | 43/202 [00:00<00:00, 768.03it/s, Materializing param=bert.encoder.layer.2.attention.self.key.weight]Loading weights:  22%|██▏       | 44/202 [00:00<00:00, 780.08it/s, Materializing param=bert.encoder.layer.2.attention.self.query.bias]Loading weights:  22%|██▏       | 44/202 [00:00<00:00, 779.11it/s, Materializing param=bert.encoder.layer.2.attention.self.query.bias]Loading weights:  22%|██▏       | 45/202 [00:00<00:00, 782.09it/s, Materializing param=bert.encoder.layer.2.attention.self.query.weight]Loading weights:  22%|██▏       | 45/202 [00:00<00:00, 781.04it/s, Materializing param=bert.encoder.layer.2.attention.self.query.weight]Loading weights:  23%|██▎       | 46/202 [00:00<00:00, 786.24it/s, Materializing param=bert.encoder.layer.2.attention.self.value.bias]  Loading weights:  23%|██▎       | 46/202 [00:00<00:00, 785.11it/s, Materializing param=bert.encoder.layer.2.attention.self.value.bias]Loading weights:  23%|██▎       | 47/202 [00:00<00:00, 792.87it/s, Materializing param=bert.encoder.layer.2.attention.self.value.weight]Loading weights:  23%|██▎       | 47/202 [00:00<00:00, 791.86it/s, Materializing param=bert.encoder.layer.2.attention.self.value.weight]Loading weights:  24%|██▍       | 48/202 [00:00<00:00, 795.04it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.bias]    Loading weights:  24%|██▍       | 48/202 [00:00<00:00, 794.02it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.bias]Loading weights:  24%|██▍       | 49/202 [00:00<00:00, 773.29it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.weight]Loading weights:  24%|██▍       | 49/202 [00:00<00:00, 772.23it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.weight]Loading weights:  25%|██▍       | 50/202 [00:00<00:00, 774.99it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.bias]    Loading weights:  25%|██▍       | 50/202 [00:00<00:00, 774.09it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.bias]Loading weights:  25%|██▌       | 51/202 [00:00<00:00, 786.41it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.weight]Loading weights:  25%|██▌       | 51/202 [00:00<00:00, 766.01it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.weight]Loading weights:  26%|██▌       | 52/202 [00:00<00:00, 778.28it/s, Materializing param=bert.encoder.layer.2.output.dense.bias]      Loading weights:  26%|██▌       | 52/202 [00:00<00:00, 777.48it/s, Materializing param=bert.encoder.layer.2.output.dense.bias]Loading weights:  26%|██▌       | 53/202 [00:00<00:00, 790.10it/s, Materializing param=bert.encoder.layer.2.output.dense.weight]Loading weights:  26%|██▌       | 53/202 [00:00<00:00, 789.30it/s, Materializing param=bert.encoder.layer.2.output.dense.weight]Loading weights:  27%|██▋       | 54/202 [00:00<00:00, 801.17it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.bias]Loading weights:  27%|██▋       | 54/202 [00:00<00:00, 800.36it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.bias]Loading weights:  27%|██▋       | 55/202 [00:00<00:00, 810.96it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.weight]Loading weights:  27%|██▋       | 55/202 [00:00<00:00, 810.08it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.weight]Loading weights:  28%|██▊       | 56/202 [00:00<00:00, 816.84it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.bias]      Loading weights:  28%|██▊       | 56/202 [00:00<00:00, 815.96it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.bias]Loading weights:  28%|██▊       | 57/202 [00:00<00:00, 814.76it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.weight]Loading weights:  28%|██▊       | 57/202 [00:00<00:00, 813.80it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.weight]Loading weights:  29%|██▊       | 58/202 [00:00<00:00, 818.53it/s, Materializing param=bert.encoder.layer.3.attention.self.key.bias]      Loading weights:  29%|██▊       | 58/202 [00:00<00:00, 817.66it/s, Materializing param=bert.encoder.layer.3.attention.self.key.bias]Loading weights:  29%|██▉       | 59/202 [00:00<00:00, 826.20it/s, Materializing param=bert.encoder.layer.3.attention.self.key.weight]Loading weights:  29%|██▉       | 59/202 [00:00<00:00, 825.35it/s, Materializing param=bert.encoder.layer.3.attention.self.key.weight]Loading weights:  30%|██▉       | 60/202 [00:00<00:00, 832.89it/s, Materializing param=bert.encoder.layer.3.attention.self.query.bias]Loading weights:  30%|██▉       | 60/202 [00:00<00:00, 832.05it/s, Materializing param=bert.encoder.layer.3.attention.self.query.bias]Loading weights:  30%|███       | 61/202 [00:00<00:00, 843.44it/s, Materializing param=bert.encoder.layer.3.attention.self.query.weight]Loading weights:  30%|███       | 61/202 [00:00<00:00, 842.65it/s, Materializing param=bert.encoder.layer.3.attention.self.query.weight]Loading weights:  31%|███       | 62/202 [00:00<00:00, 841.45it/s, Materializing param=bert.encoder.layer.3.attention.self.value.bias]  Loading weights:  31%|███       | 62/202 [00:00<00:00, 840.54it/s, Materializing param=bert.encoder.layer.3.attention.self.value.bias]Loading weights:  31%|███       | 63/202 [00:00<00:00, 849.18it/s, Materializing param=bert.encoder.layer.3.attention.self.value.weight]Loading weights:  31%|███       | 63/202 [00:00<00:00, 848.37it/s, Materializing param=bert.encoder.layer.3.attention.self.value.weight]Loading weights:  32%|███▏      | 64/202 [00:00<00:00, 852.43it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.bias]    Loading weights:  32%|███▏      | 64/202 [00:00<00:00, 851.59it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.bias]Loading weights:  32%|███▏      | 65/202 [00:00<00:00, 860.20it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.weight]Loading weights:  32%|███▏      | 65/202 [00:00<00:00, 859.37it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.weight]Loading weights:  33%|███▎      | 66/202 [00:00<00:00, 860.26it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.bias]    Loading weights:  33%|███▎      | 66/202 [00:00<00:00, 859.39it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.bias]Loading weights:  33%|███▎      | 67/202 [00:00<00:00, 867.94it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.weight]Loading weights:  33%|███▎      | 67/202 [00:00<00:00, 867.13it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.weight]Loading weights:  34%|███▎      | 68/202 [00:00<00:00, 875.57it/s, Materializing param=bert.encoder.layer.3.output.dense.bias]      Loading weights:  34%|███▎      | 68/202 [00:00<00:00, 874.75it/s, Materializing param=bert.encoder.layer.3.output.dense.bias]Loading weights:  34%|███▍      | 69/202 [00:00<00:00, 882.52it/s, Materializing param=bert.encoder.layer.3.output.dense.weight]Loading weights:  34%|███▍      | 69/202 [00:00<00:00, 881.41it/s, Materializing param=bert.encoder.layer.3.output.dense.weight]Loading weights:  35%|███▍      | 70/202 [00:00<00:00, 864.02it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.bias]Loading weights:  35%|███▍      | 70/202 [00:00<00:00, 862.49it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.bias]Loading weights:  35%|███▌      | 71/202 [00:00<00:00, 868.96it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.weight]Loading weights:  35%|███▌      | 71/202 [00:00<00:00, 867.03it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.weight]Loading weights:  36%|███▌      | 72/202 [00:00<00:00, 872.39it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.bias]      Loading weights:  36%|███▌      | 72/202 [00:00<00:00, 871.63it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.bias]Loading weights:  36%|███▌      | 73/202 [00:00<00:00, 881.16it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.weight]Loading weights:  36%|███▌      | 73/202 [00:00<00:00, 880.45it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.weight]Loading weights:  37%|███▋      | 74/202 [00:00<00:00, 857.86it/s, Materializing param=bert.encoder.layer.4.attention.self.key.bias]      Loading weights:  37%|███▋      | 74/202 [00:00<00:00, 856.98it/s, Materializing param=bert.encoder.layer.4.attention.self.key.bias]Loading weights:  37%|███▋      | 75/202 [00:00<00:00, 866.20it/s, Materializing param=bert.encoder.layer.4.attention.self.key.weight]Loading weights:  37%|███▋      | 75/202 [00:00<00:00, 856.42it/s, Materializing param=bert.encoder.layer.4.attention.self.key.weight]Loading weights:  38%|███▊      | 76/202 [00:00<00:00, 861.69it/s, Materializing param=bert.encoder.layer.4.attention.self.query.bias]Loading weights:  38%|███▊      | 76/202 [00:00<00:00, 860.99it/s, Materializing param=bert.encoder.layer.4.attention.self.query.bias]Loading weights:  38%|███▊      | 77/202 [00:00<00:00, 869.93it/s, Materializing param=bert.encoder.layer.4.attention.self.query.weight]Loading weights:  38%|███▊      | 77/202 [00:00<00:00, 869.25it/s, Materializing param=bert.encoder.layer.4.attention.self.query.weight]Loading weights:  39%|███▊      | 78/202 [00:00<00:00, 860.18it/s, Materializing param=bert.encoder.layer.4.attention.self.value.bias]  Loading weights:  39%|███▊      | 78/202 [00:00<00:00, 858.75it/s, Materializing param=bert.encoder.layer.4.attention.self.value.bias]Loading weights:  39%|███▉      | 79/202 [00:00<00:00, 851.28it/s, Materializing param=bert.encoder.layer.4.attention.self.value.weight]Loading weights:  39%|███▉      | 79/202 [00:00<00:00, 850.59it/s, Materializing param=bert.encoder.layer.4.attention.self.value.weight]Loading weights:  40%|███▉      | 80/202 [00:00<00:00, 858.51it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.bias]    Loading weights:  40%|███▉      | 80/202 [00:00<00:00, 853.66it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.bias]Loading weights:  40%|████      | 81/202 [00:00<00:00, 848.84it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.weight]Loading weights:  40%|████      | 81/202 [00:00<00:00, 848.11it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.weight]Loading weights:  41%|████      | 82/202 [00:00<00:00, 851.51it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.bias]    Loading weights:  41%|████      | 82/202 [00:00<00:00, 850.74it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.bias]Loading weights:  41%|████      | 83/202 [00:00<00:00, 846.31it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.weight]Loading weights:  41%|████      | 83/202 [00:00<00:00, 845.61it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.weight]Loading weights:  42%|████▏     | 84/202 [00:00<00:00, 853.75it/s, Materializing param=bert.encoder.layer.4.output.dense.bias]      Loading weights:  42%|████▏     | 84/202 [00:00<00:00, 853.15it/s, Materializing param=bert.encoder.layer.4.output.dense.bias]Loading weights:  42%|████▏     | 85/202 [00:00<00:00, 857.33it/s, Materializing param=bert.encoder.layer.4.output.dense.weight]Loading weights:  42%|████▏     | 85/202 [00:00<00:00, 856.16it/s, Materializing param=bert.encoder.layer.4.output.dense.weight]Loading weights:  43%|████▎     | 86/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.4.output.dense.weight]Loading weights:  43%|████▎     | 86/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.bias]Loading weights:  43%|████▎     | 86/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.bias]Loading weights:  43%|████▎     | 87/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.weight]Loading weights:  43%|████▎     | 87/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.weight]Loading weights:  44%|████▎     | 88/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.bias]      Loading weights:  44%|████▎     | 88/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.bias]Loading weights:  44%|████▍     | 89/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.weight]Loading weights:  44%|████▍     | 89/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.weight]Loading weights:  45%|████▍     | 90/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.key.bias]      Loading weights:  45%|████▍     | 90/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.key.bias]Loading weights:  45%|████▌     | 91/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.key.weight]Loading weights:  45%|████▌     | 91/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.key.weight]Loading weights:  46%|████▌     | 92/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.query.bias]Loading weights:  46%|████▌     | 92/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.query.bias]Loading weights:  46%|████▌     | 93/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.query.weight]Loading weights:  46%|████▌     | 93/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.query.weight]Loading weights:  47%|████▋     | 94/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.value.bias]  Loading weights:  47%|████▋     | 94/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.value.bias]Loading weights:  47%|████▋     | 95/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.value.weight]Loading weights:  47%|████▋     | 95/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.attention.self.value.weight]Loading weights:  48%|████▊     | 96/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.bias]    Loading weights:  48%|████▊     | 96/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.bias]Loading weights:  48%|████▊     | 97/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.weight]Loading weights:  48%|████▊     | 97/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.weight]Loading weights:  49%|████▊     | 98/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.bias]    Loading weights:  49%|████▊     | 98/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.bias]Loading weights:  49%|████▉     | 99/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.weight]Loading weights:  49%|████▉     | 99/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.weight]Loading weights:  50%|████▉     | 100/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.dense.bias]     Loading weights:  50%|████▉     | 100/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.dense.bias]Loading weights:  50%|█████     | 101/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.dense.weight]Loading weights:  50%|█████     | 101/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.5.output.dense.weight]Loading weights:  50%|█████     | 102/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.bias]Loading weights:  50%|█████     | 102/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.bias]Loading weights:  51%|█████     | 103/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.weight]Loading weights:  51%|█████     | 103/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.weight]Loading weights:  51%|█████▏    | 104/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.bias]      Loading weights:  51%|█████▏    | 104/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.bias]Loading weights:  52%|█████▏    | 105/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.weight]Loading weights:  52%|█████▏    | 105/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.weight]Loading weights:  52%|█████▏    | 106/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.key.bias]      Loading weights:  52%|█████▏    | 106/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.key.bias]Loading weights:  53%|█████▎    | 107/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.key.weight]Loading weights:  53%|█████▎    | 107/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.key.weight]Loading weights:  53%|█████▎    | 108/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.query.bias]Loading weights:  53%|█████▎    | 108/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.query.bias]Loading weights:  54%|█████▍    | 109/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.query.weight]Loading weights:  54%|█████▍    | 109/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.query.weight]Loading weights:  54%|█████▍    | 110/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.value.bias]  Loading weights:  54%|█████▍    | 110/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.value.bias]Loading weights:  55%|█████▍    | 111/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.value.weight]Loading weights:  55%|█████▍    | 111/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.attention.self.value.weight]Loading weights:  55%|█████▌    | 112/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.bias]    Loading weights:  55%|█████▌    | 112/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.bias]Loading weights:  56%|█████▌    | 113/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.weight]Loading weights:  56%|█████▌    | 113/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.weight]Loading weights:  56%|█████▋    | 114/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.bias]    Loading weights:  56%|█████▋    | 114/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.bias]Loading weights:  57%|█████▋    | 115/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.weight]Loading weights:  57%|█████▋    | 115/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.weight]Loading weights:  57%|█████▋    | 116/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.dense.bias]      Loading weights:  57%|█████▋    | 116/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.dense.bias]Loading weights:  58%|█████▊    | 117/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.dense.weight]Loading weights:  58%|█████▊    | 117/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.6.output.dense.weight]Loading weights:  58%|█████▊    | 118/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.bias]Loading weights:  58%|█████▊    | 118/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.bias]Loading weights:  59%|█████▉    | 119/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.weight]Loading weights:  59%|█████▉    | 119/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.weight]Loading weights:  59%|█████▉    | 120/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.bias]      Loading weights:  59%|█████▉    | 120/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.bias]Loading weights:  60%|█████▉    | 121/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.weight]Loading weights:  60%|█████▉    | 121/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.weight]Loading weights:  60%|██████    | 122/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.key.bias]      Loading weights:  60%|██████    | 122/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.key.bias]Loading weights:  61%|██████    | 123/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.key.weight]Loading weights:  61%|██████    | 123/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.key.weight]Loading weights:  61%|██████▏   | 124/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.query.bias]Loading weights:  61%|██████▏   | 124/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.query.bias]Loading weights:  62%|██████▏   | 125/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.query.weight]Loading weights:  62%|██████▏   | 125/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.query.weight]Loading weights:  62%|██████▏   | 126/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.value.bias]  Loading weights:  62%|██████▏   | 126/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.value.bias]Loading weights:  63%|██████▎   | 127/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.value.weight]Loading weights:  63%|██████▎   | 127/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.attention.self.value.weight]Loading weights:  63%|██████▎   | 128/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.bias]    Loading weights:  63%|██████▎   | 128/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.bias]Loading weights:  64%|██████▍   | 129/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.weight]Loading weights:  64%|██████▍   | 129/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.weight]Loading weights:  64%|██████▍   | 130/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.bias]    Loading weights:  64%|██████▍   | 130/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.bias]Loading weights:  65%|██████▍   | 131/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.weight]Loading weights:  65%|██████▍   | 131/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.weight]Loading weights:  65%|██████▌   | 132/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.dense.bias]      Loading weights:  65%|██████▌   | 132/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.dense.bias]Loading weights:  66%|██████▌   | 133/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.dense.weight]Loading weights:  66%|██████▌   | 133/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.7.output.dense.weight]Loading weights:  66%|██████▋   | 134/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.bias]Loading weights:  66%|██████▋   | 134/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.bias]Loading weights:  67%|██████▋   | 135/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.weight]Loading weights:  67%|██████▋   | 135/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.weight]Loading weights:  67%|██████▋   | 136/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.bias]      Loading weights:  67%|██████▋   | 136/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.bias]Loading weights:  68%|██████▊   | 137/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.weight]Loading weights:  68%|██████▊   | 137/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.weight]Loading weights:  68%|██████▊   | 138/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.key.bias]      Loading weights:  68%|██████▊   | 138/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.key.bias]Loading weights:  69%|██████▉   | 139/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.key.weight]Loading weights:  69%|██████▉   | 139/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.key.weight]Loading weights:  69%|██████▉   | 140/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.query.bias]Loading weights:  69%|██████▉   | 140/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.query.bias]Loading weights:  70%|██████▉   | 141/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.query.weight]Loading weights:  70%|██████▉   | 141/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.query.weight]Loading weights:  70%|███████   | 142/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.value.bias]  Loading weights:  70%|███████   | 142/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.value.bias]Loading weights:  71%|███████   | 143/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.value.weight]Loading weights:  71%|███████   | 143/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.attention.self.value.weight]Loading weights:  71%|███████▏  | 144/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.bias]    Loading weights:  71%|███████▏  | 144/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.bias]Loading weights:  72%|███████▏  | 145/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.weight]Loading weights:  72%|███████▏  | 145/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.weight]Loading weights:  72%|███████▏  | 146/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.bias]    Loading weights:  72%|███████▏  | 146/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.bias]Loading weights:  73%|███████▎  | 147/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.weight]Loading weights:  73%|███████▎  | 147/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.weight]Loading weights:  73%|███████▎  | 148/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.dense.bias]      Loading weights:  73%|███████▎  | 148/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.dense.bias]Loading weights:  74%|███████▍  | 149/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.dense.weight]Loading weights:  74%|███████▍  | 149/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.8.output.dense.weight]Loading weights:  74%|███████▍  | 150/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.bias]Loading weights:  74%|███████▍  | 150/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.bias]Loading weights:  75%|███████▍  | 151/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.weight]Loading weights:  75%|███████▍  | 151/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.weight]Loading weights:  75%|███████▌  | 152/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.bias]      Loading weights:  75%|███████▌  | 152/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.bias]Loading weights:  76%|███████▌  | 153/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.weight]Loading weights:  76%|███████▌  | 153/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.weight]Loading weights:  76%|███████▌  | 154/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.key.bias]      Loading weights:  76%|███████▌  | 154/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.key.bias]Loading weights:  77%|███████▋  | 155/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.key.weight]Loading weights:  77%|███████▋  | 155/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.key.weight]Loading weights:  77%|███████▋  | 156/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.query.bias]Loading weights:  77%|███████▋  | 156/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.query.bias]Loading weights:  78%|███████▊  | 157/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.query.weight]Loading weights:  78%|███████▊  | 157/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.query.weight]Loading weights:  78%|███████▊  | 158/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.value.bias]  Loading weights:  78%|███████▊  | 158/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.value.bias]Loading weights:  79%|███████▊  | 159/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.value.weight]Loading weights:  79%|███████▊  | 159/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.attention.self.value.weight]Loading weights:  79%|███████▉  | 160/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.bias]    Loading weights:  79%|███████▉  | 160/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.bias]Loading weights:  80%|███████▉  | 161/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.weight]Loading weights:  80%|███████▉  | 161/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.weight]Loading weights:  80%|████████  | 162/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.bias]    Loading weights:  80%|████████  | 162/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.bias]Loading weights:  81%|████████  | 163/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.weight]Loading weights:  81%|████████  | 163/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.weight]Loading weights:  81%|████████  | 164/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.dense.bias]      Loading weights:  81%|████████  | 164/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.dense.bias]Loading weights:  82%|████████▏ | 165/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.dense.weight]Loading weights:  82%|████████▏ | 165/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.9.output.dense.weight]Loading weights:  82%|████████▏ | 166/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.bias]Loading weights:  82%|████████▏ | 166/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.bias]Loading weights:  83%|████████▎ | 167/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.weight]Loading weights:  83%|████████▎ | 167/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.weight]Loading weights:  83%|████████▎ | 168/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.bias]      Loading weights:  83%|████████▎ | 168/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.bias]Loading weights:  84%|████████▎ | 169/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.weight]Loading weights:  84%|████████▎ | 169/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.weight]Loading weights:  84%|████████▍ | 170/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.key.bias]      Loading weights:  84%|████████▍ | 170/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.key.bias]Loading weights:  85%|████████▍ | 171/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.key.weight]Loading weights:  85%|████████▍ | 171/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.key.weight]Loading weights:  85%|████████▌ | 172/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.query.bias]Loading weights:  85%|████████▌ | 172/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.query.bias]Loading weights:  86%|████████▌ | 173/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.query.weight]Loading weights:  86%|████████▌ | 173/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.query.weight]Loading weights:  86%|████████▌ | 174/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.value.bias]  Loading weights:  86%|████████▌ | 174/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.value.bias]Loading weights:  87%|████████▋ | 175/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.value.weight]Loading weights:  87%|████████▋ | 175/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.attention.self.value.weight]Loading weights:  87%|████████▋ | 176/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.bias]    Loading weights:  87%|████████▋ | 176/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.bias]Loading weights:  88%|████████▊ | 177/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.weight]Loading weights:  88%|████████▊ | 177/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.weight]Loading weights:  88%|████████▊ | 178/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.bias]    Loading weights:  88%|████████▊ | 178/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.bias]Loading weights:  89%|████████▊ | 179/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.weight]Loading weights:  89%|████████▊ | 179/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.weight]Loading weights:  89%|████████▉ | 180/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.dense.bias]      Loading weights:  89%|████████▉ | 180/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.dense.bias]Loading weights:  90%|████████▉ | 181/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.dense.weight]Loading weights:  90%|████████▉ | 181/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.10.output.dense.weight]Loading weights:  90%|█████████ | 182/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.bias]Loading weights:  90%|█████████ | 182/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.bias]Loading weights:  91%|█████████ | 183/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.weight]Loading weights:  91%|█████████ | 183/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.weight]Loading weights:  91%|█████████ | 184/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.bias]      Loading weights:  91%|█████████ | 184/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.bias]Loading weights:  92%|█████████▏| 185/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.weight]Loading weights:  92%|█████████▏| 185/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.weight]Loading weights:  92%|█████████▏| 186/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.key.bias]      Loading weights:  92%|█████████▏| 186/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.key.bias]Loading weights:  93%|█████████▎| 187/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.key.weight]Loading weights:  93%|█████████▎| 187/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.key.weight]Loading weights:  93%|█████████▎| 188/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.query.bias]Loading weights:  93%|█████████▎| 188/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.query.bias]Loading weights:  94%|█████████▎| 189/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.query.weight]Loading weights:  94%|█████████▎| 189/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.query.weight]Loading weights:  94%|█████████▍| 190/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.value.bias]  Loading weights:  94%|█████████▍| 190/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.value.bias]Loading weights:  95%|█████████▍| 191/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.value.weight]Loading weights:  95%|█████████▍| 191/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.attention.self.value.weight]Loading weights:  95%|█████████▌| 192/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.bias]    Loading weights:  95%|█████████▌| 192/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.bias]Loading weights:  96%|█████████▌| 193/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.weight]Loading weights:  96%|█████████▌| 193/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.weight]Loading weights:  96%|█████████▌| 194/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.bias]    Loading weights:  96%|█████████▌| 194/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.bias]Loading weights:  97%|█████████▋| 195/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.weight]Loading weights:  97%|█████████▋| 195/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.weight]Loading weights:  97%|█████████▋| 196/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.dense.bias]      Loading weights:  97%|█████████▋| 196/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.dense.bias]Loading weights:  98%|█████████▊| 197/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.dense.weight]Loading weights:  98%|█████████▊| 197/202 [00:00<00:00, 850.43it/s, Materializing param=bert.encoder.layer.11.output.dense.weight]Loading weights:  98%|█████████▊| 198/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.bias]                     Loading weights:  98%|█████████▊| 198/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.bias]Loading weights:  99%|█████████▊| 199/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.LayerNorm.bias]Loading weights:  99%|█████████▊| 199/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.LayerNorm.bias]Loading weights:  99%|█████████▉| 200/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.LayerNorm.weight]Loading weights:  99%|█████████▉| 200/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.LayerNorm.weight]Loading weights: 100%|█████████▉| 201/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.dense.bias]      Loading weights: 100%|█████████▉| 201/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.dense.bias]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.dense.weight]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 850.43it/s, Materializing param=cls.predictions.transform.dense.weight]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 1090.51it/s, Materializing param=cls.predictions.transform.dense.weight]
+Loading weights:   0%|          | 0/202 [00:00<?, ?it/s]Loading weights:   0%|          | 1/202 [00:00<00:00, 6657.63it/s, Materializing param=bert.embeddings.LayerNorm.bias]Loading weights:   0%|          | 1/202 [00:00<00:00, 4245.25it/s, Materializing param=bert.embeddings.LayerNorm.bias]Loading weights:   1%|          | 2/202 [00:00<00:00, 3723.31it/s, Materializing param=bert.embeddings.LayerNorm.weight]Loading weights:   1%|          | 2/202 [00:00<00:00, 3326.17it/s, Materializing param=bert.embeddings.LayerNorm.weight]Loading weights:   1%|▏         | 3/202 [00:00<00:00, 809.14it/s, Materializing param=bert.embeddings.position_embeddings.weight]Loading weights:   1%|▏         | 3/202 [00:00<00:00, 518.20it/s, Materializing param=bert.embeddings.position_embeddings.weight]Loading weights:   2%|▏         | 4/202 [00:00<00:00, 498.88it/s, Materializing param=bert.embeddings.token_type_embeddings.weight]Loading weights:   2%|▏         | 4/202 [00:00<00:00, 490.63it/s, Materializing param=bert.embeddings.token_type_embeddings.weight]Loading weights:   2%|▏         | 5/202 [00:00<00:00, 584.08it/s, Materializing param=bert.embeddings.word_embeddings.weight]      Loading weights:   2%|▏         | 5/202 [00:00<00:00, 579.60it/s, Materializing param=bert.embeddings.word_embeddings.weight]Loading weights:   3%|▎         | 6/202 [00:00<00:00, 609.80it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.bias]Loading weights:   3%|▎         | 6/202 [00:00<00:00, 600.03it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.bias]Loading weights:   3%|▎         | 7/202 [00:00<00:00, 605.40it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.weight]Loading weights:   3%|▎         | 7/202 [00:00<00:00, 597.82it/s, Materializing param=bert.encoder.layer.0.attention.output.LayerNorm.weight]Loading weights:   4%|▍         | 8/202 [00:00<00:00, 639.61it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.bias]      Loading weights:   4%|▍         | 8/202 [00:00<00:00, 636.22it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.bias]Loading weights:   4%|▍         | 9/202 [00:00<00:00, 629.49it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.weight]Loading weights:   4%|▍         | 9/202 [00:00<00:00, 615.69it/s, Materializing param=bert.encoder.layer.0.attention.output.dense.weight]Loading weights:   5%|▍         | 10/202 [00:00<00:00, 627.16it/s, Materializing param=bert.encoder.layer.0.attention.self.key.bias]     Loading weights:   5%|▍         | 10/202 [00:00<00:00, 624.50it/s, Materializing param=bert.encoder.layer.0.attention.self.key.bias]Loading weights:   5%|▌         | 11/202 [00:00<00:00, 678.21it/s, Materializing param=bert.encoder.layer.0.attention.self.key.weight]Loading weights:   5%|▌         | 11/202 [00:00<00:00, 675.32it/s, Materializing param=bert.encoder.layer.0.attention.self.key.weight]Loading weights:   6%|▌         | 12/202 [00:00<00:00, 719.26it/s, Materializing param=bert.encoder.layer.0.attention.self.query.bias]Loading weights:   6%|▌         | 12/202 [00:00<00:00, 716.56it/s, Materializing param=bert.encoder.layer.0.attention.self.query.bias]Loading weights:   6%|▋         | 13/202 [00:00<00:00, 739.08it/s, Materializing param=bert.encoder.layer.0.attention.self.query.weight]Loading weights:   6%|▋         | 13/202 [00:00<00:00, 696.11it/s, Materializing param=bert.encoder.layer.0.attention.self.query.weight]Loading weights:   7%|▋         | 14/202 [00:00<00:00, 716.63it/s, Materializing param=bert.encoder.layer.0.attention.self.value.bias]  Loading weights:   7%|▋         | 14/202 [00:00<00:00, 685.78it/s, Materializing param=bert.encoder.layer.0.attention.self.value.bias]Loading weights:   7%|▋         | 15/202 [00:00<00:00, 699.91it/s, Materializing param=bert.encoder.layer.0.attention.self.value.weight]Loading weights:   7%|▋         | 15/202 [00:00<00:00, 697.55it/s, Materializing param=bert.encoder.layer.0.attention.self.value.weight]Loading weights:   8%|▊         | 16/202 [00:00<00:00, 679.98it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.bias]    Loading weights:   8%|▊         | 16/202 [00:00<00:00, 659.28it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.bias]Loading weights:   8%|▊         | 17/202 [00:00<00:00, 689.69it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.weight]Loading weights:   8%|▊         | 17/202 [00:00<00:00, 687.62it/s, Materializing param=bert.encoder.layer.0.intermediate.dense.weight]Loading weights:   9%|▉         | 18/202 [00:00<00:00, 713.82it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.bias]    Loading weights:   9%|▉         | 18/202 [00:00<00:00, 710.44it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.bias]Loading weights:   9%|▉         | 19/202 [00:00<00:00, 733.94it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.weight]Loading weights:   9%|▉         | 19/202 [00:00<00:00, 728.13it/s, Materializing param=bert.encoder.layer.0.output.LayerNorm.weight]Loading weights:  10%|▉         | 20/202 [00:00<00:00, 751.22it/s, Materializing param=bert.encoder.layer.0.output.dense.bias]      Loading weights:  10%|▉         | 20/202 [00:00<00:00, 748.94it/s, Materializing param=bert.encoder.layer.0.output.dense.bias]Loading weights:  10%|█         | 21/202 [00:00<00:00, 770.00it/s, Materializing param=bert.encoder.layer.0.output.dense.weight]Loading weights:  10%|█         | 21/202 [00:00<00:00, 767.69it/s, Materializing param=bert.encoder.layer.0.output.dense.weight]Loading weights:  11%|█         | 22/202 [00:00<00:00, 709.75it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.bias]Loading weights:  11%|█         | 22/202 [00:00<00:00, 690.35it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.bias]Loading weights:  11%|█▏        | 23/202 [00:00<00:00, 683.57it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.weight]Loading weights:  11%|█▏        | 23/202 [00:00<00:00, 681.96it/s, Materializing param=bert.encoder.layer.1.attention.output.LayerNorm.weight]Loading weights:  12%|█▏        | 24/202 [00:00<00:00, 684.86it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.bias]      Loading weights:  12%|█▏        | 24/202 [00:00<00:00, 651.00it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.bias]Loading weights:  12%|█▏        | 25/202 [00:00<00:00, 673.30it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.weight]Loading weights:  12%|█▏        | 25/202 [00:00<00:00, 672.17it/s, Materializing param=bert.encoder.layer.1.attention.output.dense.weight]Loading weights:  13%|█▎        | 26/202 [00:00<00:00, 687.34it/s, Materializing param=bert.encoder.layer.1.attention.self.key.bias]      Loading weights:  13%|█▎        | 26/202 [00:00<00:00, 686.09it/s, Materializing param=bert.encoder.layer.1.attention.self.key.bias]Loading weights:  13%|█▎        | 27/202 [00:00<00:00, 703.71it/s, Materializing param=bert.encoder.layer.1.attention.self.key.weight]Loading weights:  13%|█▎        | 27/202 [00:00<00:00, 701.87it/s, Materializing param=bert.encoder.layer.1.attention.self.key.weight]Loading weights:  14%|█▍        | 28/202 [00:00<00:00, 723.33it/s, Materializing param=bert.encoder.layer.1.attention.self.query.bias]Loading weights:  14%|█▍        | 28/202 [00:00<00:00, 722.14it/s, Materializing param=bert.encoder.layer.1.attention.self.query.bias]Loading weights:  14%|█▍        | 29/202 [00:00<00:00, 742.51it/s, Materializing param=bert.encoder.layer.1.attention.self.query.weight]Loading weights:  14%|█▍        | 29/202 [00:00<00:00, 740.86it/s, Materializing param=bert.encoder.layer.1.attention.self.query.weight]Loading weights:  15%|█▍        | 30/202 [00:00<00:00, 736.33it/s, Materializing param=bert.encoder.layer.1.attention.self.value.bias]  Loading weights:  15%|█▍        | 30/202 [00:00<00:00, 733.59it/s, Materializing param=bert.encoder.layer.1.attention.self.value.bias]Loading weights:  15%|█▌        | 31/202 [00:00<00:00, 743.45it/s, Materializing param=bert.encoder.layer.1.attention.self.value.weight]Loading weights:  15%|█▌        | 31/202 [00:00<00:00, 742.12it/s, Materializing param=bert.encoder.layer.1.attention.self.value.weight]Loading weights:  16%|█▌        | 32/202 [00:00<00:00, 760.23it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.bias]    Loading weights:  16%|█▌        | 32/202 [00:00<00:00, 743.10it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.bias]Loading weights:  16%|█▋        | 33/202 [00:00<00:00, 694.60it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.weight]Loading weights:  16%|█▋        | 33/202 [00:00<00:00, 684.92it/s, Materializing param=bert.encoder.layer.1.intermediate.dense.weight]Loading weights:  17%|█▋        | 34/202 [00:00<00:00, 701.53it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.bias]    Loading weights:  17%|█▋        | 34/202 [00:00<00:00, 700.55it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.bias]Loading weights:  17%|█▋        | 35/202 [00:00<00:00, 672.22it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.weight]Loading weights:  17%|█▋        | 35/202 [00:00<00:00, 634.71it/s, Materializing param=bert.encoder.layer.1.output.LayerNorm.weight]Loading weights:  18%|█▊        | 36/202 [00:00<00:00, 647.25it/s, Materializing param=bert.encoder.layer.1.output.dense.bias]      Loading weights:  18%|█▊        | 36/202 [00:00<00:00, 646.37it/s, Materializing param=bert.encoder.layer.1.output.dense.bias]Loading weights:  18%|█▊        | 37/202 [00:00<00:00, 633.68it/s, Materializing param=bert.encoder.layer.1.output.dense.weight]Loading weights:  18%|█▊        | 37/202 [00:00<00:00, 613.75it/s, Materializing param=bert.encoder.layer.1.output.dense.weight]Loading weights:  19%|█▉        | 38/202 [00:00<00:00, 618.03it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.bias]Loading weights:  19%|█▉        | 38/202 [00:00<00:00, 617.06it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.bias]Loading weights:  19%|█▉        | 39/202 [00:00<00:00, 629.69it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.weight]Loading weights:  19%|█▉        | 39/202 [00:00<00:00, 619.49it/s, Materializing param=bert.encoder.layer.2.attention.output.LayerNorm.weight]Loading weights:  20%|█▉        | 40/202 [00:00<00:00, 631.07it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.bias]      Loading weights:  20%|█▉        | 40/202 [00:00<00:00, 630.31it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.bias]Loading weights:  20%|██        | 41/202 [00:00<00:00, 622.06it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.weight]Loading weights:  20%|██        | 41/202 [00:00<00:00, 599.59it/s, Materializing param=bert.encoder.layer.2.attention.output.dense.weight]Loading weights:  21%|██        | 42/202 [00:00<00:00, 610.28it/s, Materializing param=bert.encoder.layer.2.attention.self.key.bias]      Loading weights:  21%|██        | 42/202 [00:00<00:00, 609.69it/s, Materializing param=bert.encoder.layer.2.attention.self.key.bias]Loading weights:  21%|██▏       | 43/202 [00:00<00:00, 607.67it/s, Materializing param=bert.encoder.layer.2.attention.self.key.weight]Loading weights:  21%|██▏       | 43/202 [00:00<00:00, 578.09it/s, Materializing param=bert.encoder.layer.2.attention.self.key.weight]Loading weights:  22%|██▏       | 44/202 [00:00<00:00, 580.66it/s, Materializing param=bert.encoder.layer.2.attention.self.query.bias]Loading weights:  22%|██▏       | 44/202 [00:00<00:00, 579.76it/s, Materializing param=bert.encoder.layer.2.attention.self.query.bias]Loading weights:  22%|██▏       | 45/202 [00:00<00:00, 580.20it/s, Materializing param=bert.encoder.layer.2.attention.self.query.weight]Loading weights:  22%|██▏       | 45/202 [00:00<00:00, 579.48it/s, Materializing param=bert.encoder.layer.2.attention.self.query.weight]Loading weights:  23%|██▎       | 46/202 [00:00<00:00, 587.12it/s, Materializing param=bert.encoder.layer.2.attention.self.value.bias]  Loading weights:  23%|██▎       | 46/202 [00:00<00:00, 581.89it/s, Materializing param=bert.encoder.layer.2.attention.self.value.bias]Loading weights:  23%|██▎       | 47/202 [00:00<00:00, 580.98it/s, Materializing param=bert.encoder.layer.2.attention.self.value.weight]Loading weights:  23%|██▎       | 47/202 [00:00<00:00, 580.15it/s, Materializing param=bert.encoder.layer.2.attention.self.value.weight]Loading weights:  24%|██▍       | 48/202 [00:00<00:00, 579.55it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.bias]    Loading weights:  24%|██▍       | 48/202 [00:00<00:00, 578.49it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.bias]Loading weights:  24%|██▍       | 49/202 [00:00<00:00, 576.29it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.weight]Loading weights:  24%|██▍       | 49/202 [00:00<00:00, 575.42it/s, Materializing param=bert.encoder.layer.2.intermediate.dense.weight]Loading weights:  25%|██▍       | 50/202 [00:00<00:00, 583.30it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.bias]    Loading weights:  25%|██▍       | 50/202 [00:00<00:00, 582.51it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.bias]Loading weights:  25%|██▌       | 51/202 [00:00<00:00, 590.72it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.weight]Loading weights:  25%|██▌       | 51/202 [00:00<00:00, 581.59it/s, Materializing param=bert.encoder.layer.2.output.LayerNorm.weight]Loading weights:  26%|██▌       | 52/202 [00:00<00:00, 565.39it/s, Materializing param=bert.encoder.layer.2.output.dense.bias]      Loading weights:  26%|██▌       | 52/202 [00:00<00:00, 561.92it/s, Materializing param=bert.encoder.layer.2.output.dense.bias]Loading weights:  26%|██▌       | 53/202 [00:00<00:00, 569.94it/s, Materializing param=bert.encoder.layer.2.output.dense.weight]Loading weights:  26%|██▌       | 53/202 [00:00<00:00, 569.42it/s, Materializing param=bert.encoder.layer.2.output.dense.weight]Loading weights:  27%|██▋       | 54/202 [00:00<00:00, 573.55it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.bias]Loading weights:  27%|██▋       | 54/202 [00:00<00:00, 564.91it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.bias]Loading weights:  27%|██▋       | 55/202 [00:00<00:00, 572.48it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.weight]Loading weights:  27%|██▋       | 55/202 [00:00<00:00, 572.01it/s, Materializing param=bert.encoder.layer.3.attention.output.LayerNorm.weight]Loading weights:  28%|██▊       | 56/202 [00:00<00:00, 580.74it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.bias]      Loading weights:  28%|██▊       | 56/202 [00:00<00:00, 580.31it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.bias]Loading weights:  28%|██▊       | 57/202 [00:00<00:00, 588.07it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.weight]Loading weights:  28%|██▊       | 57/202 [00:00<00:00, 587.40it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.weight]Loading weights:  29%|██▊       | 58/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.output.dense.weight]Loading weights:  29%|██▊       | 58/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.key.bias]      Loading weights:  29%|██▊       | 58/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.key.bias]Loading weights:  29%|██▉       | 59/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.key.weight]Loading weights:  29%|██▉       | 59/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.key.weight]Loading weights:  30%|██▉       | 60/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.query.bias]Loading weights:  30%|██▉       | 60/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.query.bias]Loading weights:  30%|███       | 61/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.query.weight]Loading weights:  30%|███       | 61/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.query.weight]Loading weights:  31%|███       | 62/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.value.bias]  Loading weights:  31%|███       | 62/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.value.bias]Loading weights:  31%|███       | 63/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.value.weight]Loading weights:  31%|███       | 63/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.attention.self.value.weight]Loading weights:  32%|███▏      | 64/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.bias]    Loading weights:  32%|███▏      | 64/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.bias]Loading weights:  32%|███▏      | 65/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.weight]Loading weights:  32%|███▏      | 65/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.intermediate.dense.weight]Loading weights:  33%|███▎      | 66/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.bias]    Loading weights:  33%|███▎      | 66/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.bias]Loading weights:  33%|███▎      | 67/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.weight]Loading weights:  33%|███▎      | 67/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.LayerNorm.weight]Loading weights:  34%|███▎      | 68/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.dense.bias]      Loading weights:  34%|███▎      | 68/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.dense.bias]Loading weights:  34%|███▍      | 69/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.dense.weight]Loading weights:  34%|███▍      | 69/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.3.output.dense.weight]Loading weights:  35%|███▍      | 70/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.bias]Loading weights:  35%|███▍      | 70/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.bias]Loading weights:  35%|███▌      | 71/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.weight]Loading weights:  35%|███▌      | 71/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.LayerNorm.weight]Loading weights:  36%|███▌      | 72/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.bias]      Loading weights:  36%|███▌      | 72/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.bias]Loading weights:  36%|███▌      | 73/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.weight]Loading weights:  36%|███▌      | 73/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.output.dense.weight]Loading weights:  37%|███▋      | 74/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.key.bias]      Loading weights:  37%|███▋      | 74/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.key.bias]Loading weights:  37%|███▋      | 75/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.key.weight]Loading weights:  37%|███▋      | 75/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.key.weight]Loading weights:  38%|███▊      | 76/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.query.bias]Loading weights:  38%|███▊      | 76/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.query.bias]Loading weights:  38%|███▊      | 77/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.query.weight]Loading weights:  38%|███▊      | 77/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.query.weight]Loading weights:  39%|███▊      | 78/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.value.bias]  Loading weights:  39%|███▊      | 78/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.value.bias]Loading weights:  39%|███▉      | 79/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.value.weight]Loading weights:  39%|███▉      | 79/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.attention.self.value.weight]Loading weights:  40%|███▉      | 80/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.bias]    Loading weights:  40%|███▉      | 80/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.bias]Loading weights:  40%|████      | 81/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.weight]Loading weights:  40%|████      | 81/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.intermediate.dense.weight]Loading weights:  41%|████      | 82/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.bias]    Loading weights:  41%|████      | 82/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.bias]Loading weights:  41%|████      | 83/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.weight]Loading weights:  41%|████      | 83/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.LayerNorm.weight]Loading weights:  42%|████▏     | 84/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.dense.bias]      Loading weights:  42%|████▏     | 84/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.dense.bias]Loading weights:  42%|████▏     | 85/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.dense.weight]Loading weights:  42%|████▏     | 85/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.4.output.dense.weight]Loading weights:  43%|████▎     | 86/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.bias]Loading weights:  43%|████▎     | 86/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.bias]Loading weights:  43%|████▎     | 87/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.weight]Loading weights:  43%|████▎     | 87/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.LayerNorm.weight]Loading weights:  44%|████▎     | 88/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.bias]      Loading weights:  44%|████▎     | 88/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.bias]Loading weights:  44%|████▍     | 89/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.weight]Loading weights:  44%|████▍     | 89/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.output.dense.weight]Loading weights:  45%|████▍     | 90/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.key.bias]      Loading weights:  45%|████▍     | 90/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.key.bias]Loading weights:  45%|████▌     | 91/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.key.weight]Loading weights:  45%|████▌     | 91/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.key.weight]Loading weights:  46%|████▌     | 92/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.query.bias]Loading weights:  46%|████▌     | 92/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.query.bias]Loading weights:  46%|████▌     | 93/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.query.weight]Loading weights:  46%|████▌     | 93/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.query.weight]Loading weights:  47%|████▋     | 94/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.value.bias]  Loading weights:  47%|████▋     | 94/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.value.bias]Loading weights:  47%|████▋     | 95/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.value.weight]Loading weights:  47%|████▋     | 95/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.attention.self.value.weight]Loading weights:  48%|████▊     | 96/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.bias]    Loading weights:  48%|████▊     | 96/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.bias]Loading weights:  48%|████▊     | 97/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.weight]Loading weights:  48%|████▊     | 97/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.intermediate.dense.weight]Loading weights:  49%|████▊     | 98/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.bias]    Loading weights:  49%|████▊     | 98/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.bias]Loading weights:  49%|████▉     | 99/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.weight]Loading weights:  49%|████▉     | 99/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.LayerNorm.weight]Loading weights:  50%|████▉     | 100/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.dense.bias]     Loading weights:  50%|████▉     | 100/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.dense.bias]Loading weights:  50%|█████     | 101/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.dense.weight]Loading weights:  50%|█████     | 101/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.5.output.dense.weight]Loading weights:  50%|█████     | 102/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.bias]Loading weights:  50%|█████     | 102/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.bias]Loading weights:  51%|█████     | 103/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.weight]Loading weights:  51%|█████     | 103/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.LayerNorm.weight]Loading weights:  51%|█████▏    | 104/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.bias]      Loading weights:  51%|█████▏    | 104/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.bias]Loading weights:  52%|█████▏    | 105/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.weight]Loading weights:  52%|█████▏    | 105/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.output.dense.weight]Loading weights:  52%|█████▏    | 106/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.key.bias]      Loading weights:  52%|█████▏    | 106/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.key.bias]Loading weights:  53%|█████▎    | 107/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.key.weight]Loading weights:  53%|█████▎    | 107/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.key.weight]Loading weights:  53%|█████▎    | 108/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.query.bias]Loading weights:  53%|█████▎    | 108/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.query.bias]Loading weights:  54%|█████▍    | 109/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.query.weight]Loading weights:  54%|█████▍    | 109/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.query.weight]Loading weights:  54%|█████▍    | 110/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.value.bias]  Loading weights:  54%|█████▍    | 110/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.value.bias]Loading weights:  55%|█████▍    | 111/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.value.weight]Loading weights:  55%|█████▍    | 111/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.attention.self.value.weight]Loading weights:  55%|█████▌    | 112/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.bias]    Loading weights:  55%|█████▌    | 112/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.bias]Loading weights:  56%|█████▌    | 113/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.weight]Loading weights:  56%|█████▌    | 113/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.intermediate.dense.weight]Loading weights:  56%|█████▋    | 114/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.bias]    Loading weights:  56%|█████▋    | 114/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.bias]Loading weights:  57%|█████▋    | 115/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.weight]Loading weights:  57%|█████▋    | 115/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.LayerNorm.weight]Loading weights:  57%|█████▋    | 116/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.dense.bias]      Loading weights:  57%|█████▋    | 116/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.dense.bias]Loading weights:  58%|█████▊    | 117/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.dense.weight]Loading weights:  58%|█████▊    | 117/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.6.output.dense.weight]Loading weights:  58%|█████▊    | 118/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.bias]Loading weights:  58%|█████▊    | 118/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.bias]Loading weights:  59%|█████▉    | 119/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.weight]Loading weights:  59%|█████▉    | 119/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.LayerNorm.weight]Loading weights:  59%|█████▉    | 120/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.bias]      Loading weights:  59%|█████▉    | 120/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.bias]Loading weights:  60%|█████▉    | 121/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.weight]Loading weights:  60%|█████▉    | 121/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.output.dense.weight]Loading weights:  60%|██████    | 122/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.key.bias]      Loading weights:  60%|██████    | 122/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.key.bias]Loading weights:  61%|██████    | 123/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.key.weight]Loading weights:  61%|██████    | 123/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.key.weight]Loading weights:  61%|██████▏   | 124/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.query.bias]Loading weights:  61%|██████▏   | 124/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.query.bias]Loading weights:  62%|██████▏   | 125/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.query.weight]Loading weights:  62%|██████▏   | 125/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.query.weight]Loading weights:  62%|██████▏   | 126/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.value.bias]  Loading weights:  62%|██████▏   | 126/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.value.bias]Loading weights:  63%|██████▎   | 127/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.value.weight]Loading weights:  63%|██████▎   | 127/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.attention.self.value.weight]Loading weights:  63%|██████▎   | 128/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.bias]    Loading weights:  63%|██████▎   | 128/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.bias]Loading weights:  64%|██████▍   | 129/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.weight]Loading weights:  64%|██████▍   | 129/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.intermediate.dense.weight]Loading weights:  64%|██████▍   | 130/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.bias]    Loading weights:  64%|██████▍   | 130/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.bias]Loading weights:  65%|██████▍   | 131/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.weight]Loading weights:  65%|██████▍   | 131/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.LayerNorm.weight]Loading weights:  65%|██████▌   | 132/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.dense.bias]      Loading weights:  65%|██████▌   | 132/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.dense.bias]Loading weights:  66%|██████▌   | 133/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.dense.weight]Loading weights:  66%|██████▌   | 133/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.7.output.dense.weight]Loading weights:  66%|██████▋   | 134/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.bias]Loading weights:  66%|██████▋   | 134/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.bias]Loading weights:  67%|██████▋   | 135/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.weight]Loading weights:  67%|██████▋   | 135/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.LayerNorm.weight]Loading weights:  67%|██████▋   | 136/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.bias]      Loading weights:  67%|██████▋   | 136/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.bias]Loading weights:  68%|██████▊   | 137/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.weight]Loading weights:  68%|██████▊   | 137/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.output.dense.weight]Loading weights:  68%|██████▊   | 138/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.key.bias]      Loading weights:  68%|██████▊   | 138/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.key.bias]Loading weights:  69%|██████▉   | 139/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.key.weight]Loading weights:  69%|██████▉   | 139/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.key.weight]Loading weights:  69%|██████▉   | 140/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.query.bias]Loading weights:  69%|██████▉   | 140/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.query.bias]Loading weights:  70%|██████▉   | 141/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.query.weight]Loading weights:  70%|██████▉   | 141/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.query.weight]Loading weights:  70%|███████   | 142/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.value.bias]  Loading weights:  70%|███████   | 142/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.value.bias]Loading weights:  71%|███████   | 143/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.value.weight]Loading weights:  71%|███████   | 143/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.attention.self.value.weight]Loading weights:  71%|███████▏  | 144/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.bias]    Loading weights:  71%|███████▏  | 144/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.bias]Loading weights:  72%|███████▏  | 145/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.weight]Loading weights:  72%|███████▏  | 145/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.intermediate.dense.weight]Loading weights:  72%|███████▏  | 146/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.bias]    Loading weights:  72%|███████▏  | 146/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.bias]Loading weights:  73%|███████▎  | 147/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.weight]Loading weights:  73%|███████▎  | 147/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.LayerNorm.weight]Loading weights:  73%|███████▎  | 148/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.dense.bias]      Loading weights:  73%|███████▎  | 148/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.dense.bias]Loading weights:  74%|███████▍  | 149/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.dense.weight]Loading weights:  74%|███████▍  | 149/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.8.output.dense.weight]Loading weights:  74%|███████▍  | 150/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.bias]Loading weights:  74%|███████▍  | 150/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.bias]Loading weights:  75%|███████▍  | 151/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.weight]Loading weights:  75%|███████▍  | 151/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.LayerNorm.weight]Loading weights:  75%|███████▌  | 152/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.bias]      Loading weights:  75%|███████▌  | 152/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.bias]Loading weights:  76%|███████▌  | 153/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.weight]Loading weights:  76%|███████▌  | 153/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.output.dense.weight]Loading weights:  76%|███████▌  | 154/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.key.bias]      Loading weights:  76%|███████▌  | 154/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.key.bias]Loading weights:  77%|███████▋  | 155/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.key.weight]Loading weights:  77%|███████▋  | 155/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.key.weight]Loading weights:  77%|███████▋  | 156/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.query.bias]Loading weights:  77%|███████▋  | 156/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.query.bias]Loading weights:  78%|███████▊  | 157/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.query.weight]Loading weights:  78%|███████▊  | 157/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.query.weight]Loading weights:  78%|███████▊  | 158/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.value.bias]  Loading weights:  78%|███████▊  | 158/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.value.bias]Loading weights:  79%|███████▊  | 159/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.value.weight]Loading weights:  79%|███████▊  | 159/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.attention.self.value.weight]Loading weights:  79%|███████▉  | 160/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.bias]    Loading weights:  79%|███████▉  | 160/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.bias]Loading weights:  80%|███████▉  | 161/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.weight]Loading weights:  80%|███████▉  | 161/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.intermediate.dense.weight]Loading weights:  80%|████████  | 162/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.bias]    Loading weights:  80%|████████  | 162/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.bias]Loading weights:  81%|████████  | 163/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.weight]Loading weights:  81%|████████  | 163/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.LayerNorm.weight]Loading weights:  81%|████████  | 164/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.dense.bias]      Loading weights:  81%|████████  | 164/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.dense.bias]Loading weights:  82%|████████▏ | 165/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.dense.weight]Loading weights:  82%|████████▏ | 165/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.9.output.dense.weight]Loading weights:  82%|████████▏ | 166/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.bias]Loading weights:  82%|████████▏ | 166/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.bias]Loading weights:  83%|████████▎ | 167/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.weight]Loading weights:  83%|████████▎ | 167/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.LayerNorm.weight]Loading weights:  83%|████████▎ | 168/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.bias]      Loading weights:  83%|████████▎ | 168/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.bias]Loading weights:  84%|████████▎ | 169/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.weight]Loading weights:  84%|████████▎ | 169/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.output.dense.weight]Loading weights:  84%|████████▍ | 170/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.key.bias]      Loading weights:  84%|████████▍ | 170/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.key.bias]Loading weights:  85%|████████▍ | 171/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.key.weight]Loading weights:  85%|████████▍ | 171/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.key.weight]Loading weights:  85%|████████▌ | 172/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.query.bias]Loading weights:  85%|████████▌ | 172/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.query.bias]Loading weights:  86%|████████▌ | 173/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.query.weight]Loading weights:  86%|████████▌ | 173/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.query.weight]Loading weights:  86%|████████▌ | 174/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.value.bias]  Loading weights:  86%|████████▌ | 174/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.value.bias]Loading weights:  87%|████████▋ | 175/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.value.weight]Loading weights:  87%|████████▋ | 175/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.attention.self.value.weight]Loading weights:  87%|████████▋ | 176/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.bias]    Loading weights:  87%|████████▋ | 176/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.bias]Loading weights:  88%|████████▊ | 177/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.weight]Loading weights:  88%|████████▊ | 177/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.intermediate.dense.weight]Loading weights:  88%|████████▊ | 178/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.bias]    Loading weights:  88%|████████▊ | 178/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.bias]Loading weights:  89%|████████▊ | 179/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.weight]Loading weights:  89%|████████▊ | 179/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.LayerNorm.weight]Loading weights:  89%|████████▉ | 180/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.dense.bias]      Loading weights:  89%|████████▉ | 180/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.dense.bias]Loading weights:  90%|████████▉ | 181/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.dense.weight]Loading weights:  90%|████████▉ | 181/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.10.output.dense.weight]Loading weights:  90%|█████████ | 182/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.bias]Loading weights:  90%|█████████ | 182/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.bias]Loading weights:  91%|█████████ | 183/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.weight]Loading weights:  91%|█████████ | 183/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.LayerNorm.weight]Loading weights:  91%|█████████ | 184/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.bias]      Loading weights:  91%|█████████ | 184/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.bias]Loading weights:  92%|█████████▏| 185/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.weight]Loading weights:  92%|█████████▏| 185/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.output.dense.weight]Loading weights:  92%|█████████▏| 186/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.key.bias]      Loading weights:  92%|█████████▏| 186/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.key.bias]Loading weights:  93%|█████████▎| 187/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.key.weight]Loading weights:  93%|█████████▎| 187/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.key.weight]Loading weights:  93%|█████████▎| 188/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.query.bias]Loading weights:  93%|█████████▎| 188/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.query.bias]Loading weights:  94%|█████████▎| 189/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.query.weight]Loading weights:  94%|█████████▎| 189/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.query.weight]Loading weights:  94%|█████████▍| 190/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.value.bias]  Loading weights:  94%|█████████▍| 190/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.value.bias]Loading weights:  95%|█████████▍| 191/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.value.weight]Loading weights:  95%|█████████▍| 191/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.attention.self.value.weight]Loading weights:  95%|█████████▌| 192/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.bias]    Loading weights:  95%|█████████▌| 192/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.bias]Loading weights:  96%|█████████▌| 193/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.weight]Loading weights:  96%|█████████▌| 193/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.intermediate.dense.weight]Loading weights:  96%|█████████▌| 194/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.bias]    Loading weights:  96%|█████████▌| 194/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.bias]Loading weights:  97%|█████████▋| 195/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.weight]Loading weights:  97%|█████████▋| 195/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.LayerNorm.weight]Loading weights:  97%|█████████▋| 196/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.dense.bias]      Loading weights:  97%|█████████▋| 196/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.dense.bias]Loading weights:  98%|█████████▊| 197/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.dense.weight]Loading weights:  98%|█████████▊| 197/202 [00:00<00:00, 575.27it/s, Materializing param=bert.encoder.layer.11.output.dense.weight]Loading weights:  98%|█████████▊| 198/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.bias]                     Loading weights:  98%|█████████▊| 198/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.bias]Loading weights:  99%|█████████▊| 199/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.LayerNorm.bias]Loading weights:  99%|█████████▊| 199/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.LayerNorm.bias]Loading weights:  99%|█████████▉| 200/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.LayerNorm.weight]Loading weights:  99%|█████████▉| 200/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.LayerNorm.weight]Loading weights: 100%|█████████▉| 201/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.dense.bias]      Loading weights: 100%|█████████▉| 201/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.dense.bias]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.dense.weight]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 575.27it/s, Materializing param=cls.predictions.transform.dense.weight]Loading weights: 100%|██████████| 202/202 [00:00<00:00, 1112.63it/s, Materializing param=cls.predictions.transform.dense.weight]
 BertForMaskedLM LOAD REPORT from: google-bert/bert-base-uncased
 Key                         | Status     |  | 
 ----------------------------+------------+--+-
-bert.pooler.dense.bias      | UNEXPECTED |  | 
-cls.seq_relationship.bias   | UNEXPECTED |  | 
-cls.seq_relationship.weight | UNEXPECTED |  | 
 bert.pooler.dense.weight    | UNEXPECTED |  | 
+bert.pooler.dense.bias      | UNEXPECTED |  | 
+cls.seq_relationship.weight | UNEXPECTED |  | 
+cls.seq_relationship.bias   | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+[AccuracyLens] Captured MLM targets (9 samples)
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected Exported Float in 697.6 ms
-[Observatory] Collected Annotated Model in 2315.7 ms
-[Observatory] Collected Calibrated Model in 2356.9 ms
-[Observatory] Collected Quantized Model in 3923.4 ms
+Creating new layout from 546 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 161.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[AccuracyLens] Using backend-captured fallback dataset from PipelineGraphCollectorLens
+[AccuracyLens] Auto-configured mlm evaluator with 5 metrics
+[Observatory] Collected Exported Float in 9163.0 ms
+Creating new layout from 1624 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected Annotated Model in 5414.0 ms
+Creating new layout from 1624 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected Calibrated Model in 5318.1 ms
+Creating new layout from 2235 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected Quantized Model in 12465.9 ms
 [INFO] [Qnn ExecuTorch]: Creating new backend bundle.
 [INFO] [Qnn ExecuTorch]: create QNN Logger with log_level 1
-[Observatory] Collected Pre-EdgeTransform/forward in 5761.1 ms
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+Creating new layout from 2235 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected Pre-EdgeTransform/forward in 13112.4 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
-[Observatory] Collected ETRecord Exported/forward in 5040.4 ms
-[Observatory] Collected ETRecord Edge/forward in 5002.0 ms
-[Observatory] Collected ETRecord Extra/edge_after_transform/forward in 1311.2 ms
+Creating new layout from 2235 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected ETRecord Exported/forward in 14368.7 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+Creating new layout from 2261 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected ETRecord Edge/forward in 16086.6 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+Creating new layout from 1175 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 154.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected ETRecord Extra/edge_after_transform/forward in 12868.2 ms
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 No quant config is implemented for op, aten.dropout.default
@@ -93,39 +463,32 @@ No quant config is implemented for op, aten.clone.default
 No quant config is implemented for op, aten.dropout.default
 No quant config is implemented for op, aten.dropout.default
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Quantizing(PTQ) the model...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
 [QNN Partitioner Op Support]: aten.view_copy.default | True
@@ -613,8 +976,18 @@ Running Sugiyama Layout...
 [QNN Partitioner Op Support]: aten.where.self | True
 [QNN Partitioner Op Support]: aten.permute_copy.default | True
 [QNN Partitioner Op Support]: aten.view_copy.default | True
-Qnn partitioner will delegate torch mutable buffer with the same I/O address during the runtime, so if your model contains mutable buffer, then you can get the better performance with skip_mutable_buffer=False. If you encounter accuracy issue during the runtime, then please set `skip_mutable_buffer=True` and try again.
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.permute_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | TrueQnn partitioner will delegate torch mutable buffer with the same I/O address during the runtime, so if your model contains mutable buffer, then you can get the better performance with skip_mutable_buffer=False. If you encounter accuracy issue during the runtime, then please set `skip_mutable_buffer=True` and try again.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 [INFO] [Qnn ExecuTorch]: Initialize Qnn backend parameters for Qnn executorch backend type 2
 [INFO] [Qnn ExecuTorch]: Caching: Caching is in SAVE MODE.
@@ -1298,29 +1671,470 @@ write_total_bytes=26126848
 read_total_bytes=125383936
 
 [INFO] [Qnn ExecuTorch]: Destroy Qnn context
-/home/boyucwsl/.local/share/uv/python/cpython-3.10.19-linux-x86_64-gnu/lib/python3.10/copyreg.py:101: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
-[Observatory] Collected EdgeProgramManager EP in 1.9 ms
+Creating new layout from 5 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 175.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Collected EdgeProgramManager EP in 12935.9 ms
 [INFO] [Qnn ExecuTorch]: Destroy Qnn device
 [INFO] [Qnn ExecuTorch]: Destroy Qnn backend
 /home/boyucwsl/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
   return guard_size_oblivious(self.stride < other.stride)
 [PipelineGraphCollector] Uninstalled all patches
+[AccuracyLens] Uninstalled all patches
 [Observatory] Exported raw data to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.json
+Creating new layout from 546 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 161.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1624 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1624 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2235 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2235 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2235 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2261 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1175 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 161.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 5 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 175.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
 [Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.html
 [Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.json (9 records: Exported Float, Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, ETRecord Extra/edge_after_transform/forward, EdgeProgramManager EP)
-[QNN Partitioner Op Support]: aten.view_copy.default | True
-[QNN Partitioner Op Support]: aten.linear.default | True
-[QNN Partitioner Op Support]: aten.permute_copy.default | True
-[QNN Partitioner Op Support]: aten.view_copy.default | True
-[QNN Partitioner Op Support]: aten.view_copy.default | True
-[QNN Partitioner Op Support]: aten.linear.default | True
-[QNN Partitioner Op Support]: aten.permute_copy.default | True
-[QNN Partitioner Op Support]: aten.view_copy.default | True
-[QNN Partitioner Op Support]: aten.view_copy.default | True
-[QNN Partitioner Op Support]: aten.linear.default | True
-[QNN Partitioner Op Support]: aten.view_copy.default | True
+
 [QNN Partitioner Op Support]: aten.view_copy.default | True
 [QNN Partitioner Op Support]: aten.view_copy.default | True
 [QNN Partitioner Op Support]: aten.native_layer_norm.default | True
@@ -1433,27 +2247,17 @@ Op aten.unbind.int was requested for preservation by partitioner.  This request 
 [QNN Partitioner Op Support]: aten._to_copy.default | True
 [QNN Partitioner Op Support]: aten._to_copy.default | True
 Building graph payload model...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
+Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
 [ FX Graph Viewer ] Compiling extension payloads...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-Converting to Grandalf graph and computing layout...
-Running Sugiyama Layout...
-$ bash -lc 'source /home/boyucwsl/executorch/qairt/2.37.0.250724/bin/envsetup.sh && python -m backends.qualcomm.debugger.observatory.cli --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.json examples/qualcomm/oss_scripts/bert.py -m SM8650 -b ./build-android --dataset /home/boyucwsl/executorch/wikisent2.txt -H mlgtw-linux -s bebcca9b -a /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/artifacts --seed 1126 --compile_only'
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+$ bash -lc 'source /home/boyucwsl/executorch/qairt/2.37.0.250724/bin/envsetup.sh && python -m executorch.backends.qualcomm.debugger.observatory --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.json --lens_recipe accuracy examples/qualcomm/oss_scripts/bert.py -m SM8650 -b ./build-android --dataset /home/boyucwsl/executorch/wikisent2.txt -H mlgtw-linux -s bebcca9b -a /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/artifacts --seed 1126 --compile_only'
 
