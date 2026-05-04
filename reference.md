@@ -15,9 +15,9 @@ Observatory's data model is **JSON-first by design**. The Lens protocol's stages
 - `frontend()` consumes the JSON produced by `analyze()` and declares report blocks; the HTML renderer transforms that JSON into the final standalone HTML.
 
 ```
-                           ┌─► stored JSON (archive, DB, AI consumer)
-observe ─► digest (JSON) ──┤
-                           └─► analyze (JSON in) ─► frontend (JSON → HTML)
+                               ┌─► stored JSON (archive, DB, AI consumer)
+observe ─► digest (raw JSON) ──┤
+                               └─► analyze (JSON in) ─► frontend (JSON → HTML)
 ```
 
 Direct consequences:
