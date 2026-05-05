@@ -267,15 +267,13 @@ A single picture, read top-to-bottom.
 
 **At the end of the run**, the framework has accumulated one thing — a capture: each lens's serialized take, plus the session's lifecycle data. That is the only thing we ever persist raw. It can be written out as **Raw Capture (JSON)** for archival, CI ingestion, or reload later.
 
-**At emit time**, each lens runs `analyze` over the full capture set and derives whatever insights it wants — per-capture metrics, run-wide summaries, graph overlays. It then projects those insights through two frontend hooks: `html_frontend` emits pieces the HTML report assembles into a self-contained file for human reviewers; `json_frontend` emits structured pieces that assemble into an Analyzed Report (JSON) for LLM triage agents, CI analytics jobs, or dashboards. §4.5 explains why this split is load-bearing for the whole architecture.
+**At emit time**, each lens runs `analyze` over the full capture set and derives whatever insights it wants — per-capture metrics, run-wide summaries, graph overlays. It then projects those insights through two frontend hooks: `html_frontend` emits pieces the HTML report assembles into a self-contained file for human reviewers; `json_frontend` emits structured pieces that assemble into an Analyzed Report (JSON) for LLM triage agents, CI analytics jobs, or dashboards. §4.4 explains why this split is load-bearing for the whole architecture.
+
+The six hooks are bound to a scoped Python context. When the context exits — including on exception — every lens's `session_end` fires and unwinds whatever `session_start` installed. Debugging instrumentation never leaks past its intended scope. §5.2 shows how contexts are opened and nested in code; §5.4 walks through the session-hook pattern applied to a concrete pipeline-patching example.
 
 Backends declare which lenses are active in a short entry-point script; the framework core knows nothing about any specific lens. §6 walks through a full extension example.
 
-### 4.4 Scoped debugging contexts
-
-Inside the context, standard pipeline functions (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*`) are temporarily replaced with wrappers that forward the call and hand the returned object to the registered lenses. On exit — including on exception — originals are restored. Nested contexts stack: each `Observatory.enable_context(config=...)` merges into the outer config and pops on exit, so a user can flip lens config per phase within one run. One manual entry point, `Observatory.collect(name, artifact)`, covers cases where the interesting moment is not at a standard pipeline function.
-
-### 4.5 Runtime captures vs analyzed results
+### 4.4 Runtime captures vs analyzed results
 
 Capturing data during a run is one job. Reasoning about it — computing metrics, diffing across captures, summarizing findings — is a different job. Observatory separates them explicitly: runtime emits raw captures (what each lens saw), and emit-time runs `analyze` over those captures to produce insights.
 
@@ -329,7 +327,7 @@ The same separation is what lets Observatory emit multiple output forms from one
 
 An archive is the single source of truth for its session. Analysis and rendering are derived — repeatable, retargetable, and composable over the same raw data.
 
-### 4.6 The FX viewer
+### 4.5 The FX viewer
 
 The report is a single HTML file, so the graph viewer must run entirely in the browser — no server, no separate tab. A single report can carry dozens of graphs with thousands of nodes each; dynamic layout in the browser would be slow, and one DOM element per node would be slow. So we do the expensive work at build time: extract graph structure, compute exact `(x, y)` + edge routing with **Sugiyama layout** (via `fast-sugiyama`), embed everything as JSON in the HTML. At view time the JavaScript paints straight to a `<canvas>`. A typical multi-graph report stays under ~1 MB.
 
@@ -357,7 +355,7 @@ Each graph carries a **base layer** (nodes, edges, default coloring) plus any nu
 
 `fx_viewer` is not tied to Observatory — any developer with a `torch.fx` graph can drop it into a self-contained HTML file directly via `FXGraphExporter(gm).export_html(...)`.
 
-### 4.7 Boundaries
+### 4.6 Boundaries
 
 Observatory is not a replacement for `Inspector`, `ETRecord`/`ETDump` — it *consumes* those primitives through lenses. The shipped report is a post-hoc artifact; a live-dashboard variant built on the same `fx_viewer` foundation is a natural follow-up (§8).
 
@@ -396,7 +394,28 @@ Observatory.export_html_report("pass_debug.html")
 Observatory.export_json("pass_debug.json")
 ```
 
-**Use this when** iterating on a compiler pass with a custom dataset or custom lens config. Monkey patches live only for the `with`-block's lifetime.
+**Use this when** iterating on a compiler pass with a custom dataset or custom lens config. Any instrumentation the active lenses installed at `session_start` is automatically unwound at the end of the `with`-block — even if the code inside raises.
+
+**Nested contexts — scoping config changes to a phase.** A compile-and-deploy script often moves through phases with very different debugging needs: a cheap preprocess step, an expensive quantization step, a device-inference step. Nested `enable_context` calls let you express those per-phase overrides as block-scoped code instead of imperatively toggling lenses on and off. When an inner `with` exits, its config is popped and the outer config resumes automatically — no cleanup code on your part, no state leaking between phases.
+
+```python
+with Observatory.enable_context(config={"per_layer_accuracy": {"enabled": False}}):
+    gm = preprocess(model)
+    Observatory.collect("preprocessed", gm)
+
+    # Inside this phase only, turn on the expensive lens with a heavy dataset.
+    with Observatory.enable_context(
+        config={"per_layer_accuracy": {"enabled": True, "dataset": heavy_repro_set}}
+    ):
+        gm = my_heavy_transform(gm)
+        Observatory.collect("after_heavy", gm)
+
+    # Outer config is back in effect here: per_layer_accuracy is off again.
+    gm = postprocess(gm)
+    Observatory.collect("final", gm)
+```
+
+The essence of the mechanism is **temporal scoping of debugging config**: each nested block is a scope inside which some subset of lens configuration is overridden, and the override lifetime is exactly the lifetime of the Python scope. Nothing more is in the programming model — but it turns out to be enough to express every per-phase lens adjustment we have needed so far.
 
 ### 5.3 `@observe_pass` decorator — for pass-centric debugging
 
@@ -420,11 +439,41 @@ with Observatory.enable_context():
 
 ### 5.4 Where collection points come from
 
-- **Wrapper patches by lenses during session** — E.g. The default lense `pipeline_graph_collector` — patches `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*` for the session.
-- **Pass decorator** — `@observe_pass` on any `PassBase` subclass or instance.
-- **Manual** — `Observatory.collect(name, artifact)` anywhere.
+Three mechanisms produce collection points; all three flow into the same `collect(name, artifact)` path:
 
-All patches are installed in `Lens.on_session_start` and restored in `Lens.on_session_end`.
+- **Wrapper patches installed by lenses on `session_start`** — the default `pipeline_graph_collector` lens, for example, replaces `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, and `ETRecord.add_*` with wrappers that forward the call *and* hand the returned object to `collect()`. The patches are removed in `session_end`, so the patched functions are only different while the debugging context is open.
+- **`@observe_pass` decorator** — tag any `PassBase` subclass or instance. The decorator captures the graph before and after each decorated pass fires, no further code change required.
+- **Manual `Observatory.collect(name, artifact)`** — available anywhere in user code, for moments that aren't at one of the above breakpoints.
+
+Here is what the wrapper pattern actually looks like inside a lens. The lens captures originals on `session_start`, replaces them with forwarding wrappers that also call `collect()`, and restores them on `session_end`:
+
+```python
+class PipelineGraphCollector(Lens):
+    _originals = {}
+
+    @classmethod
+    def on_session_start(cls, context):
+        # Save originals, install wrappers that forward + collect.
+        import torch.ao.quantization as q
+        cls._originals["prepare_pt2e"] = q.prepare_pt2e
+
+        def patched_prepare(model, quantizer, *a, **kw):
+            gm = cls._originals["prepare_pt2e"](model, quantizer, *a, **kw)
+            Observatory.collect("prepare_pt2e", gm)
+            return gm
+
+        q.prepare_pt2e = patched_prepare
+        # … same pattern for convert_pt2e, to_edge_transform_and_lower, ETRecord.add_*
+
+    @classmethod
+    def on_session_end(cls, context):
+        # Restore originals — runs even if user code raised inside the context.
+        import torch.ao.quantization as q
+        q.prepare_pt2e = cls._originals["prepare_pt2e"]
+        # … restore the rest.
+```
+
+The shape is the same for any kind of instrumentation a lens wants to install: log-stream taps, device-shell hooks, profiler starts. Whatever goes in on `session_start` comes back out on `session_end` — including on exception — so the user's baseline environment is restored after every debugging context closes. §6 applies this exact pattern to on-device ADB calls.
 
 ## 6. Extending with custom lenses
 
@@ -516,8 +565,8 @@ Observatory composes with existing `devtools/` primitives rather than replacing 
 | **`.pte` file diff** | `devtools/pte_tool/diff_pte.py` | `pte_diff` lens over archived Raw Capture |
 | **Size / memory breakdown** | `devtools/size_analysis_tool/` | `size` lens |
 | **Op-level runtime profiling** | QNN QAIRT QHAS / optrace; `XNNProfiler.cpp` | Lens fed by ETDump |
-| **Cross-time regression** (diff two archived runs) | Manual script + scraping logs | `--compare` CLI mode over two Raw Captures (see §4.5) |
-| **LLM / auto-triage ingestion** (structured analyzed output) | None — today only raw JSON or scraped HTML | `json_frontend` + Analyzed Report (JSON) (see §4.5) |
+| **Cross-time regression** (diff two archived runs) | Manual script + scraping logs | `--compare` CLI mode over two Raw Captures (see §4.4) |
+| **LLM / auto-triage ingestion** (structured analyzed output) | None — today only raw JSON or scraped HTML | `json_frontend` + Analyzed Report (JSON) (see §4.4) |
 | **Module-hierarchy browsing** (post-export) | `devtools/visualization/` (Model-Explorer, web server) | Complementary — different job; no HTML embed, no debugger-info API. See [reference.md §B](./reference.md) |
 | **Context sharing** (reviewer, QA, community) | Zip logs + CSVs + screenshots | One HTML + one JSON |
 
@@ -533,14 +582,14 @@ This section is the canonical status reference: every feature described inline t
 
 **What the RFC proposes but is not yet in the demo branch.** Every item below is part of this design and has a natural landing point in the Lens protocol or the CLI. Each is tracked on the draft branch linked above; the tag `*(not yet in demo)*` marks items that have not yet been written into the reference POC.
 
-- **Analyzed Report (JSON) via `json_frontend`** *(not yet in demo; §4.5)* — extend the Lens API with a second frontend hook that emits structured pieces alongside the HTML pieces, and wire an emit path that writes the assembled analyzed payload as JSON. The single most impactful extension for LLM-assisted triage, CI analytics, and automated dashboards.
-- **`--compare` CLI mode** *(not yet in demo; §4.5)* — a CLI subcommand that takes two (or more) archived Raw Captures and emits a regression HTML or Analyzed Report JSON by running a comparison lens over both capture sets.
+- **Analyzed Report (JSON) via `json_frontend`** *(not yet in demo; §4.4)* — extend the Lens API with a second frontend hook that emits structured pieces alongside the HTML pieces, and wire an emit path that writes the assembled analyzed payload as JSON. The single most impactful extension for LLM-assisted triage, CI analytics, and automated dashboards.
+- **`--compare` CLI mode** *(not yet in demo; §4.4)* — a CLI subcommand that takes two (or more) archived Raw Captures and emits a regression HTML or Analyzed Report JSON by running a comparison lens over both capture sets.
 - **Runtime / delegated-graph accuracy lens** *(not yet in demo)* — port `qnn_intermediate_debugger.py` logic into a lens that uses `debug_handle` + Inspector to compare CPU vs on-device execution, zero manual wiring. Most-requested follow-up.
 - **Runtime lenses on Inspector + ETDump** *(not yet in demo)* — performance, memory, and crash-analysis lenses fed by the existing runtime-capture primitives.
 - **Port existing backend tools into lenses** *(not yet in demo)* — QNN QHAS profiling, XNNProfiler aggregation, QParam audit, delegation-info as a color layer, `.pte` diff as a lens over archived captures.
 - **Device-side profiling** *(not yet in demo)* — ADB capture, on-device perf traces.
 - **Non-FX graph formats in `fx_viewer`** *(not yet in demo)* — PyTorch graph, QNN graph, TOSA as first-class exporters, so the viewer serves more than FX.
-- **Nightly-regression CI recipe** *(not yet in demo)* — package the archived-Raw-Capture + `--compare` flow from §4.5 as a reusable CI template.
+- **Nightly-regression CI recipe** *(not yet in demo)* — package the archived-Raw-Capture + `--compare` flow from §4.4 as a reusable CI template.
 - **Live debugging dashboard** *(not yet in demo)* — `fx_viewer`'s self-contained HTML, JSON-driven state, and extension APIs are a natural foundation for streaming-event dashboards beyond post-hoc reports.
 
 Some are natural next PRs. Others depend on how the protocol stabilizes and who in the community picks them up — which is, in the end, the question this RFC is asking.
