@@ -71,7 +71,6 @@ python -m executorch.backends.qualcomm.debugger.observatory \
 
 The XNNPACK CLI (`python -m executorch.backends.xnnpack.debugger.observatory`) takes the same shape — wrap any existing script, no code change.
 
-[[MEDIA: png — side-by-side terminal: default run vs `--lens_recipe=accuracy`]]
 
 ### What you get
 
@@ -82,9 +81,11 @@ A **self-contained HTML file** — no server, no login, no external service. Att
 - **Interactive FX graph.** Pan, zoom, minimap, fuzzy search. N-way synchronized compare: clicking a node in one graph highlights the matching node in every other graph — sync driven by `debug_handle` / `from_node`.
 - **Per-layer accuracy as a color overlay.** With `--lens_recipe=accuracy`, per-operator PSNR / cosine / MSE render as a color gradient on the graph. Worst-accuracy operators stand out visually; node click shows full metric breakdown. These numbers are computed by the lens's analyze function at render time, not baked into the capture itself.
 
-[[MEDIA: gifs — capture open, change-summary compare, multi-capture select, cross-graph sync, PSNR overlay]]
+[![YOUTUBE THUMBNAIL](https://i9.ytimg.com/vi_webp/NQuj-2LvhAc/mq3.webp?sqp=CNi4_c8G-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGUgWChVMA8=&rs=AOn4CLBDJA-8PKvpKJQyD0x0g2yFXyXQ8Q)](https://youtu.be/NQuj-2LvhAc)
 
 Pre-generated reports for a matrix of models are linked from the demo index. Lenses active in this demo: `metadata`, `stack_trace`, `graph`, `accuracy`, `per_layer_accuracy`, `pipeline_graph_collector`, `graph_color`.
+
+
 
 ## 4. Architecture
 
