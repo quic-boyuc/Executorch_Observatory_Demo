@@ -6,11 +6,13 @@
 [PipelineGraphCollector] Installed patch: convert_pt2e
 [PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
 [PipelineGraphCollector] Installed ETRecord patches
+libquantized_ops_aot_lib is not loaded
 The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
-[PipelineGraphCollector] Installed QNN patch: ptq_calibrate
+[PipelineGraphCollector] Installed QNN patch: _ptq_calibrate
 [AccuracyLens] Installed patch: get_imagenet_dataset
 [AccuracyLens] Installed patch: get_masked_language_model_dataset
-[Observatory CLI] Running as script: /home/boyucwsl/executorch/examples/qualcomm/oss_scripts/swin_v2_t.py
+[Observatory CLI] Running as module: examples.qualcomm.oss_scripts.swin_v2_t
+Using parser's config
 [AccuracyLens] Captured ImageNet targets (10 samples)
 /home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
@@ -32,27 +34,27 @@ initialzing low, lim and parent values of vertices
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 980
+updatig low, lim and parent values, starting from: 820
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 1157
+updatig low, lim and parent values, starting from: 202
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 668
+updatig low, lim and parent values, starting from: 21
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 292
+updatig low, lim and parent values, starting from: 577
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 599
+updatig low, lim and parent values, starting from: 1098
 Updating node ranks
 Executing phase 2: Crossing Reduction
 Inserting dummy vertices for edges spanning more than 1 ranks
@@ -86,8 +88,7 @@ Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
 [AccuracyLens] Using backend-captured fallback dataset from PipelineGraphCollectorLens
 [AccuracyLens] Auto-configured classification evaluator with 6 metrics
-[Observatory] Collected Exported Float in 5309.3 ms
-QNN_SDK_ROOT=/home/boyucwsl/executorch/qairt/2.37.0.250724
+[Observatory] Collected Exported Float in 6230.0 ms
 Building graph payload model...
 Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
@@ -215,7 +216,8 @@ No quant config is implemented for op, aten.fill_.Tensor
 No quant config is implemented for op, aten.lift_fresh_copy.default
 No quant config is implemented for op, aten.fill_.Tensor
 No quant config is implemented for op, aten.lift_fresh_copy.default
-No quant config is implemented for op, aten.fill_.Tensor/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+No quant config is implemented for op, aten.fill_.Tensor
+No quant config is implemented for op, aten.dropout.default/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Creating new layout from 2950 edges
 Splitting graph into its connected components
@@ -262,7 +264,7 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected Annotated Model in 3931.8 ms
+[Observatory] Collected Annotated Model in 4948.7 ms
 Creating new layout from 2950 edges
 Splitting graph into its connected components
 Initializing graphs vertex weights
@@ -308,7 +310,7 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected Calibrated Model in 4344.5 ms
+[Observatory] Collected Calibrated Model in 5249.9 ms
 Creating new layout from 4435 edges
 Splitting graph into its connected components
 Initializing graphs vertex weights
@@ -870,7 +872,7 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected Quantized Model in 6897.0 ms
+[Observatory] Collected Quantized Model in 8127.5 ms
 [INFO] [Qnn ExecuTorch]: Creating new backend bundle.
 [INFO] [Qnn ExecuTorch]: create QNN Logger with log_level 1
 Creating new layout from 4435 edges
@@ -1434,7 +1436,7 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected Pre-EdgeTransform/forward in 12440.0 ms
+[Observatory] Collected Pre-EdgeTransform/forward in 9812.1 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
@@ -2006,7 +2008,6 @@ Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
 
 No quant config is implemented for op, aten.dropout.default
-No quant config is implemented for op, aten.dropout.default
 No quant config is implemented for op, aten.contiguous.default
 No quant config is implemented for op, aten.dropout.default
 No quant config is implemented for op, aten.dropout.default
@@ -2139,7 +2140,8 @@ Running fast-sugiyama layout...
 [ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
 Running fast-sugiyama layout...
-[FX Graph Viewer] Compiling base graph payload...[Observatory] Collected ETRecord Exported/forward in 10110.7 ms
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...[Observatory] Collected ETRecord Exported/forward in 10600.5 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Creating new layout from 3923 edges
@@ -2187,7 +2189,7 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected ETRecord Edge/forward in 10205.3 ms
+[Observatory] Collected ETRecord Edge/forward in 12731.1 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 Creating new layout from 2117 edges
@@ -2235,11 +2237,10 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected ETRecord Extra/edge_after_transform/forward in 6541.1 ms
+[Observatory] Collected ETRecord Extra/edge_after_transform/forward in 4376.3 ms
 /home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 
-[ FX Graph Viewer ] Compiling extension payloads...
 Building graph payload model...
 Running fast-sugiyama layout...
 [FX Graph Viewer] Compiling base graph payload...
@@ -3217,7 +3218,9 @@ Running fast-sugiyama layout...
 [QNN Partitioner Op Support]: aten.view_copy.default | True
 [QNN Partitioner Op Support]: aten.view_copy.default | True
 [QNN Partitioner Op Support]: aten.permute_copy.default | True
-[QNN Partitioner Op Support]: aten.matmul.default | TrueQnn partitioner will delegate torch mutable buffer with the same I/O address during the runtime, so if your model contains mutable buffer, then you can get the better performance with skip_mutable_buffer=False. If you encounter accuracy issue during the runtime, then please set `skip_mutable_buffer=True` and try again.
+[QNN Partitioner Op Support]: aten.matmul.default | True
+[QNN Partitioner Op Support]: aten._softmax.default | TrueFound 1 subgraphs to be partitioned.
+Qnn partitioner will delegate torch mutable buffer with the same I/O address during the runtime, so if your model contains mutable buffer, then you can get the better performance with skip_mutable_buffer=False. If you encounter accuracy issue during the runtime, then please set `skip_mutable_buffer=True` and try again.
 /home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
   return cls.__new__(cls, *args)
 [INFO] [Qnn ExecuTorch]: Initialize Qnn backend parameters for Qnn executorch backend type 2
@@ -4365,7 +4368,7 @@ Placing vertices in blocks.
 move blocks as close together as possible
 Aligning all layouts to the one with the smallest width
 Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
-[Observatory] Collected EdgeProgramManager EP in 18121.6 ms
+[Observatory] Collected EdgeProgramManager EP in 17129.5 ms
 [INFO] [Qnn ExecuTorch]: Destroy Qnn device
 [INFO] [Qnn ExecuTorch]: Destroy Qnn backend
 /home/boyucwsl/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
@@ -4391,27 +4394,27 @@ initialzing low, lim and parent values of vertices
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 980
+updatig low, lim and parent values, starting from: 820
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 1157
+updatig low, lim and parent values, starting from: 202
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 668
+updatig low, lim and parent values, starting from: 21
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 292
+updatig low, lim and parent values, starting from: 577
 Updating node ranks
 Updating outdated cut values
 Remove outtdated cut_values, in order to calculate new ones
 Calculating cut values of tree edges
-updatig low, lim and parent values, starting from: 599
+updatig low, lim and parent values, starting from: 1098
 Updating node ranks
 Executing phase 2: Crossing Reduction
 Inserting dummy vertices for edges spanning more than 1 ranks
@@ -6354,7 +6357,6 @@ Calculate relative coordinates, by taking average between two medians of absolut
 [Observatory] Exported HTML report to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html
 [Observatory CLI] Reports: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html json=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.json (9 records: Exported Float, Annotated Model, Calibrated Model, Quantized Model, Pre-EdgeTransform/forward, ETRecord Exported/forward, ETRecord Edge/forward, ETRecord Extra/edge_after_transform/forward, EdgeProgramManager EP)
 
-[QNN Partitioner Op Support]: aten._softmax.default | True
 [QNN Partitioner Op Support]: aten.add.Tensor | True
 [QNN Partitioner Op Support]: aten.mul.Tensor | True
 [QNN Partitioner Op Support]: aten.view_copy.default | True
