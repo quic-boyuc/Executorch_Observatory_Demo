@@ -2,8 +2,8 @@
 
 This repository hosts batch-generated Observatory reports for ExecuTorch models, served via GitHub Pages.
 
-**Live demo**: https://github.com/pages/quic-boyuc/Executorch_Observatory_Demo/
-
+**Live demo**: [ https://github.com/pages/quic-boyuc/Executorch_Observatory_Demo/
+](https://quic-boyuc.github.io/Executorch_Observatory_Demo/)
 ## What is Observatory?
 
 Observatory is a unified debugging framework for ExecuTorch. It wraps your model export script and automatically captures graph snapshots, accuracy metrics, and per-layer analysis at each compilation stage (export, quantize, lower). The output is a standalone HTML report that anyone can open in a browser to inspect the full compilation pipeline.
