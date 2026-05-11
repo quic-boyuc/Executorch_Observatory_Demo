@@ -2,7 +2,7 @@
 
 This repository hosts batch-generated Observatory reports for ExecuTorch models, served via GitHub Pages.
 
-**Live demo**: https://github.qualcomm.com/pages/boyuc/Executorch_Observatory_Demo/
+**Live demo**: https://github.com/pages/quic-boyuc/Executorch_Observatory_Demo/
 
 ## What is Observatory?
 
