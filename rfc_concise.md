@@ -29,7 +29,7 @@ If you are **running CI or triaging community bugs**, Observatory gives you a ze
 
 If you are **a backend owner** and you have felt the friction of writing the same per-layer accuracy, graph-dump, and log-collection scripts that every other backend has written in its own way, Observatory is the shared place to contribute once. The mechanism is a **Lens** — a single Python extension that owns one debugging concern end-to-end: *instrument, configure, export, analyze, visualize*. Your backend defines lenses for different debugging needs; the framework handles the session, the report, and everything in between. `fx_viewer`, a pure-HTML server-free graph renderer, is the visual anchor graph-producing lenses paint on.
 
-**Document map.** §2 states the problem. §3 shows the tool in action. §4 is the architecture (mechanism, lens protocol, runtime-vs-analyzed split, FX viewer). §5 walks through the three invocation surfaces with code. §6 is a worked extensibility example. §7 maps the feature landscape and the roadmap (what's shipped, what's proposed, what's further out). §8 covers review, landing, and maintenance — how the draft PR should merge and how the code should be governed afterward. §9 lists open questions we want reviewer input on.
+**Document map.** §2 states the problem. §3 shows the tool in action. §4 is the architecture (mechanism, lens protocol, runtime-vs-analyzed split, FX viewer). §5 walks through the three invocation surfaces with code. §6 is a worked extensibility example. §7 maps the feature landscape and the roadmap (what's shipped, what's proposed, what's further out). §8 covers review, landing, and maintenance — how the draft PR should merge, how the code should be governed afterward, and the open questions we want reviewer input on.
 
 ## 2. The problem
 
@@ -552,127 +552,86 @@ Any artifact flows through `collect`; lenses pick what they care about; instrume
 
 ## 7. Feature landscape and roadmap
 
-Observatory composes with existing ExecuTorch devtools rather than replacing them. `Inspector`, `ETRecord` / `ETDump`, `bundled_program`, and `devtools/visualization/` continue to do what they do; Observatory consumes their output through lenses and turns what every backend used to do ad-hoc into one shared flow. This section maps each debugging workflow onto where Observatory stands today — what ships on the demo branch, what is proposed by the RFC and tracked on the draft branch, and what further directions we think are worth exploring.
+Observatory composes with existing ExecuTorch devtools — `Inspector`, `ETRecord` / `ETDump`, `bundled_program`, and `devtools/visualization/` keep doing what they do; Observatory consumes their output through lenses and unifies what every backend used to script by hand. This section maps debugging workflows onto three tiers: shipped on the draft branch, proposed in this RFC, and follow-ups for after this RFC merges.
 
-**Draft branch:** [draft-branch link]  ·  **Demo branch:** [demo-branch link]
+**Draft branch:** [draft-branch link] — one branch (also called *demo branch*; same thing). Pre-generated reports in §3 come from this branch.
 
-### 7.1 Shipped in the demo branch today
+### 7.1 Shipped in the draft branch today
 
-Each of these runs on the demo branch right now. Pull the branch, install the dependencies (§3), run the CLI, and you get the following by default — one HTML Report, one Raw Capture JSON, no further setup.
+Pull the draft branch, install dependencies (§3), run the CLI — you get the following by default.
 
-- **Compile-time accuracy** — per-operator PSNR / cosine / MSE across lowering stages. *Replaces* manual `print` plus ad-hoc CSV comparison per backend. Lenses: `accuracy`, `per_layer_accuracy`.
-- **Graph-state capture at pipeline breakpoints** — the graph at each standard stage (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*`). *Replaces* `print(gm.graph)` and per-backend log dumps. Lens: `pipeline_graph_collector` + `graph`.
-- **Pass diff** — before/after graph capture around any decorated pass. *Replaces* text diff and manual side-by-side inspection. Mechanism: `@observe_pass` decorator plus the `graph` lens's compare mode.
-- **Collection provenance** — the user-code call stack at each collection point, visible in the HTML viewer's info panel. *Replaces* manual log annotation. Lens: `stack_trace`.
-- **Interactive FX graph view** — pan, zoom, minimap, fuzzy search, and N-way compare with cross-graph sync. The viewer lives inside the HTML file; no server, no external tool. Component: `fx_viewer`.
-- **Run metadata dashboard** — command line, environment, input model, plus any lens-contributed sections. *Replaces* hand-rolled README attachments. Lens: `metadata`.
-- **Context sharing** — one HTML file plus one Raw Capture JSON per run, self-contained and attach-and-go. *Replaces* zips of logs, CSVs, and screenshots.
+- **Compile-time accuracy** — per-operator PSNR / cosine / MSE across lowering stages; replaces per-backend `print` + CSV diffs. Lenses: `accuracy`, `per_layer_accuracy`.
+- **Graph-state capture at pipeline breakpoints** — the graph at each standard stage (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*`); replaces `print(gm.graph)` and per-backend log dumps. Lens: `pipeline_graph_collector` + `graph`.
+- **Pass diff** — before/after capture around any decorated pass; replaces text diff and manual side-by-side. Mechanism: `@observe_pass` + `graph` compare mode.
+- **Collection provenance** — user-code call stack at each capture point, in the HTML viewer's info panel; replaces manual log annotation. Lens: `stack_trace`.
+- **Interactive FX graph view** — pan, zoom, minimap, fuzzy search, N-way compare with cross-graph sync; embedded in the HTML, no server. Component: `fx_viewer`.
+- **Run metadata dashboard** — command line, environment, input model, lens-contributed sections; replaces hand-rolled README attachments. Lens: `metadata`.
+- **Context sharing** — one HTML + one Raw Capture JSON per run, attach-and-go; replaces zips of logs, CSVs, and screenshots.
 
-### 7.2 Proposed in the RFC, tracked on the draft branch
+### 7.2 Proposed in this RFC, not yet implemented in the draft branch
 
-Each item below is core Lens-protocol or CLI work — a small extension with a known landing point. All are tracked on the draft branch linked above. The tag *(not yet in demo)* marks features that have not yet been written into the reference POC.
+Two extensions to the Lens protocol / CLI that are part of this RFC's design but not yet implemented in the draft branch. The tag *(not yet implemented)* marks them throughout the doc — they should be reviewed alongside the rest of the RFC.
 
-- **Analyzed Report (JSON) via `json_frontend`** *(not yet in demo; §4.4)* — a second frontend hook on the Lens protocol that emits structured analysis pieces alongside the HTML pieces, together with an emit path that writes the assembled payload as JSON. The single most impactful extension for LLM-assisted triage, CI analytics, and automated dashboards.
-- **`--compare` CLI mode** *(not yet in demo; §4.4)* — a CLI subcommand that takes two or more archived Raw Captures and emits a regression HTML or Analyzed Report JSON by running a comparison lens over the combined capture set.
-- **Runtime / delegated-graph accuracy lens** *(not yet in demo)* — port of `qnn_intermediate_debugger.py` logic into a lens that uses `debug_handle` plus `Inspector` to compare CPU against on-device execution. *Replaces* the current per-backend scripts that wire these primitives together by hand. The most-requested follow-up.
-- **Backend tool ports into lenses** *(not yet in demo)* — one lens each for QNN QHAS profiling, XNNProfiler aggregation, QParam audit, delegation info (as a color layer on the graph), `.pte` diff (over archived captures), and size analysis. *Replaces* the existing `devtools/backend_debug/`, `devtools/pte_tool/`, and `devtools/size_analysis_tool/` scripts one lens at a time, without deprecating the originals.
+- **Analyzed Report (JSON) via `json_frontend`** *(not yet implemented; §4.4)* — a second frontend hook on the Lens protocol that emits structured analysis pieces alongside the HTML pieces, plus an emit path that writes the assembled payload as JSON. Most impactful extension for LLM triage, CI analytics, and dashboards.
+- **`--compare` CLI mode** *(not yet implemented; §4.4)* — a CLI subcommand that takes two or more archived Raw Captures and emits a regression HTML or Analyzed Report JSON by running a comparison lens over the combined capture set.
 
-### 7.3 Further directions
+### 7.3 Further directions (follow-ups beyond this RFC)
 
-Ideas that fit the architecture but are not yet committed to a draft branch. We are signal-gathering on each through this RFC.
+Follow-up work after this RFC merges. None of these are part of what this RFC asks reviewers to approve — we list them so reviewers can flag what's most valuable to pursue next.
 
-- **Runtime lenses on `Inspector` + `ETDump`** — performance, memory, and crash-analysis lenses fed by the existing runtime-capture primitives. Depends on the runtime lens category maturing beyond the delegated-graph accuracy lens in §7.2.
-- **Device-side profiling lens** — ADB capture plus on-device perf traces, built on the session-hook pattern shown in §5.4 and §6.
-- **Non-FX graph formats in `fx_viewer`** — PyTorch graph, QNN graph, TOSA as first-class exporters. Depends on community demand for each format.
-- **Nightly-regression CI recipe** — package the archived-Raw-Capture + `--compare` flow as a reusable CI template. Lands naturally after `--compare` ships.
-- **Live debugging dashboard** — `fx_viewer`'s self-contained HTML, JSON-driven state, and extension APIs are a natural foundation for streaming-event dashboards beyond post-hoc reports. A larger architectural direction, not a next-PR item.
+- **Runtime / delegated-graph accuracy lens** — port `qnn_intermediate_debugger.py` into a lens that uses `debug_handle` + `Inspector` to compare CPU against on-device execution; replaces the current per-backend manual scripts. Most-requested follow-up.
+- **Backend tool ports into lenses** — one lens each for QNN QHAS profiling, XNNProfiler aggregation, QParam audit, delegation info (color layer), `.pte` diff (over archived captures), size analysis. Incrementally replaces existing `devtools/backend_debug/`, `devtools/pte_tool/`, `devtools/size_analysis_tool/` scripts.
+- **Runtime lenses on `Inspector` + `ETDump`** — performance, memory, crash-analysis lenses fed by existing runtime-capture primitives.
+- **Device-side profiling lens** — ADB capture and on-device perf traces, on the session-hook pattern (§5.4, §6).
+- **Non-FX graph formats in `fx_viewer`** — PyTorch graph, QNN graph, TOSA as first-class exporters.
+- **Nightly-regression CI recipe** — package the archived-Raw-Capture + `--compare` flow as a reusable CI template.
+- **Live debugging dashboard** — `fx_viewer` as foundation for streaming-event dashboards beyond post-hoc reports.
 
 ---
 
-The shared mechanism underlying all of this is small — a Lens protocol with two lifecycle hooks, a per-capture pair, an analyze phase, and two frontends, plus a per-backend registration point. Every workflow above is one or more lenses. A new backend gets the CLI, report shape, compare mode, graph view, and Raw Capture archive for free.
+The shared mechanism behind all of this is small: a Lens protocol with six hooks plus a per-backend registration point. Every workflow above is one or more lenses; a new backend gets CLI, report shape, compare mode, graph view, and Raw Capture archive for free.
 
 ## 8. Review, landing, and maintenance
 
-This section covers two meta-level questions about the draft: how we propose to land it, and how the code should be maintained once it ships.
+This section covers two meta-level questions about the draft: how to land it, and how to maintain it.
 
 ### 8.1 Review and merge strategy
 
-Observatory and `fx_viewer` are proposed as new shared devtools infrastructure, so the initial landing pattern matters more than for an ordinary PR: it sets the precedent for how future lens contributions and backend integrations flow in.
+The draft PR linked in §7 is intentionally monolithic so reviewers can read the RFC alongside running code. For *design review*, that's the right unit. The question is what happens after design review concludes.
 
-The draft PR linked in §7 is intentionally monolithic — it contains `devtools/observatory/`, `devtools/fx_viewer/`, and both backend CLIs together so reviewers can read the RFC side by side with a complete working system. For **design review**, one PR is the right unit; splitting the design across multiple PRs makes the design discussion hard to follow. The question is what happens after design review concludes.
+We see two reasonable landing options. We recommend **Option B**; reviewer capacity should drive the decision.
 
-We see three reasonable landing options. We recommend **Option B**, but the trade-offs are about reviewer capacity and ownership — reviewer preference should drive the decision.
+**Option A — Land as one PR.** Merge the draft PR as-is. Works if a small reviewer group can handle the full diff in one pass; risks broad-but-shallow review and all-or-nothing reverts.
 
-**Option A — Land as one PR.** Merge the draft PR as-is after review concludes.
+**Option B — Three-PR stack** *(our recommendation)*. Three focused PRs in dependency order:
 
-- *When this works:* a small group of reviewers engaging with the full design in one pass, with landing-blocker changes kept small.
-- *Risk:* a large diff invites broad-but-shallow approval; reverts become all-or-nothing.
+1. **`devtools/fx_viewer/`** — standalone; usable on its own via `FXGraphExporter(gm).export_html(...)`.
+2. **`devtools/observatory/`** — core framework, seven common lenses, generic CLI. Depends on PR 1.
+3. **Backend CLIs** — Qualcomm + XNNPACK together, each with end-to-end model-matrix validation. Depends on PR 2.
 
-**Option B — Three-PR stack *(our recommendation)*.** Three focused PRs landing in dependency order:
-
-1. **`devtools/fx_viewer/`** — standalone; no dependency on Observatory; usable by anyone with a `torch.fx` graph via `FXGraphExporter(gm).export_html(...)`. Small enough for a thorough review in one pass.
-2. **`devtools/observatory/`** — core framework (`observatory.py`, `interfaces.py`, `graph_hub.py`, `cli.py`, `observe_pass.py`), the seven common lenses, generic CLI, integration tests. Depends on PR 1.
-3. **Backend CLIs** — `backends/qualcomm/debugger/observatory/` and `backends/xnnpack/debugger/observatory/` together, each with end-to-end model-matrix validation. Depends on PR 2.
-
-Each PR is focused enough for a single reviewer to meaningfully sign off on. `fx_viewer` can be adopted by anyone not using Observatory on its own merit.
-
-**Option C — Four-PR stack.** Same as Option B, with PR 3 split into one PR per backend so each backend team owns its review. Adds one review cycle; useful if the Qualcomm and XNNPACK teams prefer isolated ownership.
-
-If you have a preference among the options above, please note it in the draft PR thread — a reviewer-driven choice is part of what this RFC is asking for.
+Each PR is focused enough for one reviewer to sign off on; `fx_viewer` can be adopted by anyone not using Observatory.
 
 ### 8.2 Maintenance and collaboration
 
-Observatory and `fx_viewer` introduce infrastructure that multiple teams will build on. Clear ownership reduces friction; the rules below are what we propose as the default.
+Observatory and `fx_viewer` introduce shared infrastructure multiple teams will build on. The ownership rules below keep boundaries clean.
 
-**Ownership.** The split mirrors the directory structure:
+**Ownership.** Mirrors the directory structure:
 
-- **Core devtools reviewers own the infrastructure.** This is `devtools/observatory/` core (`observatory.py`, `interfaces.py`, `graph_hub.py`, `cli.py`, and the JS runtime templates), `devtools/fx_viewer/` core (exporter, extension API, color rules, JS runtime), and the generic lenses that live in `devtools/observatory/lenses/`.
-- **Each backend team owns their backend-specific surface.** This is `backends/<name>/debugger/observatory/cli.py`, the backend-registered patches, and any backend-specific lenses. Changes there do not require core-reviewer sign-off beyond normal backend review.
-- **Cross-cutting changes** — the Lens protocol, the `GraphExtension` API, the JSON schema emitted by `digest()` / `analyze()`, the JS runtime — require core-reviewer sign-off regardless of which directory the change touches.
+- **Core devtools reviewers** own `devtools/observatory/` core, `devtools/fx_viewer/` core, and the generic lenses in `devtools/observatory/lenses/`.
+- **Backend teams** own `backends/<name>/debugger/observatory/cli.py`, backend-registered patches, and backend-specific lenses. No core sign-off needed.
+- **Cross-cutting changes** (Lens protocol, `GraphExtension` API, JSON schema, JS runtime) need core sign-off regardless of directory.
 
-**Testing.** Tests follow ownership:
+**Testing.** Follows ownership: infra tests (`devtools/observatory/tests/`) are owned by core; backend-specific tests are owned by backend teams. CI invariant: every backend CLI runs a smoke test on a representative model.
 
-- **Infrastructure tests** (`devtools/observatory/tests/`, `devtools/fx_viewer/examples/`) are owned by core reviewers. They cover the Lens protocol, the session lifecycle, graph-payload round-tripping, and CLI smoke.
-- **Backend-specific tests** (`backends/<name>/debugger/observatory/tests/`) are owned by backend teams. They cover backend patches, backend lenses, and at least one end-to-end report generation per backend.
-- **CI invariant.** Every backend-specific CLI runs a smoke test on a representative small model in CI, gating merges on that backend.
+**Non-backward-compatible API changes.** The Lens protocol, `GraphExtension`, and the `digest()` / `analyze()` JSON schema are the surfaces most likely to break downstream consumers. A PR that breaks them must either:
 
-**Non-backward-compatible API changes.** The Lens protocol, `GraphExtension`, and the JSON schema emitted by `digest()` / `analyze()` are the surfaces most likely to break downstream consumers (backend lenses, CI archive readers, AI triage pipelines). A PR that changes any of them in a non-backward-compatible way must **either**:
+1. **Fix every caller in the same PR** — preferred when the blast radius is small and entirely in-tree.
+2. **Announce in advance and stage the migration** — preferred when the change affects backend lenses or archived JSON consumers; announcement via issue or RFC update; landing only after migration PRs are ready.
 
-1. **Enumerate every caller and fix them in the same PR.** Preferred when the blast radius is small and the maintainer has context to fix all callers (e.g., a small change that only affects generic lenses and the two backend CLIs in-tree).
-2. **Announce the breakage in advance and stage the migration.** Preferred when the change affects backend-specific lenses, archived JSON consumers, or third parties the core team cannot test directly. The announcement goes out via an issue or an RFC update; backend owners and known downstream consumers get a migration window; the breaking change lands only after the migration PRs are ready.
+### 8.3 Open questions
 
-**Alternatives considered for the ownership model.**
-
-- *Core owns everything.* Every backend lens is reviewed by core. Rejected: creates a bottleneck; discourages backend teams from contributing specialized lenses.
-- *Backend owns everything, including infra.* No shared maintainer for the core. Rejected: infrastructure drifts; the unified report shape erodes.
-- *Semver-style stability tiers with a deprecation-shim period.* Could be adopted on top of the current policy if the protocol stabilizes and breaking changes become common enough to justify the extra surface area. Worth revisiting after one release cycle.
-- *Plugin auto-discovery instead of explicit backend CLI registration.* Deferred: explicit registration is simpler to reason about; auto-discovery can be added later without breaking existing CLIs.
-
-## 9. Open questions
-
-Items on this list are genuinely undecided. We welcome opinions — either inline in the draft PR thread or as comments on this RFC.
-
-**Infrastructure and collaboration.**
+Items below are genuinely undecided. We welcome opinions in the draft PR thread or as comments on this RFC.
 
 1. **Core vs backend ownership boundary.** Is "generic lens lives in `devtools/`, backend-specific lens lives in `backends/`" sufficient, or do we need a middle tier (e.g., shared-across-two-backends)? How should a lens that starts backend-specific and becomes generic migrate?
 2. **Lens API stability signal.** Should lenses advertise an experimental/stable tier so external contributors know what's safe to depend on, similar to `torch.compile`'s stability annotations?
 3. **Breaking-change communication channel.** Is an issue label (`observatory-api-change`) sufficient, or do we need a notification channel (mailing list, tagged GitHub team) to reach known backend owners?
-4. **Review policy for generic lenses.** Should generic lenses in `devtools/observatory/lenses/` require two core reviewers — given they become part of the shared experience — while backend lenses follow normal backend review?
-
-**Runtime and integration.**
-
-5. **Auto-discovery.** Should the generic CLI (`python -m executorch.devtools.observatory`) auto-discover backend patches when a backend package is importable, or always require explicit backend-CLI usage?
-6. **Inspector integration.** Should Observatory integrate directly with Inspector's capture points, or remain a parallel layer that consumes Inspector outputs?
-7. **Runtime lens layout.** When runtime-side lenses land (ETDump-consuming), do they live in `devtools/observatory/lenses/` alongside compile-time lenses, or in a sibling `devtools/observatory/runtime_lenses/`?
-
-**UI and scope.**
-
-8. **Recipe granularity.** Is `--lens_recipe=accuracy` the right shape for backend CLIs, or should recipes be multi-valued and composable (e.g. `--lens=accuracy --lens=stack_trace`)?
-9. **Module hierarchy in `fx_viewer`.** Should `fx_viewer` grow the module-hierarchy collapse feature that `devtools/visualization/` has, or keep the flat + fuzzy-search model as a deliberate simplicity choice?
-10. **Config schema.** Lens configs (`config["accuracy"]["dataset"]`, etc.) are dict-shaped today. Is there value in typed config schemas (dataclasses, Pydantic) as the lens library grows?
-
-**Philosophy.**
-
-11. **Opt-in vs. encouraged adoption.** Do we actively encourage every backend to ship a CLI, or treat adoption as purely opt-in with no signal either way?
-12. **JSON schema versioning.** JSON is a stable consumer contract. What versioning approach do we adopt? Options: (a) a single top-level `schema_version` field consumers check; (b) per-lens schema versions, since different lenses evolve at different rates; (c) additive-only by convention, deprecate fields rather than remove them; (d) some combination. Matters most for CI archives and AI consumers reading JSON from older Observatory versions.
-13. **Cross-time regression shape.** The `--compare` capability (§4.4) — should it ship as a dedicated built-in lens (`regression`), as a generic N-way compare mode across existing lenses, or as its own CLI subcommand (`observatory compare`)?
