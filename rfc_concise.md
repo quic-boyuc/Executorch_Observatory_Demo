@@ -85,6 +85,42 @@ A **self-contained HTML file** — no server, no login, no external service. Att
 
 Pre-generated reports for a matrix of models are linked from the demo index. Lenses active in this demo: `metadata`, `stack_trace`, `graph`, `accuracy`, `per_layer_accuracy`, `pipeline_graph_collector`, `graph_color`.
 
+### Pre-generated reports
+
+One HTML report and one raw run log per model. Node count is the size of the exported float graph (after `torch.export()`, before backend lowering).
+
+| Backend | Model | Nodes | Report | Log |
+|---|---|---:|---|---|
+| xnnpack | `mobilebert` | 2361 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/run.log.txt) |
+| xnnpack | `ic4` | 1541 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/ic4/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/ic4/run.log.txt) |
+| xnnpack | `emformer_transcribe` | 1529 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/emformer_transcribe/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/emformer_transcribe/run.log.txt) |
+| xnnpack | `ic3` | 1003 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/ic3/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/ic3/run.log.txt) |
+| xnnpack | `dl3` | 638 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/dl3/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/dl3/run.log.txt) |
+| xnnpack | `vit` | 584 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/vit/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/vit/run.log.txt) |
+| xnnpack | `resnet50` | 550 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/run.log.txt) |
+| xnnpack | `mv2` | 521 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/run.log.txt) |
+| xnnpack | `mv3` | 436 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv3/run.log.txt) |
+| xnnpack | `emformer_join` | 362 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/emformer_join/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/emformer_join/run.log.txt) |
+| xnnpack | `resnet18` | 213 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet18/run.log.txt) |
+| xnnpack | `edsr` | 168 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/edsr/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/edsr/run.log.txt) |
+| xnnpack | `llama2` | 105 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/llama2/run.log.txt) |
+| xnnpack | `w2l` | 51 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/w2l/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/w2l/run.log.txt) |
+| xnnpack | `add_mul` | 6 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/add_mul/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/add_mul/run.log.txt) |
+| xnnpack | `linear` | 5 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/linear/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/linear/run.log.txt) |
+| qualcomm | `inception_v4` | 1541 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/inception_v4/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/inception_v4/run.log.txt) |
+| qualcomm | `swin_v2_t` | 1494 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/run.log.txt) |
+| qualcomm | `swin_transformer` | 1316 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_transformer/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_transformer/run.log.txt) |
+| qualcomm | `cvt` | 1143 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/cvt/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/cvt/run.log.txt) |
+| qualcomm | `inception_v3` | 1003 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/inception_v3/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/inception_v3/run.log.txt) |
+| qualcomm | `eurobert` | 780 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/eurobert/run.log.txt) |
+| qualcomm | `torchvision_vit` | 560 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/torchvision_vit/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/torchvision_vit/run.log.txt) |
+| qualcomm | `mobilenet_v2` | 521 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/run.log.txt) |
+| qualcomm | `roberta` | 497 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/roberta/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/roberta/run.log.txt) |
+| qualcomm | `bert` | 488 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/bert/run.log.txt) |
+| qualcomm | `mobilenet_v3` | 436 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v3/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v3/run.log.txt) |
+| qualcomm | `albert` | 303 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/albert/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/albert/run.log.txt) |
+| qualcomm | `distilbert` | 246 | [report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/distilbert/observatory_report.html) | [log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/distilbert/run.log.txt) |
+
 
 
 ## 4. Architecture
