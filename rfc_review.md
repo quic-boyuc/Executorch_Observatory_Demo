@@ -70,7 +70,7 @@ pip3 install 'fast-sugiyama[full]'   # requires python >= 3.11
 
 python -m executorch.backends.qualcomm.debugger.observatory \
     --output-html obs_report.html \
-    --lens-recipe=accuracy \
+    --lens-recipe accuracy \
     examples/qualcomm/oss_scripts/mobilevit_v2.py \
     --backend htp --model SM8650 -d ./imagenet-mini-val/ \
     -b build-android/ --compile_only
@@ -85,7 +85,7 @@ A **self-contained HTML file** — no server, no login, no external service. Att
 - **Run dashboard (landing page).** Per-run metadata: command line, environment, input model. Each lens can contribute a section.
 - **Captures and change summaries (left panel).** One captured item per collection point (think: breakpoint). Between adjacent captures, a change summary highlights what moved (node-count delta, PSNR change). Click a capture → single view. Click a change summary → 2-capture compare. Click *Select* → N-capture compare.
 - **Interactive FX graph.** Pan, zoom, minimap, fuzzy search. N-way synchronized compare: clicking a node in one graph highlights the matching node in every other graph — sync driven by `debug_handle` / `from_node`.
-- **Per-layer accuracy as a color overlay.** With `--lens-recipe=accuracy`, per-operator PSNR / cosine / MSE render as a color gradient on the graph. Worst-accuracy operators are visually highlighted; node click shows full metric breakdown.
+- **Per-layer accuracy as a color overlay.** With `--lens-recipe accuracy`, per-operator PSNR / cosine / MSE render as a color gradient on the graph. Worst-accuracy operators are visually highlighted; node click shows full metric breakdown.
 
 ### Pre-generated reports
 One HTML report and one raw run log per model. Node count is the size of the exported float graph (after `torch.export()`, before backend lowering).
@@ -645,6 +645,8 @@ Pull the draft branch, install dependencies (§3), run the CLI — you get the f
 - **Interactive FX graph view** — pan, zoom, minimap, fuzzy search, N-way compare with cross-graph sync; embedded in the HTML, no server. Component: `fx_viewer`.
 - **Run metadata dashboard** — command line, environment, input model, lens-contributed sections; replaces hand-written README attachments. Lens: `metadata`.
 - **Context sharing** — one HTML + one Raw Capture JSON per run, attach-and-go; replaces zips of logs, CSVs, and screenshots.
+- **`--lens-recipe` multi-select** — the Qualcomm and XNNPACK CLIs now accept multiple recipes in a single invocation (e.g. `--lens-recipe accuracy --lens-recipe adb` or `--lens-recipe accuracy,adb`), removing the need to re-run for combined debugging. The flag is renamed from `--lens_recipe` (underscore) to `--lens-recipe` (dash) for consistency with the rest of the CLI.
+- **Qualcomm ADB lens** (`--lens-recipe adb`) — captures on-device `SimpleADB` activity (push, execute, pull) and surfaces it in the report without any code change to user scripts. Adds three sections: a **Device Info** dashboard block (serial, host, soc model, htp arch, workspace, build path); a compact **Transfer Summary** (one row per push/pull group with file count, bytes, duration, status); and a **left-panel record per inference call** (`adb.execute #N`) showing the full `qnn_executor_runner` command with one-click copy, a scrollable monospace stdout log with error-line highlighting, and collapsible `logcat -d` / `adb shell dmesg` panels (default on for inference, config-gated). Commit: `ac88080805` (`backends/qualcomm/debugger/observatory/lenses/adb.py`, `adb_patches.py`, `tests/`). Verified with 13 unit tests and end-to-end on SM8850.
 
 ### 7.2 Proposed in this RFC, not yet implemented in the draft branch
 
@@ -660,7 +662,7 @@ Follow-up work after this RFC merges. None of these are part of what this RFC as
 - **Runtime / delegated-graph accuracy lens** — port `qnn_intermediate_debugger.py` into a lens that uses `debug_handle` + `Inspector` to compare CPU against on-device execution; replaces the current per-backend manual scripts. Most-requested follow-up.
 - **Backend tool ports into lenses** — one lens each for QNN QHAS profiling, XNNProfiler aggregation, QParam audit, delegation info (color layer), `.pte` diff (over archived captures), size analysis.
 - **Runtime lenses on `Inspector` + `ETDump`** — performance, memory, crash-analysis lenses fed by existing runtime-capture primitives.
-- **Device-side profiling lens** — ADB capture and on-device perf traces, on the session-hook pattern (§5.4, §6).
+- **Device-side profiling lens** *(implemented — see §7.1 ADB lens)* — `AdbLens` (`--lens-recipe adb`) covers ADB log capture (stdout, logcat, dmesg) around on-device inference on the session-hook pattern described in §5.4 and §6. Perf-trace support (optrace / QHAS) is a further follow-up.
 - **Non-FX graph formats in `fx_viewer`** — PyTorch graph, QNN graph, TOSA as first-class exporters.
 - **Nightly-regression CI recipe** — package the archived-Raw-Capture + `--compare` flow as a reusable CI template.
 - **Live debugging dashboard** — `fx_viewer` as foundation for streaming-event dashboards beyond after-the-fact reports.
