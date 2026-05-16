@@ -11,6 +11,7 @@ import os
 import random
 import shlex
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -87,6 +88,14 @@ QUALCOMM_RECIPES = {
         "script": "examples/qualcomm/oss_scripts/cvt.py",
         "dataset_kind": "imagenet",
     },
+    "fastvit": {
+        "script": "examples/qualcomm/oss_scripts/fastvit.py",
+        "dataset_kind": "imagenet",
+    },
+    "regnet": {
+        "script": "examples/qualcomm/oss_scripts/regnet.py",
+        "dataset_kind": "imagenet",
+    },
 }
 
 QUALCOMM_DEFAULT = [
@@ -145,16 +154,15 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
         json_path = model_dir / "observatory_report.json"
         log_path = model_dir / "run.log.txt"
         cmd = [
-            "python",
+            sys.executable,
             "-m",
             "executorch.backends.xnnpack.debugger.observatory",
             "--output-html",
             str(html_path),
             "--output-json",
             str(json_path),
-            "--lens_recipe", "accuracy",
+            "--lens-recipe", "accuracy",
             "examples/xnnpack/aot_compiler.py",
-            f"--model_name={model}",
             "--delegate",
             "--quantize",
             "--output_dir",
@@ -191,14 +199,15 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
         log_path = model_dir / "run.log.txt"
 
         cmd = [
-            "python",
+            sys.executable,
             "-m",
             "executorch.backends.qualcomm.debugger.observatory",
             "--output-html",
             str(html_path),
             "--output-json",
             str(json_path),
-            "--lens_recipe", "accuracy",
+            "--lens-recipe", "accuracy",
+            "--lens-recipe", "adb",
             recipe["script"],
             "-m",
             args.soc_model,
@@ -214,7 +223,6 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
             str(artifact_dir),
             "--seed",
             str(args.seed),
-            "--compile_only",
         ]
 
         jobs.append(
@@ -532,7 +540,7 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
             continue
 
         cmd = [
-            "python",
+            sys.executable,
             "-m",
             "executorch.backends.qualcomm.debugger.observatory",
             "visualize",
@@ -584,7 +592,7 @@ def refresh_index_via_script(repo_root: Path, output_root: str) -> bool:
         return False
     result = subprocess.run(
         [
-            "python",
+            sys.executable,
             str(render_script),
             "--output-root",
             output_root,
@@ -630,10 +638,10 @@ def main() -> int:
         help="Primary XNN model for the Start Here card. Use 'random' for seeded random pick from selected models.",
     )
     parser.add_argument("--primary-qualcomm-model", default="torchvision_vit")
-    parser.add_argument("--soc-model", default="SM8650")
+    parser.add_argument("--soc-model", default="SM8850")
     parser.add_argument("--build-folder", default="./build-android")
-    parser.add_argument("--host", default="mlgtw-linux")
-    parser.add_argument("--device", default="bebcca9b")
+    parser.add_argument("--host", default="weilhuan-linux")
+    parser.add_argument("--device", default="5382e6d2")
     parser.add_argument("--seed", type=int, default=1126)
     parser.add_argument("--imagenet-dataset", default="imagenet-mini-val/")
     parser.add_argument("--wiki-dataset", default="wikisent2.txt")
