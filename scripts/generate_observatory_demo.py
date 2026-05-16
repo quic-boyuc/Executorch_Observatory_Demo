@@ -159,8 +159,10 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
             "executorch.backends.xnnpack.debugger.observatory",
             "--output-html",
             str(html_path),
-            "--output-json",
+            "--output-archive",
             str(json_path),
+            "--session-name",
+            f"xnnpack/{model}",
             "--lens-recipe", "accuracy",
             "examples/xnnpack/aot_compiler.py",
             "--delegate",
@@ -168,6 +170,8 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
             "--output_dir",
             str(artifact_dir),
         ]
+        # Pass the model name last so aot_compiler.py picks it up via --model_name
+        cmd += ["--model_name", model]
         jobs.append(
             {
                 "id": f"xnnpack:{model}",
@@ -204,8 +208,10 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
             "executorch.backends.qualcomm.debugger.observatory",
             "--output-html",
             str(html_path),
-            "--output-json",
+            "--output-archive",
             str(json_path),
+            "--session-name",
+            f"qualcomm/{name}",
             "--lens-recipe", "accuracy",
             "--lens-recipe", "adb",
             recipe["script"],
@@ -242,6 +248,91 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
     return jobs
 
 
+# ---------------------------------------------------------------------------
+# Cross-backend comparison pairs
+# ---------------------------------------------------------------------------
+
+# Models that exist on both backends (xnn_name, qualcomm_name, display_label).
+CROSS_BACKEND_PAIRS = [
+    ("mv2",       "mobilenet_v2",   "MobileNetV2"),
+    ("mv3",       "mobilenet_v3",   "MobileNetV3"),
+    ("ic3",       "inception_v3",   "InceptionV3"),
+    ("ic4",       "inception_v4",   "InceptionV4"),
+    ("vit",       "torchvision_vit", "ViT"),
+]
+
+
+def build_comparison_jobs(
+    args: argparse.Namespace,
+    reports_root: Path,
+    xnn_jobs: list[dict],
+    qnn_jobs: list[dict],
+) -> list[dict]:
+    """Create comparison jobs for model pairs that ran on both backends.
+
+    Each comparison job takes the archive JSON from the xnn job and the
+    qnn job and produces a single cross-backend HTML report via::
+
+        python -m executorch.devtools.observatory compare \\
+            --input-archive xnn.json --input-archive qnn.json \\
+            --output-html comparison.html
+
+    Only pairs where BOTH constituent jobs are present in the selected
+    model lists are created.
+    """
+    if not getattr(args, "build_comparisons", True):
+        return []
+
+    xnn_json_by_name = {j["name"]: j["report_json"] for j in xnn_jobs}
+    qnn_json_by_name = {j["name"]: j["report_json"] for j in qnn_jobs}
+
+    comp_jobs: list[dict] = []
+    for xnn_name, qnn_name, label in CROSS_BACKEND_PAIRS:
+        if xnn_name not in xnn_json_by_name:
+            continue
+        if qnn_name not in qnn_json_by_name:
+            continue
+
+        xnn_json = xnn_json_by_name[xnn_name]
+        qnn_json = qnn_json_by_name[qnn_name]
+
+        comp_dir = reports_root / "comparisons" / f"xnn_{xnn_name}_vs_qnn_{qnn_name}"
+        html_path = comp_dir / "observatory_comparison.html"
+        log_path = comp_dir / "comparison.log.txt"
+
+        cmd = [
+            sys.executable,
+            "-m",
+            "executorch.devtools.observatory",
+            "compare",
+            "--input-archive", str(xnn_json),
+            "--input-archive", str(qnn_json),
+            "--label", f"XNNPACK/{xnn_name}",
+            "--label", f"Qualcomm/{qnn_name}",
+            "--output-html", str(html_path),
+            "--title", f"Observatory Compare: {label} — XNNPACK vs Qualcomm",
+        ]
+
+        comp_jobs.append(
+            {
+                "id": f"comparison:xnn_{xnn_name}_vs_qnn_{qnn_name}",
+                "type": "comparison",
+                "backend": "comparison",
+                "name": label,
+                "xnn_job_id": f"xnnpack:{xnn_name}",
+                "qnn_job_id": f"qualcomm:{qnn_name}",
+                "label": label,
+                "script": f"xnnpack/{xnn_name} vs qualcomm/{qnn_name}",
+                "command": cmd,
+                "report_html": html_path,
+                "report_json": html_path,  # no separate archive for comparisons
+                "artifact_dir": comp_dir,
+                "log_path": log_path,
+            }
+        )
+    return comp_jobs
+
+
 def run_job(job: dict, cwd: Path, plan_only: bool) -> dict:
     job["started_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     job["return_code"] = None
@@ -258,6 +349,7 @@ def run_job(job: dict, cwd: Path, plan_only: bool) -> dict:
     print(f"[start] {job['id']}")
     start = time.time()
     cmd_text = " ".join(shlex.quote(token) for token in job["command"])
+
     with job["log_path"].open("w", encoding="utf-8") as log_file:
         if job["backend"] == "qualcomm":
             shell_cmd = f"source {shlex.quote(job['qnn_envsetup'])} && {cmd_text}"
@@ -271,6 +363,7 @@ def run_job(job: dict, cwd: Path, plan_only: bool) -> dict:
                 check=False,
             )
         else:
+            # comparison jobs and xnnpack jobs run directly
             log_file.write(f"$ {cmd_text}\n\n")
             proc = subprocess.run(
                 job["command"],
@@ -316,10 +409,36 @@ def render_rows(items: list[dict], repo_root: Path) -> str:
     return "\n".join(lines)
 
 
+def render_comparison_rows(items: list[dict], repo_root: Path) -> str:
+    lines = []
+    for item in items:
+        html_rel = relpath(item["report_html"], repo_root)
+        log_rel = relpath(item["log_path"], repo_root)
+        status = html.escape(item["status"])
+        label = html.escape(item.get("label", item["name"]))
+        xnn_id = html.escape(item.get("xnn_job_id", ""))
+        qnn_id = html.escape(item.get("qnn_job_id", ""))
+        html_cell = f'<a href="{html_rel}">comparison report</a>'
+        if not item["report_html"].exists():
+            html_cell = f'<a class="muted" href="{html_rel}">comparison (pending)</a>'
+        log_cell = f'<a href="{log_rel}">log</a>' if item["log_path"].exists() else "-"
+        lines.append(
+            "<tr>"
+            f"<td>{label}</td>"
+            f"<td>{status}</td>"
+            f"<td><code>{xnn_id}</code> vs <code>{qnn_id}</code></td>"
+            f"<td>{html_cell}</td>"
+            f"<td>{log_cell}</td>"
+            "</tr>"
+        )
+    return "\n".join(lines)
+
+
 def write_index(manifest: dict, repo_root: Path) -> None:
     jobs = manifest["jobs"]
     xnn_jobs = [j for j in jobs if j["backend"] == "xnnpack"]
     qnn_jobs = [j for j in jobs if j["backend"] == "qualcomm"]
+    comp_jobs = [j for j in jobs if j["backend"] == "comparison"]
 
     primary_xnn = manifest["primary_models"]["xnnpack"]
     primary_qnn = manifest["primary_models"]["qualcomm"]
@@ -327,13 +446,52 @@ def write_index(manifest: dict, repo_root: Path) -> None:
     def primary_link(backend: str, name: str) -> str:
         for j in jobs:
             if j["backend"] == backend and j["name"] == name:
-                if j["report_html"].exists():
-                    return relpath(j["report_html"], repo_root)
                 return relpath(j["report_html"], repo_root)
         return "#"
 
     xnn_primary_href = primary_link("xnnpack", primary_xnn)
     qnn_primary_href = primary_link("qualcomm", primary_qnn)
+
+    # Find the primary comparison (mv2 / mobilenet_v2 if available)
+    primary_comp = next(
+        (j for j in comp_jobs if "mv2" in j["id"] or "MobileNet" in j.get("label", "")),
+        comp_jobs[0] if comp_jobs else None,
+    )
+
+    comparison_section = ""
+    if comp_jobs:
+        comp_primary_href = (
+            relpath(primary_comp["report_html"], repo_root) if primary_comp else "#"
+        )
+        comp_primary_label = primary_comp.get("label", "MobileNetV2") if primary_comp else ""
+        comparison_section = f"""
+    <section class="grid">
+      <article class="card" style="grid-column: 1 / -1;">
+        <h2>Cross-Backend Comparison (XNNPack vs Qualcomm)</h2>
+        <p>
+          Compare the same model compiled on two backends — both records appear in one
+          report. Use the <strong>🌳 Tree</strong> toggle to switch to region-grouped view
+          (one tree per backend), then <strong>Select</strong> one record from each tree
+          and click <em>Compare</em> for a side-by-side graph diff.
+        </p>
+        <p><span class="chip">primary comparison</span>
+          <a href="{html.escape(comp_primary_href)}">
+            Open {html.escape(comp_primary_label)} — XNNPACK vs Qualcomm
+          </a>
+        </p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Available Cross-Backend Comparisons</h2>
+      <table>
+        <thead><tr><th>Model</th><th>Status</th><th>Pair</th><th>Comparison HTML</th><th>Log</th></tr></thead>
+        <tbody>
+          {render_comparison_rows(comp_jobs, repo_root)}
+        </tbody>
+      </table>
+    </section>
+"""
 
     html_doc = f"""<!doctype html>
 <html lang="en">
@@ -405,11 +563,14 @@ def write_index(manifest: dict, repo_root: Path) -> None:
         The workflow: <strong>capture &rarr; store &rarr; analyze &rarr; visualize &rarr; share</strong>.
         Each report contains interactive graph views with color-coded overlays, accuracy metrics at each pipeline stage,
         side-by-side graph comparison, and per-layer analysis. The graph panes are powered by
-        <code>fx_viewer</code> (<code>backends/qualcomm/utils/fx_viewer</code>).
+        <code>fx_viewer</code> (<code>devtools/fx_viewer/</code>).
+        Records can be browsed flat (time-ordered) or as a <strong>region tree</strong> — toggle
+        <code>🌳 Tree</code> in the left panel to group records by AOT pipeline stage
+        (<code>quantization/</code>, <code>edge/</code>, <code>device/</code>).
       </p>
       <p>
-        This page hosts batch-generated reports for XNNPack and Qualcomm backends.
-        Pick a model below to explore its compilation pipeline, or start with the guided path.
+        This page hosts batch-generated reports for XNNPack and Qualcomm backends,
+        plus cross-backend comparison reports.
       </p>
       <p class="muted">Generated at: {html.escape(manifest["generated_at_local"])}</p>
     </section>
@@ -426,6 +587,8 @@ def write_index(manifest: dict, repo_root: Path) -> None:
         <p><a href="{html.escape(qnn_primary_href)}">Open primary Qualcomm report</a></p>
       </article>
     </section>
+
+    {comparison_section}
 
     <section class="card">
       <h2>XNNPack Models</h2>
@@ -450,7 +613,7 @@ def write_index(manifest: dict, repo_root: Path) -> None:
     <section class="card">
       <h2>fx_viewer Notes</h2>
       <p>
-        The graph panes in Observatory reports are powered by <code>backends/qualcomm/utils/fx_viewer</code>.
+        The graph panes in Observatory reports are powered by <code>devtools/fx_viewer/</code>.
         For standalone viewer API examples, run the fx_viewer demos in the ExecuTorch repo and add generated HTML under this repo if desired.
       </p>
     </section>
@@ -473,12 +636,20 @@ def normalize_for_json(job: dict, repo_root: Path) -> dict:
         "started_at": job["started_at"],
         "command": job["command"],
         "report_html": relpath(job["report_html"], repo_root),
+        # report_json stores the archive JSON for normal jobs; for comparison
+        # jobs it stores the comparison HTML path (no separate archive).
         "report_json": relpath(job["report_json"], repo_root),
         "artifact_dir": relpath(job["artifact_dir"], repo_root),
         "log_path": relpath(job["log_path"], repo_root),
     }
     if "qnn_envsetup" in job:
         data["qnn_envsetup"] = job["qnn_envsetup"]
+    # Comparison-job extras
+    if job.get("type") == "comparison":
+        data["type"] = "comparison"
+        data["xnn_job_id"] = job.get("xnn_job_id", "")
+        data["qnn_job_id"] = job.get("qnn_job_id", "")
+        data["label"] = job.get("label", "")
     return data
 
 
@@ -504,13 +675,19 @@ def order_jobs(jobs: list[dict], primary_xnn: str, primary_qnn: str) -> list[dic
             return (0, job["id"])
         if job["backend"] == "qualcomm" and job["name"] == primary_qnn:
             return (1, job["id"])
-        return (2, job["id"])
+        if job["backend"] == "comparison":
+            return (2, job["id"])
+        return (3, job["id"])
 
     return sorted(jobs, key=rank)
 
 
 def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
-    """Regenerate HTML from existing JSON for all jobs listed in manifest.json."""
+    """Regenerate HTML from existing Archive JSON for all jobs in manifest.json.
+
+    For comparison jobs the compare subcommand is re-run using the
+    constituent archive JSON files.
+    """
     if not manifest_path.exists():
         print(f"Error: manifest not found: {manifest_path}", file=__import__("sys").stderr)
         print(
@@ -531,20 +708,49 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
 
     failed = 0
     for job in jobs:
-        json_path = repo_root / job["report_json"]
         html_path = repo_root / job["report_html"]
 
+        if job.get("type") == "comparison":
+            # Re-run the compare subcommand (command stored verbatim in manifest).
+            cmd = job.get("command", [])
+            if not cmd:
+                print(f"[skip]  {job['id']}: no command recorded", file=_sys.stderr)
+                failed += 1
+                continue
+            # Rewrite archive paths to absolute rooted at repo_root
+            abs_cmd = [
+                str(repo_root / tok) if tok.endswith(".json") and not os.path.isabs(tok) else tok
+                for tok in cmd
+            ]
+            print(f"[cmp]   {job['id']}: regenerating comparison HTML")
+            html_path.parent.mkdir(parents=True, exist_ok=True)
+            result = subprocess.run(
+                abs_cmd,
+                cwd=str(executorch_root),
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if result.returncode != 0:
+                print(f"  FAILED (rc={result.returncode}): {result.stderr.strip()}", file=_sys.stderr)
+                failed += 1
+            else:
+                print(f"  -> {html_path}")
+            continue
+
+        # Normal job: regenerate from archive JSON.
+        json_path = repo_root / job["report_json"]
         if not json_path.exists():
-            print(f"[skip]  {job['id']}: JSON not found at {json_path}", file=_sys.stderr)
+            print(f"[skip]  {job['id']}: archive JSON not found at {json_path}", file=_sys.stderr)
             failed += 1
             continue
 
         cmd = [
             sys.executable,
             "-m",
-            "executorch.backends.qualcomm.debugger.observatory",
+            "executorch.devtools.observatory",
             "visualize",
-            "--input-json",
+            "--input-archive",
             str(json_path),
             "--output-html",
             str(html_path),
@@ -568,7 +774,6 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
 
     output_root = relpath(manifest_path.parent, repo_root)
     if not refresh_index_via_script(repo_root=repo_root, output_root=output_root):
-        # Fallback: keep previous behavior if standalone renderer is unavailable.
         manifest_jobs_rich = []
         for job in jobs:
             rich = dict(job)
@@ -651,6 +856,14 @@ def main() -> int:
         help="QNN SDK root path. Also read from $QNN_SDK_ROOT if unset. envsetup.sh at <root>/bin/envsetup.sh is sourced before each Qualcomm command.",
     )
     parser.add_argument(
+        "--no-comparisons",
+        action="store_true",
+        help=(
+            "Skip cross-backend comparison jobs. By default, comparison reports are "
+            "generated for model pairs that ran on both XNNPack and Qualcomm backends."
+        ),
+    )
+    parser.add_argument(
         "--plan-only",
         action="store_true",
         help=(
@@ -701,10 +914,22 @@ def main() -> int:
     reports_root = repo_root / args.output_root
     reports_root.mkdir(parents=True, exist_ok=True)
 
-    jobs = build_xnn_jobs(args, reports_root) + build_qualcomm_jobs(args, reports_root)
-    jobs = order_jobs(jobs, primary_xnn, primary_qnn)
-    for job in jobs:
+    args.build_comparisons = not args.no_comparisons
+    xnn_jobs = build_xnn_jobs(args, reports_root)
+    qnn_jobs = build_qualcomm_jobs(args, reports_root)
+
+    # Run backend jobs first so their archive JSON files exist before comparison.
+    backend_jobs = xnn_jobs + qnn_jobs
+    backend_jobs = order_jobs(backend_jobs, primary_xnn, primary_qnn)
+    for job in backend_jobs:
         run_job(job, cwd=executorch_root, plan_only=args.plan_only)
+
+    # Build and run comparison jobs (requires archive JSON from backend jobs).
+    comp_jobs = build_comparison_jobs(args, reports_root, xnn_jobs, qnn_jobs)
+    for job in comp_jobs:
+        run_job(job, cwd=executorch_root, plan_only=args.plan_only)
+
+    all_jobs = backend_jobs + comp_jobs
 
     manifest = {
         "generated_at_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -716,7 +941,7 @@ def main() -> int:
             "xnnpack": primary_xnn,
             "qualcomm": primary_qnn,
         },
-        "jobs": [normalize_for_json(j, repo_root) for j in jobs],
+        "jobs": [normalize_for_json(j, repo_root) for j in all_jobs],
     }
     manifest_path = reports_root / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -724,7 +949,7 @@ def main() -> int:
     # Prefer standalone renderer so index content stays decoupled from this script.
     if not refresh_index_via_script(repo_root=repo_root, output_root=args.output_root):
         # Fallback to local rendering if standalone renderer is unavailable.
-        write_index({**manifest, "jobs": jobs}, repo_root=repo_root)
+        write_index({**manifest, "jobs": all_jobs}, repo_root=repo_root)
 
     print(f"Wrote manifest: {manifest_path}")
     print(f"Wrote index: {repo_root / 'index.html'}")
