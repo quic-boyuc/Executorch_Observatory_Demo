@@ -706,6 +706,78 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
         print("No jobs found in manifest.", file=_sys.stderr)
         return 1
 
+    # Backfill comparison jobs from existing backend archives if the
+    # manifest predates the comparison feature. Each comparison pair
+    # whose two constituent archives both exist on disk is re-derived
+    # and added to the in-memory job list (and persisted back into the
+    # manifest so the next run picks it up). This makes the index page
+    # reflect the available cross-backend comparisons even when only
+    # `--visualize-only` is used against a stale manifest.
+    if not any(j.get("type") == "comparison" for j in jobs):
+        reports_root = manifest_path.parent
+        xnn_jobs_for_pair = [j for j in jobs if j["backend"] == "xnnpack"]
+        qnn_jobs_for_pair = [j for j in jobs if j["backend"] == "qualcomm"]
+
+        # Reconstruct minimal job dicts that build_comparison_jobs() can use.
+        def _reconstruct_jobs(jobs_list, backend):
+            out = []
+            for j in jobs_list:
+                json_rel = j["report_json"]
+                json_abs = repo_root / json_rel
+                if not json_abs.exists():
+                    continue
+                out.append({
+                    "id": j["id"],
+                    "backend": backend,
+                    "name": j["name"],
+                    "report_json": json_abs,
+                })
+            return out
+
+        rebuilt_xnn = _reconstruct_jobs(xnn_jobs_for_pair, "xnnpack")
+        rebuilt_qnn = _reconstruct_jobs(qnn_jobs_for_pair, "qualcomm")
+
+        if rebuilt_xnn and rebuilt_qnn:
+            class _Args:
+                build_comparisons = True
+
+            new_comp_jobs = build_comparison_jobs(
+                _Args(),
+                reports_root,
+                rebuilt_xnn,
+                rebuilt_qnn,
+            )
+            if new_comp_jobs:
+                # Persist back into the manifest payload as relative paths.
+                for cj in new_comp_jobs:
+                    persisted = {
+                        "id": cj["id"],
+                        "type": "comparison",
+                        "backend": "comparison",
+                        "name": cj["name"],
+                        "label": cj.get("label"),
+                        "xnn_job_id": cj.get("xnn_job_id"),
+                        "qnn_job_id": cj.get("qnn_job_id"),
+                        "script": cj["script"],
+                        "command": cj["command"],
+                        "report_html": relpath(cj["report_html"], repo_root),
+                        "report_json": relpath(cj["report_json"], repo_root),
+                        "log_path": relpath(cj["log_path"], repo_root),
+                        "artifact_dir": relpath(cj["artifact_dir"], repo_root),
+                        "started_at": None,
+                        "duration_sec": 0.0,
+                        "return_code": None,
+                        "status": "planned",
+                    }
+                    jobs.append(persisted)
+                data["jobs"] = jobs
+                manifest_path.write_text(
+                    json.dumps(data, indent=2), encoding="utf-8"
+                )
+                print(
+                    f"[cmp]   added {len(new_comp_jobs)} comparison job(s) to manifest"
+                )
+
     failed = 0
     for job in jobs:
         html_path = repo_root / job["report_html"]
