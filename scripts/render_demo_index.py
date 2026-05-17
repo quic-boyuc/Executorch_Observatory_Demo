@@ -41,6 +41,34 @@ def render_observatory_rows(items: list[dict[str, Any]], repo_root: Path) -> str
     return "\n".join(lines)
 
 
+def render_comparison_rows(items: list[dict[str, Any]], repo_root: Path) -> str:
+    lines: list[str] = []
+    for item in items:
+        html_rel = str(item["report_html"])
+        log_rel = str(item.get("log_path", ""))
+        html_exists = (repo_root / html_rel).exists()
+        log_exists = (repo_root / log_rel).exists() if log_rel else False
+        html_cell = f'<a href="{html.escape(html_rel)}">comparison report</a>'
+        if not html_exists:
+            html_cell = (
+                f'<a class="muted" href="{html.escape(html_rel)}">'
+                "comparison (pending)</a>"
+            )
+        log_cell = f'<a href="{html.escape(log_rel)}">log</a>' if log_exists else "-"
+        label = item.get("label") or item.get("name") or ""
+        pair = item.get("script", "")
+        lines.append(
+            "<tr>"
+            f"<td>{html.escape(str(label))}</td>"
+            f"<td>{html.escape(str(item.get('status', 'unknown')))}</td>"
+            f"<td><code>{html.escape(str(pair))}</code></td>"
+            f"<td>{html_cell}</td>"
+            f"<td>{log_cell}</td>"
+            "</tr>"
+        )
+    return "\n".join(lines)
+
+
 def render_fx_rows(items: list[dict[str, Any]], repo_root: Path) -> str:
     lines: list[str] = []
     for item in items:
@@ -123,10 +151,16 @@ def render_index(
     jobs = list(manifest.get("jobs", []))
     xnn_jobs = [j for j in jobs if j.get("backend") == "xnnpack"]
     qnn_jobs = [j for j in jobs if j.get("backend") == "qualcomm"]
+    comp_jobs = [j for j in jobs if j.get("backend") == "comparison"]
 
     primary = manifest.get("primary_models", {})
     primary_xnn = str(primary.get("xnnpack", "mv2"))
     primary_qnn = str(primary.get("qualcomm", "torchvision_vit"))
+
+    primary_comp = next(
+        (j for j in comp_jobs if "mv2" in j.get("id", "") or "MobileNet" in j.get("label", "")),
+        comp_jobs[0] if comp_jobs else None,
+    )
 
     def primary_link(backend: str, name: str) -> str:
         for j in jobs:
@@ -140,6 +174,46 @@ def render_index(
             dt.datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S %Z"),
         )
     )
+
+    comparison_section = ""
+    if comp_jobs:
+        comp_primary_href = (
+            str(primary_comp.get("report_html", "#")) if primary_comp else "#"
+        )
+        comp_primary_label = (
+            primary_comp.get("label", "MobileNetV2") if primary_comp else ""
+        )
+        comparison_section = f"""
+    <section class="grid">
+      <article class="card" style="grid-column: 1 / -1;">
+        <h2>Cross-Backend Comparison (XNNPack vs Qualcomm)</h2>
+        <p>
+          Compare the same model compiled on two backends &mdash; both archives
+          appear in one report, with one collapsible region per backend in the
+          tree-view toggle. Use the <strong>🌳 Tree</strong> toggle to switch to
+          region-grouped view, then <strong>Select</strong> one record from each
+          tree and click <em>Compare</em> for a side-by-side graph diff.
+        </p>
+        <p><span class="chip">primary comparison</span>
+          <a href="{html.escape(comp_primary_href)}">
+            Open {html.escape(comp_primary_label)} &mdash; XNNPack vs Qualcomm
+          </a>
+        </p>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Available Cross-Backend Comparisons</h2>
+      <div class="table-wrap">
+      <table class="cmp-table">
+        <thead><tr><th>Model</th><th>Status</th><th>Pair</th><th>Comparison HTML</th><th>Log</th></tr></thead>
+        <tbody>
+          {render_comparison_rows(comp_jobs, repo_root)}
+        </tbody>
+      </table>
+      </div>
+    </section>
+"""
 
     html_doc = f"""<!doctype html>
 <html lang="en">
@@ -271,6 +345,8 @@ def render_index(
       </table>
       </div>
     </section>
+
+    {comparison_section}
 
     {build_fx_section(fx_manifest_path, repo_root)}
   </main>
