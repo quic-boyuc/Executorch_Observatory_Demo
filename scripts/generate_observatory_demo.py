@@ -161,7 +161,7 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
             str(html_path),
             "--output-archive",
             str(json_path),
-            "--session-name",
+            "--archive",
             f"xnnpack/{model}",
             "--lens-recipe", "accuracy",
             "examples/xnnpack/aot_compiler.py",
@@ -210,7 +210,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
             str(html_path),
             "--output-archive",
             str(json_path),
-            "--session-name",
+            "--archive",
             f"qualcomm/{name}",
             "--lens-recipe", "accuracy",
             "--lens-recipe", "adb",
@@ -273,9 +273,14 @@ def build_comparison_jobs(
     Each comparison job takes the archive JSON from the xnn job and the
     qnn job and produces a single cross-backend HTML report via::
 
-        python -m executorch.devtools.observatory compare \\
+        python -m executorch.backends.qualcomm.debugger.observatory compare \\
             --input-archive xnn.json --input-archive qnn.json \\
+            --label XNNPACK/<model> --label Qualcomm/<model> \\
             --output-html comparison.html
+
+    The QNN backend CLI is used for compare so the ADB lens frontend
+    (CSS+JS) is registered in the rendered HTML; the generic
+    devtools.observatory CLI does not register backend-specific lenses.
 
     Only pairs where BOTH constituent jobs are present in the selected
     model lists are created.
