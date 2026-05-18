@@ -152,6 +152,7 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
         artifact_dir = model_dir / "artifacts"
         html_path = model_dir / "observatory_report.html"
         json_path = model_dir / "observatory_report.json"
+        summary_json_path = model_dir / "observatory_report.summary.json"
         log_path = model_dir / "run.log.txt"
         cmd = [
             sys.executable,
@@ -161,6 +162,8 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
             str(html_path),
             "--output-archive",
             str(json_path),
+            "--output-report-json",
+            str(summary_json_path),
             "--archive",
             f"xnnpack/{model}",
             "--lens-recipe", "accuracy",
@@ -181,6 +184,7 @@ def build_xnn_jobs(args: argparse.Namespace, reports_root: Path) -> list[dict]:
                 "command": cmd,
                 "report_html": html_path,
                 "report_json": json_path,
+                "report_summary_json": summary_json_path,
                 "artifact_dir": artifact_dir,
                 "log_path": log_path,
             }
@@ -200,6 +204,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
         artifact_dir = model_dir / "artifacts"
         html_path = model_dir / "observatory_report.html"
         json_path = model_dir / "observatory_report.json"
+        summary_json_path = model_dir / "observatory_report.summary.json"
         log_path = model_dir / "run.log.txt"
 
         cmd = [
@@ -210,6 +215,8 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
             str(html_path),
             "--output-archive",
             str(json_path),
+            "--output-report-json",
+            str(summary_json_path),
             "--archive",
             f"qualcomm/{name}",
             "--lens-recipe", "accuracy",
@@ -241,6 +248,7 @@ def build_qualcomm_jobs(args: argparse.Namespace, reports_root: Path) -> list[di
                 "qnn_envsetup": str(args.qnn_envsetup),
                 "report_html": html_path,
                 "report_json": json_path,
+                "report_summary_json": summary_json_path,
                 "artifact_dir": artifact_dir,
                 "log_path": log_path,
             }
@@ -303,6 +311,7 @@ def build_comparison_jobs(
 
         comp_dir = reports_root / "comparisons" / f"xnn_{xnn_name}_vs_qnn_{qnn_name}"
         html_path = comp_dir / "observatory_comparison.html"
+        summary_json_path = comp_dir / "observatory_comparison.summary.json"
         log_path = comp_dir / "comparison.log.txt"
 
         cmd = [
@@ -315,6 +324,7 @@ def build_comparison_jobs(
             "--label", f"XNNPACK/{xnn_name}",
             "--label", f"Qualcomm/{qnn_name}",
             "--output-html", str(html_path),
+            "--output-report-json", str(summary_json_path),
             "--title", f"Observatory Compare: {label} — XNNPACK vs Qualcomm",
         ]
 
@@ -331,6 +341,7 @@ def build_comparison_jobs(
                 "command": cmd,
                 "report_html": html_path,
                 "report_json": html_path,  # no separate archive for comparisons
+                "report_summary_json": summary_json_path,
                 "artifact_dir": comp_dir,
                 "log_path": log_path,
             }
@@ -401,6 +412,12 @@ def render_rows(items: list[dict], repo_root: Path) -> str:
         if not item["report_html"].exists():
             html_cell = f'<a class="muted" href="{html_rel}">report (pending)</a>'
         log_cell = f'<a href="{log_rel}">log</a>' if item["log_path"].exists() else "-"
+        summary = item.get("report_summary_json")
+        if summary and Path(summary).exists():
+            summary_rel = relpath(Path(summary), repo_root)
+            json_cell = f'<a href="{summary_rel}">json</a>'
+        else:
+            json_cell = "-"
         lines.append(
             "<tr>"
             f"<td>{name}</td>"
@@ -408,6 +425,7 @@ def render_rows(items: list[dict], repo_root: Path) -> str:
             f"<td>{status}</td>"
             f"<td><code>{script}</code></td>"
             f"<td>{html_cell}</td>"
+            f"<td>{json_cell}</td>"
             f"<td>{log_cell}</td>"
             "</tr>"
         )
@@ -427,12 +445,19 @@ def render_comparison_rows(items: list[dict], repo_root: Path) -> str:
         if not item["report_html"].exists():
             html_cell = f'<a class="muted" href="{html_rel}">comparison (pending)</a>'
         log_cell = f'<a href="{log_rel}">log</a>' if item["log_path"].exists() else "-"
+        summary = item.get("report_summary_json")
+        if summary and Path(summary).exists():
+            summary_rel = relpath(Path(summary), repo_root)
+            json_cell = f'<a href="{summary_rel}">json</a>'
+        else:
+            json_cell = "-"
         lines.append(
             "<tr>"
             f"<td>{label}</td>"
             f"<td>{status}</td>"
             f"<td><code>{xnn_id}</code> vs <code>{qnn_id}</code></td>"
             f"<td>{html_cell}</td>"
+            f"<td>{json_cell}</td>"
             f"<td>{log_cell}</td>"
             "</tr>"
         )
@@ -490,7 +515,7 @@ def write_index(manifest: dict, repo_root: Path) -> None:
     <section class="card">
       <h2>Available Cross-Backend Comparisons</h2>
       <table>
-        <thead><tr><th>Model</th><th>Status</th><th>Pair</th><th>Comparison HTML</th><th>Log</th></tr></thead>
+        <thead><tr><th>Model</th><th>Status</th><th>Pair</th><th>Comparison HTML</th><th>JSON</th><th>Log</th></tr></thead>
         <tbody>
           {render_comparison_rows(comp_jobs, repo_root)}
         </tbody>
@@ -598,7 +623,7 @@ def write_index(manifest: dict, repo_root: Path) -> None:
     <section class="card">
       <h2>XNNPack Models</h2>
       <table>
-        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>JSON</th><th>Log</th></tr></thead>
         <tbody>
           {render_rows(xnn_jobs, repo_root)}
         </tbody>
@@ -608,7 +633,7 @@ def write_index(manifest: dict, repo_root: Path) -> None:
     <section class="card">
       <h2>Qualcomm Models</h2>
       <table>
-        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>JSON</th><th>Log</th></tr></thead>
         <tbody>
           {render_rows(qnn_jobs, repo_root)}
         </tbody>
@@ -644,6 +669,7 @@ def normalize_for_json(job: dict, repo_root: Path) -> dict:
         # report_json stores the archive JSON for normal jobs; for comparison
         # jobs it stores the comparison HTML path (no separate archive).
         "report_json": relpath(job["report_json"], repo_root),
+        "report_summary_json": relpath(job["report_summary_json"], repo_root) if job.get("report_summary_json") else None,
         "artifact_dir": relpath(job["artifact_dir"], repo_root),
         "log_path": relpath(job["log_path"], repo_root),
     }
@@ -767,6 +793,7 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
                         "command": cj["command"],
                         "report_html": relpath(cj["report_html"], repo_root),
                         "report_json": relpath(cj["report_json"], repo_root),
+                        "report_summary_json": relpath(cj["report_summary_json"], repo_root) if cj.get("report_summary_json") else None,
                         "log_path": relpath(cj["log_path"], repo_root),
                         "artifact_dir": relpath(cj["artifact_dir"], repo_root),
                         "started_at": None,
