@@ -28,6 +28,11 @@ def render_observatory_rows(items: list[dict[str, Any]], repo_root: Path) -> str
                 f'<a class="muted" href="{html.escape(html_rel)}">report (pending)</a>'
             )
         log_cell = f'<a href="{html.escape(log_rel)}">log</a>' if log_exists else "-"
+        summary_rel = str(item.get("report_summary_json") or "")
+        if summary_rel and (repo_root / summary_rel).exists():
+            json_cell = f'<a href="{html.escape(summary_rel)}" title="Report (JSON) — lens summaries for CI / LLM triage">json</a>'
+        else:
+            json_cell = "-"
         lines.append(
             "<tr>"
             f"<td>{html.escape(str(item['name']))}</td>"
@@ -35,6 +40,7 @@ def render_observatory_rows(items: list[dict[str, Any]], repo_root: Path) -> str
             f"<td>{html.escape(str(item.get('status', 'unknown')))}</td>"
             f"<td><code>{html.escape(str(item['script']))}</code></td>"
             f"<td>{html_cell}</td>"
+            f"<td>{json_cell}</td>"
             f"<td>{log_cell}</td>"
             "</tr>"
         )
@@ -57,12 +63,18 @@ def render_comparison_rows(items: list[dict[str, Any]], repo_root: Path) -> str:
         log_cell = f'<a href="{html.escape(log_rel)}">log</a>' if log_exists else "-"
         label = item.get("label") or item.get("name") or ""
         pair = item.get("script", "")
+        summary_rel = str(item.get("report_summary_json") or "")
+        if summary_rel and (repo_root / summary_rel).exists():
+            json_cell = f'<a href="{html.escape(summary_rel)}" title="Report (JSON)">json</a>'
+        else:
+            json_cell = "-"
         lines.append(
             "<tr>"
             f"<td>{html.escape(str(label))}</td>"
             f"<td>{html.escape(str(item.get('status', 'unknown')))}</td>"
             f"<td><code>{html.escape(str(pair))}</code></td>"
             f"<td>{html_cell}</td>"
+            f"<td>{json_cell}</td>"
             f"<td>{log_cell}</td>"
             "</tr>"
         )
@@ -206,7 +218,7 @@ def render_index(
       <h2>Available Cross-Backend Comparisons</h2>
       <div class="table-wrap">
       <table class="cmp-table">
-        <thead><tr><th>Model</th><th>Status</th><th>Pair</th><th>Comparison HTML</th><th>Log</th></tr></thead>
+        <thead><tr><th>Model</th><th>Status</th><th>Pair</th><th>Comparison HTML</th><th>JSON</th><th>Log</th></tr></thead>
         <tbody>
           {render_comparison_rows(comp_jobs, repo_root)}
         </tbody>
@@ -281,12 +293,13 @@ def render_index(
     .fx-table th:nth-child(5), .fx-table td:nth-child(5) {{ width: 24%; }}
     .fx-table th:nth-child(6), .fx-table td:nth-child(6) {{ width: 7%; }}
     .fx-table th:nth-child(7), .fx-table td:nth-child(7) {{ width: 7%; }}
-    .obs-table th:nth-child(1), .obs-table td:nth-child(1) {{ width: 13%; }}
-    .obs-table th:nth-child(2), .obs-table td:nth-child(2) {{ width: 11%; }}
-    .obs-table th:nth-child(3), .obs-table td:nth-child(3) {{ width: 10%; }}
-    .obs-table th:nth-child(4), .obs-table td:nth-child(4) {{ width: 40%; }}
-    .obs-table th:nth-child(5), .obs-table td:nth-child(5) {{ width: 13%; }}
-    .obs-table th:nth-child(6), .obs-table td:nth-child(6) {{ width: 13%; }}
+    .obs-table th:nth-child(1), .obs-table td:nth-child(1) {{ width: 12%; }}
+    .obs-table th:nth-child(2), .obs-table td:nth-child(2) {{ width: 9%; }}
+    .obs-table th:nth-child(3), .obs-table td:nth-child(3) {{ width: 9%; }}
+    .obs-table th:nth-child(4), .obs-table td:nth-child(4) {{ width: 38%; }}
+    .obs-table th:nth-child(5), .obs-table td:nth-child(5) {{ width: 11%; }}
+    .obs-table th:nth-child(6), .obs-table td:nth-child(6) {{ width: 9%; }}
+    .obs-table th:nth-child(7), .obs-table td:nth-child(7) {{ width: 12%; }}
   </style>
 </head>
 <body>
@@ -326,7 +339,7 @@ def render_index(
       <h2>XNNPack Models</h2>
       <div class="table-wrap">
       <table class="obs-table">
-        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>JSON</th><th>Log</th></tr></thead>
         <tbody>
           {render_observatory_rows(xnn_jobs, repo_root)}
         </tbody>
@@ -338,7 +351,7 @@ def render_index(
       <h2>Qualcomm Models</h2>
       <div class="table-wrap">
       <table class="obs-table">
-        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>Log</th></tr></thead>
+        <thead><tr><th>Model</th><th>Backend</th><th>Status</th><th>Script</th><th>HTML</th><th>JSON</th><th>Log</th></tr></thead>
         <tbody>
           {render_observatory_rows(qnn_jobs, repo_root)}
         </tbody>
