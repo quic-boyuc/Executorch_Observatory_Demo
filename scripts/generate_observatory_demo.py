@@ -303,7 +303,7 @@ def build_comparison_jobs(
         cmd = [
             sys.executable,
             "-m",
-            "executorch.devtools.observatory",
+            "executorch.backends.qualcomm.debugger.observatory",
             "compare",
             "--input-archive", str(xnn_json),
             "--input-archive", str(qnn_json),
@@ -817,10 +817,15 @@ def run_visualize_only(manifest_path: Path, executorch_root: Path) -> int:
             failed += 1
             continue
 
+        backend = job.get("backend", "xnnpack")
+        if backend == "qualcomm":
+            vis_module = "executorch.backends.qualcomm.debugger.observatory"
+        else:
+            vis_module = "executorch.backends.xnnpack.debugger.observatory"
         cmd = [
             sys.executable,
             "-m",
-            "executorch.devtools.observatory",
+            vis_module,
             "visualize",
             "--input-archive",
             str(json_path),
