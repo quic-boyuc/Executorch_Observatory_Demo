@@ -1,0 +1,374 @@
+{
+  "title": "Observatory: aot_compiler.py",
+  "generated_at": "2026-05-21 21:23:37",
+  "archives": [
+    {
+      "label": "xnnpack/resnet18",
+      "session_ids": [
+        "xnnpack/resnet18"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "xnnpack/resnet18",
+      "name": "xnnpack/resnet18",
+      "archive": "xnnpack/resnet18",
+      "start_ts": 1779369803.4817078,
+      "end_ts": 1779369817.2765808
+    }
+  ],
+  "lenses": {
+    "accuracy": {
+      "xnnpack/resnet18": {
+        "xnnpack/resnet18": {
+          "records_measured": 8,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.0439,
+              "min": 0.0,
+              "max": 0.0703,
+              "worst_record": "Quantized Model"
+            },
+            "cosine_sim": {
+              "mean": 0.9991,
+              "min": 0.9986,
+              "max": 1.0,
+              "worst_record": "Quantized Model"
+            },
+            "mse": {
+              "mean": 0.0047,
+              "min": 0.0,
+              "max": 0.0075,
+              "worst_record": "Quantized Model"
+            },
+            "psnr": {
+              "mean": 61.0889,
+              "min": 37.7422,
+              "max": 100.0,
+              "worst_record": "Quantized Model"
+            }
+          }
+        }
+      }
+    },
+    "per_layer_accuracy": {
+      "xnnpack/resnet18": {
+        "xnnpack/resnet18": {
+          "anchor": "Exported Float",
+          "target": "Exported Float",
+          "n_layers": 89,
+          "sample_source": "default(0)",
+          "metric_ranges": {
+            "psnr": [
+              -6.917915344238281,
+              100.0
+            ],
+            "cosine_sim": [
+              -0.10486818104982376,
+              1.0000183582305908
+            ],
+            "mse": [
+              0.0,
+              5.283416271209717
+            ],
+            "abs_err": [
+              0.0,
+              1.8100332021713257
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "b_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer1_0_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer1_0_bn2_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer1_1_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer1_1_bn2_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer2_0_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer2_0_bn2_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer2_0_downsample_1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer2_1_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_layer2_1_bn2_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add__7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "b_bn1_num_batches_tracked",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

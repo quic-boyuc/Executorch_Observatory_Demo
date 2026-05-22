@@ -1,0 +1,788 @@
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qaisw-v2.41.0.251111144900_191416 (from QNN_SDK_ROOT)
+Creating new layout from 478 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 266.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 373 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 252.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 373 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 252.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 591 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 287.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 591 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 273.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 591 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 273.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 591 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 301.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 8 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 478 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 266.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 426 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 252.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 426 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 252.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 746 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 175.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 746 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 189.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 746 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 189.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 746 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 189.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 583 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 4 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Compare report: /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html (archives: XNNPACK/mv2=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json, Qualcomm/mobilenet_v2=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.json)
+[Observatory] Exported Report (JSON) to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.summary.json
+[Observatory CLI] compare: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html from 2 archives
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+$ /home/boyucwsl/executorch/.venv-11/bin/python -m executorch.backends.qualcomm.debugger.observatory compare --input-archive /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.json --input-archive /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.json --label XNNPACK/mv2 --label Qualcomm/mobilenet_v2 --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html --output-report-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.summary.json --title 'Observatory Compare: MobileNetV2 — XNNPACK vs Qualcomm'
+

@@ -1,0 +1,374 @@
+{
+  "title": "Observatory: aot_compiler.py",
+  "generated_at": "2026-05-21 21:25:50",
+  "archives": [
+    {
+      "label": "xnnpack/vit",
+      "session_ids": [
+        "xnnpack/vit"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "xnnpack/vit",
+      "name": "xnnpack/vit",
+      "archive": "xnnpack/vit",
+      "start_ts": 1779369871.3928823,
+      "end_ts": 1779369945.8284004
+    }
+  ],
+  "lenses": {
+    "accuracy": {
+      "xnnpack/vit": {
+        "xnnpack/vit": {
+          "records_measured": 8,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.0412,
+              "min": 0.0,
+              "max": 0.0671,
+              "worst_record": "ETRecord Edge/forward"
+            },
+            "cosine_sim": {
+              "mean": 0.9977,
+              "min": 0.9962,
+              "max": 1.0,
+              "worst_record": "ETRecord Edge/forward"
+            },
+            "mse": {
+              "mean": 0.0046,
+              "min": 0.0,
+              "max": 0.0075,
+              "worst_record": "ETRecord Edge/forward"
+            },
+            "psnr": {
+              "mean": 60.848,
+              "min": 37.2706,
+              "max": 100.0,
+              "worst_record": "ETRecord Edge/forward"
+            }
+          }
+        }
+      }
+    },
+    "per_layer_accuracy": {
+      "xnnpack/vit": {
+        "xnnpack/vit": {
+          "anchor": "Exported Float",
+          "target": "Exported Float",
+          "n_layers": 430,
+          "sample_source": "default(0)",
+          "metric_ranges": {
+            "psnr": [
+              10.075540542602539,
+              100.0
+            ],
+            "cosine_sim": [
+              0.05617569759488106,
+              1.0001592636108398
+            ],
+            "mse": [
+              0.0,
+              0.09315516799688339
+            ],
+            "abs_err": [
+              0.0,
+              0.22514794766902924
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_13",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_14",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_15",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "layer_norm_19",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "expand",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "select_28",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "view_73",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "transpose_57",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "view_76",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "linear_48",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "dropout_28",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "linear_37",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "permute_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_13",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_14",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_15",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_13",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_14",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_15",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

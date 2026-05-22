@@ -1,0 +1,386 @@
+{
+  "title": "Observatory: cvt.py",
+  "generated_at": "2026-05-21 20:29:04",
+  "archives": [
+    {
+      "label": "qualcomm/cvt",
+      "session_ids": [
+        "qualcomm/cvt"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "qualcomm/cvt",
+      "name": "qualcomm/cvt",
+      "archive": "qualcomm/cvt",
+      "start_ts": 1779366386.77439,
+      "end_ts": 1779366533.6197543
+    }
+  ],
+  "lenses": {
+    "accuracy": {
+      "qualcomm/cvt": {
+        "qualcomm/cvt": {
+          "records_measured": 9,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.2071,
+              "min": 0.0,
+              "max": 0.4209,
+              "worst_record": "Quantized Model"
+            },
+            "cosine_sim": {
+              "mean": 0.9054,
+              "min": 0.7905,
+              "max": 1.0,
+              "worst_record": "Quantized Model"
+            },
+            "mse": {
+              "mean": 0.132,
+              "min": 0.0,
+              "max": 0.2935,
+              "worst_record": "Quantized Model"
+            },
+            "psnr": {
+              "mean": 52.7151,
+              "min": 24.6428,
+              "max": 100.0,
+              "worst_record": "Quantized Model"
+            },
+            "top_1": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "worst_record": "Exported Float"
+            },
+            "top_5": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "worst_record": "Exported Float"
+            }
+          }
+        }
+      }
+    },
+    "per_layer_accuracy": {
+      "qualcomm/cvt": {
+        "qualcomm/cvt": {
+          "anchor": "Exported Float",
+          "target": "Exported Float",
+          "n_layers": 661,
+          "sample_source": "accuracy.worst[psnr]",
+          "metric_ranges": {
+            "psnr": [
+              -21.581239700317383,
+              100.0
+            ],
+            "cosine_sim": [
+              -0.05508604645729065,
+              1.0004215240478516
+            ],
+            "mse": [
+              0.0,
+              541.2062377929688
+            ],
+            "abs_err": [
+              0.0,
+              16.90373992919922
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_13",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_14",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_15",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "matmul",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "mul",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "dropout_39",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "softmax_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "mul_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "mul_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "view_26",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "conv2d_38",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_13",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_14",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_15",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_11",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_12",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_13",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_14",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_15",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "add_17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

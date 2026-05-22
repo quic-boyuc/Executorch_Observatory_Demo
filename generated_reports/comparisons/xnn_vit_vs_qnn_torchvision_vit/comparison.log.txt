@@ -1,0 +1,1523 @@
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qaisw-v2.41.0.251111144900_191416 (from QNN_SDK_ROOT)
+Creating new layout from 631 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 731 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 731 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1231 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 768
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 815
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 873
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 671
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 65
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 382
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 278
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 693
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 313
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 340
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 485
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 892
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 585
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 725
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 721
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 932
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 782
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 604
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 2
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 50
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 72
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 720
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 443
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 479
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 651
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 954
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 599
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 13
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 229
+Updating node ranks
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1231 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 145
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 665
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 806
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 800
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 700
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 163
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 461
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 879
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 552
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 724
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 386
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 304
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 631
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 244
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 488
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 575
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 366
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 4
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 149
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 419
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 58
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 898
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 658
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 667
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 520
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 845
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 586
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 883
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 638
+Updating node ranks
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1231 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 145
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 665
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 806
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 800
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 700
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 163
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 461
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 879
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 552
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 724
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 386
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 304
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 631
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 244
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 488
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 575
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 366
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 4
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 149
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 419
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 58
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 898
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 658
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 667
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 520
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 845
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 586
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 883
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 638
+Updating node ranks
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1568 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 99
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1145
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 899
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 373
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 674
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1136
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 234
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 335
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 714
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1240
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 948
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 549
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 350
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1101
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1222
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 367
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 529
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 561
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 563
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 913
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 27
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 305
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1179
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 329
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 140
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 195
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 447
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 800
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 30
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 401
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 455
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1177
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 695
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1162
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 693
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 445
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 706
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 669
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 703
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 836
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 931
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1233
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 687
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 682
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 389
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 548
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 1260
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 724
+Updating node ranks
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 868 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 189.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 587
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 58
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 199
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 760
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 626
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 627
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 415
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 278
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 69
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 148
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 739
+Updating node ranks
+Updating outdated cut values
+Remove outtdated cut_values, in order to calculate new ones
+Calculating cut values of tree edges
+updatig low, lim and parent values, starting from: 489
+Updating node ranks
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 607 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1646 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1646 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2321 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2321 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2321 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 2346 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 350.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 1039 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+Creating new layout from 4 edges
+Splitting graph into its connected components
+Initializing graphs vertex weights
+Start building layout
+Configuration is: Config { minimum_length: 1, vertex_spacing: 182.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+Executing phase 0: Cycle Removal
+Graph contains no cycle
+Executing phase 1: Ranking
+Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+Initializing ranks via topological sort.
+building feasible tree
+Trying to build tight tree.
+Initializing cut values
+Calculating cut values of tree edges
+initialzing low, lim and parent values of vertices
+Executing phase 2: Crossing Reduction
+Inserting dummy vertices for edges spanning more than 1 ranks
+Initializing order of vertices in each rank via dfs.
+Reducing crossings via bilayer sweep
+Didn't improve after 4 sweeps, returning
+Executing phase 3: Coordinate Calculation
+Creating individual layouts for coordinate calculation
+Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+creating layouts for vertical direction: Down, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Down, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Right
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+creating layouts for vertical direction: Up, horizontal direction Left
+Creating vertical alignments
+calculating coordinates for layout.
+Placing vertices in blocks.
+move blocks as close together as possible
+Aligning all layouts to the one with the smallest width
+Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[Observatory] Compare report: /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html (archives: XNNPACK/vit=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/vit/observatory_report.json, Qualcomm/torchvision_vit=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/torchvision_vit/observatory_report.json)
+[Observatory] Exported Report (JSON) to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.summary.json
+[Observatory CLI] compare: html=/home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html from 2 archives
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+Running fast-sugiyama layout...
+$ /home/boyucwsl/executorch/.venv-11/bin/python -m executorch.backends.qualcomm.debugger.observatory compare --input-archive /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/xnnpack/vit/observatory_report.json --input-archive /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/torchvision_vit/observatory_report.json --label XNNPACK/vit --label Qualcomm/torchvision_vit --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html --output-report-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.summary.json --title 'Observatory Compare: ViT — XNNPACK vs Qualcomm'
+

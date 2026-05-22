@@ -1,0 +1,374 @@
+{
+  "title": "Observatory: aot_compiler.py",
+  "generated_at": "2026-05-21 21:07:50",
+  "archives": [
+    {
+      "label": "xnnpack/emformer_join",
+      "session_ids": [
+        "xnnpack/emformer_join"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "xnnpack/emformer_join",
+      "name": "xnnpack/emformer_join",
+      "archive": "xnnpack/emformer_join",
+      "start_ts": 1779368793.340817,
+      "end_ts": 1779368870.1289222
+    }
+  ],
+  "lenses": {
+    "accuracy": {
+      "xnnpack/emformer_join": {
+        "xnnpack/emformer_join": {
+          "records_measured": 8,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.0827,
+              "min": 0.0,
+              "max": 0.1324,
+              "worst_record": "Quantized Model"
+            },
+            "cosine_sim": {
+              "mean": 0.9978,
+              "min": 0.9978,
+              "max": 0.9978,
+              "worst_record": "Exported Float"
+            },
+            "mse": {
+              "mean": 0.0184,
+              "min": 0.0,
+              "max": 0.0295,
+              "worst_record": "Quantized Model"
+            },
+            "psnr": {
+              "mean": "nan",
+              "min": 100.0,
+              "max": 100.0,
+              "worst_record": "Exported Float"
+            }
+          }
+        }
+      }
+    },
+    "per_layer_accuracy": {
+      "xnnpack/emformer_join": {
+        "xnnpack/emformer_join": {
+          "anchor": "Exported Float",
+          "target": "Exported Float",
+          "n_layers": 355,
+          "sample_source": "default(0)",
+          "metric_ranges": {
+            "psnr": [
+              0.0,
+              100.0
+            ],
+            "cosine_sim": [
+              0.997818648815155,
+              1.00029718875885
+            ],
+            "mse": [
+              0.0,
+              0.029509538784623146
+            ],
+            "abs_err": [
+              0.0,
+              0.13236035406589508
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0003,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 0.9978,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_embedding_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0001,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_input_layer_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_input_layer_norm_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_linear_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_linear_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_c_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_c_norm_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_g_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 0.9978,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "unsqueeze_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_18_layer_norm_input_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_8_layer_norm_input_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_17_layer_norm_output_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_11_layer_norm_input_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_11_pos_ff_1_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_13_pos_ff_1_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_15_layer_norm_input_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_transcriber_transformer_emformer_layers_16_layer_norm_input_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0003,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 0.9978,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_embedding_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0001,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_input_layer_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_input_layer_norm_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_linear_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_linear_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_c_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_c_norm_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_g_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "add",
+                "psnr": 100.0,
+                "cosine_sim": 1.0003,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 0.9978,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_embedding_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0001,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_input_layer_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_input_layer_norm_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_linear_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_linear_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_c_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_c_norm_weight",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "p_rnnt_predictor_lstm_layers_0_g_norm_bias",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

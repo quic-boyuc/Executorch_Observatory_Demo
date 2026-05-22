@@ -1,0 +1,746 @@
+{
+  "title": "Observatory Compare: MobileNetV3 \u2014 XNNPACK vs Qualcomm",
+  "generated_at": "2026-05-22 12:50:55",
+  "archives": [
+    {
+      "label": "XNNPACK/mv3",
+      "session_ids": [
+        "XNNPACK/mv3/xnnpack/mv3"
+      ]
+    },
+    {
+      "label": "Qualcomm/mobilenet_v3",
+      "session_ids": [
+        "Qualcomm/mobilenet_v3/qualcomm/mobilenet_v3"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "XNNPACK/mv3/xnnpack/mv3",
+      "name": "XNNPACK/mv3/xnnpack/mv3",
+      "archive": "XNNPACK/mv3",
+      "start_ts": 1779369761.7095401,
+      "end_ts": 1779369787.9263654
+    },
+    {
+      "id": "Qualcomm/mobilenet_v3/qualcomm/mobilenet_v3",
+      "name": "Qualcomm/mobilenet_v3/qualcomm/mobilenet_v3",
+      "archive": "Qualcomm/mobilenet_v3",
+      "start_ts": 1779367452.4811108,
+      "end_ts": 1779367493.207975
+    }
+  ],
+  "lenses": {
+    "accuracy": {
+      "XNNPACK/mv3": {
+        "XNNPACK/mv3/xnnpack/mv3": {
+          "records_measured": 8,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.5453,
+              "min": 0.0,
+              "max": 0.8724,
+              "worst_record": "XNNPACK/mv3/Quantized Model"
+            },
+            "cosine_sim": {
+              "mean": 0.8609,
+              "min": 0.7775,
+              "max": 1.0,
+              "worst_record": "XNNPACK/mv3/Quantized Model"
+            },
+            "mse": {
+              "mean": 0.7908,
+              "min": 0.0,
+              "max": 1.2652,
+              "worst_record": "XNNPACK/mv3/Quantized Model"
+            },
+            "psnr": {
+              "mean": 46.2531,
+              "min": 14.0049,
+              "max": 100.0,
+              "worst_record": "XNNPACK/mv3/Quantized Model"
+            }
+          }
+        }
+      },
+      "Qualcomm/mobilenet_v3": {
+        "Qualcomm/mobilenet_v3/qualcomm/mobilenet_v3": {
+          "records_measured": 9,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.3138,
+              "min": 0.0,
+              "max": 0.4919,
+              "worst_record": "Qualcomm/mobilenet_v3/Quantized Model"
+            },
+            "cosine_sim": {
+              "mean": 0.9945,
+              "min": 0.991,
+              "max": 1.0,
+              "worst_record": "Qualcomm/mobilenet_v3/Quantized Model"
+            },
+            "mse": {
+              "mean": 0.2561,
+              "min": 0.0,
+              "max": 0.4294,
+              "worst_record": "Qualcomm/mobilenet_v3/Quantized Model"
+            },
+            "psnr": {
+              "mean": 56.3778,
+              "min": 33.9976,
+              "max": 100.0,
+              "worst_record": "Qualcomm/mobilenet_v3/Quantized Model"
+            },
+            "top_1": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "worst_record": "Qualcomm/mobilenet_v3/Exported Float"
+            },
+            "top_5": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "worst_record": "Qualcomm/mobilenet_v3/Exported Float"
+            }
+          }
+        }
+      }
+    },
+    "per_layer_accuracy": {
+      "XNNPACK/mv3": {
+        "XNNPACK/mv3/xnnpack/mv3": {
+          "anchor": "Exported Float",
+          "target": "XNNPACK/mv3/Exported Float",
+          "n_layers": 190,
+          "sample_source": "default(0)",
+          "metric_ranges": {
+            "psnr": [
+              -73.58808994293213,
+              100.0
+            ],
+            "cosine_sim": [
+              -0.08121670037508011,
+              1.0000194311141968
+            ],
+            "mse": [
+              0.0,
+              131.19053649902344
+            ],
+            "abs_err": [
+              0.0,
+              5.998744964599609
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_9",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "relu",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "relu_1",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "relu__4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "relu__3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "conv2d_26",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "hardswish__3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "hardswish__10",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "hardswish__17",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_9",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_9",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      },
+      "Qualcomm/mobilenet_v3": {
+        "Qualcomm/mobilenet_v3/qualcomm/mobilenet_v3": {
+          "anchor": "Exported Float",
+          "target": "Qualcomm/mobilenet_v3/Exported Float",
+          "n_layers": 190,
+          "sample_source": "accuracy.worst[psnr]",
+          "metric_ranges": {
+            "psnr": [
+              -73.58808994293213,
+              100.0
+            ],
+            "cosine_sim": [
+              -0.08121670037508011,
+              1.0000194311141968
+            ],
+            "mse": [
+              0.0,
+              131.19053649902344
+            ],
+            "abs_err": [
+              0.0,
+              5.998744964599609
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_9",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "relu",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "relu_1",
+                "psnr": 100.0,
+                "cosine_sim": 0.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "relu_",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_19",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "hardswish__16",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "mul_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "batch_norm_28",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_9",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "adaptive_avg_pool2d",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_1",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_2",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_3",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_4",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_5",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_6",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_7",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_8",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              },
+              {
+                "layer": "adaptive_avg_pool2d_9",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

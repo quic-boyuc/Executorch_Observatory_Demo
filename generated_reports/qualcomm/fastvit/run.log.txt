@@ -1,31 +1,35 @@
-[INFO] QAIRT_SDK_ROOT=/home/boyucwsl/executorch/qairt/2.37.0.250724
+[INFO] QAIRT_SDK_ROOT=/home/boyucwsl/executorch/qaisw-v2.41.0.251111144900_191416
 [WARN] QNN_SDK_ROOT/SNPE_ROOT set to QAIRT_SDK_ROOT for backwards compatibility and will be deprecated in a future release.
 [INFO] QAIRT SDK environment setup complete
-[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qaisw-v2.41.0.251111144900_191416 (from QNN_SDK_ROOT)
 [PipelineGraphCollector] Installed patch: prepare_pt2e
 [PipelineGraphCollector] Installed patch: convert_pt2e
 [PipelineGraphCollector] Installed patch: to_edge_transform_and_lower
+[PipelineGraphCollector] Installed patch: EdgeProgramManager.to_executorch
 [PipelineGraphCollector] Installed ETRecord patches
+libquantized_ops_aot_lib is not loaded
 The backend_opinfo module couldn't be imported, so the abstract implementation will be used instead. This might be because $QNN_SDK_ROOT/lib/python isn't included in your PYTHONPATH, or the `BackendOpInfo` API isn't available in your QNN SDK version. Note that the `BackendOpInfo` API is supported starting from QNN SDK 2.41 and above.
-[PipelineGraphCollector] Installed QNN patch: ptq_calibrate
+[PipelineGraphCollector] Installed QNN patch: _ptq_calibrate
 [AccuracyLens] Installed patch: get_imagenet_dataset
 [AccuracyLens] Installed patch: get_masked_language_model_dataset
-[Observatory CLI] Running as script: /home/boyucwsl/executorch/examples/qualcomm/oss_scripts/fastvit.py
-usage: fastvit.py [-h] -m MODEL -b BUILD_FOLDER [-H HOST] [--online_prepare]
-                  [--ip IP] [--port PORT] [-S SKIP_DELEGATE_NODE_IDS]
+[Observatory CLI] Running as module: examples.qualcomm.oss_scripts.fastvit
+usage: fastvit.py [-h] [--config_file CONFIG_FILE] [-m SOC_MODEL]
+                  [-b BUILD_FOLDER] [-H HOST] [--online_prepare] [--ip IP]
+                  [--port PORT] [-S SKIP_DELEGATE_NODE_IDS]
                   [-f SKIP_DELEGATE_NODE_OPS] [-c] [-s DEVICE]
-                  [--backend {htp,gpu}] [-z] [--skip_push] [-D] [-x] [--ci]
-                  [--seed SEED]
+                  [--backend {htp,gpu,lpai}] [-z] [--skip_push] [-D]
+                  [--profile_level {0,2,3}] [-x] [--ci] [--seed SEED]
                   [-t {aarch64-android,aarch64-oe-linux-gcc9.3,aarch64-oe-linux-gcc11.2}]
                   [--pre_gen_pte PRE_GEN_PTE]
-                  [--direct_build_folder DIRECT_BUILD_FOLDER] [-a ARTIFACT] -d
-                  DATASET --oss_repo OSS_REPO -p PRETRAINED_WEIGHT
+                  [--direct_build_folder DIRECT_BUILD_FOLDER]
+                  [--htp_performance_mode {0,1,2,3,4,5,6,7,8}] [-a ARTIFACT]
+                  -d DATASET --oss_repo OSS_REPO -p PRETRAINED_WEIGHT
 fastvit.py: error: the following arguments are required: --oss_repo, -p/--pretrained_weight
 [PipelineGraphCollector] Uninstalled all patches
 [AccuracyLens] Uninstalled all patches
 [Observatory] No records collected, skipping JSON export
 [Observatory] No records collected, skipping HTML export
+[Observatory] No records collected, skipping report JSON export
 [Observatory CLI] No records collected
-QNN_SDK_ROOT=/home/boyucwsl/executorch/qairt/2.37.0.250724
-$ bash -lc 'source /home/boyucwsl/executorch/qairt/2.37.0.250724/bin/envsetup.sh && python -m executorch.backends.qualcomm.debugger.observatory --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/observatory_report.html --output-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/observatory_report.json --lens_recipe accuracy examples/qualcomm/oss_scripts/fastvit.py -m SM8650 -b ./build-android --dataset /home/boyucwsl/executorch/imagenet-mini-val/ -H mlgtw-linux -s bebcca9b -a /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/artifacts --seed 1126 --compile_only'
+$ bash -lc 'source /home/boyucwsl/executorch/qaisw-v2.41.0.251111144900_191416/bin/envsetup.sh && /home/boyucwsl/executorch/.venv-11/bin/python -m executorch.backends.qualcomm.debugger.observatory --output-html /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/observatory_report.html --output-archive /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/observatory_report.json --output-report-json /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/observatory_report.summary.json --archive qualcomm/fastvit --lens-recipe accuracy --lens-recipe adb examples/qualcomm/oss_scripts/fastvit.py -m SM8850 -b ./build-android --dataset /home/boyucwsl/executorch/imagenet-mini-val/ -H weilhuan-linux -s 5382e6d2 -a /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/qualcomm/fastvit/artifacts --seed 1126'
 
