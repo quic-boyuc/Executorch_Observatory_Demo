@@ -1,0 +1,122 @@
+{
+  "title": "Observatory: aot_compiler.py",
+  "generated_at": "2026-05-21 21:15:26",
+  "archives": [
+    {
+      "label": "xnnpack/linear",
+      "session_ids": [
+        "xnnpack/linear"
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "xnnpack/linear",
+      "name": "xnnpack/linear",
+      "archive": "xnnpack/linear",
+      "start_ts": 1779369320.04478,
+      "end_ts": 1779369326.4206905
+    }
+  ],
+  "lenses": {
+    "accuracy": {
+      "xnnpack/linear": {
+        "xnnpack/linear": {
+          "records_measured": 8,
+          "metrics": {
+            "abs_err": {
+              "mean": 0.0022,
+              "min": 0.0,
+              "max": 0.0036,
+              "worst_record": "Quantized Model"
+            },
+            "cosine_sim": {
+              "mean": 1.0,
+              "min": 1.0,
+              "max": 1.0,
+              "worst_record": "Exported Float"
+            },
+            "mse": {
+              "mean": 0.0,
+              "min": 0.0,
+              "max": 0.0,
+              "worst_record": "Exported Float"
+            },
+            "psnr": {
+              "mean": 67.4152,
+              "min": 47.8643,
+              "max": 100.0,
+              "worst_record": "Quantized Model"
+            }
+          }
+        }
+      }
+    },
+    "per_layer_accuracy": {
+      "xnnpack/linear": {
+        "xnnpack/linear": {
+          "anchor": "Exported Float",
+          "target": "Exported Float",
+          "n_layers": 1,
+          "sample_source": "default(0)",
+          "metric_ranges": {
+            "psnr": [
+              47.8643274307251,
+              100.0
+            ],
+            "cosine_sim": [
+              0.9999849796295166,
+              1.0
+            ],
+            "mse": [
+              0.0,
+              2.2506204913952388e-05
+            ],
+            "abs_err": [
+              0.0,
+              0.0035562929697334766
+            ]
+          },
+          "worst_layers": {
+            "psnr": [
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "cosine_sim": [
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "mse": [
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ],
+            "abs_err": [
+              {
+                "layer": "linear",
+                "psnr": 100.0,
+                "cosine_sim": 1.0,
+                "mse": 0.0,
+                "abs_err": 0.0
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
