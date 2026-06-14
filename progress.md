@@ -56,3 +56,22 @@ Completed
 
 ## Files Changed (updated)
 - `/tmp/rfc_review_discussion/claude4_6_deep_dive.md` — new: CLI unification + Option A vs B deep-dive (498 lines)
+- [x] Claude-4.6 Value Proposition & Textual Alignment
+  - Read live rfc_review.md (confirmed §2.1 reframe is in place)
+  - Developed bulletproof 3-move argument structure for "why not just extend Inspector?"
+  - Wrote 5 falsifiable value claims (each tied to a concrete verifiable artifact)
+  - Built positioning table: ETRecord / ETDump / Inspector / visualization / Observatory
+  - Identified 12 residual competing/overlapping language locations across both documents
+  - Provided exact current-text → replacement-text for all 12 locations
+  - Wrote RFC header positioning statement (blockquote) to pre-empt "redundant tooling" objection
+  - Wrote findings to `/tmp/rfc_review_discussion/claude4_6_value_prop.md`
+
+## Files Changed (updated)
+- `/tmp/rfc_review_discussion/claude4_6_value_prop.md` — new: value prop + 12 exact textual replacements (372 lines)
+- [x] GPT-5.5 Value Proposition & Textual Alignment
+  - Assessed revised §2.1 in rfc_review.md: confirmed strong improvement, identified 2 residual weaknesses
+  - Wrote bulletproof 5-pillar value proposition (Lifecycle Ownership, Cross-Stage Correlation, Multi-Concern Synthesis, Archive/Report Separation, Backend Extension Contract)
+  - Identified 7 residual conflicts in rfc_review.md (RFC-1 through RFC-7) with exact textual replacements
+  - Identified 6 residual conflicts in pr_description_refined.md (PR-1 through PR-6) with exact textual replacements
+  - Wrote canonical one-paragraph abstract ready for use in both documents
+  - Wrote findings to `/tmp/rfc_review_discussion/gpt5_5_value_prop.md`

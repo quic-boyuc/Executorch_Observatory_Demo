@@ -1,8 +1,10 @@
-# Observatory — A Unified Debugging Framework for ExecuTorch
+# Observatory — A Workflow Coordinator and Visual Synthesis Layer for ExecuTorch Debugging
+
+> **Abstract:** Observatory is a zero-config workflow coordinator and visual synthesis layer for ExecuTorch debugging. It manages the lifecycle of debugging concerns across the AOT compilation pipeline — configuring when and how existing `Inspector` and `ETRecord`/`ETDump` primitives are invoked, collecting FX graph snapshots at pass boundaries, correlating runtime binary data with graph structure via `debug_handle`, and synthesizing outputs from multiple analysis concerns into a single portable, server-free HTML report. The Lens protocol gives backend teams a formal extension contract: contribute one Python class per debugging concern, and the framework handles session management, archive storage, and report rendering automatically. Observatory adds no new capture formats and requires no changes to Inspector or ETRecord.
 
 ## Summary
 
-This PR introduces **Observatory** (`devtools/observatory/`) and **fx_viewer** (`devtools/fx_viewer/`) as shared ExecuTorch debugging infrastructure. Observatory captures artifacts produced during compilation and turns them into a single interactive report you can share. `fx_viewer` is a standalone, dependency-free FX-graph renderer with layered overlays.
+This PR introduces **Observatory** (`devtools/observatory/`) and **fx_viewer** (`devtools/fx_viewer/`) as shared ExecuTorch debugging infrastructure. Observatory is a zero-config workflow coordinator and visual synthesis layer: it manages the lifecycle of debugging concerns across ExecuTorch's AOT compilation pipeline, wrapping around existing `Inspector` and `ETRecord`/`ETDump` primitives as clients to configure, collect, correlate, and synthesize their outputs into a single interactive report. `fx_viewer` is a standalone, server-free FX-graph renderer with layered overlays that powers Observatory's graph view and is independently usable.
 
 **This PR carries a functional POC implementation located in `~/executorch`.** The code is fully runnable today — pull the branch, install `fast-sugiyama`, run the CLI, and get self-contained HTML reports with interactive graph views, N-way compare, and per-layer accuracy overlays.
 
@@ -15,9 +17,9 @@ This PR introduces **Observatory** (`devtools/observatory/`) and **fx_viewer** (
 
 Two problems compound across backends, artifact types, and teams:
 
-1. **Fragmented debugging workflow.** ExecuTorch's existing devtools cover the *instrument* stage uniformly (`debug_handle`, `ETRecord`/`ETDump`, `Inspector`), but the remaining four stages — *configure, export, analyze, visualize* — have no shared surface. Each backend writes its own glue: enable-logic, config schema, export format, comparison logic, and rendering.
+1. **No shared workflow coordination layer around existing capture primitives.** ExecuTorch's `Inspector`, `ETRecord`/`ETDump`, and `debug_handle` are excellent primitives for raw runtime binary capture. The gap is not at the capture layer — it is at the workflow coordination layer: there is no shared contract for *when* to configure Inspector, *when* to collect artifacts across compilation stages, *how* to correlate runtime binary data with the FX graph structure that produced it, and *how* to synthesize outputs from multiple analysis concerns into a single navigable report. Each backend writes its own glue scripts to sequence these steps, with no reuse and no shared output format.
 
-2. **No graph viewer built for the workflow.** `torch.fx` is the core IR for ExecuTorch lowering, but the closest tool today (`devtools/visualization/`) requires a local web server and is not embeddable in standalone documents or shareable in discussion threads. Multiple debugging concerns each end up in their own dashboard.
+2. **No embeddable, overlay-capable graph viewer for in-workflow debugging.** `devtools/visualization/` is well-suited for post-export structural browsing of a final model. What is missing is a viewer designed for *in-workflow* debugging: one that can be embedded in a shareable report file (no server), that supports layered overlays contributed by different analysis scripts (accuracy, partition assignment, hardware constraints), and that can synchronize N graphs for cross-stage or cross-backend comparison. `fx_viewer` fills this specific gap without competing with `devtools/visualization/`.
 
 ---
 
@@ -166,7 +168,14 @@ FXGraphExporter(graph_module).export_html("my_graph.html")
 
 A Lens is the single extension unit — one Python class that owns one debugging concern end-to-end.
 
-### Six Hooks (fired in lifecycle order)
+### Protocol Methods (fired in lifecycle order)
+
+The Lens protocol defines eight methods across five categories:
+- **Identity:** `get_name`
+- **Lifecycle hooks:** `on_session_start`, `on_session_end`
+- **Collection hooks:** `observe`, `digest`
+- **Analysis hook:** `analyze`
+- **Presentation hooks:** `html_frontend`, `json_frontend`
 
 ```python
 class Lens:
@@ -504,25 +513,25 @@ Breaking changes to the Lens protocol, `GraphExtension`, or either JSON schema r
 
 ---
 
-## Shipped Capabilities (on the Draft Branch Today)
+## Implemented Capabilities (on the POC Branch Today)
 
-Pull the branch, install dependencies, run the CLI — all of the following work end-to-end:
+Pull the branch, install dependencies, run the CLI — all of the following are fully implemented and end-to-end runnable on the POC branch:
 
 | Capability | Mechanism | Status |
 |------------|-----------|--------|
-| Compile-time per-layer accuracy | `accuracy` + `per_layer_accuracy` lenses; CPU simulation across lowering stages | ✅ Shipped |
-| Graph-state collection at pipeline points | `pipeline_graph_collector` lens wraps `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*` | ✅ Shipped |
-| Pass diff (before/after) | `@observe_pass` decorator + `graph` compare mode | ✅ Shipped |
-| Collection provenance (stack trace) | `stack_trace` lens | ✅ Shipped |
-| Interactive FX graph view | `fx_viewer`: pan, zoom, minimap, fuzzy search, N-way compare | ✅ Shipped |
-| Run-metadata dashboard | `metadata` lens: CLI command, env, model | ✅ Shipped |
-| Region tree-view toggle | Left panel groups Records by `region_stack`; toggle flat/tree | ✅ Shipped |
-| Report (HTML) — self-contained | Single file, no server, attach anywhere | ✅ Shipped |
-| Archive (JSON) — raw persistence | `--output-archive`; reload for re-analysis | ✅ Shipped |
-| Partition/delegation color overlay | `graph_color` lens | ✅ Shipped |
-| ADB log capture (logcat + dmesg) | `AdbLens` via `--lens-recipe adb`; session-hook pattern | ✅ Shipped (Qualcomm backend-specific, not a default core lens) |
-| Report (JSON) via `json_frontend` | Structured analysis for LLM triage, CI, dashboards (`--output-report-json`) | ✅ Shipped |
-| `--compare` CLI mode | Load 2+ archives with `--label`, emit regression Report | ✅ Shipped |
+| Compile-time per-layer accuracy | `accuracy` + `per_layer_accuracy` lenses; CPU simulation across lowering stages | ✅ Implemented in POC |
+| Graph-state collection at pipeline points | `pipeline_graph_collector` lens wraps `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*` | ✅ Implemented in POC |
+| Pass diff (before/after) | `@observe_pass` decorator + `graph` compare mode | ✅ Implemented in POC |
+| Collection provenance (stack trace) | `stack_trace` lens | ✅ Implemented in POC |
+| Interactive FX graph view | `fx_viewer`: pan, zoom, minimap, fuzzy search, N-way compare | ✅ Implemented in POC |
+| Run-metadata dashboard | `metadata` lens: CLI command, env, model | ✅ Implemented in POC |
+| Region tree-view toggle | Left panel groups Records by `region_stack`; toggle flat/tree | ✅ Implemented in POC |
+| Report (HTML) — self-contained | Single file, no server, attach anywhere | ✅ Implemented in POC |
+| Archive (JSON) — raw persistence | `--output-archive`; reload for re-analysis | ✅ Implemented in POC |
+| Partition/delegation color overlay | `graph_color` lens | ✅ Implemented in POC |
+| ADB log capture (logcat + dmesg) | `AdbLens` via `--lens-recipe adb`; session-hook pattern | ✅ Implemented in POC (Qualcomm backend-specific, not a default core lens) |
+| Report (JSON) via `json_frontend` | Structured analysis for LLM triage, CI, dashboards (`--output-report-json`) | ✅ Implemented in POC |
+| `--compare` CLI mode | Load 2+ archives with `--label`, emit regression Report | ✅ Implemented in POC |
 | Runtime / delegated-graph accuracy | On-device vs CPU comparison via `debug_handle` + `Inspector` | ❌ Follow-up |
 
 > **Note on ADB lens status:** The `AdbLens` (`--lens-recipe adb`) for log capture (stdout, logcat, dmesg) around on-device inference **is implemented** on the branch as a Qualcomm backend-specific extension — it demonstrates the full extensibility pattern but is not a default core lens. The `AdbLogLens` code in the "Worked Example" section above serves as the canonical guide for writing custom backend lenses. The further follow-up is *perf-trace* support (optrace / QHAS profiling), which is not yet implemented.
@@ -565,7 +574,7 @@ Reviewers should understand the data-flow split: only the Archive is raw; Report
 ## Known Limitations
 
 1. **Per-layer accuracy is compile-time only.** The `per_layer_accuracy` lens runs CPU simulation across graph snapshots at different lowering stages and compares against a float anchor. It does **not** compare against actual on-device (delegated) execution. Runtime/delegated-graph accuracy is targeted as a follow-up lens.
-2. **`fast-sugiyama` requires Python >= 3.11.** Graph layout depends on this package; environments on older Python cannot use `fx_viewer`'s layout features.
+2. **`fast-sugiyama` requires Python ≥ 3.11 (optional dependency).** When `fast-sugiyama` is not installed or the Python version is < 3.11, `fx_viewer` falls back to a pure-Python topological layout. The fallback produces a correct but less aesthetically optimized graph. All `fx_viewer` features (pan, zoom, search, overlays, N-way compare) remain functional in fallback mode. The Sugiyama layout is gated behind `executorch[observatory-layout]` and is never a hard dependency of `executorch[devtools]`.
 3. **Runtime / delegated-graph accuracy not yet implemented.** Comparing on-device (delegated) execution against CPU requires a follow-up lens using `debug_handle` + `Inspector`.
 
 ## Public API / Schema Compatibility Checklist
@@ -574,12 +583,14 @@ The following are public surfaces — downstream consumers depend on them:
 
 | Surface | Stability | Change requires |
 |---------|-----------|----------------|
-| Lens protocol (6 hooks + `analyze` signature) | Public | Core sign-off |
-| `GraphExtension` API | Public | Core sign-off |
-| Archive (JSON) schema | Public | Core sign-off |
-| Report (JSON) schema | Public | Core sign-off |
-| `FXGraphViewer.create` / `FXGraphCompare.create` (JS) | Public | Core sign-off |
-| Backend CLI flags (`--output-html`, `--lens-recipe`, etc.) | Public | Core sign-off |
+| Lens protocol (6 hooks + `analyze` signature) | Experimental (candidate stable) | Core sign-off |
+| `GraphExtension` API | Experimental (candidate stable) | Core sign-off |
+| Archive (JSON) schema | Experimental (candidate stable) | Core sign-off |
+| Report (JSON) schema | Experimental (candidate stable) | Core sign-off |
+| `FXGraphViewer.create` / `FXGraphCompare.create` (JS) | Experimental (candidate stable) | Core sign-off |
+| Backend CLI flags (`--output-html`, `--lens-recipe`, etc.) | Experimental (candidate stable) | Core sign-off |
+
+> **Stability note:** All surfaces are currently experimental. The "candidate stable" designation means these surfaces are designed for stability and will be promoted to stable in a follow-up RFC after one release cycle with real external consumers. No stability guarantee is made until that promotion occurs.
 | Per-lens config keys (e.g., `accuracy.evaluator`) | Backend-owned | Backend team |
 | Backend-specific lenses | Backend-owned | Backend team |
 
@@ -608,6 +619,6 @@ Full model matrix: see RFC §3.
 
 ## Dependencies
 
-- `fast-sugiyama[full]` (Python >= 3.11) — Sugiyama graph layout algorithm
-- No other external dependencies for `fx_viewer` (pure HTML/JS/Canvas)
-- Observatory consumes existing ExecuTorch primitives (`ETRecord`, `ETDump`, `Inspector`) through lenses — it is not a replacement
+- `fast-sugiyama[full]` (Python ≥ 3.11, optional) — Sugiyama graph layout algorithm for `fx_viewer`. A pure-Python fallback layout is used when this package is unavailable (e.g., Python 3.10 environments). Gate behind `executorch[observatory-layout]` to avoid raising the project's Python floor.
+- No JavaScript framework dependencies for `fx_viewer` — the canvas renderer is pure HTML/JS with no npm dependencies bundled at runtime.
+- Observatory is a client of existing ExecuTorch capture primitives (`ETRecord`, `ETDump`, `Inspector`) — lenses invoke them to acquire runtime data, which Observatory then correlates with FX graph structure and synthesizes into reports. Observatory adds no new capture formats and requires no changes to Inspector or ETRecord.
