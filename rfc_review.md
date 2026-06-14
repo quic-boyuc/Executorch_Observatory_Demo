@@ -1,8 +1,12 @@
-# RFC: Observatory — A Unified Debugging Framework for ExecuTorch
+# RFC: Observatory — A Workflow Coordinator and Visual Synthesis Layer for ExecuTorch Debugging
 
 **Status:** Proposed / Under Discussion  
 **Audience:** ExecuTorch maintainers, backend owners, devtools reviewers  
 **Scope:** Add `devtools/observatory/` and `devtools/fx_viewer/` as shared ExecuTorch debugging infrastructure
+
+> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`, or `devtools/visualization/`. Each of those tools is excellent at its specific job. Observatory is the missing coordination layer that sits *above* them: it intercepts standard pipeline entry points during compilation to collect graph snapshots, manages the lifecycle of backend analysis scripts (Lenses), calls `Inspector` to retrieve runtime data for cross-stage correlation, and synthesizes everything into a single portable report. The only new code is the coordination and synthesis logic that every backend team was previously writing by hand, in isolation, in structurally identical but unshared scripts.
+
+> **Abstract:** Observatory is a zero-config workflow coordinator and visual synthesis layer for ExecuTorch debugging. It manages the lifecycle of debugging concerns across the AOT compilation pipeline — configuring when and how existing `Inspector` and `ETRecord`/`ETDump` primitives are invoked, collecting FX graph snapshots at pass boundaries, correlating runtime binary data with graph structure via `debug_handle`, and synthesizing outputs from multiple analysis concerns into a single portable, server-free HTML report. The Lens protocol gives backend teams a formal extension contract: contribute one Python class per debugging concern, and the framework handles session management, archive storage, and report rendering automatically. Observatory adds no new capture formats and requires no changes to Inspector or ETRecord.
 
 ---
 
@@ -10,10 +14,10 @@
 
 This RFC proposes two new components under `devtools/`:
 
-*   **Observatory:** A shared framework that captures compilation artifacts across transform passes and compiles them into a single, structured, interactive, and shareable debugging report.
-*   **`fx_viewer`:** A standalone, dependency-free, interactive FX-graph visualizer that powers Observatory's graph view and operates independently outside of it.
+*   **Observatory:** A zero-config workflow coordinator and visual synthesis layer that manages the lifecycle of debugging concerns across ExecuTorch's AOT compilation pipeline. It wraps around existing `Inspector` and `ETRecord`/`ETDump` primitives as clients — configuring, collecting, correlating, and synthesizing their outputs into a single, structured, interactive, and shareable debugging report — without replacing or duplicating them.
+*   **`fx_viewer`:** A standalone, embeddable FX-graph visualizer that powers Observatory's graph view and operates independently outside of it. Graph layout uses `fast-sugiyama` (optional, Python ≥ 3.11); a pure-Python fallback layout is available for older environments.
 
-If you have ever debugged by sprinkling `print(gm.graph)` across a transform pass, this RFC is for you. Rather than selling a specific architecture, this proposal focuses on unifying fragmented debugging workflows across backends, enabling layered graph visualization, and establishing a stable extension contract for tooling developers.
+If you have ever debugged by sprinkling `print(gm.graph)` across a transform pass, or by manually correlating Inspector output with a graph dump in a separate terminal, this RFC is for you. Observatory is the shared coordination layer that eliminates that duplication — without touching `ETRecord`, `ETDump`, or `Inspector`. This proposal focuses on three things: providing a shared lifecycle contract that coordinates *when* and *how* existing capture primitives are invoked; enabling layered, graph-anchored visualization that correlates runtime data with FX graph structure; and establishing a formal extension protocol (Lens) so backend teams contribute specialized analysis logic once rather than rebuilding it per-backend.
 
 ---
 
@@ -25,9 +29,10 @@ As ExecuTorch backend compilation pipelines grow in complexity, debugging compil
 Debugging is a five-stage workflow: **instrument** the run, **configure** it, **export** captured artifacts, **analyze** metrics/differences, and **visualize** the results.
 
 ExecuTorch’s existing devtools provide excellent primitives for raw capture. In particular, the `Inspector` and `ETRecord`/`ETDump` APIs offer a great primitive interface for dumping arbitrary runtime binary blobs, leaving the backend and developer to design their own interpretation logic in Python scripts. However, because there is no common framework to manage the execution scripts, configuration, and data-synthesis workflow *around* these Inspector outputs, we see a fragmented tooling landscape:
-*   **Boilerplate Scripting Overload:** Backends are forced to build bespoke, disconnected wrapper scripts (e.g., `qnn_intermediate_debugger.py` on Qualcomm, and separate equivalents for XNNPACK) to execute the model compiler, configure the inspector, collect raw activation blobs, run accuracy simulations, and parse binary data by hand.
+*   **No Shared Lifecycle Contract:** Because there is no common session model, backends must build bespoke wrapper scripts (e.g., `qnn_intermediate_debugger.py` on Qualcomm, and separate equivalents for XNNPACK) that manually sequence: configure Inspector, invoke the compiler, collect raw activation blobs at the right pipeline stages, run accuracy simulations, and parse binary data. Each script reinvents the same lifecycle logic — when to start, when to collect, when to stop, how to clean up — with no shared contract and no reuse across backends.
 *   **No Extension Common Ground:** There is no shared place for a backend team to plug in specialized analysis logic, meaning the code that interprets Inspector raw data cannot be reused across different backends.
-*   **Ad-hoc Outputs:** Debugging results remain trapped in fragmented formats—console prints, ad-hoc CSVs, and static screenshots. This makes it painful for developers to correlate runtime binary data with compilation FX graphs, and impossible for CI/automated triaging tools to parse results systematically.
+*   **No Graph-Anchored Correlation:** Runtime binary data from Inspector is tagged with `debug_handle`, but there is no shared layer that maps those handles back to the FX graph nodes that produced them. Developers must manually cross-reference Inspector output with a separate graph dump, making it nearly impossible to answer "which operator caused this accuracy drop?" without significant manual effort.
+*   **No Multi-Concern Synthesis:** Even when individual analyses succeed, their outputs remain in disconnected formats — console prints, ad-hoc CSVs, static screenshots. There is no shared layer that combines accuracy data, partition assignments, stack trace provenance, and graph structure into a single navigable view for human review or systematic CI parsing.
 
 ### 2.2 The Graph Has No Workflow-Aware Viewer
 The `torch.fx` graph module is the core IR for ExecuTorch lowering, yet developers have no easy way to interact with it in-pipeline:
@@ -37,22 +42,36 @@ The `torch.fx` graph module is the core IR for ExecuTorch lowering, yet develope
 Observatory and `fx_viewer` address these gaps by providing a unified user surface, a shared extension protocol (**Lenses**), and a server-free, layered graph renderer.
 
 ### 2.3 Boundaries and Relationship with Existing Tools
-Observatory does not replace existing ExecuTorch runtime capture or analysis primitives. Instead, it is an **orchestration and synthesis layer** that consumes them:
-*   **`ETRecord` / `ETDump` / `Inspector`:** Lenses use these tools to acquire raw profiling logs or hardware events, then synthesize and overlay them on the compiler graph.
-*   **Complementary Scope:** While existing tools specialize in *raw data capture*, Observatory standardizes *workflow configuration, cross-stage analysis, and visual synthesis*.
+Observatory does not replace existing ExecuTorch runtime capture or analysis primitives — it is a client of them. It is a **workflow lifecycle coordinator and visual synthesis layer** that wraps around them:
+*   **`ETRecord` / `ETDump` / `Inspector`:** These tools own raw binary capture at runtime. Observatory lenses invoke them as clients — configuring what gets captured, retrieving the results, and mapping them back onto the FX graph structure via `debug_handle` correlation.
+*   **Complementary and Non-Overlapping Scope:** `Inspector` is a post-hoc analysis tool: it is constructed after the run, taking ETDump and ETRecord file paths as arguments. Observatory is a live session coordinator: it operates *during* compilation, intercepting standard pipeline entry points to collect graph snapshots as they are produced. These are different lifecycles. Observatory calls `Inspector` (through a formal bridge) to retrieve runtime data for cross-stage correlation — it does not reimplement Inspector's analysis capabilities.
+
+#### Tool Positioning Comparison
+
+| Feature / Property | `ETRecord` / `ETDump` | `Inspector` | `devtools/visualization/` | **Observatory** |
+|---|---|---|---|---|
+| **Primary role** | AOT artifact storage; runtime trace capture | Post-hoc analysis of ETDump + ETRecord files | Interactive model structure browser | Live workflow coordinator + visual synthesis layer |
+| **Lifecycle** | During export / during runtime | After the run (file-based constructor) | After export | During compilation (live session) |
+| **Input** | ExportedProgram, runtime binary blobs | ETDump file + ETRecord file | ExportedProgram / EdgeProgramManager | Any artifact type via `collect()` |
+| **Output** | Binary files (`.etrecord`, `.etdump`) | DataFrames, tabular text, numeric gap | Web server + browser tab | Self-contained HTML + Archive JSON + Report JSON |
+| **Extension model** | None | `delegate_metadata_parser` callback | `add_node_data()` + regex JSON | Lens protocol (8 methods, full lifecycle) |
+| **Embeddable in report** | No | No | No (opens own tab) | Yes (first-class) |
+| **Cross-stage comparison** | No | AOT vs. runtime (single pair) | No | N-way, any stages, any backends |
+| **CI-friendly output** | Binary blobs | DataFrames (not CI-native) | Not supported | Archive JSON + Report JSON (structured, diffable) |
+| **Replaces any of the above?** | — | No | No | **No** |
 
 ---
 
 ## 3. Goals and Non-Goals
 
 ### Goals
-*   **Shared Extension Surface:** Define a lightweight protocol (**Lens**) allowing backend teams to write debugging concerns (instrumentation, config, export, analysis, rendering) once and deploy them anywhere.
+*   **Shared Lifecycle and Extension Contract:** Define a lightweight protocol (**Lens**) allowing backend teams to encapsulate one debugging concern — including how to configure existing `Inspector`/`ETRecord` primitives, when to collect artifacts, how to analyze the results, and how to render them — once, and have the framework handle session management, archive storage, and report assembly automatically.
 *   **Unified Invocation:** Support zero-code-change CLI execution, nested Python context managers, and pass-level decorators.
 *   **Portable Outputs:** Produce a single, self-contained, server-free HTML file for human review, and a structured Archive JSON for archival and regression comparison.
 *   **Layered Graph Visualizations:** Embed an interactive, canvas-based FX graph renderer (`fx_viewer`) supporting dynamic overlays and synchronized multi-graph comparison views.
 
 ### Non-Goals
-*   **Replacing Instrumentation Primitives:** Observatory does not define new low-level binary capture formats; it wraps and leverages ExecuTorch's existing ones.
+*   **Replacing or Extending Inspector/ETRecord:** Observatory defines no new binary capture formats, no new runtime instrumentation hooks, and no new ETDump/ETRecord schemas. All raw data capture continues to flow through `ETRecord`, `ETDump`, and `Inspector` exactly as today. Observatory's only new code is the coordination and synthesis logic that sits above these primitives, consuming them as clients through lenses. The capture primitives remain owned and governed by their existing maintainers.
 *   **Unifying Hardware Schemas:** It does not force backends into a single runtime trace schema. Backends define their own data representations inside their respective lenses.
 *   **Live Profiling Stream:** The focus is on offline, post-run report generation and CI/regression comparison rather than real-time streaming telemetry.
 
