@@ -1,6 +1,6 @@
 # Observatory — A Workflow Coordinator and Visual Synthesis Layer for ExecuTorch Debugging
 
-> **Abstract:** Observatory is a zero-config workflow coordinator and visual synthesis layer for ExecuTorch debugging. It manages the lifecycle of debugging concerns across the AOT compilation pipeline — configuring when and how existing `Inspector` and `ETRecord`/`ETDump` primitives are invoked, collecting FX graph snapshots at pass boundaries, correlating runtime binary data with graph structure via `debug_handle`, and synthesizing outputs from multiple analysis concerns into a single portable, server-free HTML report. The Lens protocol gives backend teams a formal extension contract: contribute one Python class per debugging concern, and the framework handles session management, archive storage, and report rendering automatically. Observatory adds no new capture formats and requires no changes to Inspector or ETRecord.
+> **Abstract:** Observatory is a zero-config workflow coordinator and visual synthesis layer for ExecuTorch debugging. It actively configures the AOT compilation pipeline — forcing `generate_etrecord=True`, managing a structured region tree across `prepare_pt2e`, `convert_pt2e`, and `to_edge_transform_and_lower` stages — and captures intermediate FX graph snapshots at these stages, which are not stored in ETRecord and are therefore invisible to Inspector. Inspector natively handles `debug_handle`-to-graph-node correlation and per-operator AOT-vs-runtime numerical gap analysis as DataFrames; Observatory does not duplicate this. Instead, Observatory synthesizes Inspector's correlated runtime data together with the compile-time intermediate graph snapshots into a portable, server-free HTML report with layered graph overlays, N-way comparison views, and per-node accuracy color gradients. The Lens protocol gives backend teams a formal extension contract: contribute one Python class per debugging concern, and the framework handles session management, archive storage, and report rendering automatically.
 
 ## Summary
 
@@ -44,7 +44,7 @@ Features in the report:
 - **Session Dashboard** — per-session metadata, lens-contributed sections
 - **Records with change summaries** — time-ordered or tree-view grouped by `region_stack`
 - **Interactive FX graph** — pan, zoom, minimap, fuzzy search, N-way synchronized compare
-- **Per-layer accuracy overlay** — PSNR / cosine / MSE as color gradient on graph nodes
+- **Compile-time per-layer accuracy overlay** — PSNR / cosine / MSE as color gradient on graph nodes, computed by simulating intermediate graph snapshots at `prepare_pt2e`, `convert_pt2e`, and `to_edge_transform_and_lower` stages. This is distinct from Inspector's `calculate_numeric_gap()`, which compares AOT vs. actual on-device runtime outputs. Observatory's compile-time simulation covers stages that Inspector cannot access; runtime/delegated accuracy via Inspector integration is a planned follow-up lens.
 
 ---
 
@@ -154,7 +154,7 @@ Observatory's architecture follows a three-layer design: Interface → Core → 
 | `FXGraphViewer.create({payload, mount, layout, state})` | Mount a single graph viewer on a DOM element |
 | `FXGraphCompare.create({viewers, layout, sync})` | Mount N-way compare with cross-graph highlighting |
 | `setLayers(layers)` / `setColorBy(key)` / `setTheme(theme)` | Runtime layer/theme mutation |
-| Selection sync via `debug_handle` set-intersection | Cross-graph node matching even after fusion/decomposition |
+| Selection sync via `debug_handle` or `from_node` set-intersection | Cross-graph node matching across AOT pipeline stages, even after fusion/decomposition. Uses `from_node` provenance metadata for AOT-stage comparison; uses `debug_handle` values for cross-backend comparison of the same Edge Dialect graph. |
 
 **Standalone usage** (no Observatory dependency):
 ```python
@@ -519,8 +519,8 @@ Pull the branch, install dependencies, run the CLI — all of the following are 
 
 | Capability | Mechanism | Status |
 |------------|-----------|--------|
-| Compile-time per-layer accuracy | `accuracy` + `per_layer_accuracy` lenses; CPU simulation across lowering stages | ✅ Implemented in POC |
-| Graph-state collection at pipeline points | `pipeline_graph_collector` lens wraps `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, `ETRecord.add_*` | ✅ Implemented in POC |
+| Compile-time per-layer accuracy (intermediate stages) | `accuracy` + `per_layer_accuracy` lenses; CPU simulation across `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower` snapshots — stages not stored in ETRecord and not accessible to Inspector's `calculate_numeric_gap()` | ✅ Implemented in POC |
+| Graph-state collection at pipeline points (with active ETRecord configuration) | `pipeline_graph_collector` lens patches `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower` (forcing `generate_etrecord=True`), and `ETRecord.add_*`; captures intermediate graph snapshots invisible to Inspector | ✅ Implemented in POC |
 | Pass diff (before/after) | `@observe_pass` decorator + `graph` compare mode | ✅ Implemented in POC |
 | Collection provenance (stack trace) | `stack_trace` lens | ✅ Implemented in POC |
 | Interactive FX graph view | `fx_viewer`: pan, zoom, minimap, fuzzy search, N-way compare | ✅ Implemented in POC |
@@ -573,7 +573,7 @@ Reviewers should understand the data-flow split: only the Archive is raw; Report
 
 ## Known Limitations
 
-1. **Per-layer accuracy is compile-time only.** The `per_layer_accuracy` lens runs CPU simulation across graph snapshots at different lowering stages and compares against a float anchor. It does **not** compare against actual on-device (delegated) execution. Runtime/delegated-graph accuracy is targeted as a follow-up lens.
+1. **Per-layer accuracy is compile-time simulation only (runtime integration is a follow-up).** The `per_layer_accuracy` lens runs CPU simulation across intermediate graph snapshots at `prepare_pt2e`, `convert_pt2e`, and `to_edge_transform_and_lower` — stages not stored in ETRecord. It does **not** compare against actual on-device (delegated) execution. Inspector's `calculate_numeric_gap()` already provides AOT-vs-runtime numerical gap analysis as a DataFrame; a follow-up Observatory lens will consume Inspector's runtime output and overlay it on the graph canvas, bridging compile-time and runtime accuracy in a single visual report.
 2. **`fast-sugiyama` requires Python ≥ 3.11 (optional dependency).** When `fast-sugiyama` is not installed or the Python version is < 3.11, `fx_viewer` falls back to a pure-Python topological layout. The fallback produces a correct but less aesthetically optimized graph. All `fx_viewer` features (pan, zoom, search, overlays, N-way compare) remain functional in fallback mode. The Sugiyama layout is gated behind `executorch[observatory-layout]` and is never a hard dependency of `executorch[devtools]`.
 3. **Runtime / delegated-graph accuracy not yet implemented.** Comparing on-device (delegated) execution against CPU requires a follow-up lens using `debug_handle` + `Inspector`.
 

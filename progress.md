@@ -75,3 +75,25 @@ Completed
   - Identified 6 residual conflicts in pr_description_refined.md (PR-1 through PR-6) with exact textual replacements
   - Wrote canonical one-paragraph abstract ready for use in both documents
   - Wrote findings to `/tmp/rfc_review_discussion/gpt5_5_value_prop.md`
+- [x] Claude-4.6 Ground-Truth Verification & Precision Corrections
+  - Verified Inspector._consume_etrecord() natively correlates debug_handles → Edge Dialect OperatorGraph (lines 1109-1160)
+  - Verified ETRecord stores only ATen ExportedProgram + Edge Dialect program (NOT prepare_pt2e/convert_pt2e intermediates)
+  - Verified PipelineGraphCollectorLens forces generate_etrecord=True (line 442) and wraps ETRecord.add_* methods
+  - Verified per_layer_accuracy uses from_node metadata (not debug_handles) for AOT-stage-to-AOT-stage correlation
+  - Identified 6 locations with overclaiming or imprecise language across both documents
+  - Provided exact textual replacements for all 6 locations
+  - Wrote corrected positioning table with precise Inspector capabilities
+  - Wrote Part 5 truth table: 7 claims with precise verdicts
+  - Wrote findings to `/tmp/rfc_review_discussion/claude4_6_ground_truth_verification.md`
+
+## Files Changed (updated)
+- `/tmp/rfc_review_discussion/claude4_6_ground_truth_verification.md` — new: ground-truth verification + 6 exact textual replacements (289 lines)
+- [x] GPT-5.5 Ground-Truth Verification
+  - Read and verified Inspector._consume_etrecord() (lines 1109-1165): confirmed Inspector natively owns debug_handle→OperatorGraph correlation and calculate_numeric_gap() DataFrame output
+  - Read and verified PipelineGraphCollectorLens (pipeline_graph_collector.py): confirmed Observatory actively forces generate_etrecord=True, manages quantization/edge/etrecord region tree, intercepts ETRecord.add_* methods
+  - Produced precise capability boundary table (Inspector vs Observatory)
+  - Corrected value proposition: reduced from 5 pillars to 3 honest pillars (pre-ETRecord graph capture, active workflow coordination, visual synthesis)
+  - Identified 5 over-claims in rfc_review.md (RFC-CORR-1 through RFC-CORR-5) with exact replacements
+  - Identified 5 over-claims in pr_description_refined.md (PR-CORR-1 through PR-CORR-5) with exact replacements
+  - Wrote corrected one-paragraph abstract
+  - Wrote findings to /tmp/rfc_review_discussion/gpt5_5_ground_truth_verification.md
