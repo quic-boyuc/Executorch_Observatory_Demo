@@ -15,7 +15,7 @@
 This RFC proposes two new components under `devtools/`:
 
 *   **Observatory:** A zero-config workflow coordinator and visual synthesis layer that manages the lifecycle of debugging concerns across ExecuTorch's AOT compilation pipeline. It wraps around existing `Inspector` and `ETRecord`/`ETDump` primitives as clients — configuring, collecting, correlating, and synthesizing their outputs into a single, structured, interactive, and shareable debugging report — without replacing or duplicating them.
-*   **`fx_viewer`:** A standalone, embeddable FX-graph visualizer that powers Observatory's graph view and operates independently outside of it. Graph layout uses `fast-sugiyama` (optional, Python ≥ 3.11); a pure-Python fallback layout is available for older environments.
+*   **`fx_viewer`:** A standalone, embeddable FX-graph visualizer that powers Observatory's graph view and operates independently outside of it.
 
 If you have ever debugged by sprinkling `print(gm.graph)` across a transform pass, or by manually correlating Inspector output with a graph dump in a separate terminal, this RFC is for you. Observatory is the shared coordination layer that eliminates that duplication — without touching `ETRecord`, `ETDump`, or `Inspector`. This proposal focuses on three things: providing a shared lifecycle contract that coordinates *when* and *how* existing capture primitives are invoked; enabling layered, graph-anchored visualization that correlates runtime data with FX graph structure; and establishing a formal extension protocol (Lens) so backend teams contribute specialized analysis logic once rather than rebuilding it per-backend.
 
@@ -43,12 +43,12 @@ Observatory and `fx_viewer` address these gaps by providing a unified user surfa
 
 ### 2.3 Boundaries and Relationship with Existing Tools
 Observatory does not replace existing ExecuTorch runtime capture or analysis primitives — it is a client of them. It is a **workflow lifecycle coordinator and visual synthesis layer** that wraps around them:
-*   **`ETRecord` / `ETDump` / `Inspector`:** Inspector natively correlates runtime ETDump events with the final Edge Dialect graph via `debug_handle` and exposes this as DataFrames. Observatory lenses consume Inspector's correlated output and synthesize it — together with intermediate compile-time graph snapshots that Inspector cannot access — into visual, interactive overlays on the FX graph canvas.
+*   **`ETRecord` / `ETDump` / `Inspector`:** Inspector natively correlates runtime ETDump events with the final Edge Dialect graph via `debug_handle` and exposes this as DataFrames. Observatory lenses can consume Inspector's correlated output and synthesize it — together with intermediate compile-time graph snapshots that Inspector cannot access — into visual, interactive overlays on the FX graph canvas.
 *   **Complementary and Non-Overlapping Scope:** Inspector specializes in *runtime event capture, `debug_handle`-to-graph-node correlation, and per-operator numerical gap analysis* — all exposed as DataFrames for programmatic use. Observatory specializes in three areas Inspector does not address: *capturing intermediate compile-time graph snapshots* (pre-ETRecord stages invisible to Inspector), *active zero-config workflow coordination* (forcing `generate_etrecord=True`, managing pipeline region structure), and *visual synthesis* (transforming DataFrames and graph snapshots into a portable, interactive HTML report).
 
 #### Tool Positioning Comparison
 
-| Feature / Property | `ETRecord` / `ETDump` | `Inspector` | `devtools/visualization/` | **Observatory** |
+| Feature / Property | `ETRecord` / `ETDump` | `Inspector` | `devtools/visualization/` | **Observatory** + **fx_viewer** |
 |---|---|---|---|---|
 | **Primary role** | AOT artifact storage; runtime trace capture | Post-hoc analysis of ETDump + ETRecord files | Interactive model structure browser | Live workflow coordinator + visual synthesis layer |
 | **Lifecycle** | During export / during runtime | After the run (file-based constructor) | After export | During compilation (live session) |
@@ -194,7 +194,7 @@ Observatory emits two distinct deliverables to support human-facing and machine-
 2. **Archive JSON & Report JSON (Structured Payload):** Machine-readable formats that preserve raw sessions and summarize key findings, regressions, and accuracy deltas for consumption by automated CI gates or LLM triage systems.
 
 ## 5. Core Concepts & Public API Shape
-
+ 
 To support backend-agnostic orchestration, Observatory introduces a clean conceptual model:
 
 ```
