@@ -4,9 +4,9 @@
 **Audience:** ExecuTorch maintainers, backend owners, devtools reviewers  
 **Scope:** Add `devtools/observatory/` and `devtools/fx_viewer/` as shared ExecuTorch debugging infrastructure
 
-> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`, or `devtools/visualization/`. Each of those tools is excellent at its specific job. Observatory is the missing coordination layer that sits *above* them: it intercepts standard pipeline entry points during compilation to collect graph snapshots, manages the lifecycle of backend analysis scripts (Lenses), calls `Inspector` to retrieve runtime data for cross-stage correlation, and synthesizes everything into a single portable report. The only new code is the coordination and synthesis logic that every backend team was previously writing by hand, in isolation, in structurally identical but unshared scripts.
+> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`, or `devtools/visualization/`. It is a coordination layer that sits above them — managing when and how those primitives are invoked, capturing compile-time graph snapshots they do not store, and synthesizing their outputs into a single portable report. The only new code is the coordination and synthesis logic that each backend team was previously writing by hand.
 
-> **Abstract:** Observatory is a zero-config workflow coordinator and visual synthesis layer for ExecuTorch debugging. It actively configures the AOT compilation pipeline — forcing `generate_etrecord=True`, managing a structured region tree across `prepare_pt2e`, `convert_pt2e`, and `to_edge_transform_and_lower` stages — and captures intermediate FX graph snapshots at these stages, which are not stored in ETRecord and are therefore invisible to Inspector. Inspector natively handles `debug_handle`-to-graph-node correlation and per-operator AOT-vs-runtime numerical gap analysis as DataFrames; Observatory does not duplicate this. Instead, Observatory synthesizes Inspector's correlated runtime data together with the compile-time intermediate graph snapshots into a portable, server-free HTML report with layered graph overlays, N-way comparison views, and per-node accuracy color gradients. The Lens protocol gives backend teams a formal extension contract: contribute one Python class per debugging concern, and the framework handles session management, archive storage, and report rendering automatically.
+> **Abstract:** Every ExecuTorch backend team today writes its own bespoke scripts to sequence the same five debugging steps — instrument, configure, export, analyze, visualize — with no shared contract and no reuse. Observatory eliminates that duplication. It provides the missing coordination layer above existing capture primitives: one zero-config command captures compile-time graph snapshots across AOT stages, a formal Lens protocol lets backends contribute analysis logic once rather than per-script, and the framework synthesizes everything into a single portable artifact — an interactive HTML report for humans, or structured JSON for CI and LLM triage. The result: debugging workflows that were previously 200-line ad-hoc scripts become a one-liner, outputs that were fragmented CSVs and terminal prints become a sharable, structured, reproducible record.
 
 ---
 
@@ -261,77 +261,141 @@ Observatory connects raw data capture and visual analysis. This section walks th
 
 ---
 
-### 4.2 Unified Invocation Surfaces & Twin Outputs
-Observatory standardizes how developers trigger collection and how they consume results, keeping the API surface minimal:
+### 4.2 Surfaces: Three Entry Points, Two Artifact Kinds
 
-*   **Unified Invocation Surfaces (Triggering Capture):**
-    *   **CLI Wrappers:** For zero-code-change command-line instrumentation of existing compiler or model scripts.
-    *   **Context Managers (`enter_context`):** For phase-scoped, nested Region labeling and dynamic configuration overrides.
-    *   **Pass Decorators (`@observe_pass`):** For zero-effort tracking of FX graph changes at pass boundaries.
-*   **Standardized Twin Outputs (Consuming Results):**
-    *   **Report HTML:** A self-contained, server-free interactive dashboard optimized for visual human debugging and peer reviews.
-    *   **Archive JSON & Report JSON:** Structured, machine-readable payloads containing raw sessions and key findings, optimized for automated CI regression gates and LLM triaging.
+A debugging tool is only useful if it meets you where you already are. ExecuTorch developers enter the debugging workflow from three different places — and Observatory exposes one surface for each, all funnelling into the same capture machinery.
 
-## 5. Core Concepts & Public API Shape
- 
-To support backend-agnostic orchestration, Observatory introduces a clean conceptual model:
+**The CLI** wraps an existing export or compile script with zero code changes:
 
-```
-+───────────────────────────────────────────────────────────────────+
-│                        CONCEPTUAL VOCABULARY                      │
-+───────────────────────────────────────────────────────────────────+
-│                                                                   │
-│   Session: Outermost scope (lifecycle boundary)                   │
-│      │                                                            │
-│      ├── Region: Labelled nesting scope (e.g., "AOT", "Lowering")  │
-│      │                                                            │
-│      └── Record: Individual captured artifact (e.g., FX graph)    │
-│            │                                                      │
-│            └── Digest Map: Lens-specific serialized states        │
-│                                                                   │
-│   Archive: Raw persisted captures (JSON)                          │
-│                                                                   │
-│   Report: Analyzed derived output (HTML / JSON)                   │
-│                                                                   │
-+───────────────────────────────────────────────────────────────────+
+```bash
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --output-html report.html --lens-recipe accuracy \
+    examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
 ```
 
-### 5.1 Public Vocabulary
-*   **Session:** One complete debugging run from start to finish.
-*   **Region:** A named scope used to group and nest captures in the explorer interface (similar to a folder, e.g., `edge/convert_pt2e/`).
-*   **Record:** A single collected debugging snapshot. Contains a timestamp, name, active Region stack, and a map of lens-specific serialized data (Digests).
-    *   *Disambiguation Note: An Observatory `Record` is completely unrelated to ExecuTorch's `ETRecord` file. ETRecord is an optional file input; an Observatory `Record` is a live compile-time snapshot.*
-*   **Archive:** The raw, persisted state of a Session and its Records, stored in JSON format before any analysis.
-*   **Report:** The rendered presentation output (either an interactive HTML dashboard for humans, or a structured JSON summary for machines and LLM gates) produced by analyzing an Archive.
+You change nothing about your script. Observatory shims standard pipeline entry points (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`) via scoped monkey-patching — patches are installed when the session opens and unconditionally restored when it closes, even on exceptions. This is the surface CI and issue-reproduction workflows use.
 
-### 5.2 The Archive-vs-Report Split
-Separating raw capture (**Archive**) from analytical presentation (**Report**) is a core design contract:
-*   **CI Efficiency:** High-throughput CI pipelines write only the lightweight Archive JSON file, and skip the more expensive HTML rendering.
-*   **Late-Bound Analysis:** Archives can be reloaded and analyzed long after the compilation run using different lens configurations, threshold parameters, or regression algorithms without ever re-running the compiler.
-*   **Regression Comparison (`--compare`):** Multiple Archive JSON files from different days or branches can be compared via the `--compare` CLI flag to generate a single comparative regression report.
+**The context manager** scopes capture to a block from inside Python:
 
-### 5.3 The Lens Protocol (Extension Model)
-A **Lens** is the single extension unit in Observatory. It is a Python class that encapsulates a specific debugging concern. Rather than letting instrumentation code bleed into core compiler scripts, a lens implements public lifecycle hooks:
+```python
+from executorch.devtools.observatory import Observatory
 
-| Hook Name | Lifecycle Phase | Responsibility |
+with Observatory.enter_context("my_debug_run", config={"accuracy": {"enabled": True}}):
+    gm = export_model(model)
+    Observatory.collect("exported_graph", gm)
+```
+
+Same machinery, finer control. Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code.
+
+**The `@observe_pass` decorator** is for pass authors. Annotate a transform and it gets its own scope automatically — capturing the FX graph before and after, with no edits to the surrounding pipeline:
+
+```python
+@observe_pass
+class MyQuantPass(ExportPass):
+    def call(self, gm): ...
+```
+
+All three surfaces can produce outputs for **two audiences**:
+*   **Human:** A self-contained **Report HTML** — server-free, attachable to any issue or PR thread.
+*   **Machine:** A raw **Archive JSON** (captured state, no analysis baked in) and a derived **Report JSON** (analyzed findings for CI gates, dashboards, and LLM triage).
+
+The split between raw capture and derived analysis isn't cosmetic — it's the central design decision, and it's what §5 explains.
+
+---
+
+## 5. How It Works: Capture First, Analyze Later
+
+### 5.1 The Foundational Split
+
+Observatory revolves around one architectural principle: **capturing data during a run is a different job from reasoning about it afterward.**
+
+When a compilation runs, you get one shot. Whatever the tool fails to record at that moment is gone forever. So the capture phase has one job — write everything down, as cheaply as possible, and stop.
+
+Reasoning about that data is the opposite kind of work. It's slow, opinionated, sometimes wrong, and you want to redo it without re-running the model. Observatory keeps the two phases on opposite sides of a hard boundary, with a file between them.
+
+That file is the **Archive**: the raw, neutral record of what happened — `sessions[]` and `records[]` in JSON, with no analysis baked in. From it, Observatory derives the **Report**: an opinionated rendering of what it means. Think of the Archive as a structured event log and the Report as a dashboard rendered from it. You can rebuild any dashboard from the log — and build new ones, with new questions, weeks later. You cannot rebuild the log from a dashboard.
+
+This split makes three workflows possible:
+*   **CI efficiency:** Nightly pipelines write only the lightweight Archive JSON — no rendering overhead.
+*   **Late-bound analysis:** Engineers re-analyze old archives with new lenses weeks later, without re-running the compiler.
+*   **Regression comparison:** Two archives from different commits diff directly via `--compare`, producing a comparative report without re-executing either run.
+
+```
+── CAPTURE (online, during the run) ──────│── ANALYSIS (offline, from the Archive) ──
+                                          │
+  Observatory.enter_context(...)          │  Lens.analyze(records, config)
+  Observatory.collect(name, artifact)     │         │
+         │                                │         ▼
+         ▼                                │  get_frontend_spec() → Frontend
+  [Archive JSON]  ────────────────────────┼──►  dashboard() / record()
+  sessions[] + records[]                  │         │
+  (raw, no analysis)                      │         ▼
+                                          │  [Report HTML]  +  [Report JSON]
+```
+
+### 5.2 Vocabulary, Built From a Run
+
+Rather than defining terms in isolation, watch one compilation flow through the system — the vocabulary builds itself.
+
+You start a run. That opens a **Session** — the outermost scope, identified by a `session_id`. This is the only boundary where lens lifecycle hooks fire (`on_session_start`, `on_session_end`). One session per Observatory invocation.
+
+Inside the session, the compiler enters a pass — say, `quantize_pass`. Decorated with `@observe_pass`, it opens a **Region**. Regions are pure labels: nested named scopes (stored as a `region_stack` list) that say "we are now inside quantization." They fire no lens hooks and run no analysis code. They exist so that later, in the report's tree view, you know *where* in the pipeline each piece of data came from.
+
+Inside that region, the pass calls `Observatory.collect("graph_after_qdq", fx_graph)`. That produces a **Record** — one observation tagged with the current `session_id` and the full `region_stack` at the moment of capture. Records are the atoms of the Archive.
+
+When the session closes, Observatory serializes session metadata and all records into the **Archive**. That's the entire output of the capture phase; nothing has been interpreted yet.
+
+The analysis phase then loads the Archive, runs the configured lenses over it, and emits the **Report** — HTML for humans, JSON for machines. Same Archive, different lenses, different reports. Re-runnable indefinitely.
+
+```
+Session ─────────────────────────────────────────────────────────────────────────
+│  on_session_start                                              on_session_end │
+│                                                                              │
+│  Region: "quantize_pass"                                                     │
+│  ├─ collect("before_qdq") → Record₁ {region_stack: ["quantize_pass"]}        │
+│  └─ collect("after_qdq")  → Record₂ {region_stack: ["quantize_pass"]}        │
+│                                                                              │
+│  Region: "lowering"                                                          │
+│  └─ collect("lowered")    → Record₃ {region_stack: ["lowering"]}             │
+│                                                                              │
+└──────────────── serialize ──► [Archive JSON: sessions[] + records[]]          │
+                                        │                                      │
+                                        ▼  (offline, later)                    │
+                                 analyze + get_frontend_spec()                  │
+                                        │                                      │
+                                        ▼                                      │
+                                 [Report HTML] + [Report JSON]                 │
+```
+
+> **Disambiguation:** An Observatory **Record** is an in-memory observation tagged with `session_id` and `region_stack`. ExecuTorch's existing **`ETRecord`** is an entirely separate on-disk artifact produced by the developer-tools serialization workflow. The names collide; the concepts do not. Observatory may consume `ETRecord` data as an input source through a future lens, but the two are architecturally independent.
+
+### 5.3 The Lens Protocol: How Backends Plug In
+
+Once you accept the capture/analysis split, the shape of a lens writes itself. A lens needs to do two things at two different times: react during capture (recording what matters), and reason offline (interpreting what was recorded). The framework defines a protocol of lifecycle hooks that any backend can implement:
+
+| Phase | Method | Fires when |
 |:---|:---|:---|
-| `on_session_start` | Session Boundary | Installs temporary instrumentation, mocks, or global listeners. |
-| `on_session_end` | Session Boundary | Restores original states, ensuring clean restoration even on exceptions. |
-| `observe` | Collection Point | Decides whether an incoming compile-time artifact (FX graph snapshot, pass metadata) is relevant to this lens. |
-| `digest` | Collection Point | Serializes the relevant artifact state into the Record. |
-| `analyze` | Emit / Report Time | Runs post-processing algorithms across all collected records. |
-| `html_frontend` | Emit / Report Time | Generates interactive components (tables, CSS, overlays) for the HTML Report. |
-| `json_frontend` | Emit / Report Time | Generates structured analysis key-values for the Report JSON summary. |
+| Registration | `setup()` | One-time, at lens registration |
+| **Capture (online)** | `on_session_start(context)` | Session opens — install instrumentation, prepare calibration data |
+| | `observe(artifact, context)` | Each `Observatory.collect()` — filter; return `None` to skip |
+| | `digest(observation, context)` | Immediately after `observe` — serialize into the Record's digest map |
+| | `on_session_end(context)` | Session closes — restore patches, finalize live state |
+| **Analysis (offline)** | `analyze(records, config)` | At emit time — compute derived insights across all records → `AnalysisResult` |
+| | `get_frontend_spec()` | Returns a `Frontend` strategy with `dashboard()` and `record()` callbacks |
+| Cleanup | `clear()` | Reset global state between runs |
 
-*   *Note: Lenses observe compile-time artifacts and Inspector's analyzed outputs. Raw runtime binary data remains managed exclusively by Inspector.*
-*   *Lifecycle hook names use `on_*`; collection-point hooks are active verbs; frontend rendering hooks are named after their output format.*
+Note that `digest` fires **online**, immediately paired with `observe`. This is deliberate: a lens that only needs a reduction (e.g., a per-node histogram) never has to persist the raw artifact into the Archive — it persists only its own reduced state. The boundary between capture and analysis is defined by *what gets persisted*, not by what code runs when.
 
-> **🏃 Concrete Lens Walkthrough Example**
-> To understand how these hooks orchestrate a workflow:
-> 1. At session start, the `accuracy` lens installs a numerical-gap probe inside standard operator execution handlers (`on_session_start`).
-> 2. When a stage completes and captures a graph, the lens computes simulated operator errors and records the mean squared error (MSE) per-node in the Record (`digest`).
-> 3. At report generation time, the lens ranks the worst-performing layers across all compiled graphs (`analyze`).
-> 4. Finally, it generates a custom CSS and canvas overlay so the FX graph viewer paints a color gradient (green-to-red) directly on the worst-performing nodes (`html_frontend`).
+**Concrete example — the Accuracy lens:**
+
+1. `on_session_start` — prepares a small calibration dataset and installs pipeline patches.
+2. `observe` — watches for `GraphModule` artifacts at each collection point; returns `None` for non-graph records.
+3. `digest` — runs both the float-reference and quantized graphs on the calibration batch, serializes per-operator PSNR/cosine/MSE into the Record. *(This executes online because live Python graph objects are not serializable — the raw measurements must be materialized at capture time.)*
+4. `on_session_end` — restores all monkey-patches.
+5. `analyze` — ranks operators by accuracy degradation across all collected records; flags those below a configurable threshold.
+6. `get_frontend_spec()` → `Frontend.dashboard()` renders a session-level accuracy summary table; `Frontend.record()` contributes a `GraphExtension` color-overlay layer so the `fx_viewer` canvas paints a green-to-red gradient on the worst-performing nodes.
+
+Notice what the lens never does: it never decides *when* to fire, *where* it is in the pipeline, or *what* the Archive schema is. The framework owns those. The lens owns only the question it's answering.
 
 ---
 
