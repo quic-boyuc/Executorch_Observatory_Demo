@@ -79,16 +79,29 @@ Observatory does not replace existing ExecuTorch runtime capture or analysis pri
 
 ## 4. Proposed User-Facing Capabilities & Working Demos
 
-Observatory bridges the gap between raw data collection and visual analysis by framing its capabilities around three primary use cases and their respective personas, supported by real-world compilation and triage demos.
+Observatory connects raw data capture and visual analysis. This section walks through three real developer roles, with live compilation and triage demos for each.
+
+> **💡 Key Vocabulary & Mental Models**
+> To assist first-time readers in skimming this section, here are the core concepts of the Observatory architecture (fully defined in **§5.1**):
+> *   **Session:** One complete debugging run from start to finish.
+> *   **Region:** A named, logical scope used to group and nest captures (like a folder, e.g., `preprocess/` or `lowering/`).
+> *   **Record:** One individual captured artifact (e.g., a single FX graph snapshot) inside a Session.
+> *   **Archive (JSON):** The raw, persisted, unrendered data file saved from a Session.
+> *   **Report (HTML / JSON):** The derived, analyzed output (either an interactive HTML dashboard for humans, or a structured JSON summary for machines and LLM gates).
+> *   **Lens:** A plug-in class that handles a single debugging concern (e.g., compile-time accuracy or metadata).
+>
+> *Note: An Observatory **Record** is a compile-time snapshot inside a Session, and is completely unrelated to ExecuTorch's **ETRecord** file, which is a serialized compilation package.*
 
 ---
 
 ### 4.1 Three Real-World Use Cases & Walkthrough Demos
 
-#### A. Backend Debug-Logic Maintainer — "Ship per-layer accuracy once, for every backend"
-**The Pain Today:** Inspector provides `calculate_numeric_gap()` for per-operator AOT-vs-runtime accuracy comparison, but using it requires manual scripting: the developer must configure ETRecord generation, run the model, construct an Inspector instance, call `calculate_numeric_gap()`, and interpret the resulting DataFrame. There is no zero-config path. Furthermore, Inspector's accuracy analysis is limited to the final Edge Dialect graph stored in ETRecord — it cannot compare accuracy across intermediate compile-time stages (`prepare_pt2e`, `convert_pt2e`) because those graph states are not stored in ETRecord. Each backend team that wants multi-stage accuracy analysis must write its own wrapper scripts (e.g., Qualcomm's `qnn_intermediate_debugger.py`), ending up with disconnected CSVs and console printouts rather than a unified visual report.
+#### A. Backend Debug-Logic Maintainer
+*   **Goal:** Ship per-layer accuracy debugging logic once, and have it work uniformly across all backends.
+*   **Today (The Pain):** ExecuTorch's `Inspector` provides `calculate_numeric_gap()` for AOT-vs-runtime comparison, but using it requires writing manual Python scripts. Furthermore, Inspector's analysis is limited to the final Edge Dialect graph stored in `ETRecord` — it cannot see or compare accuracy across intermediate AOT compile-time stages (like `prepare_pt2e` and `convert_pt2e`) because those graph states are not stored in `ETRecord`. Each backend team must write its own wrapper scripts (e.g., Qualcomm's `qnn_intermediate_debugger.py`), ending up with disconnected CSVs and console logs rather than a unified visual report.
+*   **With Observatory:** A backend owner writes a single `Lens` class to intercept and analyze intermediate stages. The framework automatically coordinates session lifecycles, collects snapshots, and generates reports. The CLI execution command is completely unified across backends.
 
-**With Observatory:** A backend owner contributes exactly one `Lens` to address a specific concern (e.g., per-layer accuracy, partition mapping, or hardware logs). The framework owns the session, raw archive storage, and report presentation. The CLI command structure is entirely unified across backends.
+> **⚠️ Note on Demo Scope:** The walkthrough video and current draft PR demonstrate **compile-time AOT accuracy simulation** (CPU-simulated metrics over AOT FX graph stages like `prepare_pt2e` and `convert_pt2e`). Real on-device runtime execution accuracy (which maps ETDump binary data on the device back onto the final Edge Dialect graph using `debug_handle` + `Inspector`) is a planned, targeted scope in the post-RFC roadmap and is not shown in this specific compile-time demo.
 
 * **Zero-Config CLI Walkthrough:** 
   You can run Observatory with zero code changes over any existing compiler or model script. For instance, to capture compiler stages and accuracy simulation on Qualcomm's HTP backend:
@@ -104,6 +117,8 @@ Observatory bridges the gap between raw data collection and visual analysis by f
       -b build-android/ --compile_only
   ```
 
+  *Note: A `lens-recipe` is a named preset bundle of active lenses. For example, `accuracy` enables the per-layer accuracy lens plus its core dependencies.*
+
   To run the equivalent command for XNNPACK, simply use `python -m executorch.backends.xnnpack.debugger.observatory` and swap the script and flags. The CLI structure remains identical.
 
 * **Demonstration Videos:**
@@ -115,60 +130,12 @@ Observatory bridges the gap between raw data collection and visual analysis by f
     
     ![Session Dashboard](demo_material/session_dashboard.png)
 
-  * **Record Tree-Explorer:** Groups individual captured artifacts (such as FX graphs) dynamically into logical compiler phases (Regions) like `edge/prepare_pt2e/` or `edge/convert_pt2e/`.
-    
-    ![Record Explorer](demo_material/records_explorer.png)
-
   * **Interactive Layered Graph:** Click any stage to inspect nodes, pan, zoom, or search. Click any node to instantly view compiler metadata, stack trace provenance, and simulated per-operator execution metrics (cosine similarity, PSNR, MSE) visualized as a color gradient directly on the canvas.
     
     ![Interactive FX Graph](demo_material/interactive_graph.png)
 
-#### B. AOT Pipeline / Pass Author — "Diff a graph across passes without touching pass code"
-**The Pain Today:** Developers must sprinkle `print(gm.graph)` across passes, dump the text, and eyeball structural differences side-by-side in two separate terminals.
-
-**With Observatory:** Decorate any pass class with `@observe_pass` or wrap a phase in `Observatory.enter_context(...)`. Each compiler phase automatically records graph snapshots as separate Records nested in the tree-view. Click on any record to view its isolated graph, or select two stages to view a synchronized, node-mapped comparison view.
-
-```python
-from executorch.devtools.observatory import Observatory, observe_pass
-
-@observe_pass
-class MyPass(ExportPass):
-    def call(self, gm): ...
-
-pm = PassManager()
-pm.add_pass(observe_pass(RemoveGraphAssertsPass()))
-pm.add_pass(MyPass())
-
-with Observatory.enter_context("pipeline"):
-    pm._transform(graph_module)
-
-Observatory.export_report_html("pass_debug.html")
-```
-
-#### C. CI / Nightly-Regression / Cross-Backend Triage — "Compare two runs, serve the result to a human or an LLM"
-**The Pain Today:** Large zip archives containing fragmented CSVs, console logs, and screenshots must be inspected manually, making automated regression detection or LLM triaging impossible.
-
-**With Observatory:** CI pipelines run the compilation and save only the lightweight `Archive JSON` without rendering. At a later point, developers can compare any two runs (e.g., across branches, nightly dates, or even different backends) to generate a regression report without re-running the compiler.
-
-```bash
-# 1. CI / Nightly run: captures the execution state into a raw Archive JSON
-python -m executorch.backends.xnnpack.debugger.observatory \
-    --output-archive nightly/2026-04-20/mv2.json \
-    --lens-recipe=accuracy \
-    examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
-
-# 2. Later: compare two archives to generate a comparative HTML and a summary JSON
-python -m executorch.devtools.observatory \
-    --compare nightly/2026-04-20/mv2.json nightly/2026-04-23/mv2.json \
-    --output-html regression.html \
-    --output-report-json regression.summary.json
-```
-
-* **Cross-Backend Triage View:** Side-by-side FX graphs from different backends. Clicking a node in one backend's graph automatically highlights, centers, and maps the corresponding node in the other backend's graph. Cross-graph node matching uses `debug_handle` values embedded in FX graph node metadata during export — the same handles that Inspector uses to correlate runtime events to the Edge Dialect graph.
-  
-  ![Cross-Backend Compare](demo_material/cross_backend_compare.png)
-
-* **Pre-Generated Demo Reports:**
+* **Pre-Generated Single-Run Demo Reports:**
+  These reports showcase individual, backend-specific runs. Lenses active here include `metadata`, `stack_trace`, `graph`, `accuracy`, and `per_layer_accuracy` (compile-time simulation).
   
   | Backend | Model | Nodes | Report | JSON Summary | Log |
   |---|---|---:|---|---|---|
@@ -178,20 +145,132 @@ python -m executorch.devtools.observatory \
   | qualcomm | `swin_v2_t` | 1494 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/run.log.txt) |
   | qualcomm | `mobilenet_v2` | 521 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/run.log.txt) |
 
+#### B. AOT Pipeline / Pass Author
+*   **Goal:** Easily diff FX graphs across compiler passes without modifying existing pass logic.
+*   **Today (The Pain):** Developers must manually sprinkle `print(gm.graph)` statements inside pass code, redirect the verbose console logs, and eyeball structural differences side-by-side in separate terminal windows.
+*   **With Observatory:** Simply decorate any pass class with `@observe_pass` or wrap a compiler phase in a `with Observatory.enter_context(region_name)` block. Each compiler phase automatically saves graph snapshots as nested Records in the Left Panel tree. Click on any Record to view its isolated graph, or select two stages to view a synchronized, node-mapped visual comparison.
+
+* **The Region Concept & Tree Structure:**
+  A **Region** is a logical execution scope opened by `enter_context(region_name)`. It supports nesting and configuration inheritance. As the compilation pipeline executes, Observatory constructs a hierarchical region stack (e.g., `preprocess/` -> `edge/` -> `edge/etrecord/`). 
+  
+  In the Left Panel of the generated HTML report, a **Record Tree-Explorer** allows developers to toggle between a flat time-ordered list and a directory-like folders tree view, keeping compile-time snapshots structured exactly like your compiler's passes.
+
+  ![Record Tree Explorer](demo_material/records_explorer.png)
+
+* **Code Walkthrough (with nesting and config overrides):**
+  Lenses observe and capture metadata when `Observatory.collect()` is called, or when patched functions run. The context manager config is stacked: configuration overrides are merged on entry and popped on exit. This lets authors dynamically adjust lens behavior (e.g., bypass expensive CPU simulation) for specific sub-pipelines or passes:
+
+  ```python
+  from executorch.devtools.observatory import Observatory, observe_pass
+
+  # 1. Zero-effort pass tracking via decorators
+  @observe_pass
+  class MyOptimizationPass(ExportPass):
+      def call(self, gm):
+          # Modify the graphmodule...
+          return gm
+
+  # 2. Managing nested regions & configuration stack
+  pm = PassManager()
+  pm.add_pass(observe_pass(RemoveGraphAssertsPass()))
+  pm.add_pass(MyOptimizationPass())
+
+  # Disable accuracy lens for fast preprocessing, then enable it only for transformation
+  with Observatory.enter_context("preprocess", 
+                                 config={"per_layer_accuracy": {"enabled": False}}):
+      
+      Observatory.collect("raw_input", graph_module)
+      
+      # Nest another context with config overrides
+      # The string "lowering_stage" becomes the Region name in the tree view
+      with Observatory.enter_context("lowering_stage", 
+                                     config={"per_layer_accuracy": {"enabled": True}}):
+          # Inside here, the per_layer_accuracy lens is active and simulates intermediate errors
+          processed_gm = pm._transform(graph_module)
+          Observatory.collect("transformed_output", processed_gm)
+          
+      # per_layer_accuracy is automatically disabled again here on exit
+  ```
+
+#### C. CI / Nightly-Regression / Cross-Backend Triage
+*   **Goal:** Compare execution runs across branches, dates, or backends, and serve the results programmatically to humans or CI/LLM gates.
+*   **Today (The Pain):** High-throughput CI runs dump large zip bundles containing fragmented CSVs, console logs, and static screenshots. These must be manually downloaded and inspected, making automated regression tracking and LLM triaging impossible.
+*   **With Observatory:** Nightly pipelines save only a lightweight, raw `Archive JSON` file (excluding expensive HTML rendering). Later, developers or CI gates can compare any two Archive files (even across backends or branches) via `--compare` to generate a synchronized comparative HTML Report or a machine-readable Report JSON summary, without ever re-running the compiler.
+
+* **Automated CI Workflow & Architecture:**
+  The relationship between Session (live execution), Archive JSON (persisted raw data), and derived Report payloads (HTML / JSON) is illustrated below:
+
+  ```
+               AOT Run in CI Pipeline (e.g. Nightly)
+                     ┌──────────────────┐
+                     │   AOT Compiler   │ (Forced generate_etrecord=True)
+                     └────────┬─────────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │  Observatory Core │ (Intercepts standard entry points)
+                    └────────┬─────────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │   ARCHIVE JSON    │ (sessions[] + records[], no rendering)
+                    │  (nightly/mv2.json)│ (Persisted raw state, lightweight)
+                    └────────┬──────────┘
+                             │
+            ┌────────────────┴────────────────┐
+            │ Late-bound Analysis             │ CI / Automated Triage
+            ▼                                 ▼
+   ┌─────────────────┐               ┌─────────────────┐
+   │   Report HTML   │               │   Report JSON   │
+   │  (Interactive,  │               │   (Key metrics, │
+   │  for reviewers) │               │   for LLMs / CI)│
+   └─────────────────┘               └─────────────────┘
+     --output-html                    --output-report-json
+  ```
+
+* **CLI Execution Interface:**
+  The same Archive JSON is late-bound re-analyzed or compared without ever re-running the expensive compiler or simulator:
+
+  ```bash
+  # 1. CI / Nightly run: captures the execution state into a raw Archive JSON
+  python -m executorch.backends.xnnpack.debugger.observatory \
+      --output-archive nightly/2026-04-20/mv2.json \
+      --lens-recipe=accuracy \
+      examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
+
+  # 2. Later: compare two archives to generate a comparative HTML and a summary JSON
+  python -m executorch.devtools.observatory \
+      --compare nightly/2026-04-20/mv2.json nightly/2026-04-23/mv2.json \
+      --output-html regression.html \
+      --output-report-json regression.summary.json
+  ```
+
+* **Cross-Backend Triage & N-way Node Selection Sync:**
+  The same `--compare` flow powers cross-backend triage. Clicking a node in XNNPACK's graph automatically highlights, centers, and maps the corresponding node in Qualcomm's graph, allowing developers to visually compare lowering, fusion, and accuracy boundaries side-by-side.
+
+  ![Cross-Backend Compare](demo_material/cross_backend_compare.png)
+
+* **Pre-Generated Cross-Backend Comparison Demo Reports (XNNPACK vs. Qualcomm QNN):**
+  These comparison matrices evaluate end-to-end differences in structure, partition boundaries, and numerical accuracy for the **same model** compiled across different backends (XNNPACK vs. Qualcomm's HTP backend), demonstrating how the `--compare` flow serves as a visual and programmatic triage engine.
+
+  | Model | Backend Pair | Comparison HTML | JSON Summary | Raw Log |
+  |---|---|---|---|---|
+  | MobileNetV2 | `xnnpack/mv2` vs `qualcomm/mobilenet_v2` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/comparison.log.txt) |
+  | MobileNetV3 | `xnnpack/mv3` vs `qualcomm/mobilenet_v3` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/comparison.log.txt) |
+  | InceptionV3 | `xnnpack/ic3` vs `qualcomm/inception_v3` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/comparison.log.txt) |
+  | InceptionV4 | `xnnpack/ic4` vs `qualcomm/inception_v4` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/comparison.log.txt) |
+  | ViT | `xnnpack/vit` vs `qualcomm/torchvision_vit` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/comparison.log.txt) |
+
 ---
 
-### 4.2 Invocation Surfaces (API Concept)
-Observatory supports three unified user-facing invocation surfaces:
-1. **CLI Wrappers:** For zero-code-change command-line instrumentation.
-2. **Context Managers (`enter_context`):** For phase-scoped, nested configurations.
-3. **Pass Decorators (`@observe_pass`):** For zero-effort tracking of graph changes at pass boundaries.
+### 4.2 Unified Invocation Surfaces & Twin Outputs
+Observatory standardizes how developers trigger collection and how they consume results, keeping the API surface minimal:
 
----
-
-### 4.3 Standardized Twin Outputs
-Observatory emits two distinct deliverables to support human-facing and machine-facing workflows:
-1. **Report HTML (Interactive Dashboard):** A fully self-contained, server-free, interactive dashboard containing the record explorer, `fx_viewer`, overlays, and comparison capabilities.
-2. **Archive JSON & Report JSON (Structured Payload):** Machine-readable formats that preserve raw sessions and summarize key findings, regressions, and accuracy deltas for consumption by automated CI gates or LLM triage systems.
+*   **Unified Invocation Surfaces (Triggering Capture):**
+    *   **CLI Wrappers:** For zero-code-change command-line instrumentation of existing compiler or model scripts.
+    *   **Context Managers (`enter_context`):** For phase-scoped, nested Region labeling and dynamic configuration overrides.
+    *   **Pass Decorators (`@observe_pass`):** For zero-effort tracking of FX graph changes at pass boundaries.
+*   **Standardized Twin Outputs (Consuming Results):**
+    *   **Report HTML:** A self-contained, server-free interactive dashboard optimized for visual human debugging and peer reviews.
+    *   **Archive JSON & Report JSON:** Structured, machine-readable payloads containing raw sessions and key findings, optimized for automated CI regression gates and LLM triaging.
 
 ## 5. Core Concepts & Public API Shape
  
@@ -202,13 +281,13 @@ To support backend-agnostic orchestration, Observatory introduces a clean concep
 │                        CONCEPTUAL VOCABULARY                      │
 +───────────────────────────────────────────────────────────────────+
 │                                                                   │
-│   Session: Outermost execution context (lifecycle boundary)       │
+│   Session: Outermost scope (lifecycle boundary)                   │
 │      │                                                            │
 │      ├── Region: Labelled nesting scope (e.g., "AOT", "Lowering")  │
 │      │                                                            │
 │      └── Record: Individual captured artifact (e.g., FX graph)    │
 │            │                                                      │
-│            └── Digests: Lens-specific serialized states           │
+│            └── Digest Map: Lens-specific serialized states        │
 │                                                                   │
 │   Archive: Raw persisted captures (JSON)                          │
 │                                                                   │
@@ -218,17 +297,18 @@ To support backend-agnostic orchestration, Observatory introduces a clean concep
 ```
 
 ### 5.1 Public Vocabulary
-*   **Session:** The outermost debugging scope. Standardized lifecycle hooks for active lenses fire only at Session boundaries.
-*   **Region:** A named, logical label to group and nest captures in the explorer interface. Regions support configuration nesting and stack inheritance.
-*   **Record:** A single collected debugging artifact. Contains a timestamp, name, active region stack, and a map of lens-specific serialized data (Digests).
-*   **Archive:** The complete, raw, unanalyzed state of a Session and its Records.
-*   **Report:** The derived, analyzed presentation produced by running analytical passes over an Archive.
+*   **Session:** One complete debugging run from start to finish.
+*   **Region:** A named scope used to group and nest captures in the explorer interface (similar to a folder, e.g., `edge/convert_pt2e/`).
+*   **Record:** A single collected debugging snapshot. Contains a timestamp, name, active Region stack, and a map of lens-specific serialized data (Digests).
+    *   *Disambiguation Note: An Observatory `Record` is completely unrelated to ExecuTorch's `ETRecord` file. ETRecord is an optional file input; an Observatory `Record` is a live compile-time snapshot.*
+*   **Archive:** The raw, persisted state of a Session and its Records, stored in JSON format before any analysis.
+*   **Report:** The rendered presentation output (either an interactive HTML dashboard for humans, or a structured JSON summary for machines and LLM gates) produced by analyzing an Archive.
 
 ### 5.2 The Archive-vs-Report Split
 Separating raw capture (**Archive**) from analytical presentation (**Report**) is a core design contract:
-*   **CI Efficiency:** High-throughput CI pipelines write only the lightweight Archive JSON, skipping expensive HTML rendering.
-*   **Late-Bound Analysis:** Archives can be reloaded and analyzed long after the run using different lens configurations, threshold parameters, or regression algorithms without re-running the compiler.
-*   **Regression Comparison (`--compare`):** Multiple Archive JSON files from different days or branches can be merged to generate a single comparative regression report.
+*   **CI Efficiency:** High-throughput CI pipelines write only the lightweight Archive JSON file, and skip the more expensive HTML rendering.
+*   **Late-Bound Analysis:** Archives can be reloaded and analyzed long after the compilation run using different lens configurations, threshold parameters, or regression algorithms without ever re-running the compiler.
+*   **Regression Comparison (`--compare`):** Multiple Archive JSON files from different days or branches can be compared via the `--compare` CLI flag to generate a single comparative regression report.
 
 ### 5.3 The Lens Protocol (Extension Model)
 A **Lens** is the single extension unit in Observatory. It is a Python class that encapsulates a specific debugging concern. Rather than letting instrumentation code bleed into core compiler scripts, a lens implements public lifecycle hooks:
@@ -236,12 +316,22 @@ A **Lens** is the single extension unit in Observatory. It is a Python class tha
 | Hook Name | Lifecycle Phase | Responsibility |
 |:---|:---|:---|
 | `on_session_start` | Session Boundary | Installs temporary instrumentation, mocks, or global listeners. |
-| `on_session_end` | Session Boundary | Restores original states, ensuring cleanup even on exceptions. |
-| `observe` | Collection Point | Filters incoming compile-time artifacts (FX graph snapshots, pass outputs, metadata) and determines relevance to this lens. Runtime binary data is handled by Inspector; Observatory lenses observe compile-time artifacts and Inspector's analyzed outputs. |
+| `on_session_end` | Session Boundary | Restores original states, ensuring clean restoration even on exceptions. |
+| `observe` | Collection Point | Decides whether an incoming compile-time artifact (FX graph snapshot, pass metadata) is relevant to this lens. |
 | `digest` | Collection Point | Serializes the relevant artifact state into the Record. |
 | `analyze` | Emit / Report Time | Runs post-processing algorithms across all collected records. |
-| `html_frontend` | Emit / Report Time | Generates interactive components (tables, CSS, overlays) for HTML. |
-| `json_frontend` | Emit / Report Time | Generates structured analysis key-values for Report JSON. |
+| `html_frontend` | Emit / Report Time | Generates interactive components (tables, CSS, overlays) for the HTML Report. |
+| `json_frontend` | Emit / Report Time | Generates structured analysis key-values for the Report JSON summary. |
+
+*   *Note: Lenses observe compile-time artifacts and Inspector's analyzed outputs. Raw runtime binary data remains managed exclusively by Inspector.*
+*   *Lifecycle hook names use `on_*`; collection-point hooks are active verbs; frontend rendering hooks are named after their output format.*
+
+> **🏃 Concrete Lens Walkthrough Example**
+> To understand how these hooks orchestrate a workflow:
+> 1. At session start, the `accuracy` lens installs a numerical-gap probe inside standard operator execution handlers (`on_session_start`).
+> 2. When a stage completes and captures a graph, the lens computes simulated operator errors and records the mean squared error (MSE) per-node in the Record (`digest`).
+> 3. At report generation time, the lens ranks the worst-performing layers across all compiled graphs (`analyze`).
+> 4. Finally, it generates a custom CSS and canvas overlay so the FX graph viewer paints a color gradient (green-to-red) directly on the worst-performing nodes (`html_frontend`).
 
 ---
 
