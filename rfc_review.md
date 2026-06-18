@@ -4,9 +4,9 @@
 **Audience:** ExecuTorch maintainers, backend owners, devtools reviewers  
 **Scope:** Add `devtools/observatory/` and `devtools/fx_viewer/` as shared ExecuTorch debugging infrastructure
 
-> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`, or `devtools/visualization/`. It is a coordination layer that sits above them — managing when and how those primitives are invoked, capturing compile-time graph snapshots they do not store, and synthesizing their outputs into a single portable report. The only new code is the coordination and synthesis logic that each backend team was previously writing by hand.
+> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`, or `devtools/visualization/`. It is a coordination layer that sits above them.
 
-> **Abstract:** Every ExecuTorch backend team today writes its own bespoke scripts to sequence the same five debugging steps — instrument, configure, export, analyze, visualize — with no shared contract and no reuse. Observatory eliminates that duplication. It provides the missing coordination layer above existing capture primitives: one zero-config command captures compile-time graph snapshots across AOT stages, a formal Lens protocol lets backends contribute analysis logic once rather than per-script, and the framework synthesizes everything into a single portable artifact — an interactive HTML report for humans, or structured JSON for CI and LLM triage. The result: debugging workflows that were previously 200-line ad-hoc scripts become a one-liner, outputs that were fragmented CSVs and terminal prints become a sharable, structured, reproducible record.
+> **Abstract:** Every ExecuTorch backend team today writes its own bespoke scripts to sequence the same five debugging steps — instrument, configure, export, analyze, visualize. Observatory eliminates that duplication. It provides the missing coordination layer above existing capture primitives: one zero-config command captures compile-time graph snapshots across AOT stages, a formal Lens protocol lets backends contribute analysis logic once rather than per-script, and the framework synthesizes everything into a single portable artifact — an interactive HTML report for humans, or structured JSON for CI and LLM triage. The result: debugging workflows that were previously 200-line ad-hoc scripts become a one-liner, outputs that were fragmented CSVs and terminal prints become a sharable, structured, reproducible record.
 
 ---
 
@@ -14,10 +14,24 @@
 
 This RFC proposes two new components under `devtools/`:
 
-*   **Observatory:** A zero-config workflow coordinator and visual synthesis layer that manages the lifecycle of debugging concerns across ExecuTorch's AOT compilation pipeline. It wraps around existing `Inspector` and `ETRecord`/`ETDump` primitives as clients — configuring, collecting, correlating, and synthesizing their outputs into a single, structured, interactive, and shareable debugging report — without replacing or duplicating them.
-*   **`fx_viewer`:** A standalone, embeddable FX-graph visualizer that powers Observatory's graph view and operates independently outside of it.
+**Observatory:** A context-manager based debugging utility that enable collection of arbitrary debugging artifact through an extension interface, besides artifact collection, extension can define custom logics with Python hooks in multiple debugging stages:
+  - Instrument Stage: Patch collection logic in key functions
+  - Serialization Stage: Serialize recorded artifact to json archive
+  - Analysis Stage: Analyze and comparison across multiple records archives
+  - Visualization Stage: Visualize debugging insights with table, custom HTML, custom JS or fx-viewer data layer. 
+The aim is enable sharing and maintainance and user friendly e2e debugging workflow for developer, issue reporter, and CI automation. 
 
-If you have ever debugged by sprinkling `print(gm.graph)` across a transform pass, or by manually correlating Inspector output with a graph dump in a separate terminal, this RFC is for you. Observatory is the shared coordination layer that eliminates that duplication — without touching `ETRecord`, `ETDump`, or `Inspector`. This proposal focuses on three things: providing a shared lifecycle contract that coordinates *when* and *how* existing capture primitives are invoked; enabling layered, graph-anchored visualization that correlates runtime data with FX graph structure; and establishing a formal extension protocol (Lens) so backend teams contribute specialized analysis logic once rather than rebuilding it per-backend.
+
+**`fx_viewer`:** An extensible, embeddable FX-graph visualizer that powers Observatory's graph view and operates independently outside of it. It aims to provide the following benefits.
+- Integration friendly
+- Simplicity
+- Extensible
+- Fast
+
+This proposal focuses on 3 main topics: 
+1. Providing a shared lifecycle contract that coordinates *when* and *how* existing capture primitives are invoked
+2. Enabling layered, graph-anchored visualization that correlates runtime data with FX graph structure
+3. Establishing an extension protocol (Lens) so developers can contribute specialized captureing, analysis, and visualization logic for either cross-backend or backend-specific analysis.
 
 ---
 
