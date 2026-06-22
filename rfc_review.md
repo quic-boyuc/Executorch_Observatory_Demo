@@ -6,7 +6,7 @@
 
 > **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`. It is a coordination layer that sits above them.
 
-> **Abstract:** Every ExecuTorch backend team today writes its own bespoke scripts to sequence the same five debugging steps — instrument, configure, export, analyze, visualize. Observatory eliminates that duplication. It provides the missing coordination layer above existing capture primitives: one zero-config command captures compile-time graph snapshots across AOT stages, a formal Lens protocol lets backends contribute analysis logic once rather than per-script, and the framework synthesizes everything into a single portable artifact — an interactive HTML report for humans, or structured JSON for CI and LLM triage. The result: debugging workflows that were previously 200-line ad-hoc scripts become a one-liner, outputs that were fragmented CSVs and terminal prints become a sharable, structured, reproducible record.
+> **Abstract:** Today, debugging an ExecuTorch model run means writing custom scripts that mix instrumentation, data capture, and analysis. Every backend team rebuilds these scripts independently. Observatory replaces them with a shared coordination layer and a pluggable extension model called *lenses*. A lens is a self-contained debugging concern — it handles both capturing data during the run and analyzing it afterward. Generic lenses work across all backends because they depend only on shared ExecuTorch APIs. Backend teams write and maintain their own lenses for backend-specific analysis. Multiple lenses compose in a single debugging session to produce one integrated report. For a debugging engineer or issue reporter: one zero-config CLI command wraps an existing model script and produces a self-contained HTML report to attach to a PR or an issue. For CI: the same command produces a structured JSON report for regression gates and automated triage.
 
 ---
 
@@ -26,14 +26,20 @@ This RFC proposes two new components under `devtools/` to address this.
 - **Decorator** — add `@observe_pass` above a compiler pass class (`PassBase` subclass). Observatory records the FX graph before and after each time the pass runs.
 - **Context manager** — wrap a `with Observatory.enter_context(...)` block around the code you want to inspect, and call `Observatory.collect(name, artifact)` for the objects you want recorded. This is the manual surface when you need exact control; the CLI and decorator are built on top of it.
 
-**Where backend-specific logic attaches — four lifecycle stages:**
+**Where backend-specific logic attaches — lenses hook into four lifecycle stages:**
 
 - **Instrument** — patch compilation and runtime to collect evidence.
 - **Serialize** — write that evidence into a portable archive.
-- **Analyze** — run pluggable Lenses over the archive.
+- **Analyze** — run analysis logic over the collected data.
 - **Visualize** — render results for humans and machines.
 
-A backend author writes their analysis once at the stages they care about. Write once, run on any archive, share with any team.
+Observatory handles the lifecycle orchestration so that backend teams only write the analysis logic. That logic lives in pluggable modules called *lenses*. A lens is a self-contained debugging concern — it includes callbacks for both capturing data during the run and analyzing it afterward. Generic lenses work on any backend because they only depend on shared ExecuTorch APIs; backend-specific lenses are maintained by each backend team inside its own debugging workflow. Multiple lenses compose in a single debugging session to produce one integrated report.
+
+Concretely, three roles benefit:
+
+- **A backend debug-logic maintainer** writes a Lens once (e.g., per-layer accuracy analysis) and Observatory handles session orchestration, data collection, and report generation — the same lens works uniformly across models without per-model wrapper scripts.
+- **A debugging engineer or issue reporter** runs one zero-config CLI command over an existing model script and gets a self-contained HTML report to attach to a PR or an issue — reviewers open it in any browser with no install.
+- **CI pipelines** run the same command and consume a structured JSON report for regression gates and automated triage.
 
 ---
 
