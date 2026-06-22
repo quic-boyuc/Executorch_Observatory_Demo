@@ -37,7 +37,7 @@ A backend author writes their analysis once at the stages they care about. Write
 
 ---
 
-**`fx_viewer`** is a standalone, embeddable FX graph viewer. Most graph tools run a local server and keep the graph separate from debugging data. `fx_viewer` takes a different approach: graph layout and debugging data are pre-computed in Python, embedded as JSON in a single HTML file, and rendered as independent layers — so the viewer opens instantly, works anywhere without a server, and any tool can add its own data overlay without modifying the viewer.
+**`fx_viewer`** is a standalone, embeddable FX graph viewer built for debugging workflows like Observatory. It embeds graph layout and debugging data as JSON layers in a single HTML file — each Observatory Lens can contribute its own overlay, and the result opens instantly in any browser without a server.
 
 - **Embeddable** — drop into any HTML page or `<div>`; graph data is compressed and embedded as JSON in the file. The JavaScript API allows external control of node hovering, selection, and viewport actions.
 - **Instant rendering** — layout is computed in Python before export. Other tools calculate layout in the browser on load, which is slow for large graphs. `fx_viewer` opens a 10k-node graph instantly.
