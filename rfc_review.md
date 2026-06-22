@@ -34,7 +34,7 @@ A backend author writes their analysis once at the stages they care about. They 
 **`fx_viewer` is a standalone FX graph viewer that Observatory integrates with:**
 
 - **Runs in any browser** — open the graph as a local HTML file. No server is required.
-- **Build-time layout** — Python computes node positions before export, so the graph paints instantly in the browser even for large models.
+- **Build-time layout** — Python computes node positions before export, so the browser can focus on rendering the graph.
 - **Layered annotations** — a base layer shows nodes and edges; extension layers overlay accuracy colors, profiling numbers, or backend decisions on top.
 - **Python and JavaScript APIs** — Python exports graphs with `FXGraphExporter` and `GraphExtension`; JavaScript renders them with `FXGraphViewer.create()` and `FXGraphCompare.create()`. Observatory uses both; other tools can use either independently.
 
@@ -307,7 +307,7 @@ with Observatory.enter_context("my_debug_run", config={"accuracy": {"enabled": T
     Observatory.collect("exported_graph", gm)
 ```
 
-Same machinery, finer control. Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code. Note: Observatory records only the artifacts you explicitly hand it — each call to `Observatory.collect(name, artifact)` inside the region passes that object to every registered Lens, which decides what to extract.
+Same machinery, finer control. Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code. Observatory records only the artifacts you explicitly hand it. Each call to `Observatory.collect(name, artifact)` passes that object to every registered Lens, and each Lens decides what to extract.
 
 **The `@observe_pass` decorator** is for pass authors. Annotate a transform and it gets its own scope automatically — capturing the FX graph before and after, with no edits to the surrounding pipeline:
 
