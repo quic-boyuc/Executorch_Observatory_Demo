@@ -4,7 +4,7 @@
 **Audience:** ExecuTorch maintainers, backend owners, devtools reviewers  
 **Scope:** Add `devtools/observatory/` and `devtools/fx_viewer/` as shared ExecuTorch debugging infrastructure
 
-> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`, or `devtools/visualization/`. It is a coordination layer that sits above them.
+> **Positioning note for reviewers:** Observatory is not a replacement for `ETRecord`, `ETDump`, `Inspector`. It is a coordination layer that sits above them.
 
 > **Abstract:** Every ExecuTorch backend team today writes its own bespoke scripts to sequence the same five debugging steps — instrument, configure, export, analyze, visualize. Observatory eliminates that duplication. It provides the missing coordination layer above existing capture primitives: one zero-config command captures compile-time graph snapshots across AOT stages, a formal Lens protocol lets backends contribute analysis logic once rather than per-script, and the framework synthesizes everything into a single portable artifact — an interactive HTML report for humans, or structured JSON for CI and LLM triage. The result: debugging workflows that were previously 200-line ad-hoc scripts become a one-liner, outputs that were fragmented CSVs and terminal prints become a sharable, structured, reproducible record.
 
@@ -37,7 +37,7 @@ A backend author writes their analysis once at the stages they care about. Write
 
 ---
 
-**`fx_viewer`** is a standalone, embeddable FX graph viewer built for debugging workflows like Observatory. It embeds graph layout and debugging data as JSON layers in a single HTML file — each Observatory Lens can contribute its own overlay, and the result opens instantly in any browser without a server.
+**`fx_viewer`** is a JavaScript library for embedding interactive FX graph views into any HTML page or debugging report. It embeds graph layout and debugging data as JSON layers in a single HTML file — each Observatory Lens can contribute its own overlay, and the result opens instantly in any browser without a server.
 
 - **Embeddable** — drop into any HTML page or `<div>`; graph data is compressed and embedded as JSON in the file. The JavaScript API allows external control of node hovering, selection, and viewport actions.
 - **Instant rendering** — layout is computed in Python before export. Other tools calculate layout in the browser on load, which is slow for large graphs. `fx_viewer` opens a 10k-node graph instantly.
