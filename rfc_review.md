@@ -31,12 +31,13 @@ This RFC proposes two new components under `devtools/` to address this. Observat
 
 A backend author writes their analysis once at the stages they care about. They get portable archives and dual human/machine output without rebuilding the surrounding plumbing. One capture, many reusable analyses, one shared vocabulary across backends.
 
-**`fx_viewer` is a standalone FX graph viewer that Observatory integrates with:**
+**`fx_viewer` is a standalone FX graph viewer. It solves the problem that existing graph tools require a local server and cannot be embedded or shared as a single file.**
 
-- **Runs in any browser** — open the graph as a local HTML file. No server is required.
+- **Embeddable** — drop the viewer into any HTML page or Jupyter notebook with one `<div>` and a `<script>` tag. No server, no build step.
+- **Self-contained HTML** — the full report is a single file. Open it locally or attach it to a GitHub issue.
 - **Build-time layout** — Python computes node positions before export, so the browser can focus on rendering the graph.
 - **Layered annotations** — a base layer shows nodes and edges; extension layers overlay accuracy colors, profiling numbers, or backend decisions on top.
-- **Python and JavaScript APIs** — Python exports graphs with `FXGraphExporter` and `GraphExtension`; JavaScript renders them with `FXGraphViewer.create()` and `FXGraphCompare.create()`. Observatory uses both; other tools can use either independently.
+- **Python and JavaScript APIs** — use the Python API (`FXGraphExporter`, `GraphExtension`) to export a graph and attach data to nodes; use the JavaScript API (`FXGraphViewer.create`, `FXGraphCompare.create`) to render and compare graphs in the browser. Observatory uses both; other tools can use either independently.
 
 The rest of this RFC develops these claims. §2 details the pain. §4 walks through three personas and both axes. §5 specifies the architecture and Lens protocol. §6 covers `fx_viewer`.
 
