@@ -14,7 +14,11 @@
 
 Debugging ExecuTorch backend issues often means collecting many things by hand. An engineer may save graph dumps, logs, and accuracy numbers in separate files. Those files are hard to share with another team, and hard to reproduce later.
 
-This RFC proposes two new components under `devtools/` to address this. Observatory replaces fragmented per-backend debug scripts with one shared debugging surface. It standardizes two things:
+This RFC proposes two new components under `devtools/` to address this.
+
+---
+
+**Observatory** replaces fragmented per-backend debug scripts with one shared debugging surface. It standardizes two things:
 
 **How engineers invoke debugging — three entry points, from easiest to most flexible:**
 
@@ -31,12 +35,16 @@ This RFC proposes two new components under `devtools/` to address this. Observat
 
 A backend author writes their analysis once at the stages they care about. They get portable archives and dual human/machine output without rebuilding the surrounding plumbing. One capture, many reusable analyses, one shared vocabulary across backends.
 
-**`fx_viewer` is a standalone, embeddable FX graph viewer. It works inside Observatory reports and independently outside of it.**
+---
+
+**`fx_viewer`** is a standalone, embeddable FX graph viewer. Existing graph tools require a local server and cannot be embedded or shared as a single file. `fx_viewer` solves this. It works inside Observatory reports and independently outside of it.
 
 - **Embeddable** — drop the viewer into any HTML page or `<div>`; the JavaScript API allows external control of node hovering, selection, and viewport actions.
 - **Self-contained** — the full graph is a single HTML file. No server, no build step. Open it locally or attach it to a GitHub issue.
 - **Speed and simplicity** — graph layout is computed in Python before export, so the viewer handles 10k+ nodes without layout work in the browser. The viewer itself is ~4k lines of plain JavaScript with no framework dependencies.
 - **Custom data layers** — attach colors, text, tooltips, and per-node detail panels to any node via the Python extension API (`GraphExtension`).
+
+---
 
 The rest of this RFC develops these claims. §2 details the pain. §4 walks through three personas and both axes. §5 specifies the architecture and Lens protocol. §6 covers `fx_viewer`.
 
