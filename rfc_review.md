@@ -33,15 +33,15 @@ This RFC proposes two new components under `devtools/` to address this.
 - **Analyze** — run pluggable Lenses over the archive.
 - **Visualize** — render results for humans and machines.
 
-A backend author writes their analysis once at the stages they care about. They get portable archives and dual human/machine output without rebuilding the surrounding plumbing. One capture, many reusable analyses, one shared vocabulary across backends.
+A backend author writes their analysis once at the stages they care about. Write once, run on any archive, share with any team.
 
 ---
 
-**`fx_viewer`** is a standalone, embeddable FX graph viewer designed to integrate debugging data directly into graph visualization. Existing tools either require a local server, cannot be embedded, or treat the graph and debugging data as separate views. `fx_viewer` solves this: it lets any debugging signal — accuracy numbers, partition assignments, profiling data — be overlaid directly on the graph nodes, in a single embeddable file that works inside Observatory reports or any other HTML page.
+**`fx_viewer`** is a standalone, embeddable FX graph viewer. Most graph tools run a local server and keep the graph separate from debugging data. `fx_viewer` takes a different approach: graph layout is pre-computed in Python and embedded as JSON in the HTML file, so the viewer opens instantly and works anywhere without a server.
 
-- **Embeddable** — drop the viewer into any HTML page or `<div>`; the JavaScript API allows external control of node hovering, selection, and viewport actions.
-- **Self-contained** — the full graph is a single HTML file. No server, no build step. Open it locally or attach it to a GitHub issue.
-- **Speed and simplicity** — graph layout is computed in Python before export, so the viewer handles 10k+ nodes without layout work in the browser. The viewer itself is ~4k lines of plain JavaScript with no framework dependencies.
+- **Embeddable** — drop into any HTML page or `<div>`; graph data is compressed and embedded as JSON in the file. The JavaScript API allows external control of node hovering, selection, and viewport actions.
+- **Instant rendering** — layout is computed in Python before export. Other tools calculate layout in the browser on load, which is slow for large graphs. `fx_viewer` opens a 10k-node graph instantly.
+- **Simplicity** — ~4k lines of plain JavaScript, no framework dependencies. Easy to read, modify, or embed anywhere.
 - **Custom data layers** — attach colors, text, tooltips, and per-node detail panels to any node via the Python extension API (`GraphExtension`).
 
 ---
