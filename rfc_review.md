@@ -42,7 +42,7 @@ A backend author writes their analysis once at the stages they care about. Write
 - **Embeddable** — drop into any HTML page or `<div>`; graph data is compressed and embedded as JSON in the file. The JavaScript API allows external control of node hovering, selection, and viewport actions.
 - **Instant rendering** — layout is computed in Python before export. Other tools calculate layout in the browser on load, which is slow for large graphs. `fx_viewer` opens a 10k-node graph instantly.
 - **Simplicity** — ~4k lines of plain JavaScript, no framework dependencies. Easy to read, modify, or embed anywhere.
-- **Custom data layers** — attach colors, text, tooltips, and per-node detail panels to any node via the Python extension API (`GraphExtension`).
+- **Extensible data layers** — any debugging signal can be overlaid directly on graph nodes: accuracy gradients, partition boundaries, profiling numbers, quantization parameters. Each layer is added via the Python extension API (`GraphExtension`) and rendered independently, so multiple tools can paint on the same graph without conflict.
 
 ---
 
