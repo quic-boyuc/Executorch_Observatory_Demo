@@ -1,9 +1,9 @@
 __pycache__/
 *.pyc
 
-# Keep only report payloads under generated_reports tracked (.json/.html).
-generated_reports/**
-!generated_reports/**/
-!generated_reports/**/*.json
-!generated_reports/**/*.html
-!generated_reports/**/run.log.txt
+# Generated reports — tracked via GH Pages, not in this branch
+generated_reports/
+
+# Untracked artifacts
+.playwright-mcp/
+exports/
