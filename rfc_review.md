@@ -12,23 +12,33 @@
 
 ## 1. Summary
 
-We observe 2 debugging pain point: 1. Overall setup and executing debugging workflow steps are complicated requires high effort. 2. Integrating debugging data with existing graph viewer are difficult. Sharing debugging results, analysis insights, and graph visualization is difficult with existing tool set.
+Debugging ExecuTorch backend issues often means collecting many things by hand. An engineer may save graph dumps, logs, and accuracy numbers in separate files. Those files are hard to share with another team, and hard to reproduce later.
 
-This RFC tries to proposes two new components under `devtools/` to address these pain points:
+This RFC proposes two new components under `devtools/` to address this. Observatory replaces fragmented per-backend debug scripts with one shared debugging surface. It standardizes two things:
 
-**Observatory:** A context-manager based debugging utility that enable collection of arbitrary debugging artifact through an extension interface, besides artifact collection, extension can define custom logics with Python hooks in multiple debugging stages:
-  - Instrument Stage: Patch collection logic in key functions
-  - Serialization Stage: Serialize recorded artifact to json archive
-  - Analysis Stage: Analyze and comparison across multiple records archives
-  - Visualization Stage: Visualize debugging insights with table, custom HTML, custom JS or fx-viewer data layer. 
-The aim is enable modularized sharing and maintainance of e2e debugging workflow for developer, issue reporter, and CI automation. With a simple CLI entry point, we can achieve the goal of making debugging steps being as simple as passing a special flag in observatory cli, no changes in existing e2e script is required.
+**How engineers invoke debugging — three entry points, from easiest to most flexible:**
 
+- **CLI** — run your existing model script through Observatory. Your script does not change; Observatory records the whole run from outside.
+- **Decorator** — add `@observe_pass` above a compiler pass class (`PassBase` subclass). Observatory records the FX graph before and after each time the pass runs.
+- **Context manager** — wrap a `with Observatory.enter_context(...)` block around the code you want to inspect, and call `Observatory.collect(name, artifact)` for the objects you want recorded. This is the manual surface when you need exact control; the CLI and decorator are built on top of it.
 
-**`fx_viewer`:** An extensible, embeddable FX-graph visualizer that powers Observatory's graph view and operates independently outside of it. It aims to provide the following benefits.
-- Embedable: Graph viewer can live inside an provided div. JS api allow external control for hovering, selection and viewport-actions.
-- Simplicity:  4k lines of Vallina JS that easily fits into LLM context.
-- Custom data Integration: Support overlaying of multiple layers of node-wise debugging info in graph. Colors, text, tooltip and detailed info can be customized with python extension API.
-- Speed: Instantly show graph with 10k nodes, by avoiding expensive layout calculation in browser,  i.e., relative coordinate of nodes and edges are determined in python and included in the payload.
+**Where backend-specific logic attaches — four lifecycle stages:**
+
+- **Instrument** — patch compilation and runtime to collect evidence.
+- **Serialize** — write that evidence into a portable archive.
+- **Analyze** — run pluggable Lenses over the archive.
+- **Visualize** — render results for humans and machines.
+
+A backend author writes their analysis once at the stages they care about. They get portable archives and dual human/machine output without rebuilding the surrounding plumbing. One capture, many reusable analyses, one shared vocabulary across backends.
+
+**`fx_viewer` is a standalone FX graph viewer that Observatory integrates with:**
+
+- **Runs in any browser** — open the graph as a local HTML file. No server is required.
+- **Build-time layout** — Python computes node positions before export, so the graph paints instantly in the browser even for large models.
+- **Layered annotations** — a base layer shows nodes and edges; extension layers overlay accuracy colors, profiling numbers, or backend decisions on top.
+- **Python and JavaScript APIs** — Python exports graphs with `FXGraphExporter` and `GraphExtension`; JavaScript renders them with `FXGraphViewer.create()` and `FXGraphCompare.create()`. Observatory uses both; other tools can use either independently.
+
+The rest of this RFC develops these claims. §2 details the pain. §4 walks through three personas and both axes. §5 specifies the architecture and Lens protocol. §6 covers `fx_viewer`.
 
 
 ---
@@ -297,7 +307,7 @@ with Observatory.enter_context("my_debug_run", config={"accuracy": {"enabled": T
     Observatory.collect("exported_graph", gm)
 ```
 
-Same machinery, finer control. Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code.
+Same machinery, finer control. Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code. Note: Observatory records only the artifacts you explicitly hand it — each call to `Observatory.collect(name, artifact)` inside the region passes that object to every registered Lens, which decides what to extract.
 
 **The `@observe_pass` decorator** is for pass authors. Annotate a transform and it gets its own scope automatically — capturing the FX graph before and after, with no edits to the surrounding pipeline:
 
