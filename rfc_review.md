@@ -37,7 +37,7 @@ A backend author writes their analysis once at the stages they care about. They 
 
 ---
 
-**`fx_viewer`** is a standalone, embeddable FX graph viewer. Existing graph tools require a local server and cannot be embedded or shared as a single file. `fx_viewer` solves this. It works inside Observatory reports and independently outside of it.
+**`fx_viewer`** is a standalone, embeddable FX graph viewer designed to integrate debugging data directly into graph visualization. Existing tools either require a local server, cannot be embedded, or treat the graph and debugging data as separate views. `fx_viewer` solves this: it lets any debugging signal — accuracy numbers, partition assignments, profiling data — be overlaid directly on the graph nodes, in a single embeddable file that works inside Observatory reports or any other HTML page.
 
 - **Embeddable** — drop the viewer into any HTML page or `<div>`; the JavaScript API allows external control of node hovering, selection, and viewport actions.
 - **Self-contained** — the full graph is a single HTML file. No server, no build step. Open it locally or attach it to a GitHub issue.
