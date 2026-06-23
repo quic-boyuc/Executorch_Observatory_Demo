@@ -597,9 +597,14 @@ These reports showcase individual, backend-specific runs. Lenses active here inc
 | qualcomm | `swin_v2_t` | 1494 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/run.log.txt) |
 | qualcomm | `mobilenet_v2` | 521 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/run.log.txt) |
 
-### A.3 Pre-Generated Cross-Backend Comparison Demo Reports (XNNPACK vs. Qualcomm QNN)
+### A.3 Comparison Reports (CI Regression and Cross-Backend / Cross-Model)
 
-These comparison matrices evaluate end-to-end differences in structure, partition boundaries, and numerical accuracy for the **same model** compiled across different backends (XNNPACK vs. Qualcomm's HTP backend), demonstrating how the `--compare` flow serves as a visual and programmatic triage engine.
+The `--compare` flow supports two primary use cases:
+
+1. **CI regression analysis (primary target):** Compare the *same model on the same backend* across two nightly builds to identify what changed. This is the workflow described in §6.3 — when a nightly metric drops, the comparison report shows exactly which pass or operator introduced the regression.
+2. **Cross-backend comparison (demonstrated below):** Compare how the *same model* is processed across different backends (e.g., XNNPACK vs. Qualcomm HTP) to understand differences in lowering, fusion, and partition boundaries.
+
+The demo reports below showcase cross-backend comparison — evaluating end-to-end differences in structure, partition boundaries, and numerical accuracy for the **same model** compiled on XNNPACK vs. Qualcomm QNN HTP.
 
 | Model | Backend Pair | Comparison HTML | JSON Summary | Raw Log |
 |---|---|---|---|---|

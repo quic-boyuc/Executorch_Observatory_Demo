@@ -565,8 +565,14 @@ The context and region nesting structures described in [§4.1](#41-three-entry-p
   
   ![Interactive FX Graph](demo_material/interactive_graph.png)
 
-### A.3 Cross-Backend Comparison Reports
-These comparison matrices evaluate end-to-end differences in structure, partition boundaries, and numerical accuracy for the same model compiled across different backends (XNNPACK vs. Qualcomm QNN HTP), proving how the `--compare` flow serves as a visual and programmatic triage engine.
+### A.3 Comparison Reports (CI Regression and Cross-Backend / Cross-Model)
+
+The `--compare` flow supports two primary use cases:
+
+1. **CI regression analysis (primary target):** Compare the *same model on the same backend* across two nightly builds to identify what changed. This is the workflow described in §6.3 — when a nightly metric drops, the comparison report shows exactly which pass or operator introduced the regression.
+2. **Cross-backend comparison (demonstrated below):** Compare how the *same model* is processed across different backends (e.g., XNNPACK vs. Qualcomm HTP) to understand differences in lowering, fusion, and partition boundaries.
+
+The demo reports below showcase cross-backend comparison — evaluating end-to-end differences in structure, partition boundaries, and numerical accuracy for the same model compiled on XNNPACK vs. Qualcomm QNN HTP.
 
 * **Cross-Backend Node Alignment:** Node-selection synchronization maintains layout context across side-by-side backend graphs.
   
