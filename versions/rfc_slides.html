@@ -1,0 +1,1742 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RFC: Observatory — A Workflow Coordinator and Visual Synthesis Layer for ExecuTorch Debugging</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" id="theme">
+<style>
+  :root {
+    --r-main-font-size: 24px;
+    --r-heading-text-transform: none;
+    --r-heading-letter-spacing: -0.02em;
+    --r-link-color: #75d7ff;
+    --r-link-color-hover: #b9ecff;
+  }
+  .reveal { font-size: 24px; }
+  .reveal .slides section { text-align: left; }
+  .reveal h1 { font-size: 1.45em; line-height: 1.08; }
+  .reveal h2 { font-size: 1.05em; line-height: 1.15; margin-bottom: 0.35em; color: #f3f5d4; }
+  .reveal h3 { font-size: 0.8em; color: #dbeeff; }
+  .slide-content { font-size: 0.55em; line-height: 1.34; max-height: 85vh; overflow-y: auto; padding-right: 0.45em; }
+  .slide-content p, .slide-content li, .slide-content blockquote { font-size: 1em; }
+  .slide-content ul, .slide-content ol { margin-top: 0.35em; }
+  .slide-content li { margin: 0.20em 0; }
+  .slide-content blockquote { border-left: 0.25em solid #75d7ff; margin: 0.55em 0; padding: 0.25em 0.8em; background: rgba(117,215,255,0.08); width: 92%; }
+  .slide-content pre, .slide-content code, .slide-content table { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  .slide-content pre { font-size: 0.45em; line-height: 1.16; max-height: 85vh; overflow: auto; background: rgba(0,0,0,0.38); padding: 0.75em; border-radius: 8px; width: 96%; box-sizing: border-box; }
+  .slide-content code { color: #f8e6a0; }
+  .slide-content pre code { color: #e8eef8; white-space: pre; }
+  .slide-content.table, .slide-content table { font-size: 0.45em; }
+  .slide-content table { width: 100%; border-collapse: collapse; display: block; max-height: 85vh; overflow: auto; }
+  .slide-content th, .slide-content td { border: 1px solid rgba(255,255,255,0.24); padding: 0.32em 0.45em; vertical-align: top; }
+  .slide-content th { background: rgba(117,215,255,0.16); color: #f3f5d4; }
+  .slide-content img { max-width: 96%; max-height: 70vh; object-fit: contain; display: block; margin: 0.6em auto; border: 1px solid rgba(255,255,255,0.18); box-shadow: 0 8px 30px rgba(0,0,0,0.35); }
+  .xref { border-bottom: 1px dotted currentColor; }
+  .footer-slide-number { position: fixed; bottom: 10px; right: 16px; z-index: 50; font: 12px/1.2 ui-monospace, monospace; color: rgba(255,255,255,0.72); background: rgba(0,0,0,0.35); padding: 4px 8px; border-radius: 999px; }
+  .footer-title { position: fixed; bottom: 10px; left: 16px; z-index: 50; font: 12px/1.2 ui-monospace, monospace; color: rgba(255,255,255,0.55); }
+  .toc a { font-size: 0.95em; }
+  .title-meta { max-height: 58vh; }
+  @media print { .slide-content { overflow: visible; max-height: none; } .footer-slide-number, .footer-title { display:none; } }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section data-id="title" id="title" data-auto-animate>
+<h1>Observatory</h1>
+<h3>A Workflow Coordinator and Visual Synthesis Layer for ExecuTorch Debugging</h3>
+<div class="slide-content title-meta">
+<p><strong>Status:</strong> Proposed / Under Discussion<br />
+<strong>Audience:</strong> ExecuTorch maintainers, backend owners,
+devtools reviewers<br />
+<strong>Scope:</strong> Add <code>devtools/observatory/</code> and
+<code>devtools/fx_viewer/</code> as shared ExecuTorch debugging
+infrastructure</p>
+<blockquote>
+<p><strong>Positioning note for reviewers:</strong> Observatory is not a
+replacement for <code>ETRecord</code>, <code>ETDump</code>,
+<code>Inspector</code>. It is a coordination layer that sits above them.
+<strong>Abstract:</strong> Today, debugging an ExecuTorch model run
+means writing custom scripts that mix instrumentation, data capture, and
+analysis. Every backend team rebuilds these scripts independently.
+Observatory replaces them with a shared coordination layer and a
+pluggable extension model called <em>lenses</em>. A lens is a
+self-contained debugging concern — it handles both capturing data during
+the run and analyzing it afterward. Generic lenses work across all
+backends because they depend only on shared ExecuTorch APIs. Backend
+teams write and maintain their own lenses for backend-specific analysis.
+Multiple lenses compose in a single debugging session to produce one
+integrated report. For a debugging engineer or issue reporter: one
+zero-config CLI command wraps an existing model script and produces a
+self-contained HTML report to attach to a PR or an issue. For CI: the
+same command produces a structured JSON report for regression gates and
+automated triage.</p>
+</blockquote>
+
+</div>
+</section>
+<section data-id="toc" id="toc" data-auto-animate>
+<h2>Table of Contents</h2>
+<div class="slide-content toc">
+<ul>
+<li><a href="#//sec-1">1. Summary</a></li>
+<li><a href="#//sec-2">2. Motivation &amp; Problem Statement</a></li>
+<li><a href="#//sec-3">3. Goals, Non-Goals, and System
+Boundaries</a></li>
+<li><a href="#//sec-4">4. User-Facing Surfaces and Outputs</a></li>
+<li><a href="#//sec-5">5. Core Design &amp; Architecture: Capture First,
+Analyze Later</a></li>
+<li><a href="#//sec-6">6. Working Demos and Persona
+Walkthroughs</a></li>
+<li><a href="#//sec-7">7. <code>fx_viewer</code> — The Layered Graph
+Visualizer</a></li>
+<li><a href="#//sec-8">8. Scope, RFC Acceptance Boundary, and
+Roadmap</a></li>
+<li><a href="#//sec-9">9. Governance and API Stability</a></li>
+<li><a href="#//sec-10">10. Open Questions for Reviewers</a></li>
+<li><a href="#//appendix-a">Appendix A. Demo Reports, Videos, and
+Generated Assets</a></li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-1" id="sec-1" data-auto-animate>
+<h2>1. Summary</h2>
+<div class="slide-content text">
+<p>This section provides a high-level executive summary of the
+Observatory framework, the fx_viewer component, and the benefits they
+deliver to backend developers, compiler pass authors, and CI
+pipelines.</p>
+<p>Debugging ExecuTorch backend issues often means collecting many
+things by hand. An engineer may save graph dumps, logs, and accuracy
+numbers in separate files. The resulting setup and artifacts are hard to
+reproduce and share meaningfully across community contributors.</p>
+<p>This RFC proposes two new components under <code>devtools/</code> to
+address this.</p>
+<hr />
+<p><strong>Observatory</strong> replaces fragmented debug scripts with
+one modularized debugging surface. It standardizes two things:</p>
+<p><strong>How engineers invoke debugging — three entry points, from
+easiest to most flexible:</strong></p>
+<ul>
+<li><strong>CLI</strong> — run your existing model script through
+Observatory CLI. Your script does not change; Observatory records the
+whole run from outside.</li>
+<li><strong>Decorator</strong> — add <code>@observe_pass</code> above a
+compiler pass class, or wrap existing pass instances with
+<code>observe_pass(instance)</code>. Observatory records the FX graph
+before and after each time the pass runs — without modifying the pass
+logic or the surrounding pipeline.</li>
+<li><strong>Context manager</strong> — wrap a
+<code>with Observatory.enter_context(...)</code> block around the code
+you want to inspect, and call
+<code>Observatory.collect(name, artifact)</code> for the objects you
+want recorded. This is the manual surface when you need exact control;
+the CLI and decorator are built on top of it.</li>
+</ul>
+<p><strong>Where task-specific logic attaches — lenses hook into four
+lifecycle stages:</strong></p>
+<ul>
+<li><strong>Instrument</strong> — patch compilation and runtime to
+collect evidence.</li>
+<li><strong>Serialize</strong> — write that evidence into a portable
+archive.</li>
+<li><strong>Analyze</strong> — run analysis logic over the collected
+data.</li>
+<li><strong>Visualize</strong> — render results for humans and
+machines.</li>
+</ul>
+<p>Observatory handles the lifecycle orchestration so that backend teams
+only write the analysis logic. That logic lives in pluggable modules
+called <em>lenses</em>. A lens is a self-contained debugging concern —
+it includes callbacks for both capturing data during the run and
+analyzing it afterward. Generic lenses work on any backend because they
+only depend on shared ExecuTorch APIs; backend-specific lenses are
+maintained by each backend team inside its own debugging workflow.
+Multiple lenses compose in a single debugging session to produce one
+integrated report.</p>
+<p>Concretely, three roles benefit:</p>
+<ul>
+<li><strong>A backend debug-logic maintainer</strong> writes a Lens once
+(e.g., per-layer accuracy analysis) and Observatory handles session
+orchestration, data collection, and report generation.</li>
+<li><strong>A debugging engineer or issue reporter</strong> runs an
+Observatory CLI command over an existing model script and gets a
+self-contained HTML report to attach to a PR or an issue — open it in
+any browser.</li>
+<li><strong>CI pipelines</strong> run an Observatory CLI command and
+consume a structured JSON report for regression gates and automated
+triage. HTML reports can be generated on demand from the JSON
+archive.</li>
+</ul>
+<hr />
+<p><strong><code>fx_viewer</code></strong> is a Python and JavaScript
+library for embedding interactive FX graph views into any HTML page or
+debugging report. It embeds graph layout and debugging data as JSON
+layers in a single HTML file — each Observatory Lens can contribute its
+own overlay, and the result opens instantly in any browser without a
+server.</p>
+<ul>
+<li><strong>Embeddable</strong> — drop into any HTML page or
+<code>&lt;div&gt;</code>; graph data is compressed and embedded as JSON
+in the file. The JavaScript API allows external control of node
+hovering, selection, and viewport actions.</li>
+<li><strong>Extensible data layers</strong> — any debugging signal can
+be overlaid directly on graph nodes: accuracy gradients, partition
+boundaries, profiling numbers, quantization parameters. Each layer is
+added via the Python extension API (<code>GraphExtension</code>) and
+rendered independently, so multiple tools can paint on the same graph
+without conflict.</li>
+<li><strong>Simplicity</strong> — ~4k lines of plain JavaScript, no
+framework dependencies. Easy to read, modify, or embed anywhere.</li>
+<li><strong>Instant rendering</strong> — layout is computed in Python
+before export. Other tools calculate layout in the browser on load,
+which is slow for large graphs. <code>fx_viewer</code> opens a 10k-node
+graph instantly.</li>
+</ul>
+<hr />
+
+</div>
+</section>
+<section data-id="sec-2-group" id="sec-2-group">
+<section data-id="sec-2" id="sec-2" data-auto-animate>
+<h2>2. Motivation &amp; Problem Statement</h2>
+<div class="slide-content text">
+<p>This section diagnoses the key systemic frictions and tool
+fragmentation in current ExecuTorch backend debugging and visualization
+workflows.</p>
+<p>As ExecuTorch backend compilation pipelines grow in complexity,
+debugging compiler passes and hardware-specific lowerings has become
+increasingly painful. Two primary frictions compound across backends,
+artifact types, and development teams:</p>
+
+</div>
+</section>
+<section data-id="sec-2" id="sec-2" data-auto-animate>
+<h2>2.1 The Debugging Workflow is Fragmented</h2>
+<div class="slide-content text">
+<p>Debugging is a five-stage workflow involving instrumenting the run,
+configuring the environment, exporting captured artifacts, analyzing
+metrics/differences, and visualizing the results.</p>
+<p>ExecuTorch's existing devtools provide excellent primitives for raw
+capture. In particular, the <code>Inspector</code> and
+<code>ETRecord</code>/<code>ETDump</code> APIs offer a great primitive
+interface for dumping arbitrary runtime binary blobs, leaving the
+backend and developer to design their own interpretation logic in Python
+scripts. However, because there is no common framework to manage the
+execution scripts, configuration, and data-synthesis workflow around
+these Inspector outputs, we see a fragmented tooling landscape with
+several distinct issues:</p>
+<ul>
+<li><strong>No Shared Lifecycle Contract:</strong> Because there is no
+common session model, backends must build bespoke wrapper scripts (e.g.,
+<code>qnn_intermediate_debugger.py</code> on Qualcomm, and separate
+equivalents for XNNPACK) that manually sequence: configure Inspector,
+invoke the compiler, collect raw activation blobs at the right pipeline
+stages, run accuracy simulations, and parse binary data. Each script
+reinvents the same lifecycle logic — when to start, when to collect,
+when to stop, how to clean up — with no shared contract and no reuse
+across backends.</li>
+<li><strong>No Extension Common Ground:</strong> There is no shared
+place for a backend team to plug in specialized analysis logic, meaning
+the code that interprets Inspector raw data cannot be reused across
+different backends.</li>
+<li><strong>No Graph-Anchored Visual Correlation:</strong> Inspector
+natively correlates runtime ETDump events with the final Edge Dialect
+graph via <code>debug_handle</code> (a unique ID mapped from Python FX
+graph nodes to compiled binary operations), and exposes this as pandas
+DataFrames. However, there is no shared layer that (a) captures the
+intermediate FX graph states at <code>prepare_pt2e</code> and
+<code>convert_pt2e</code> (standard PyTorch 2 Export compiler passes
+that transform the FX graph) — stages that are not stored in ETRecord
+and are invisible to Inspector — and (b) synthesizes Inspector's runtime
+correlation data together with these compile-time snapshots into a
+single visual, interactive report. Developers are left to write Python
+scripts to interpret DataFrames, with no graph-anchored visual
+representation.</li>
+<li><strong>No Multi-Concern Synthesis:</strong> Even when individual
+analyses succeed, their outputs remain in disconnected formats — console
+prints, ad-hoc CSVs, static screenshots. There is no shared layer that
+combines accuracy data, partition assignments, stack trace provenance,
+and graph structure into a single navigable view for human review or
+systematic CI parsing.</li>
+</ul>
+<p>These four workflow gaps are addressed by the unified lifecycle and
+Lens protocol specified in <a class="xref" href="#/sec-5">§5</a>.</p>
+
+</div>
+</section>
+<section data-id="sec-2" id="sec-2" data-auto-animate>
+<h2>2.2 The Graph Has No Workflow-Aware Viewer</h2>
+<div class="slide-content text">
+<p>The <code>torch.fx</code> graph module is the core IR for ExecuTorch
+lowering, yet developers have no easy way to interact with it
+in-pipeline:</p>
+<ul>
+<li><strong>Deployment Barriers:</strong> The current visualization tool
+(<code>devtools/visualization/</code> using Model Explorer) requires
+launching a blocking local web server and opening a dedicated browser
+tab. This prevents embedding graph views in standalone files, attaching
+them to issue threads, or running visualization in CI. While Model
+Explorer supports saving a JSON file for later viewing, rendering still
+requires launching its server.</li>
+<li><strong>Visual Signal Isolation:</strong> Model Explorer visualizes
+module hierarchy and supports QDQ cluster/partition highlighting, but it
+has no extension model for overlaying arbitrary debugging signals
+(accuracy loss, profiling data, stack traces) on the same graph.
+Developers must use separate dashboards or custom scripts to correlate
+these signals.</li>
+</ul>
+<p>The standalone, server-free rendering model to address these
+deployment barriers is specified in
+<a class="xref" href="#/sec-7">§7</a>.</p>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-3-group" id="sec-3-group">
+<section data-id="sec-3" id="sec-3" data-auto-animate>
+<h2>3. Goals, Non-Goals, and System Boundaries</h2>
+<div class="slide-content text">
+<p>This section establishes the explicit goals and non-goals of the
+Observatory framework, defining its system boundaries via a comparative
+positioning analysis against existing ExecuTorch devtools.</p>
+
+</div>
+</section>
+<section data-id="sec-3" id="sec-3" data-auto-animate>
+<h2>3.1 Goals</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Shared Lifecycle and Extension Contract:</strong> Define a
+lightweight protocol (<strong>Lens</strong>) allowing backend teams to
+encapsulate one task-specific debugging concern (see
+<a class="xref" href="#/sec-5-3">§5.3</a> for the Lens protocol) —
+including how to configure existing
+<code>Inspector</code>/<code>ETRecord</code> primitives, when to collect
+artifacts, how to analyze the results, and how to render them — once,
+and have the framework handle session management, archive storage, and
+report assembly automatically.</li>
+<li><strong>Unified Invocation:</strong> Support zero-code-change CLI
+execution, nested Python context managers, and pass-level decorators
+(see <a class="xref" href="#/sec-4">§4</a> for invocation
+interfaces).</li>
+<li><strong>Portable Outputs:</strong> Produce a single, self-contained,
+server-free HTML file for human review, and a structured Archive JSON
+for archival and regression comparison.</li>
+<li><strong>Layered Graph Visualizations:</strong> Embed an interactive,
+canvas-based FX graph renderer (<code>fx_viewer</code>) supporting
+dynamic overlays and synchronized multi-graph comparison views (see
+<a class="xref" href="#/sec-7">§7</a>).</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-3" id="sec-3" data-auto-animate>
+<h2>3.2 Non-Goals</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Replacing or Extending Inspector/ETRecord:</strong>
+Observatory defines no new binary capture formats, no new runtime
+instrumentation hooks, and no new ETDump/ETRecord schemas. All raw data
+capture continues to flow through <code>ETRecord</code>,
+<code>ETDump</code>, and <code>Inspector</code> exactly as today.
+Observatory's only new code is the coordination and synthesis logic that
+sits above these primitives, consuming them as clients through lenses.
+As shown in the Tool Positioning Comparison table, Observatory does not
+replace runtime primitives — they remain owned and governed by their
+existing maintainers.</li>
+<li><strong>Unifying Hardware Schemas:</strong> Observatory does not
+force backends into a single runtime trace schema. Backends define their
+own data representations inside their respective task-specific
+lenses.</li>
+<li><strong>Live Profiling Stream:</strong> The focus is on offline,
+post-run report generation and CI/regression comparison rather than
+real-time streaming telemetry.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-3" id="sec-3" data-auto-animate>
+<h2>3.3 Tool Positioning Comparison</h2>
+<div class="slide-content table">
+<table>
+<thead>
+<tr class="header">
+<th>Feature / Property</th>
+<th><code>ETRecord</code> / <code>ETDump</code></th>
+<th><code>Inspector</code></th>
+<th><code>devtools/visualization/</code></th>
+<th><strong>Observatory</strong> + <strong>fx_viewer</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Primary role</strong></td>
+<td>AOT artifact storage; runtime trace capture</td>
+<td>Post-hoc analysis of ETDump + ETRecord files</td>
+<td>Interactive model structure browser (Model Explorer)</td>
+<td>Live workflow coordinator + visual synthesis layer</td>
+</tr>
+<tr class="even">
+<td><strong>Lifecycle</strong></td>
+<td>During export / during runtime</td>
+<td>After the run (file-based)</td>
+<td>Call server in python; blocks until closed</td>
+<td>Collect artifacts during compilation; export reports offline</td>
+</tr>
+<tr class="odd">
+<td><strong>Input</strong></td>
+<td>ExportedProgram, runtime binary blobs</td>
+<td>ETDump file + ETRecord file</td>
+<td>ExportedProgram</td>
+<td>Any artifact type via <code>collect()</code></td>
+</tr>
+<tr class="even">
+<td><strong>Output</strong></td>
+<td>Binary files (<code>.etrecord</code>, <code>.etdump</code>)</td>
+<td>DataFrames, tabular text, numeric gap</td>
+<td>Blocking web server + browser tab; or JSON file requiring server to
+view</td>
+<td>Self-contained HTML/JSON Report + JSON Archive</td>
+</tr>
+<tr class="odd">
+<td><strong>Extension model</strong></td>
+<td>None</td>
+<td><code>delegate_metadata_parser</code> callback</td>
+<td>Style JSON + <code>get_node_partition_name</code> callbacks</td>
+<td>Lens protocol (8 methods, full lifecycle)</td>
+</tr>
+<tr class="even">
+<td><strong>Embeddable in report</strong></td>
+<td>No</td>
+<td>No</td>
+<td>No (opens own tab)</td>
+<td>Yes (first-class)</td>
+</tr>
+<tr class="odd">
+<td><strong>Cross-stage comparison</strong></td>
+<td>No</td>
+<td>AOT vs. runtime (single pair)</td>
+<td>No</td>
+<td>N-way, any stages, any backends</td>
+</tr>
+<tr class="even">
+<td><strong>CI-friendly output</strong></td>
+<td>Binary blobs</td>
+<td>DataFrames (not CI-native)</td>
+<td>Not supported</td>
+<td>Archive JSON + Report JSON (structured, diffable)</td>
+</tr>
+<tr class="odd">
+<td><strong>Replaces any of the above?</strong></td>
+<td>—</td>
+<td>No</td>
+<td>No</td>
+<td><strong>No</strong></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section data-id="sec-3-text-2" id="sec-3-text-2" data-auto-animate>
+<h2>3.3 Tool Positioning Comparison (2)</h2>
+<div class="slide-content text">
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-4-group" id="sec-4-group">
+<section data-id="sec-4" id="sec-4" data-auto-animate>
+<h2>4. User-Facing Surfaces and Outputs</h2>
+<div class="slide-content text">
+<p>This section defines the three entry points for invoking Observatory
+and specifies the two physical formats of debugging output generated by
+the framework.</p>
+
+</div>
+</section>
+<section data-id="sec-4" id="sec-4" data-auto-animate>
+<h2>4.1 Three Entry Points</h2>
+<div class="slide-content text">
+<p>A debugging framework must integrate seamlessly with existing
+development workflows. Observatory provides three distinct invocation
+surfaces to accommodate different integration levels:</p>
+<ul>
+<li><p><strong>The CLI (Zero Code-Change Wrapper):</strong> Executes an
+existing model compilation or export script from the command line. No
+script modifications are required because lenses install scoped
+monkey-patches on standard pipeline functions (such as
+<code>prepare_pt2e</code>, <code>convert_pt2e</code>,
+<code>to_edge_transform_and_lower</code>) during their
+<code>on_session_start</code> hook. These patches transparently call
+<code>Observatory.collect()</code> at the right moments, and all
+originals are restored when the session ends.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> executorch.backends.xnnpack.debugger.observatory <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output-html</span> report.html <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--lens-recipe</span> accuracy <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    examples/xnnpack/aot_compiler.py <span class="at">--model_name</span><span class="op">=</span>mv2 <span class="at">--delegate</span> <span class="at">--quantize</span></span></code></pre></div>
+<blockquote>
+<p><strong>How it works (simplified):</strong> The built-in
+<code>pipeline_graph_collector</code> lens patches
+<code>convert_pt2e</code> to capture the graph before and after
+quantization:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside the lens — not user code:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>original_convert <span class="op">=</span> torchao.quantization.pt2e.quantize_pt2e.convert_pt2e</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> patched_convert_pt2e(model, <span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    Observatory.collect(<span class="st">&quot;Calibrated Model&quot;</span>, model)       <span class="co"># capture input</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> original_convert(model, <span class="op">*</span>args, <span class="op">**</span>kwargs)    <span class="co"># call original</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    Observatory.collect(<span class="st">&quot;Quantized Model&quot;</span>, result)       <span class="co"># capture output</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>torchao.quantization.pt2e.quantize_pt2e.convert_pt2e <span class="op">=</span> patched_convert_pt2e</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Restored on session end.</span></span></code></pre></div>
+<p>The same pattern applies to <code>prepare_pt2e</code> and
+<code>to_edge_transform_and_lower</code>. See
+<a class="xref" href="#/sec-5-3">§5.3</a> for the full Lens
+lifecycle.</p>
+</blockquote></li>
+<li><p><strong>The Context Manager (Fine-Grained Block Scope):</strong>
+Wraps specific blocks of Python compiler code to capture and record
+target artifacts programmatically. The full lifecycle — capture, export
+archive, and generate report — is shown below:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.devtools.observatory <span class="im">import</span> Observatory</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Observatory.clear()  <span class="co"># Start a fresh in-process state.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>gm <span class="op">=</span> export_model(model)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> Observatory.enter_context(<span class="st">&quot;quantization&quot;</span>):  <span class="co"># Outermost region opens a session.</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    Observatory.collect(<span class="st">&quot;before_quantize&quot;</span>, gm)  <span class="co"># Capture stage 1.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    quantized_gm <span class="op">=</span> quantize_model(gm)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    Observatory.collect(<span class="st">&quot;after_quantize&quot;</span>, quantized_gm)  <span class="co"># Capture stage 2.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Archive JSON: raw sessions/records for CI storage or replay.</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>Observatory.export_json(<span class="st">&quot;archive.json&quot;</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># HTML report: interactive dashboard from the current session.</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>Observatory.export_html_report(<span class="st">&quot;report.html&quot;</span>, title<span class="op">=</span><span class="st">&quot;Quantization debug&quot;</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Late binding: regenerate HTML from a saved archive without rerunning.</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>Observatory.generate_html_from_json(<span class="st">&quot;archive.json&quot;</span>, <span class="st">&quot;report_v2.html&quot;</span>)</span></code></pre></div>
+<p>Nested <code>enter_context</code> calls push configuration overrides
+that are popped on exit, enabling per-phase lens tuning.</p></li>
+<li><p><strong>The <code>@observe_pass</code> Decorator (Pass-Level
+Trace):</strong> Decorates individual compiler transform classes to
+automatically capture the input and output FX graphs. The pass logic
+itself requires zero modifications.</p>
+<p>As a <strong>class decorator</strong> — define a new pass with
+built-in tracing:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> operator</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.devtools.observatory <span class="im">import</span> Observatory, observe_pass</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.exir.passes <span class="im">import</span> ExportPass, PassManager</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.fx.passes.infra.pass_base <span class="im">import</span> PassResult</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">@observe_pass</span>(name<span class="op">=</span><span class="st">&quot;fold_add_zero&quot;</span>)  <span class="co"># Captures graph before and after.</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FoldAddZeroPass(ExportPass):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> call(<span class="va">self</span>, gm):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ordinary pass logic — no Observatory calls needed.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> node <span class="kw">in</span> <span class="bu">list</span>(gm.graph.nodes):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> node.target <span class="kw">is</span> operator.add <span class="kw">and</span> node.args[<span class="dv">1</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                node.replace_all_uses_with(node.args[<span class="dv">0</span>])</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                gm.graph.erase_node(node)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        gm.graph.lint()<span class="op">;</span> gm.recompile()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> PassResult(gm, <span class="va">True</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>Observatory.clear()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> Observatory.enter_context(<span class="st">&quot;pre_lowering_passes&quot;</span>):</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    PassManager([FoldAddZeroPass()])(export_model(model))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>Observatory.export_html_report(<span class="st">&quot;pass_trace.html&quot;</span>)  <span class="co"># Includes before/after graphs.</span></span></code></pre></div>
+<p>As an <strong>instance wrapper</strong> — wrap existing pass
+instances in an existing pipeline without modifying their class
+definitions. This is the primary use case for debugging passes inside an
+established pass manager (e.g., <code>QnnPassManager</code>):</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.devtools.observatory <span class="im">import</span> Observatory, observe_pass</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.backends.qualcomm._passes <span class="im">import</span> FoldQDQ, LayoutTransform, RemoveRedundancy</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.exir.pass_manager <span class="im">import</span> PassManager</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Existing pass instances — no source changes needed.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>passes <span class="op">=</span> [FoldQDQ(), LayoutTransform(), RemoveRedundancy()]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap each instance to capture its input/output graphs.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>observed_passes <span class="op">=</span> [observe_pass(p) <span class="cf">for</span> p <span class="kw">in</span> passes]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>Observatory.clear()</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> Observatory.enter_context(<span class="st">&quot;qnn_capture_program&quot;</span>):</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    PassManager(observed_passes)(graph_module)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>Observatory.export_html_report(<span class="st">&quot;qnn_passes.html&quot;</span>)  <span class="co"># One report with all pass diffs.</span></span></code></pre></div></li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-4" id="sec-4" data-auto-animate>
+<h2>4.2 Two Output Formats</h2>
+<div class="slide-content text">
+<p>Observatory separates raw execution state from its final visual and
+analytical representations, generating two distinct artifact types:</p>
+<ul>
+<li><strong>Archive JSON (Raw Execution Store):</strong> A neutral,
+structured, and lightweight JSON serialization containing the recorded
+raw data and session metadata (<code>sessions[]</code> and
+<code>records[]</code>). It contains no baked-in analysis or HTML
+styling, making it highly efficient for CI storage.</li>
+<li><strong>Report HTML/JSON (Derived Analysis Payloads):</strong>
+<ul>
+<li><em>Report HTML (Human Dashboard):</em> A single, portable, and
+server-free HTML file containing interactive graphs and performance
+summaries. It can be shared directly via email, attached to PR comments,
+or reviewed in any browser.</li>
+<li><em>Report JSON (Machine Summary):</em> A structured JSON file
+summarizing critical metrics and flagged regressions, optimized for
+automated CI gates, dashboard parsing, and LLM triage.</li>
+</ul></li>
+</ul>
+<p>The distinction between the raw Archive JSON and the analyzed Report
+HTML/JSON is enforced by the architectural split detailed in
+<a class="xref" href="#/sec-5">§5</a>.</p>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-5-group" id="sec-5-group">
+<section data-id="sec-5" id="sec-5" data-auto-animate>
+<h2>5. Core Design &amp; Architecture: Capture First, Analyze Later</h2>
+<div class="slide-content text">
+<p>This section details the core architectural split between raw data
+capture and offline analysis, defines the core execution vocabulary, and
+specifies the stable Lens Protocol.</p>
+
+</div>
+</section>
+<section data-id="sec-5" id="sec-5" data-auto-animate>
+<h2>5.1 The Foundational Split</h2>
+<div class="slide-content text">
+<p>The Observatory architecture is governed by a fundamental separation
+of concerns: online data capture during compilation must be decoupled
+from offline analysis and visualization.</p>
+<p>Because compiler passes and runtime executions are transient, the
+capture phase must record raw artifacts immediately to prevent data
+loss. The capture phase is designed to be highly lightweight and fast,
+minimizing runtime intrusion. Conversely, unlike data capture, post-hoc
+analysis is computationally expensive, highly iterative, and frequently
+modified.</p>
+<p>To resolve this tension, Observatory captures raw compiler states
+into a neutral, unrendered <strong>Archive JSON</strong> file.
+Downstream analysis and visualization are late-bound operations that
+process the Archive JSON to produce the human-readable <strong>Report
+HTML</strong> or machine-readable <strong>Report JSON</strong>. This
+split enables developers to re-analyze historical compilation runs with
+newly written lenses without re-running the expensive compiler or
+simulation pipeline.</p>
+
+</div>
+</section>
+<section data-id="sec-5-code-2" id="sec-5-code-2" data-auto-animate>
+<h2>5.1 The Foundational Split — Code</h2>
+<div class="slide-content code">
+<pre><code>── CAPTURE (online, during the run) ──────│── ANALYSIS (offline, from the Archive) ──
+                                          │
+  Observatory.enter_context(...)          │  Lens.analyze(records, config)
+  Observatory.collect(name, artifact)     │         │
+         │                                │         ▼
+         ▼                                │  get_frontend_spec() → Frontend
+  [Archive JSON]  ────────────────────────┼──►  dashboard() / record()
+  sessions[] + records[]                  │         │
+  (raw, no analysis)                      │         ▼
+                                          │  [Report HTML]  +  [Report JSON]</code></pre>
+
+</div>
+</section>
+<section data-id="sec-5-text-3" id="sec-5-text-3" data-auto-animate>
+<h2>5.1 The Foundational Split (3)</h2>
+<div class="slide-content text">
+<p>This foundational split explains why the Archive JSON generated by
+the CLI (<a class="xref" href="#/sec-4-1">§4.1</a>) or Context Manager
+(<a class="xref" href="#/sec-4-1">§4.1</a>) can be late-bound analyzed
+or compared across runs without executing the compiler again.</p>
+
+</div>
+</section>
+<section data-id="sec-5" id="sec-5" data-auto-animate>
+<h2>5.2 Vocabulary, Built From a Run</h2>
+<div class="slide-content text">
+<p>The primary abstractions are defined through the lifecycle of a
+single model compilation. All of them are created through one API:
+<code>Observatory.enter_context(name, config)</code>.</p>
+<ol type="1">
+<li><strong>Session:</strong> The outermost scope. Created automatically
+when the first <code>enter_context</code> is called (region stack is
+empty). Identified by <code>session_id</code>. This is the <em>only</em>
+boundary where lens lifecycle hooks fire (<code>on_session_start</code>,
+<code>on_session_end</code>).</li>
+<li><strong>Region:</strong> A named, nested scope inside a Session.
+Created by any <em>inner</em> <code>enter_context</code> call. Regions
+form a tree (e.g., <code>lowering/pass_1/</code>). They carry no lens
+hooks — they exist to label <em>where</em> in the pipeline each capture
+happened.</li>
+<li><strong>Config:</strong> Each <code>enter_context</code> can pass a
+<code>config</code> dict. It merges into the parent’s config on entry
+and pops on exit. This lets authors toggle lenses (e.g., disable
+expensive accuracy simulation for a fast sub-pipeline) without touching
+surrounding code.</li>
+<li><strong>Record:</strong> One captured observation. Created by
+<code>Observatory.collect(name, artifact)</code>. Stamped with the
+current <code>session_id</code> and the full <code>region_stack</code>
+path at the moment of capture.</li>
+<li><strong>Archive:</strong> The raw JSON file written at session
+close. Contains <code>sessions[]</code> + <code>records[]</code> with no
+analysis.</li>
+<li><strong>Report:</strong> The derived output generated offline from
+an Archive. HTML for humans, JSON for machines.</li>
+</ol>
+
+</div>
+</section>
+<section data-id="sec-5-code-2" id="sec-5-code-2" data-auto-animate>
+<h2>5.2 Vocabulary, Built From a Run — Code</h2>
+<div class="slide-content code">
+<pre><code>         PYTHON CODE                              RESULTING STRUCTURE
+───────────────────────────────────────    ─────────────────────────────────────────
+
+with enter_context(&quot;mv2_debug&quot;,          Session: &quot;mv2_debug&quot;
+    config={accuracy: {enabled: True}}):   config: {accuracy: {enabled: True}}
+                                           🔔 on_session_start (patches installed)
+  │
+  │ with enter_context(&quot;quant&quot;,            ├─ Region: &quot;quant&quot;
+  │     config={accuracy:                  │    config: +{sim_batch: 8}
+  │       {sim_batch: 8}}):                │
+  │   collect(&quot;Quantized&quot;, gm)             │    └─ Record₁  [&quot;quant&quot;]
+  │                                        │
+  │ with enter_context(&quot;lowering&quot;):        ├─ Region: &quot;lowering&quot;  (config: inherited)
+  │   │                                    │
+  │   │ with enter_context(&quot;pass_1&quot;):      │    ├─ Region: &quot;pass_1&quot;
+  │   │   collect(&quot;before&quot;, gm)            │    │    ├─ Record₂  [&quot;lowering&quot;, &quot;pass_1&quot;]
+  │   │   collect(&quot;after&quot;, out)            │    │    └─ Record₃  [&quot;lowering&quot;, &quot;pass_1&quot;]
+  │   │                                    │    │
+  │   │ with enter_context(&quot;pass_2&quot;):      │    ├─ Region: &quot;pass_2&quot;
+  │   │   collect(&quot;before&quot;, gm)            │    │    ├─ Record₄  [&quot;lowering&quot;, &quot;pass_2&quot;]
+  │   │   collect(&quot;after&quot;, out)            │    │    └─ Record₅  [&quot;lowering&quot;, &quot;pass_2&quot;]
+  │   │                                    │    │
+  │   │ collect(&quot;final&quot;, gm)               │    └─ Record₆  [&quot;lowering&quot;]
+  │                                        │
+  (exit outermost)                         🔔 on_session_end (patches restored)
+                                           serialize → archive.json
+
+═══════════════════════════════ offline boundary ═══════════════════════════════
+
+                    analyze(records, config) + get_frontend_spec()
+                              │
+                              ▼
+                    [Report HTML] + [Report JSON]</code></pre>
+
+</div>
+</section>
+<section data-id="sec-5-text-3" id="sec-5-text-3" data-auto-animate>
+<h2>5.2 Vocabulary, Built From a Run (3)</h2>
+<div class="slide-content text">
+<blockquote>
+<p><strong>Disambiguation:</strong> An Observatory
+<strong>Record</strong> is an in-memory or JSON-persisted compile-time
+observation tagged with session and region info. It is entirely
+independent of ExecuTorch's existing
+<strong><code>ETRecord</code></strong> file, which is a serialized
+compilation package used by runtime tools.</p>
+</blockquote>
+
+</div>
+</section>
+<section data-id="sec-5" id="sec-5" data-auto-animate>
+<h2>5.3 The Lens Protocol: How Task-Specific Logic Plugs In</h2>
+<div class="slide-content text">
+<p>Observatory uses a pluggable extension architecture. Developers
+implement a unified, task-specific <strong>Lens</strong> protocol to
+encapsulate both compile-time collection and offline analysis logic.</p>
+<p>The framework manages session lifecycles and file serialization,
+while the Lens focuses entirely on a specific debugging concern. The
+Lens Protocol is defined by eight lifecycle methods:</p>
+
+</div>
+</section>
+<section data-id="sec-5-table-2" id="sec-5-table-2" data-auto-animate>
+<h2>5.3 The Lens Protocol: How Task-Specific Logic Plugs In — Table</h2>
+<div class="slide-content table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Phase</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Trigger</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Registration</td>
+<td style="text-align: left;"><code>setup()</code></td>
+<td style="text-align: left;">Framework initialization</td>
+<td style="text-align: left;">Performs one-time setup upon lens
+registration.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Capture (online)</strong></td>
+<td
+style="text-align: left;"><code>on_session_start(context)</code></td>
+<td style="text-align: left;">Session initialization</td>
+<td style="text-align: left;">Prepares state, installs necessary
+compiler patches, or initializes calibration datasets.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td
+style="text-align: left;"><code>observe(artifact, context)</code></td>
+<td style="text-align: left;"><code>Observatory.collect()</code>
+call</td>
+<td style="text-align: left;">Evaluates the captured artifact; returns
+<code>None</code> to skip non-matching types.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td
+style="text-align: left;"><code>digest(observation, context)</code></td>
+<td style="text-align: left;">Immediately after
+<code>observe</code></td>
+<td style="text-align: left;">Serializes raw observations into the
+Record's digest map before writing to disk.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>on_session_end(context)</code></td>
+<td style="text-align: left;">Session termination</td>
+<td style="text-align: left;">Uninstalls active patches, restores global
+state, and finalizes live state.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Analysis (offline)</strong></td>
+<td style="text-align: left;"><code>analyze(records, config)</code></td>
+<td style="text-align: left;">Report generation</td>
+<td style="text-align: left;">Processes all captured Records across the
+Session to compute derived insights.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>get_frontend_spec()</code></td>
+<td style="text-align: left;">Visualization generation</td>
+<td style="text-align: left;">Returns a <code>Frontend</code> schema
+with dashboard-level and record-level rendering callbacks.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cleanup</td>
+<td style="text-align: left;"><code>clear()</code></td>
+<td style="text-align: left;">Core session reset</td>
+<td style="text-align: left;">Resets any thread-local or global state to
+ensure clean successive runs.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section data-id="sec-5-text-3" id="sec-5-text-3" data-auto-animate>
+<h2>5.3 The Lens Protocol: How Task-Specific Logic Plugs In (3)</h2>
+<div class="slide-content text">
+<h4 id="walkthrough-of-the-accuracy-lens">Walkthrough of the Accuracy
+Lens</h4>
+<p>The Accuracy Lens follows the protocol to measure model accuracy at
+each pipeline stage, compare stages against a baseline, and surface
+results in both the HTML report table and CI JSON output.</p>
+<ol type="1">
+<li><strong><code>on_session_start</code></strong> — installs
+backend-specific dataset patches (registered via
+<code>register_dataset_patches</code>). These capture calibration inputs
+when the user’s script loads a dataset, so the lens reuses real data
+without script changes.</li>
+<li><strong><code>observe</code></strong> — respects
+<code>config.accuracy.enabled</code>, including per-region overrides (a
+region can disable accuracy to skip expensive simulation). On the first
+"Exported Float" record, lazily initializes by extracting the float
+model and building an Evaluator with captured data. Skips non-Module
+artifacts. For valid models, runs
+<code>evaluator.evaluate(artifact)</code> to produce metrics (PSNR, MSE,
+cosine similarity, top-k accuracy) and tracks
+<code>_worst_indices</code> so other lenses can identify the
+worst-performing input.</li>
+<li><strong><code>digest</code></strong> — passes the metrics dict
+through unchanged (already JSON-serializable). This keeps the Archive
+simple and makes the same values available to analysis.</li>
+<li><strong><code>on_session_end</code></strong> — uninstalls all
+patches and clears cached state, preventing one session from leaking
+into the next.</li>
+<li><strong><code>analyze</code></strong> — walks records and computes
+per-metric diffs between consecutive pipeline stages (e.g.,
+<code>psnr_diff</code> from stage N−1 to N). This shows not just each
+stage’s accuracy but <em>where</em> accuracy changed across the
+pipeline.</li>
+<li><strong><code>get_frontend_spec()</code></strong> returns
+<code>_AccuracyFrontend</code>, which produces:
+<ul>
+<li><strong><code>dashboard()</code></strong> → a
+<strong>TableBlock</strong> titled "Accuracy Summary" shown in the HTML
+report, containing <code>records_measured</code> count and mean values
+for each primary metric (<code>psnr_mean</code>, <code>mse_mean</code>,
+<code>cosine_sim_mean</code>).</li>
+<li><strong><code>json_report()</code></strong> → aggregated metrics
+with mean/min/max/worst_record per metric, for CI gates and automated
+triage.</li>
+<li><em>(The green-to-red graph color overlay on individual nodes is
+contributed by the separate <code>per_layer_accuracy</code> lens, which
+operates at per-operator granularity.)</em></li>
+</ul></li>
+</ol>
+<p>The hooks defined in the Lens Protocol constitute one of the stable
+public surfaces governed under
+<a class="xref" href="#/sec-9">§9</a>.</p>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-6-group" id="sec-6-group">
+<section data-id="sec-6" id="sec-6" data-auto-animate>
+<h2>6. Working Demos and Persona Walkthroughs</h2>
+<div class="slide-content text">
+<p>This section validates the Observatory architecture through three
+real-world developer personas, detailing their workflows, CLI
+invocations, and code-level integrations.</p>
+
+</div>
+</section>
+<section data-id="sec-6" id="sec-6" data-auto-animate>
+<h2>6.1 Backend Debug-Logic Maintainer and Debugging Engineer</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Backend debug-logic maintainer:</strong> writes Lens logic
+once (e.g., per-layer accuracy analysis) and Observatory runs it across
+all models and scripts — session setup, monkey-patching, snapshot
+collection, report generation, and cleanup are all handled by the
+framework.</li>
+<li><strong>Debugging engineer / issue reporter:</strong> runs one CLI
+command over an existing model script. No source edits, no understanding
+of Lens internals required. Share the output and the bug is
+reproducible.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-6-code-2" id="sec-6-code-2" data-auto-animate>
+<h2>6.1 Backend Debug-Logic Maintainer and Debugging Engineer — Code</h2>
+<div class="slide-content code">
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> executorch.backends.qualcomm.debugger.observatory <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output-html</span> obs_report.html <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--lens-recipe</span> accuracy <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    examples/qualcomm/oss_scripts/mobilevit_v2.py <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--backend</span> htp <span class="at">--model</span> SM8650 <span class="at">-d</span> ./imagenet-mini-val/ <span class="dt">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">-b</span> build-android/ <span class="at">--compile_only</span></span></code></pre></div>
+
+</div>
+</section>
+<section data-id="sec-6-text-3" id="sec-6-text-3" data-auto-animate>
+<h2>6.1 Backend Debug-Logic Maintainer and Debugging Engineer (3)</h2>
+<div class="slide-content text">
+<ul>
+<li>The HTML report is self-contained: open it in any browser without
+installing anything or re-running the model.</li>
+<li>Attach it to a GitHub issue or PR and reviewers can immediately
+inspect captured graphs, accuracy metrics, and run context in one file —
+making bug reports actionable on first read.</li>
+<li><strong>Evidence:</strong> Pre-generated single-run HTML reports and
+walkthrough videos are hosted in <a
+href="#/appendix-a1-pre-generated-single-run-reports-and-walkthrough-videos">Appendix
+A.1</a>.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-6" id="sec-6" data-auto-animate>
+<h2>6.2 AOT Pipeline / Pass Author</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Goal:</strong> Find which compiler pass in an existing
+pipeline introduces accuracy loss or graph corruption — without
+modifying any pass source code.</li>
+<li><strong>The scenario:</strong> Accuracy drops after QNN lowering.
+Instead of adding print statements to 30 passes, wrap the existing pass
+list and inspect the HTML report to identify which pass changed the
+graph unexpectedly.</li>
+<li><strong>Zero-invasive instrumentation:</strong>
+<code>observe_pass</code> wraps existing pass <em>instances</em>
+directly. No class modifications, no subclassing.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-6-code-2" id="sec-6-code-2" data-auto-animate>
+<h2>6.2 AOT Pipeline / Pass Author — Code</h2>
+<div class="slide-content code">
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.devtools.observatory <span class="im">import</span> Observatory, observe_pass</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.backends.qualcomm._passes <span class="im">import</span> (</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    FoldQDQ, LayoutTransform, RemoveRedundancy, I64toI32</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> executorch.exir.pass_manager <span class="im">import</span> PassManager</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>passes <span class="op">=</span> [</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    observe_pass(FoldQDQ()),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    observe_pass(LayoutTransform()),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    observe_pass(RemoveRedundancy()),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    observe_pass(I64toI32()),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Observatory.clear()</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> Observatory.enter_context(<span class="st">&quot;qnn_lowering&quot;</span>):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    PassManager(passes)(graph_module)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>Observatory.export_html_report(<span class="st">&quot;qnn_pass_debug.html&quot;</span>)</span></code></pre></div>
+
+</div>
+</section>
+<section data-id="sec-6-text-3" id="sec-6-text-3" data-auto-animate>
+<h2>6.2 AOT Pipeline / Pass Author (3)</h2>
+<div class="slide-content text">
+<ul>
+<li>The HTML tree-explorer shows each pass as a nested region in the
+left panel. Click through pass-by-pass before/after graph diffs to
+pinpoint where the graph structure or accuracy changed.</li>
+<li><strong>Evidence:</strong> Visual screenshots of the hierarchical
+Record Tree-Explorer panel are available in <a
+href="#/appendix-a2-record-tree-explorer-visuals">Appendix A.2</a>.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-6" id="sec-6" data-auto-animate>
+<h2>6.3 CI / Nightly-Regression / Cross-Backend Triage</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Goal:</strong> Make CI failures self-contained — not just
+pass/fail, but the full debugging context needed to triage the failure
+without local reproduction.</li>
+<li><strong>Today:</strong> CI says "accuracy dropped 2%." The engineer
+must reproduce locally, add instrumentation, re-run the model, and
+search for where the drop happened.</li>
+<li><strong>With Observatory:</strong> CI captures intermediate graphs,
+per-layer accuracy metrics, stack traces, and metadata into one
+lightweight Archive JSON alongside the pass/fail signal. When a
+regression fires, the engineer opens the HTML report from CI artifacts
+and immediately sees <em>which pass</em> introduced the drop and
+<em>which operators</em> are affected.</li>
+<li>For most regressions, this eliminates the "reproduce locally" step:
+the CI report <em>is</em> the reproduction.</li>
+<li>The same structured data serves both humans (HTML in a browser) and
+machines (Report JSON for LLM triage bots or dashboard parsers).</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-6-code-2" id="sec-6-code-2" data-auto-animate>
+<h2>6.3 CI / Nightly-Regression / Cross-Backend Triage — Code</h2>
+<div class="slide-content code">
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> executorch.backends.xnnpack.debugger.observatory <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output-archive</span> nightly/2026-04-20/mv2.json <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--lens-recipe</span><span class="op">=</span>accuracy,graph,stack_trace <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    examples/xnnpack/aot_compiler.py <span class="at">--model_name</span><span class="op">=</span>mv2 <span class="at">--delegate</span> <span class="at">--quantize</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> executorch.devtools.observatory <span class="dt">\</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--compare</span> nightly/2026-04-20/mv2.json nightly/2026-04-23/mv2.json <span class="dt">\</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output-html</span> regression.html <span class="dt">\</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--output-report-json</span> regression.summary.json</span></code></pre></div>
+
+</div>
+</section>
+<section data-id="sec-6-text-3" id="sec-6-text-3" data-auto-animate>
+<h2>6.3 CI / Nightly-Regression / Cross-Backend Triage (3)</h2>
+<div class="slide-content text">
+<ul>
+<li>This flow works across branches, dates, and backends because
+comparison operates on archived structured records, not re-executed
+models.</li>
+<li><strong>Evidence:</strong> Cross-backend comparison matrices and
+machine-readable JSON summaries are cataloged in <a
+href="#/appendix-a3-cross-backend-comparison-reports">Appendix
+A.3</a>.</li>
+</ul>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-7-group" id="sec-7-group">
+<section data-id="sec-7" id="sec-7" data-auto-animate>
+<h2>7. `fx_viewer` — The Layered Graph Visualizer</h2>
+<div class="slide-content text">
+<p>This section describes the technical design, layout performance, and
+programming interfaces of the server-free interactive graph
+visualizer.</p>
+<p>As described in <a class="xref" href="#/sec-4">§4</a> and
+<a class="xref" href="#/sec-5-1">§5.1</a>, the human-readable Report
+HTML embeds graph structures; <code>fx_viewer</code> is the portable
+substrate that renders them.</p>
+
+</div>
+</section>
+<section data-id="sec-7" id="sec-7" data-auto-animate>
+<h2>7.1 Standalone and Server-Free Design</h2>
+<div class="slide-content text">
+<p>Conventional graph visualization tools require running a local web
+server (such as Model Explorer) to compute layouts or serve assets. This
+layout model creates significant deployment barriers when sharing
+reports across isolated environments or embedding them directly inside
+CI dashboards and PR threads.</p>
+<p>To bypass these friction points, <code>fx_viewer</code> runs entirely
+on client-side browser technology. Graph structures and coordinates are
+fully computed at build-time in Python. The output HTML carries
+pre-packaged CSS and JS alongside compressed, layout-bound JSON data,
+allowing instant, interactive rendering on any device without a
+background server.</p>
+
+</div>
+</section>
+<section data-id="sec-7" id="sec-7" data-auto-animate>
+<h2>7.2 Python and JavaScript API Boundaries</h2>
+<div class="slide-content text">
+<p>To maintain a strict separation of concerns, the visualizer exposes
+two public API surfaces:</p>
+
+</div>
+</section>
+<section data-id="sec-7-code-2" id="sec-7-code-2" data-auto-animate>
+<h2>7.2 Python and JavaScript API Boundaries — Code</h2>
+<div class="slide-content code">
+<pre><code>  BUILD-TIME (Python API)                RUN-TIME (JS API, Browser)
+┌─────────────────────────┐            ┌────────────────────────────┐
+│ • FXGraphExporter       │  produces  │ • FXGraphViewer.create     │
+│ • GraphExtension        │ ─────────► │ • FXGraphCompare.create    │
+│ • Extension Layers      │            │ • Layer / ColorBy Mutators │
+└─────────────────────────┘            └────────────────────────────┘</code></pre>
+
+</div>
+</section>
+<section data-id="sec-7-text-3" id="sec-7-text-3" data-auto-animate>
+<h2>7.2 Python and JavaScript API Boundaries (3)</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Python API (Build-Time):</strong> Used by lenses to export
+<code>GraphModule</code> objects. The <code>FXGraphExporter</code>
+processes structural graphs, while <code>GraphExtension</code> allows
+lenses to overlay custom data structures on graph nodes.</li>
+<li><strong>JavaScript API (Run-Time):</strong> Consumed by the Report
+HTML shell to render the graph canvas. It provides constructor functions
+(<code>FXGraphViewer.create</code> for single views,
+<code>FXGraphCompare.create</code> for synchronized side-by-side views)
+and exposes mutator event hooks for external control of node hovering,
+selection, and viewport actions.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-7" id="sec-7" data-auto-animate>
+<h2>7.3 Performance Scaling and Layout Processing</h2>
+<div class="slide-content text">
+<p>Computing node placement in the browser is slow and resource-heavy
+for large models. To address this scaling limit, <code>fx_viewer</code>
+offloads layout calculations to the compile-time Python stage.</p>
+<p>Coordinates are pre-computed using the Sugiyama layout algorithm (a
+standard hierarchical layering layout approach for directed acyclic
+graphs). This pre-computation utilizes the <code>fast-sugiyama</code>
+layout library (requiring Python &gt;= 3.11). If the build environment
+lacks this dependency or uses older Python versions, coordinates are
+bypassed, falling back to standard tree layouts or client-side layout
+caching.</p>
+<p>Because the HTML payload contains final rendering coordinates,
+<code>fx_viewer</code> opens a 10,000-node graph instantaneously,
+bypassing browser-side computational bottlenecks.</p>
+
+</div>
+</section>
+<section data-id="sec-7" id="sec-7" data-auto-animate>
+<h2>7.4 Layered Overlay Architecture</h2>
+<div class="slide-content text">
+<p>The visualizer separates the structural graph model from analytical
+overlays:</p>
+<ul>
+<li><strong>The Base Layer:</strong> Renders immutable graph elements,
+including operations, inputs, outputs, and their structural dataflow
+edges.</li>
+<li><strong>Extension Layers:</strong> Registered by individual Lenses
+(such as quantization boundaries, operator profile timings, or accuracy
+loss). Multiple lenses can paint overlays on the same Base Layer without
+structural interference, enabling unified visualization of independent
+compiler concerns.</li>
+</ul>
+<p>The coordinate-bound Python export classes and JS runtime components
+form stable contracts governed under
+<a class="xref" href="#/sec-9">§9</a>.</p>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-8-group" id="sec-8-group">
+<section data-id="sec-8" id="sec-8" data-auto-animate>
+<h2>8. Scope, RFC Acceptance Boundary, and Roadmap</h2>
+<div class="slide-content text">
+<p>This section outlines the implementation phases of the proposed
+capabilities and defines the boundary of formal RFC acceptance.</p>
+
+</div>
+</section>
+<section data-id="sec-8" id="sec-8" data-auto-animate>
+<h2>8.1 Scope and Acceptance Boundary</h2>
+<div class="slide-content text">
+<p>While several of the "Proposed" features (such as Report JSON and
+<code>--compare</code> mode) have been implemented as proof-of-concept
+components in <code>devtools/observatory/</code> for validation, they
+are formally presented in this RFC to seek design approval. RFC
+acceptance establishes stable API contracts, serialization schemas, and
+core directory layouts before these features are promoted to
+production.</p>
+
+</div>
+</section>
+<section data-id="sec-8" id="sec-8" data-auto-animate>
+<h2>8.2 Execution Roadmap</h2>
+<div class="slide-content table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature Area</th>
+<th style="text-align: center;">Shipped in Draft Branch</th>
+<th style="text-align: center;">Proposed in This RFC</th>
+<th style="text-align: center;">Future Work (Follow-ups)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Core Infrastructure</strong></td>
+<td style="text-align: center;">Python Context Manager,
+<code>@observe_pass</code>, Region Tree View, Core Session
+Lifecycle</td>
+<td style="text-align: center;">Standardized Archive JSON Reloading,
+Stable Lens Protocol Hooks</td>
+<td style="text-align: center;">Automated Nightly CI regression
+templates</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Lenses (Debugging
+Concerns)</strong></td>
+<td style="text-align: center;">Compile-Time Accuracy, FX Graph Capture,
+Stack-Trace Provenance, Run Metadata, Pipeline Step Patches</td>
+<td style="text-align: center;">Report JSON via
+<code>json_frontend</code> (structured machine summary)</td>
+<td style="text-align: center;">Runtime/Delegated Accuracy, QNN QHAS
+profiling, XNNProfiler aggregation, QParam Audit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>fx_viewer</code>
+(Visuals)</strong></td>
+<td style="text-align: center;">Pan/Zoom/Minimap, Fuzzy Search, N-Way
+Node-Selection Sync, Multi-Layer Overlays</td>
+<td style="text-align: center;">Stable Build-Time Python &amp; Run-Time
+JS Boundaries</td>
+<td style="text-align: center;">Support for non-FX graph formats (TOSA,
+PyTorch JIT, delegated graphs)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>CLI Capabilities</strong></td>
+<td style="text-align: center;">Backend-specific &amp; generic CLI
+wrappers</td>
+<td style="text-align: center;"><code>--compare</code> CLI Mode
+(Archive-to-Regression report generation)</td>
+<td style="text-align: center;">Live streaming-telemetry dashboard</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section data-id="sec-8-text-2" id="sec-8-text-2" data-auto-animate>
+<h2>8.2 Execution Roadmap (2)</h2>
+<div class="slide-content text">
+<p>The proposed schema-dependent features listed above are integrated
+directly with the API stability and schema contracts governed under
+<a class="xref" href="#/sec-9">§9</a>.</p>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-9-group" id="sec-9-group">
+<section data-id="sec-9" id="sec-9" data-auto-animate>
+<h2>9. Governance and API Stability</h2>
+<div class="slide-content text">
+<p>This section defines ownership boundaries and establishes stability
+contracts for core APIs and serialization schemas.</p>
+
+</div>
+</section>
+<section data-id="sec-9" id="sec-9" data-auto-animate>
+<h2>9.1 Ownership Boundaries</h2>
+<div class="slide-content text">
+<p>To manage development across multiple backends, Observatory enforces
+clear repository and subdirectory boundaries (see <a href="#/q1">Q1 in
+<a class="xref" href="#/sec-10">§10</a></a>):</p>
+<ul>
+<li><strong>Core Devtools Reviewers:</strong> Own the core orchestration
+logic under <code>devtools/observatory/</code> and
+<code>devtools/fx_viewer/</code>, the core Lens Protocol contract, and
+generic, backend-agnostic lenses (e.g., standard metadata, graph
+capture, and compile-time accuracy).</li>
+<li><strong>Backend Teams:</strong> Own their respective backend
+debugger directories (e.g.,
+<code>backends/qualcomm/debugger/observatory/</code> or
+<code>backends/xnnpack/debugger/observatory/</code>), including all
+vendor-SDK custom patches and backend-specific lenses. No core devtools
+sign-off is required for backend-specific lens modifications.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="sec-9" id="sec-9" data-auto-animate>
+<h2>9.2 Stable Public Surfaces</h2>
+<div class="slide-content text">
+<p>To protect downstream automated pipelines, four public surfaces are
+designated as stable, change-controlled contracts (see <a
+href="#/q2">Q2</a> and <a href="#/q3">Q3 in
+<a class="xref" href="#/sec-10">§10</a></a>):</p>
+<ol type="1">
+<li><strong>The Lens Protocol Interface:</strong> The lifecycle hook
+signatures specified in <a
+href="#/53-the-lens-protocol-how-task-specific-logic-plugs-in"><a class="xref" href="#/sec-5-3">§5.3</a></a>.</li>
+<li><strong><code>GraphExtension</code> Python API:</strong> The methods
+and formats used to construct visual overlays in <a
+href="#/72-python-and-javascript-api-boundaries"><a class="xref" href="#/sec-7-2">§7.2</a></a>.</li>
+<li><strong>Archive JSON Schema:</strong> The raw serialization
+structure defined in <a
+href="#/51-the-foundational-split"><a class="xref" href="#/sec-5-1">§5.1</a></a>.</li>
+<li><strong>Report JSON Schema (Proposed):</strong> The machine-readable
+summary output format described in <a
+href="#/51-the-foundational-split"><a class="xref" href="#/sec-5-1">§5.1</a></a>.</li>
+</ol>
+<p>Breaking changes to these contracts require a structured migration
+path, including deprecation warnings and backward-compatibility aliases
+where feasible.</p>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="sec-10-group" id="sec-10-group">
+<section data-id="sec-10" id="sec-10" data-auto-animate>
+<h2>10. Open Questions for Reviewers</h2>
+<div class="slide-content text">
+<p>This section presents critical design and governance decisions
+requested from reviewers, complete with trade-off analysis and
+recommended paths.</p>
+
+</div>
+</section>
+<section data-id="q1" id="q1" data-auto-animate>
+<h2>Q1 — Where is the line between core and backend ownership, and how does a lens cross it?</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Decision Requested:</strong> Define the governance and
+directory path structure when a lens evolves from backend-specific to
+shared or generic (see <a
+href="#/91-ownership-boundaries"><a class="xref" href="#/sec-9-1">§9.1</a></a>).</li>
+<li><strong>Context:</strong> Currently, lenses are split binary:
+generic lenses live in <code>devtools/observatory/lenses/</code> and
+backend-specific lenses live in
+<code>backends/&lt;backend_name&gt;/</code>. It is unclear if a third,
+middle-tier directory is required for lenses shared by a subset of
+backends, or what the exact approval process is when "promoting" a lens
+from a backend directory to core devtools.</li>
+<li><strong>Trade-offs:</strong>
+<ul>
+<li><em>Option A (Middle-Tier Directory):</em> Keeps code DRY but
+introduces ownership grey zones and complicates <code>CODEOWNERS</code>
+configurations.</li>
+<li><em>Option B (Strict Binary Split):</em> Simpler to manage but leads
+to temporary code duplication between active backends.</li>
+</ul></li>
+<li><strong>Starting Recommendation:</strong> Maintain the binary
+directory split for v1. Treat lenses shared by multiple backends as core
+devtools lenses that backends opt into. Promote a backend-specific lens
+to core via a standard pull request that relocates the file, leaves a
+backward-compatibility import shim, and is announced to relevant backend
+owners.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="q2" id="q2" data-auto-animate>
+<h2>Q2 — Should lenses carry an explicit stability tier?</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Decision Requested:</strong> Determine whether to annotate
+lenses with stability indicators to guide external tool developers (see
+<a href="#/sec-9-2"><a class="xref" href="#/sec-9-2">§9.2</a></a>).</li>
+<li><strong>Context:</strong> Developers building tooling on top of
+Observatory's outputs need to understand which lenses are safe to depend
+on. It is proposed to declare lenses as either <em>experimental</em> or
+<em>stable</em>, similar to annotations used in PyTorch core APIs.</li>
+<li><strong>Trade-offs:</strong>
+<ul>
+<li><em>Option A (Explicit Annotations):</em> Provides clear
+expectations and contracts for users but increases maintenance overhead
+and limits rapid internal refactoring.</li>
+<li><em>Option B (Implicit Tiers):</em> Maximizes velocity for core
+development but slows down adoption by external backend teams fearing
+breaking changes.</li>
+</ul></li>
+<li><strong>Starting Recommendation:</strong> Annotate stability at two
+boundaries: designate the base Lens Protocol and the two schemas
+(Archive, Report) as stable. Default individual lenses to
+<em>experimental</em> until they undergo a stabilization review. Mark
+the core <code>graph</code> and <code>metadata</code> lenses as the
+first stable lens implementations.</li>
+</ul>
+
+</div>
+</section>
+<section data-id="q3" id="q3" data-auto-animate>
+<h2>Q3 — What channel announces breaking changes to known backend owners?</h2>
+<div class="slide-content text">
+<ul>
+<li><strong>Decision Requested:</strong> Establish a reliable,
+low-overhead communication channel to notify backend owners of breaking
+changes to core schemas or protocol hooks (see <a
+href="#/sec-9-2"><a class="xref" href="#/sec-9-2">§9.2</a></a>).</li>
+<li><strong>Context:</strong> High-trust development requires that
+backend teams are actively alerted when API changes impact their
+specific custom lenses.</li>
+<li><strong>Trade-offs:</strong>
+<ul>
+<li><em>Option A (GitHub Issue Labels):</em> Requires zero
+infrastructure but relies on developers manually subscribing to and
+monitoring labels.</li>
+<li><em>Option B (Active Notification Channel):</em> Guarantees delivery
+and proactive response but requires list curation and manual
+maintenance.</li>
+</ul></li>
+<li><strong>Starting Recommendation:</strong> Implement a low-cost,
+automated solution: require an <code>observatory-api-change</code> label
+on breaking PRs, and map protocol/schema files in
+<code>CODEOWNERS</code> to automatically request reviews from registered
+backend maintainers whenever those files are modified.</li>
+</ul>
+<hr />
+
+</div>
+</section>
+</section>
+<section data-id="appendix-a-group" id="appendix-a-group">
+<section data-id="appendix-a" id="appendix-a" data-auto-animate>
+<h2>Appendix A. Demo Reports, Videos, and Generated Assets</h2>
+<div class="slide-content text">
+<p>This appendix aggregates external walk-through assets, pre-generated
+comparison reports, raw execution logs, and supervisor machine file
+paths.</p>
+
+</div>
+</section>
+<section data-id="appendix-a1" id="appendix-a1" data-auto-animate>
+<h2>A.1 Pre-Generated Single-Run Reports and Walkthrough Videos</h2>
+<div class="slide-content text">
+<p>Single-run reports capture individual backend compilations. Lenses
+active in these reports include <code>metadata</code>,
+<code>stack_trace</code>, <code>graph</code>, and
+<code>per_layer_accuracy</code> (compile-time simulation).</p>
+<ul>
+<li><p><strong>Demonstration Videos:</strong></p>
+<ul>
+<li><em>Video 1 (Walkthrough):</em> A walkthrough showing the CLI
+execution, report navigation, and interactive <code>fx_viewer</code> is
+hosted in this repository at: <a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/demo_material/walkthrough_from_issue.mp4">walkthrough_from_issue.mp4</a></li>
+<li><em>Video 2 (Local Master Copy):</em> A high-resolution local copy
+is stored on the supervisor’s workstation at:
+<code>C:\Users\boyuc\OneDrive - Qualcomm\Desktop\Observatory_Final1_x264_12fps.mp4</code>
+(WSL link:
+<code>/mnt/c/Users/boyuc/OneDrive - Qualcomm/Desktop/Observatory_Final1_x264_12fps.mp4</code>)</li>
+</ul></li>
+<li><p><strong>Single-Run Report Catalog:</strong></p></li>
+</ul>
+
+</div>
+</section>
+<section data-id="appendix-a1-table-2" id="appendix-a1-table-2" data-auto-animate>
+<h2>A.1 Pre-Generated Single-Run Reports and Walkthrough Videos — Table</h2>
+<div class="slide-content table">
+<table>
+<thead>
+<tr class="header">
+<th>Backend</th>
+<th>Model</th>
+<th style="text-align: right;">Nodes</th>
+<th>HTML Report</th>
+<th>Summary JSON</th>
+<th>Raw Execution Log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>xnnpack</td>
+<td><code>mobilebert</code></td>
+<td style="text-align: right;">2361</td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/observatory_report.html">HTML
+Report</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/observatory_report.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/run.log.txt">Raw
+Log</a></td>
+</tr>
+<tr class="even">
+<td>xnnpack</td>
+<td><code>resnet50</code></td>
+<td style="text-align: right;">550</td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/observatory_report.html">HTML
+Report</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/observatory_report.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/run.log.txt">Raw
+Log</a></td>
+</tr>
+<tr class="odd">
+<td>xnnpack</td>
+<td><code>mv2</code></td>
+<td style="text-align: right;">521</td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html">HTML
+Report</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/run.log.txt">Raw
+Log</a></td>
+</tr>
+<tr class="even">
+<td>qualcomm</td>
+<td><code>swin_v2_t</code></td>
+<td style="text-align: right;">1494</td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html">HTML
+Report</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/run.log.txt">Raw
+Log</a></td>
+</tr>
+<tr class="odd">
+<td>qualcomm</td>
+<td><code>mobilenet_v2</code></td>
+<td style="text-align: right;">521</td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html">HTML
+Report</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/run.log.txt">Raw
+Log</a></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section data-id="appendix-a2" id="appendix-a2" data-auto-animate>
+<h2>A.2 Record Tree-Explorer Visuals</h2>
+<div class="slide-content text">
+<p>The context and region nesting structures described in <a
+href="#/41-three-entry-points"><a class="xref" href="#/sec-4-1">§4.1</a></a>
+generate hierarchical tree layouts inside the HTML viewer. Below are the
+key dashboard elements:</p>
+<ul>
+<li><p><strong>Session Dashboard:</strong> Shows critical run
+configuration and execution metadata.</p>
+<p><img
+src="https://quic-boyuc.github.io/Executorch_Observatory_Demo/demo_material/session_dashboard.png"
+alt="Session Dashboard" /></p></li>
+<li><p><strong>Record Tree Explorer Panel:</strong> Organizes captured
+records according to their logical pipeline regions.</p>
+<p><img
+src="https://quic-boyuc.github.io/Executorch_Observatory_Demo/demo_material/records_explorer.png"
+alt="Record Tree Explorer" /></p></li>
+<li><p><strong>Layered Overlays:</strong> Visualizes compiler metadata
+and accuracy gradients directly on graph nodes.</p>
+<p><img
+src="https://quic-boyuc.github.io/Executorch_Observatory_Demo/demo_material/interactive_graph.png"
+alt="Interactive FX Graph" /></p></li>
+</ul>
+
+</div>
+</section>
+<section data-id="appendix-a3" id="appendix-a3" data-auto-animate>
+<h2>A.3 Comparison Reports (CI Regression and Cross-Backend / Cross-Model)</h2>
+<div class="slide-content text">
+<p>The <code>--compare</code> flow supports two primary use cases:</p>
+<ol type="1">
+<li><strong>CI regression analysis (primary target):</strong> Compare
+the <em>same model on the same backend</em> across two nightly builds to
+identify what changed. This is the workflow described in
+<a class="xref" href="#/sec-6-3">§6.3</a> — when a nightly metric drops,
+the comparison report shows exactly which pass or operator introduced
+the regression.</li>
+<li><strong>Cross-backend comparison (demonstrated below):</strong>
+Compare how the <em>same model</em> is processed across different
+backends (e.g., XNNPACK vs. Qualcomm HTP) to understand differences in
+lowering, fusion, and partition boundaries.</li>
+</ol>
+<p>The demo reports below showcase cross-backend comparison — evaluating
+end-to-end differences in structure, partition boundaries, and numerical
+accuracy for the same model compiled on XNNPACK vs. Qualcomm QNN
+HTP.</p>
+<ul>
+<li><p><strong>Cross-Backend Node Alignment:</strong> Node-selection
+synchronization maintains layout context across side-by-side backend
+graphs.</p>
+<p><img
+src="https://quic-boyuc.github.io/Executorch_Observatory_Demo/demo_material/cross_backend_compare.png"
+alt="Cross-Backend Compare" /></p></li>
+<li><p><strong>Comparative Report Catalog:</strong></p></li>
+</ul>
+
+</div>
+</section>
+<section data-id="appendix-a3-table-2" id="appendix-a3-table-2" data-auto-animate>
+<h2>A.3 Comparison Reports (CI Regression and Cross-Backend / Cross-Model) — Table</h2>
+<div class="slide-content table">
+<table>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Backend Pair</th>
+<th>Comparison HTML</th>
+<th>JSON Summary</th>
+<th>Comparison Log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MobileNetV2</td>
+<td><code>xnnpack/mv2</code> vs <code>qualcomm/mobilenet_v2</code></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html">HTML
+Comparison</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/comparison.log.txt">Comparison
+Log</a></td>
+</tr>
+<tr class="even">
+<td>MobileNetV3</td>
+<td><code>xnnpack/mv3</code> vs <code>qualcomm/mobilenet_v3</code></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.html">HTML
+Comparison</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/comparison.log.txt">Comparison
+Log</a></td>
+</tr>
+<tr class="odd">
+<td>InceptionV3</td>
+<td><code>xnnpack/ic3</code> vs <code>qualcomm/inception_v3</code></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.html">HTML
+Comparison</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/comparison.log.txt">Comparison
+Log</a></td>
+</tr>
+<tr class="even">
+<td>InceptionV4</td>
+<td><code>xnnpack/ic4</code> vs <code>qualcomm/inception_v4</code></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.html">HTML
+Comparison</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/comparison.log.txt">Comparison
+Log</a></td>
+</tr>
+<tr class="odd">
+<td>ViT</td>
+<td><code>xnnpack/vit</code> vs
+<code>qualcomm/torchvision_vit</code></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html">HTML
+Comparison</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.summary.json">Summary
+JSON</a></td>
+<td><a
+href="https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/comparison.log.txt">Comparison
+Log</a></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</section>
+</section>
+</div>
+</div>
+<div class="footer-title">Observatory RFC</div>
+<div class="footer-slide-number" id="slide-number-footer">1 / 1</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1280,
+    height: 720,
+    margin: 0.045,
+    transition: 'slide',
+    autoAnimate: true
+  });
+  const footer = document.getElementById('slide-number-footer');
+  function updateFooter() {
+    const indices = Reveal.getIndices();
+    const total = Reveal.getTotalSlides();
+    const current = Reveal.getSlidePastCount() + 1;
+    footer.textContent = `${current} / ${total} · h:${indices.h + 1} v:${indices.v + 1}`;
+  }
+  Reveal.on('ready', updateFooter);
+  Reveal.on('slidechanged', updateFooter);
+</script>
+</body>
+</html>
