@@ -12,21 +12,21 @@
 
 ## 1. Summary
 
-Debugging ExecuTorch backend issues often means collecting many things by hand. An engineer may save graph dumps, logs, and accuracy numbers in separate files. Those files are hard to share with another team, and hard to reproduce later.
+Debugging ExecuTorch backend issues often means collecting many things by hand. An engineer may save graph dumps, logs, and accuracy numbers in separate files. The resulting setup and artifacts are hard to reproduce and share meaningfully across community contributors.
 
 This RFC proposes two new components under `devtools/` to address this.
 
 ---
 
-**Observatory** replaces fragmented per-backend debug scripts with one shared debugging surface. It standardizes two things:
+**Observatory** replaces fragmented debug scripts with one modularized debugging surface. It standardizes two things:
 
 **How engineers invoke debugging — three entry points, from easiest to most flexible:**
 
-- **CLI** — run your existing model script through Observatory. Your script does not change; Observatory records the whole run from outside.
+- **CLI** — run your existing model script through Observatory CLI. Your script does not change; Observatory records the whole run from outside.
 - **Decorator** — add `@observe_pass` above a compiler pass class (`PassBase` subclass). Observatory records the FX graph before and after each time the pass runs.
 - **Context manager** — wrap a `with Observatory.enter_context(...)` block around the code you want to inspect, and call `Observatory.collect(name, artifact)` for the objects you want recorded. This is the manual surface when you need exact control; the CLI and decorator are built on top of it.
 
-**Where backend-specific logic attaches — lenses hook into four lifecycle stages:**
+**Where task-specific logic attaches — lenses hook into four lifecycle stages:**
 
 - **Instrument** — patch compilation and runtime to collect evidence.
 - **Serialize** — write that evidence into a portable archive.
@@ -37,22 +37,18 @@ Observatory handles the lifecycle orchestration so that backend teams only write
 
 Concretely, three roles benefit:
 
-- **A backend debug-logic maintainer** writes a Lens once (e.g., per-layer accuracy analysis) and Observatory handles session orchestration, data collection, and report generation — the same lens works uniformly across models without per-model wrapper scripts.
-- **A debugging engineer or issue reporter** runs one zero-config CLI command over an existing model script and gets a self-contained HTML report to attach to a PR or an issue — reviewers open it in any browser with no install.
-- **CI pipelines** run the same command and consume a structured JSON report for regression gates and automated triage.
+- **A backend debug-logic maintainer** writes a Lens once (e.g., per-layer accuracy analysis) and Observatory handles session orchestration, data collection, and report generation.
+- **A debugging engineer or issue reporter** runs an Observatory CLI command over an existing model script and gets a self-contained HTML report to attach to a PR or an issue — open it in any browser.
+- **CI pipelines** run an Observatory CLI command and consume a structured JSON report for regression gates and automated triage. HTML reports can be generated on demand from the JSON archive.
 
 ---
 
 **`fx_viewer`** is a Python and JavaScript library for embedding interactive FX graph views into any HTML page or debugging report. It embeds graph layout and debugging data as JSON layers in a single HTML file — each Observatory Lens can contribute its own overlay, and the result opens instantly in any browser without a server.
 
 - **Embeddable** — drop into any HTML page or `<div>`; graph data is compressed and embedded as JSON in the file. The JavaScript API allows external control of node hovering, selection, and viewport actions.
-- **Instant rendering** — layout is computed in Python before export. Other tools calculate layout in the browser on load, which is slow for large graphs. `fx_viewer` opens a 10k-node graph instantly.
-- **Simplicity** — ~4k lines of plain JavaScript, no framework dependencies. Easy to read, modify, or embed anywhere.
 - **Extensible data layers** — any debugging signal can be overlaid directly on graph nodes: accuracy gradients, partition boundaries, profiling numbers, quantization parameters. Each layer is added via the Python extension API (`GraphExtension`) and rendered independently, so multiple tools can paint on the same graph without conflict.
-
----
-
-The rest of this RFC develops these claims. §2 details the pain. §4 walks through three personas and both axes. §5 specifies the architecture and Lens protocol. §6 covers `fx_viewer`.
+- **Simplicity** — ~4k lines of plain JavaScript, no framework dependencies. Easy to read, modify, or embed anywhere.
+- **Instant rendering** — layout is computed in Python before export. Other tools calculate layout in the browser on load, which is slow for large graphs. `fx_viewer` opens a 10k-node graph instantly.
 
 
 ---
@@ -72,8 +68,8 @@ ExecuTorch’s existing devtools provide excellent primitives for raw capture. I
 
 ### 2.2 The Graph Has No Workflow-Aware Viewer
 The `torch.fx` graph module is the core IR for ExecuTorch lowering, yet developers have no easy way to interact with it in-pipeline:
-*   **Deployment Barriers:** Current visualization tools (such as Model Explorer integrations) often require a local web server, preventing easy embedding in standalone files or sharing in discussion threads.
-*   **Visual Signal Isolation:** Graphs are the most natural visual anchor for debugging information. However, without a shared, layered viewer, developers must look at different dashboards to see accuracy loss, partition assignments, and hardware constraints. 
+*   **Deployment Barriers:** The current visualization tool (`devtools/visualization/` using Model Explorer) requires launching a blocking local web server and opening a dedicated browser tab. This prevents embedding graph views in standalone files, attaching them to issue threads, or running visualization in CI. While Model Explorer supports saving a JSON file for later viewing, rendering still requires launching its server.
+*   **Visual Signal Isolation:** Model Explorer visualizes module hierarchy and supports QDQ cluster/partition highlighting, but it has no extension model for overlaying arbitrary debugging signals (accuracy loss, profiling data, stack traces) on the same graph. Developers must use separate dashboards or custom scripts to correlate these signals. 
 
 Observatory and `fx_viewer` address these gaps by providing a unified user surface, a shared extension protocol (**Lenses**), and a server-free, layered graph renderer.
 
@@ -86,11 +82,11 @@ Observatory does not replace existing ExecuTorch runtime capture or analysis pri
 
 | Feature / Property | `ETRecord` / `ETDump` | `Inspector` | `devtools/visualization/` | **Observatory** + **fx_viewer** |
 |---|---|---|---|---|
-| **Primary role** | AOT artifact storage; runtime trace capture | Post-hoc analysis of ETDump + ETRecord files | Interactive model structure browser | Live workflow coordinator + visual synthesis layer |
-| **Lifecycle** | During export / during runtime | After the run (file-based constructor) | After export | During compilation (live session) |
-| **Input** | ExportedProgram, runtime binary blobs | ETDump file + ETRecord file | ExportedProgram / EdgeProgramManager | Any artifact type via `collect()` |
-| **Output** | Binary files (`.etrecord`, `.etdump`) | DataFrames, tabular text, numeric gap | Web server + browser tab | Self-contained HTML + Archive JSON + Report JSON |
-| **Extension model** | None | `delegate_metadata_parser` callback | `add_node_data()` + regex JSON | Lens protocol (8 methods, full lifecycle) |
+| **Primary role** | AOT artifact storage; runtime trace capture | Post-hoc analysis of ETDump + ETRecord files | Interactive model structure browser (Model Explorer) | Live workflow coordinator + visual synthesis layer |
+| **Lifecycle** | During export / during runtime | After the run (file-based) | Call server in python; blocks until closed | Collect artifacts during compilation; export reports offline |
+| **Input** | ExportedProgram, runtime binary blobs | ETDump file + ETRecord file | ExportedProgram | Any artifact type via `collect()` |
+| **Output** | Binary files (`.etrecord`, `.etdump`) | DataFrames, tabular text, numeric gap | Blocking web server + browser tab; or JSON file requiring server to view | Self-contained HTML/JSON Report + JSON Archive |
+| **Extension model** | None | `delegate_metadata_parser` callback | Style JSON + `get_node_partition_name` callbacks | Lens protocol (8 methods, full lifecycle) |
 | **Embeddable in report** | No | No | No (opens own tab) | Yes (first-class) |
 | **Cross-stage comparison** | No | AOT vs. runtime (single pair) | No | N-way, any stages, any backends |
 | **CI-friendly output** | Binary blobs | DataFrames (not CI-native) | Not supported | Archive JSON + Report JSON (structured, diffable) |
