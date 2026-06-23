@@ -25,7 +25,7 @@ This RFC proposes two new components under `devtools/` to address this.
 **How engineers invoke debugging — three entry points, from easiest to most flexible:**
 
 - **CLI** — run your existing model script through Observatory CLI. Your script does not change; Observatory records the whole run from outside.
-- **Decorator** — add `@observe_pass` above a compiler pass class (`PassBase` subclass). Observatory records the FX graph before and after each time the pass runs.
+- **Decorator** — add `@observe_pass` above a compiler pass class, or wrap existing pass instances with `observe_pass(instance)`. Observatory records the FX graph before and after each time the pass runs — without modifying the pass logic or the surrounding pipeline.
 - **Context manager** — wrap a `with Observatory.enter_context(...)` block around the code you want to inspect, and call `Observatory.collect(name, artifact)` for the objects you want recorded. This is the manual surface when you need exact control; the CLI and decorator are built on top of it.
 
 **Where task-specific logic attaches — lenses hook into four lifecycle stages:**
