@@ -139,26 +139,54 @@ No client script modifications are required. Observatory shims standard pipeline
 
 ### 4.2 Context Manager
 
-The context manager scopes capture to a block from inside Python:
+The context manager scopes capture to a block from inside Python. The full lifecycle — capture, export archive, and generate report — is shown below:
 
 ```python
+import torch
 from executorch.devtools.observatory import Observatory
 
-with Observatory.enter_context("my_debug_run", config={"accuracy": {"enabled": True}}):
-    gm = export_model(model)
-    Observatory.collect("exported_graph", gm)
+Observatory.clear()  # Start a fresh in-process state.
+gm = export_model(model)
+with Observatory.enter_context("quantization"):  # Outermost region opens a session.
+    Observatory.collect("before_quantize", gm)  # Capture stage 1.
+    quantized_gm = quantize_model(gm)
+    Observatory.collect("after_quantize", quantized_gm)  # Capture stage 2.
+
+# Archive JSON: raw sessions/records for CI storage or replay.
+Observatory.export_json("archive.json")
+# HTML report: interactive dashboard from the current session.
+Observatory.export_html_report("report.html", title="Quantization debug")
+# Late binding: regenerate HTML from a saved archive without rerunning.
+Observatory.generate_html_from_json("archive.json", "report_v2.html")
 ```
 
-This uses the same machinery with finer control. Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code. Observatory records only the artifacts explicitly passed to it. Each call to `Observatory.collect(name, artifact)` passes that object to every registered Lens, and each Lens decides what to extract.
+Nested `enter_context` calls push config overrides that are popped on exit — enabling per-phase lens tuning without touching the surrounding code. Observatory records only the artifacts explicitly passed to it. Each call to `Observatory.collect(name, artifact)` passes that object to every registered Lens, and each Lens decides what to extract.
 
 ### 4.3 `@observe_pass` Decorator
 
-The `@observe_pass` decorator is for pass authors. Annotate a transform and it gets its own scope automatically — capturing the FX graph before and after, with no edits to the surrounding pipeline:
+The `@observe_pass` decorator is for pass authors. It automatically captures the FX graph before and after the pass runs. The pass logic itself requires zero modifications:
 
 ```python
-@observe_pass
-class MyQuantPass(ExportPass):
-    def call(self, gm): ...
+import operator
+from executorch.devtools.observatory import Observatory, observe_pass
+from executorch.exir.passes import ExportPass, PassManager
+from torch.fx.passes.infra.pass_base import PassResult
+
+@observe_pass(name="fold_add_zero")  # Captures graph before and after.
+class FoldAddZeroPass(ExportPass):
+    def call(self, gm):
+        # Ordinary pass logic — no Observatory calls needed.
+        for node in list(gm.graph.nodes):
+            if node.target is operator.add and node.args[1] == 0:
+                node.replace_all_uses_with(node.args[0])
+                gm.graph.erase_node(node)
+        gm.graph.lint(); gm.recompile()
+        return PassResult(gm, True)
+
+Observatory.clear()
+with Observatory.enter_context("pre_lowering_passes"):
+    PassManager([FoldAddZeroPass()])(export_model(model))
+Observatory.export_html_report("pass_trace.html")  # Includes before/after graphs.
 ```
 
 ### 4.4 Output Artifacts
@@ -344,6 +372,7 @@ pm.add_pass(observe_pass(RemoveGraphAssertsPass()))
 pm.add_pass(MyOptimizationPass())
 
 # Disable accuracy lens for fast preprocessing, then enable it only for transformation
+Observatory.clear()
 with Observatory.enter_context("preprocess",
                                config={"per_layer_accuracy": {"enabled": False}}):
 
@@ -358,6 +387,9 @@ with Observatory.enter_context("preprocess",
         Observatory.collect("transformed_output", processed_gm)
 
     # per_layer_accuracy is automatically disabled again here on exit
+
+# Export: the tree-explorer in the HTML report reflects the nested region structure.
+Observatory.export_html_report("pass_diff_report.html")
 ```
 
 ### 6.3 CI / Nightly-Regression / Cross-Backend Triage

@@ -127,23 +127,49 @@ A debugging framework must integrate seamlessly with existing development workfl
       --lens-recipe accuracy \
       examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
   ```
-* **The Context Manager (Fine-Grained Block Scope):** Wraps specific blocks of Python compiler code to capture and record target artifacts programmatically. Context managers support nested definitions and configuration overrides that are popped automatically on block exit.
+* **The Context Manager (Fine-Grained Block Scope):** Wraps specific blocks of Python compiler code to capture and record target artifacts programmatically. The full lifecycle — capture, export archive, and generate report — is shown below:
   ```python
+  import torch
   from executorch.devtools.observatory import Observatory
 
-  with Observatory.enter_context("quantize_phase", config={"accuracy": {"enabled": True}}):
-      processed_gm = quantize_model(graph_module)
-      Observatory.collect("quantized_graph", processed_gm)
-  ```
-* **The `@observe_pass` Decorator (Pass-Level Trace):** Decorates individual compiler transform classes (subclasses of `PassBase` or similar) to automatically capture the input and output FX graphs. This requires zero modifications to the surrounding pipeline orchestration.
-  ```python
-  from executorch.devtools.observatory import observe_pass
+  Observatory.clear()  # Start a fresh in-process state.
+  gm = export_model(model)
+  with Observatory.enter_context("quantization"):  # Outermost region opens a session.
+      Observatory.collect("before_quantize", gm)  # Capture stage 1.
+      quantized_gm = quantize_model(gm)
+      Observatory.collect("after_quantize", quantized_gm)  # Capture stage 2.
 
-  @observe_pass
-  class CustomQuantPass(ExportPass):
+  # Archive JSON: raw sessions/records for CI storage or replay.
+  Observatory.export_json("archive.json")
+  # HTML report: interactive dashboard from the current session.
+  Observatory.export_html_report("report.html", title="Quantization debug")
+  # Late binding: regenerate HTML from a saved archive without rerunning.
+  Observatory.generate_html_from_json("archive.json", "report_v2.html")
+  ```
+  Nested `enter_context` calls push configuration overrides that are popped on exit, enabling per-phase lens tuning.
+
+* **The `@observe_pass` Decorator (Pass-Level Trace):** Decorates individual compiler transform classes to automatically capture the input and output FX graphs. The pass logic itself requires zero modifications:
+  ```python
+  import operator
+  from executorch.devtools.observatory import Observatory, observe_pass
+  from executorch.exir.passes import ExportPass, PassManager
+  from torch.fx.passes.infra.pass_base import PassResult
+
+  @observe_pass(name="fold_add_zero")  # Captures graph before and after.
+  class FoldAddZeroPass(ExportPass):
       def call(self, gm):
-          # Transform the graphmodule
-          return gm
+          # Ordinary pass logic — no Observatory calls needed.
+          for node in list(gm.graph.nodes):
+              if node.target is operator.add and node.args[1] == 0:
+                  node.replace_all_uses_with(node.args[0])
+                  gm.graph.erase_node(node)
+          gm.graph.lint(); gm.recompile()
+          return PassResult(gm, True)
+
+  Observatory.clear()
+  with Observatory.enter_context("pre_lowering_passes"):
+      PassManager([FoldAddZeroPass()])(export_model(model))
+  Observatory.export_html_report("pass_trace.html")  # Includes before/after graphs.
   ```
 
 ### 4.2 Two Output Formats
@@ -275,11 +301,14 @@ This section validates the Observatory architecture through three real-world dev
       def call(self, gm):
           return gm
 
+  Observatory.clear()
   with Observatory.enter_context("preprocess", config={"per_layer_accuracy": {"enabled": False}}):
       Observatory.collect("raw_input", graph_module)
       with Observatory.enter_context("lowering_stage", config={"per_layer_accuracy": {"enabled": True}}):
-          processed_gm = MyOptimizationPass().call(graph_module)
+          processed_gm = MyOptimizationPass()(graph_module)
           Observatory.collect("transformed_output", processed_gm)
+  # Export: the tree-explorer in the HTML report reflects the nested region structure.
+  Observatory.export_html_report("pass_diff_report.html")
   ```
 * **Evidence:** Visual screenshots of the hierarchical Record Tree-Explorer panel are available in [Appendix A.2](#appendix-a2-record-tree-explorer-visuals).
 
