@@ -283,7 +283,7 @@ When the session closes, Observatory serializes session metadata and all records
 The analysis phase then loads the Archive, runs the configured lenses over it, and emits the **Report** — HTML for humans, JSON for machines. Same Archive, different lenses, different reports. Re-runnable indefinitely.
 
 ```
-Session ─────────────────────────────────────────────────────────────────────────
+Session (online) ────────────────────────────────────────────────────────────────
 │  on_session_start                                              on_session_end │
 │                                                                              │
 │  Region: "quantize_pass"                                                     │
@@ -293,13 +293,14 @@ Session ────────────────────────
 │  Region: "lowering"                                                          │
 │  └─ collect("lowered")    → Record₃ {region_stack: ["lowering"]}             │
 │                                                                              │
-└──────────────── serialize ──► [Archive JSON: sessions[] + records[]]          │
-                                        │                                      │
-                                        ▼  (offline, later)                    │
-                                 analyze + get_frontend_spec()                  │
-                                        │                                      │
-                                        ▼                                      │
-                                 [Report HTML] + [Report JSON]                 │
+└──────────────── serialize ──► [Archive JSON: sessions[] + records[]]          
+                                                                               
+═══════════════════════════════ offline boundary ═══════════════════════════════
+                                                                               
+                                 analyze + get_frontend_spec()                  
+                                        │                                      
+                                        ▼                                      
+                                 [Report HTML] + [Report JSON]                 
 ```
 
 > **Disambiguation:** An Observatory **Record** is an in-memory observation tagged with `session_id` and `region_stack`. ExecuTorch's existing **`ETRecord`** is an entirely separate on-disk artifact produced by the developer-tools serialization workflow. The names collide; the concepts do not. Observatory may consume `ETRecord` data as an input source through a future lens, but the two are architecturally independent.

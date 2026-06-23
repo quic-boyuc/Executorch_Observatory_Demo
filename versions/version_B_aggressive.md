@@ -255,7 +255,7 @@ The primary abstractions of the Observatory framework are defined through the li
 6. **Lens:** A modular, task-specific plugin that encapsulates both capture-time recording logic and post-hoc analysis/visualization behaviors.
 
 ```
-Session ─────────────────────────────────────────────────────────────────────────
+Session (online) ────────────────────────────────────────────────────────────────
 │  on_session_start                                              on_session_end │
 │                                                                              │
 │  Region: "quantize_pass"                                                     │
@@ -265,13 +265,14 @@ Session ────────────────────────
 │  Region: "lowering"                                                          │
 │  └─ collect("lowered")    → Record₃ {region_stack: ["lowering"]}             │
 │                                                                              │
-└──────────────── serialize ──► [Archive JSON: sessions[] + records[]]          │
-                                        │                                      │
-                                        ▼  (offline, later)                    │
-                                 analyze + get_frontend_spec()                  │
-                                        │                                      │
-                                        ▼                                      │
-                                 [Report HTML] + [Report JSON]                 │
+└──────────────── serialize ──► [Archive JSON: sessions[] + records[]]          
+                                                                               
+═══════════════════════════════ offline boundary ═══════════════════════════════
+                                                                               
+                                 analyze + get_frontend_spec()                  
+                                        │                                      
+                                        ▼                                      
+                                 [Report HTML] + [Report JSON]                 
 ```
 
 > **Disambiguation:** An Observatory **Record** is an in-memory or JSON-persisted compile-time observation tagged with session and region info. It is entirely independent of ExecuTorch's existing **`ETRecord`** file, which is a serialized compilation package used by runtime tools.
