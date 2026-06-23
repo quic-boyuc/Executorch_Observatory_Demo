@@ -330,60 +330,87 @@ The hooks defined in the Lens Protocol constitute one of the stable public surfa
 
 This section validates the Observatory architecture through three real-world developer personas, detailing their workflows, CLI invocations, and code-level integrations.
 
-### 6.1 Persona A: Backend Debug-Logic Maintainer
-* **Goal:** Implement and deploy per-layer accuracy debugging logic once, running it uniformly across multiple ExecuTorch backends.
-* **Today's Pain (Diagnosis):** Devtools lack a unified lifecycle contract to configure and collect raw activation data across intermediate compilation stages (e.g., `prepare_pt2e` and `convert_pt2e`), forcing maintainers to write duplicate, vendor-SDK bespoke scripts that output fragmented console text and CSVs ([see §2.1](#21-the-debugging-workflow-is-fragmented)).
-* **With Observatory:** The maintainer implements the logic within a single `Lens` subclass. The CLI coordinates the compilation session, executes the compiler, and outputs a self-contained HTML report displaying compile-time simulation metrics.
-  ```bash
-  python -m executorch.backends.qualcomm.debugger.observatory \
-      --output-html obs_report.html \
-      --lens-recipe accuracy \
-      examples/qualcomm/oss_scripts/mobilevit_v2.py \
-      --backend htp --model SM8650 -d ./imagenet-mini-val/ \
-      -b build-android/ --compile_only
-  ```
+### 6.1 Backend Debug-Logic Maintainer and Debugging Engineer
+
+* **Backend debug-logic maintainer:** writes Lens logic once (e.g., per-layer accuracy analysis) and Observatory runs it across all models and scripts — session setup, monkey-patching, snapshot collection, report generation, and cleanup are all handled by the framework.
+* **Debugging engineer / issue reporter:** runs one CLI command over an existing model script. No source edits, no understanding of Lens internals required. Share the output and the bug is reproducible.
+
+```bash
+# ┌── Observatory wrapper: module path + Observatory-specific flags ────────────┐
+python -m executorch.backends.qualcomm.debugger.observatory \
+    --output-html obs_report.html \
+    --lens-recipe accuracy \
+#   └─ "accuracy" = preset bundle: graph snapshots + per-layer accuracy ───┘
+# ┌── Original user script + its args, passed through UNCHANGED ───────────────┐
+    examples/qualcomm/oss_scripts/mobilevit_v2.py \
+    --backend htp --model SM8650 -d ./imagenet-mini-val/ \
+    -b build-android/ --compile_only
+# └─────────────────────────────────────────────────────────────────────┘
+```
+
+* The HTML report is self-contained: open it in any browser without installing anything or re-running the model.
+* Attach it to a GitHub issue or PR and reviewers can immediately inspect captured graphs, accuracy metrics, and run context in one file — making bug reports actionable on first read.
 * **Evidence:** Pre-generated single-run HTML reports and walkthrough videos are hosted in [Appendix A.1](#appendix-a1-pre-generated-single-run-reports-and-walkthrough-videos).
 
-### 6.2 Persona B: AOT Pipeline / Pass Author
-* **Goal:** Inspect and compare PyTorch FX graph structural differences before and after custom compiler passes without modifying the core pipeline code.
-* **Today's Pain (Diagnosis):** Authors must manually inject verbose print statements inside pass classes, redirect terminal outputs, and visually compare large, flat text representations of FX graphs side-by-side ([see §2.1](#21-the-debugging-workflow-is-fragmented)).
-* **With Observatory:** The author annotates the pass using the `@observe_pass` decorator or wraps compiler phases inside a nested `enter_context` block to generate a structured, hierarchical tree of captured graph states ([see §5.2's definition of Regions](#52-vocabulary-built-from-a-run)).
-  ```python
-  from executorch.devtools.observatory import Observatory, observe_pass
+### 6.2 AOT Pipeline / Pass Author
 
-  @observe_pass
-  class MyOptimizationPass(ExportPass):
-      def call(self, gm):
-          return gm
+* **Goal:** Find which compiler pass in an existing pipeline introduces accuracy loss or graph corruption — without modifying any pass source code.
+* **The scenario:** Accuracy drops after QNN lowering. Instead of adding print statements to 30 passes, wrap the existing pass list and inspect the HTML report to identify which pass changed the graph unexpectedly.
+* **Zero-invasive instrumentation:** `observe_pass` wraps existing pass *instances* directly. No class modifications, no subclassing.
 
-  Observatory.clear()
-  with Observatory.enter_context("preprocess", config={"per_layer_accuracy": {"enabled": False}}):
-      Observatory.collect("raw_input", graph_module)
-      with Observatory.enter_context("lowering_stage", config={"per_layer_accuracy": {"enabled": True}}):
-          processed_gm = MyOptimizationPass()(graph_module)
-          Observatory.collect("transformed_output", processed_gm)
-  # Export: the tree-explorer in the HTML report reflects the nested region structure.
-  Observatory.export_html_report("pass_diff_report.html")
-  ```
+```python
+from executorch.devtools.observatory import Observatory, observe_pass
+from executorch.backends.qualcomm._passes import (
+    FoldQDQ, LayoutTransform, RemoveRedundancy, I64toI32
+)
+from executorch.exir.pass_manager import PassManager
+
+# Wrap each existing pass instance — no source changes to the pass classes.
+passes = [
+    observe_pass(FoldQDQ()),
+    observe_pass(LayoutTransform()),
+    observe_pass(RemoveRedundancy()),
+    observe_pass(I64toI32()),
+]
+
+Observatory.clear()
+with Observatory.enter_context("qnn_lowering"):
+    PassManager(passes)(graph_module)
+
+# Report: tree-explorer shows each pass as a nested region with before/after diffs.
+Observatory.export_html_report("qnn_pass_debug.html")
+```
+
+* The HTML tree-explorer shows each pass as a nested region in the left panel. Click through pass-by-pass before/after graph diffs to pinpoint where the graph structure or accuracy changed.
 * **Evidence:** Visual screenshots of the hierarchical Record Tree-Explorer panel are available in [Appendix A.2](#appendix-a2-record-tree-explorer-visuals).
 
-### 6.3 Persona C: CI / Nightly-Regression / Cross-Backend Triage
-* **Goal:** Compare compilation runs across distinct git commits, branches, or backends to automate regression detection and programmatic triage.
-* **Today's Pain (Diagnosis):** Regression suites generate large archives of binary artifacts and static logs that require manual download and manual correlation, blocking automated regression gates and LLM-based triage ([see §2.1](#21-the-debugging-workflow-is-fragmented) and [§2.2](#22-the-graph-has-no-workflow-aware-viewer)).
-* **With Observatory:** Nightly pipelines save a lightweight Archive JSON containing the raw compile state without rendering overhead; downstream tools run `--compare` to late-bound generate comparative reports without re-executing the model ([see §5.1's Capture/Analyze split](#51-the-foundational-split)).
-  ```bash
-  # 1. CI Capture Phase (saves raw Archive JSON)
-  python -m executorch.backends.xnnpack.debugger.observatory \
-      --output-archive nightly/2026-04-20/mv2.json \
-      --lens-recipe=accuracy \
-      examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
+### 6.3 CI / Nightly-Regression / Cross-Backend Triage
 
-  # 2. Programmatic Compare Phase (compares runs and outputs reports)
-  python -m executorch.devtools.observatory \
-      --compare nightly/2026-04-20/mv2.json nightly/2026-04-23/mv2.json \
-      --output-html regression.html \
-      --output-report-json regression.summary.json
-  ```
+* **Goal:** Make CI failures self-contained — not just pass/fail, but the full debugging context needed to triage the failure without local reproduction.
+* **Today:** CI says "accuracy dropped 2%." The engineer must reproduce locally, add instrumentation, re-run the model, and search for where the drop happened.
+* **With Observatory:** CI captures intermediate graphs, per-layer accuracy metrics, stack traces, and metadata into one lightweight Archive JSON alongside the pass/fail signal. When a regression fires, the engineer opens the HTML report from CI artifacts and immediately sees *which pass* introduced the drop and *which operators* are affected.
+* For most regressions, this eliminates the "reproduce locally" step: the CI report *is* the reproduction.
+* The same structured data serves both humans (HTML in a browser) and machines (Report JSON for LLM triage bots or dashboard parsers).
+
+```bash
+# Step 1: CI captures EVERYTHING into one Archive JSON:
+# intermediate graphs, per-layer metrics, stack traces, run metadata.
+python -m executorch.backends.xnnpack.debugger.observatory \
+    --output-archive nightly/2026-04-20/mv2.json \
+    --lens-recipe=accuracy,graph,stack_trace \
+# ┌── Original CI script + args, passed through unchanged ──────────────────┐
+    examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
+# └─────────────────────────────────────────────────────────────────┘
+
+# Step 2: On regression detection, compare two archives to generate a report
+# showing exactly what changed: graph diffs, metrics, and affected operators.
+python -m executorch.devtools.observatory \
+    --compare nightly/2026-04-20/mv2.json nightly/2026-04-23/mv2.json \
+    --output-html regression.html \
+    --output-report-json regression.summary.json
+```
+
+* This flow works across branches, dates, and backends because comparison operates on archived structured records, not re-executed models.
 * **Evidence:** Cross-backend comparison matrices and machine-readable JSON summaries are cataloged in [Appendix A.3](#appendix-a3-cross-backend-comparison-reports).
 
 

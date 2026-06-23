@@ -398,111 +398,69 @@ To run the equivalent command for XNNPACK, use `python -m executorch.backends.xn
 
 ### 6.2 AOT Pipeline / Pass Author
 
-*   **Goal:** Easily diff FX graphs across compiler passes without modifying existing pass logic.
-*   **Today:** Developers must manually sprinkle `print(gm.graph)` statements inside pass code, redirect verbose console logs, and eyeball structural differences side-by-side in separate terminal windows.
-*   **With Observatory:** A pass author decorates any pass class with `@observe_pass` or wraps a compiler phase in a `with Observatory.enter_context(region_name)` block. Each compiler phase automatically saves graph snapshots as nested Records in the Left Panel tree. Click on any Record to view its isolated graph, or select two stages to view a synchronized, node-mapped visual comparison.
+*   **Goal:** Find which compiler pass in an existing pipeline introduces accuracy loss or graph corruption — without modifying any pass source code.
+*   **The scenario:** Accuracy drops after QNN lowering. Instead of adding print statements to 30 passes, wrap the existing pass list and inspect the HTML report to identify which pass changed the graph unexpectedly.
+*   **With Observatory:** `observe_pass` wraps existing pass *instances* directly. The HTML tree-explorer shows each pass as a nested region in the left panel — click through pass-by-pass before/after graph diffs to pinpoint where the structure or accuracy changed.
 
-**The Region Concept & Tree Structure:**
+**Primary example — instance wrapper on an existing pass pipeline:**
 
-A **Region** is a logical execution scope opened by `enter_context(region_name)`. As defined in §5.2, it supports nesting and configuration inheritance. As the compilation pipeline executes, Observatory constructs a hierarchical region stack (e.g., `preprocess/` -> `edge/` -> `edge/etrecord/`).
+```python
+from executorch.devtools.observatory import Observatory, observe_pass
+from executorch.backends.qualcomm._passes import (
+    FoldQDQ, LayoutTransform, RemoveRedundancy, I64toI32
+)
+from executorch.exir.pass_manager import PassManager
+
+# Wrap each existing pass instance — no source changes to the pass classes.
+passes = [
+    observe_pass(FoldQDQ()),
+    observe_pass(LayoutTransform()),
+    observe_pass(RemoveRedundancy()),
+    observe_pass(I64toI32()),
+]
+
+Observatory.clear()
+with Observatory.enter_context("qnn_lowering"):
+    PassManager(passes)(graph_module)
+
+# Report: tree-explorer shows each pass as a nested region with before/after diffs.
+Observatory.export_html_report("qnn_pass_debug.html")
+```
+
+**The Region Tree-Explorer:**
 
 In the Left Panel of the generated HTML report, a **Record Tree-Explorer** allows developers to toggle between a flat time-ordered list and a directory-like folders tree view, keeping compile-time snapshots structured exactly like the compiler's passes.
 
 ![Record Tree Explorer](demo_material/records_explorer.png)
 
-**Code Walkthrough (with nesting and config overrides):**
-
-Lenses observe and capture metadata when `Observatory.collect()` is called, or when patched functions run. The context manager config is stacked: configuration overrides are merged on entry and popped on exit. This lets authors dynamically adjust lens behavior (e.g., bypass expensive CPU simulation) for specific sub-pipelines or passes:
-
-```python
-from executorch.devtools.observatory import Observatory, observe_pass
-
-# 1. Zero-effort pass tracking via decorators
-@observe_pass
-class MyOptimizationPass(ExportPass):
-    def call(self, gm):
-        # Modify the graphmodule...
-        return gm
-
-# 2. Managing nested regions & configuration stack
-pm = PassManager()
-pm.add_pass(observe_pass(RemoveGraphAssertsPass()))
-pm.add_pass(MyOptimizationPass())
-
-# Disable accuracy lens for fast preprocessing, then enable it only for transformation
-Observatory.clear()
-with Observatory.enter_context("preprocess",
-                               config={"per_layer_accuracy": {"enabled": False}}):
-
-    Observatory.collect("raw_input", graph_module)
-
-    # Nest another context with config overrides
-    # The string "lowering_stage" becomes the Region name in the tree view
-    with Observatory.enter_context("lowering_stage",
-                                   config={"per_layer_accuracy": {"enabled": True}}):
-        # Inside here, the per_layer_accuracy lens is active and simulates intermediate errors
-        processed_gm = pm._transform(graph_module)
-        Observatory.collect("transformed_output", processed_gm)
-
-    # per_layer_accuracy is automatically disabled again here on exit
-
-# Export: the tree-explorer in the HTML report reflects the nested region structure.
-Observatory.export_html_report("pass_diff_report.html")
-```
-
 ### 6.3 CI / Nightly-Regression / Cross-Backend Triage
 
-*   **Goal:** Compare execution runs across branches, dates, or backends, and serve the results programmatically to humans or CI/LLM gates.
-*   **Today:** High-throughput CI runs dump large zip bundles containing fragmented CSVs, console logs, and static screenshots. These must be manually downloaded and inspected, making automated regression tracking and LLM triaging impossible.
-*   **With Observatory:** Nightly pipelines save only a lightweight, raw `Archive JSON` file (excluding expensive HTML rendering). Later, developers or CI gates can compare any two Archive files (even across backends or branches) via `--compare` to generate a synchronized comparative HTML Report or a machine-readable Report JSON summary, without ever re-running the compiler. This follows the capture/analyze split defined in §5.1.
-
-**Automated CI Workflow & Architecture:**
-
-The relationship between Session (live execution), Archive JSON (persisted raw data), and derived Report payloads (HTML / JSON) is illustrated below:
-
-```
-             AOT Run in CI Pipeline (e.g. Nightly)
-                   ┌──────────────────┐
-                   │   AOT Compiler   │ (Forced generate_etrecord=True)
-                   └────────┬─────────┘
-                            │
-                  ┌─────────▼─────────┐
-                  │  Observatory Core │ (Intercepts standard entry points)
-                  └────────┬─────────┘
-                            │
-                  ┌─────────▼─────────┐
-                  │   ARCHIVE JSON    │ (sessions[] + records[], no rendering)
-                  │  (nightly/mv2.json)│ (Persisted raw state, lightweight)
-                  └────────┬──────────┘
-                           │
-          ┌────────────────┴────────────────┐
-          │ Late-bound Analysis             │ CI / Automated Triage
-          ▼                                 ▼
- ┌─────────────────┐               ┌─────────────────┐
- │   Report HTML   │               │   Report JSON   │
- │  (Interactive,  │               │   (Key metrics, │
- │  for reviewers) │               │   for LLMs / CI)│
- └─────────────────┘               └─────────────────┘
-   --output-html                    --output-report-json
-```
+*   **Goal:** Make CI failures self-contained — not just pass/fail, but the full debugging context needed to triage without local reproduction.
+*   **Today:** CI says "accuracy dropped 2%." The engineer must reproduce locally, add instrumentation, re-run the model, and search for where the drop happened.
+*   **With Observatory:** CI captures intermediate graphs, per-layer accuracy metrics, stack traces, and metadata into one lightweight Archive JSON alongside the pass/fail signal. When a regression fires, the engineer opens the HTML report from CI artifacts and immediately sees *which pass* introduced the drop and *which operators* are affected. For most regressions, this eliminates the "reproduce locally" step: the CI report *is* the reproduction.
+*   The same structured data serves both humans (HTML in a browser) and machines (Report JSON for LLM triage bots or dashboard parsers).
 
 **CLI Execution Interface:**
 
-The same Archive JSON is late-bound re-analyzed or compared without re-running the expensive compiler or simulator:
-
 ```bash
-# 1. CI / Nightly run: captures the execution state into a raw Archive JSON
+# Step 1: CI captures EVERYTHING into one Archive JSON:
+# intermediate graphs, per-layer metrics, stack traces, run metadata.
 python -m executorch.backends.xnnpack.debugger.observatory \
     --output-archive nightly/2026-04-20/mv2.json \
-    --lens-recipe=accuracy \
+    --lens-recipe=accuracy,graph,stack_trace \
+# ┌── Original CI script + args, passed through unchanged ──────────────────┐
     examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
+# └─────────────────────────────────────────────────────────────────┘
 
-# 2. Later: compare two archives to generate a comparative HTML and a summary JSON
+# Step 2: On regression detection, compare two archives to generate a report
+# showing exactly what changed: graph diffs, metrics, and affected operators.
 python -m executorch.devtools.observatory \
     --compare nightly/2026-04-20/mv2.json nightly/2026-04-23/mv2.json \
     --output-html regression.html \
     --output-report-json regression.summary.json
 ```
+
+* This flow works across branches, dates, and backends because comparison operates on archived structured records, not re-executed models.
 
 **Cross-Backend Triage & N-way Node Selection Sync:**
 
