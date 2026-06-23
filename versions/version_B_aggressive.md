@@ -120,13 +120,28 @@ This section defines the three entry points for invoking Observatory and specifi
 ### 4.1 Three Entry Points
 A debugging framework must integrate seamlessly with existing development workflows. Observatory provides three distinct invocation surfaces to accommodate different integration levels:
 
-* **The CLI (Zero Code-Change Wrapper):** Executes an existing model compilation or export script from the command line. The CLI intercepts standard pipeline entry points (such as `prepare_pt2e` and `convert_pt2e`) via scoped monkey-patching that is restored upon session exit.
+* **The CLI (Zero Code-Change Wrapper):** Executes an existing model compilation or export script from the command line. No script modifications are required because lenses install scoped monkey-patches on standard pipeline functions (such as `prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`) during their `on_session_start` hook. These patches transparently call `Observatory.collect()` at the right moments, and all originals are restored when the session ends.
   ```bash
   python -m executorch.backends.xnnpack.debugger.observatory \
       --output-html report.html \
       --lens-recipe accuracy \
       examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
   ```
+  > **How it works (simplified):** The built-in `pipeline_graph_collector` lens patches `convert_pt2e` to capture the graph before and after quantization:
+  > ```python
+  > # Inside the lens — not user code:
+  > original_convert = torchao.quantization.pt2e.quantize_pt2e.convert_pt2e
+  >
+  > def patched_convert_pt2e(model, *args, **kwargs):
+  >     Observatory.collect("Calibrated Model", model)       # capture input
+  >     result = original_convert(model, *args, **kwargs)    # call original
+  >     Observatory.collect("Quantized Model", result)       # capture output
+  >     return result
+  >
+  > torchao.quantization.pt2e.quantize_pt2e.convert_pt2e = patched_convert_pt2e
+  > # Restored on session end.
+  > ```
+  > The same pattern applies to `prepare_pt2e` and `to_edge_transform_and_lower`. See §5.3 for the full Lens lifecycle.
 * **The Context Manager (Fine-Grained Block Scope):** Wraps specific blocks of Python compiler code to capture and record target artifacts programmatically. The full lifecycle — capture, export archive, and generate report — is shown below:
   ```python
   import torch

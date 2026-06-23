@@ -135,7 +135,23 @@ python -m executorch.backends.xnnpack.debugger.observatory \
     examples/xnnpack/aot_compiler.py --model_name=mv2 --delegate --quantize
 ```
 
-No client script modifications are required. Observatory shims standard pipeline entry points (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`) via scoped monkey-patching — patches are installed when the session opens and unconditionally restored when it closes, even on exceptions. This is the surface CI and issue-reproduction workflows use.
+No client script modifications are required. Lenses install scoped monkey-patches on standard pipeline entry points (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`) during their `on_session_start` hook. These patches transparently call `Observatory.collect()` at the right moments, and all originals are unconditionally restored when the session closes, even on exceptions. This is the surface CI and issue-reproduction workflows use.
+
+> **How it works (simplified):** The built-in `pipeline_graph_collector` lens patches `convert_pt2e` to capture the graph before and after quantization:
+> ```python
+> # Inside the lens — not user code:
+> original_convert = torchao.quantization.pt2e.quantize_pt2e.convert_pt2e
+>
+> def patched_convert_pt2e(model, *args, **kwargs):
+>     Observatory.collect("Calibrated Model", model)       # capture input
+>     result = original_convert(model, *args, **kwargs)    # call original
+>     Observatory.collect("Quantized Model", result)       # capture output
+>     return result
+>
+> torchao.quantization.pt2e.quantize_pt2e.convert_pt2e = patched_convert_pt2e
+> # Restored on session end.
+> ```
+> The same pattern applies to `prepare_pt2e` and `to_edge_transform_and_lower`. See §5.3 for the full Lens lifecycle.
 
 ### 4.2 Context Manager
 
