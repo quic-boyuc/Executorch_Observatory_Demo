@@ -164,7 +164,9 @@ Nested `enter_context` calls push config overrides that are popped on exit — e
 
 ### 4.3 `@observe_pass` Decorator
 
-The `@observe_pass` decorator is for pass authors. It automatically captures the FX graph before and after the pass runs. The pass logic itself requires zero modifications:
+The `@observe_pass` decorator is for pass authors. It automatically captures the FX graph before and after the pass runs. The pass logic itself requires zero modifications.
+
+**As a class decorator** — define a new pass with built-in tracing:
 
 ```python
 import operator
@@ -187,6 +189,25 @@ Observatory.clear()
 with Observatory.enter_context("pre_lowering_passes"):
     PassManager([FoldAddZeroPass()])(export_model(model))
 Observatory.export_html_report("pass_trace.html")  # Includes before/after graphs.
+```
+
+**As an instance wrapper** — wrap existing pass instances in an established pipeline (e.g., `QnnPassManager`) without modifying their class definitions:
+
+```python
+from executorch.devtools.observatory import Observatory, observe_pass
+from executorch.backends.qualcomm._passes import FoldQDQ, LayoutTransform, RemoveRedundancy
+from executorch.exir.pass_manager import PassManager
+
+# Existing pass instances — no source changes needed.
+passes = [FoldQDQ(), LayoutTransform(), RemoveRedundancy()]
+
+# Wrap each instance to capture its input/output graphs.
+observed_passes = [observe_pass(p) for p in passes]
+
+Observatory.clear()
+with Observatory.enter_context("qnn_capture_program"):
+    PassManager(observed_passes)(graph_module)
+Observatory.export_html_report("qnn_passes.html")  # One report with all pass diffs.
 ```
 
 ### 4.4 Output Artifacts

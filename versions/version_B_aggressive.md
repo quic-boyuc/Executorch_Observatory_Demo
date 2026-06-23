@@ -148,7 +148,9 @@ A debugging framework must integrate seamlessly with existing development workfl
   ```
   Nested `enter_context` calls push configuration overrides that are popped on exit, enabling per-phase lens tuning.
 
-* **The `@observe_pass` Decorator (Pass-Level Trace):** Decorates individual compiler transform classes to automatically capture the input and output FX graphs. The pass logic itself requires zero modifications:
+* **The `@observe_pass` Decorator (Pass-Level Trace):** Decorates individual compiler transform classes to automatically capture the input and output FX graphs. The pass logic itself requires zero modifications.
+
+  As a **class decorator** — define a new pass with built-in tracing:
   ```python
   import operator
   from executorch.devtools.observatory import Observatory, observe_pass
@@ -170,6 +172,24 @@ A debugging framework must integrate seamlessly with existing development workfl
   with Observatory.enter_context("pre_lowering_passes"):
       PassManager([FoldAddZeroPass()])(export_model(model))
   Observatory.export_html_report("pass_trace.html")  # Includes before/after graphs.
+  ```
+
+  As an **instance wrapper** — wrap existing pass instances in an existing pipeline without modifying their class definitions. This is the primary use case for debugging passes inside an established pass manager (e.g., `QnnPassManager`):
+  ```python
+  from executorch.devtools.observatory import Observatory, observe_pass
+  from executorch.backends.qualcomm._passes import FoldQDQ, LayoutTransform, RemoveRedundancy
+  from executorch.exir.pass_manager import PassManager
+
+  # Existing pass instances — no source changes needed.
+  passes = [FoldQDQ(), LayoutTransform(), RemoveRedundancy()]
+
+  # Wrap each instance to capture its input/output graphs.
+  observed_passes = [observe_pass(p) for p in passes]
+
+  Observatory.clear()
+  with Observatory.enter_context("qnn_capture_program"):
+      PassManager(observed_passes)(graph_module)
+  Observatory.export_html_report("qnn_passes.html")  # One report with all pass diffs.
   ```
 
 ### 4.2 Two Output Formats
