@@ -341,12 +341,15 @@ Note that `digest` fires **online**, immediately paired with `observe`. This is 
 
 **Concrete example — the Accuracy lens:**
 
-1. `on_session_start` — prepares a small calibration dataset and installs pipeline patches.
-2. `observe` — watches for `GraphModule` artifacts at each collection point; returns `None` for non-graph records.
-3. `digest` — runs both the float-reference and quantized graphs on the calibration batch, serializes per-operator PSNR/cosine/MSE into the Record. *(This executes online because live Python graph objects are not serializable — the raw measurements must be materialized at capture time.)*
-4. `on_session_end` — restores all monkey-patches.
-5. `analyze` — ranks operators by accuracy degradation across all collected records; flags those below a configurable threshold.
-6. `get_frontend_spec()` → `Frontend.dashboard()` renders a session-level accuracy summary table; `Frontend.record()` contributes a `GraphExtension` color-overlay layer so the `fx_viewer` canvas paints a green-to-red gradient on the worst-performing nodes.
+1. **`on_session_start`** — installs backend-specific dataset patches (registered via `register_dataset_patches`). These capture calibration inputs when the user’s script loads a dataset, so the lens reuses real data without script changes.
+2. **`observe`** — respects `config.accuracy.enabled`, including per-region overrides (a region can disable accuracy to skip expensive simulation). On the first "Exported Float" record, lazily initializes by extracting the float model and building an Evaluator with captured data. Skips non-Module artifacts. For valid models, runs `evaluator.evaluate(artifact)` to produce metrics (PSNR, MSE, cosine similarity, top-k accuracy) and tracks `_worst_indices` so other lenses can identify the worst-performing input.
+3. **`digest`** — passes the metrics dict through unchanged (already JSON-serializable). This keeps the Archive simple and makes the same values available to analysis.
+4. **`on_session_end`** — uninstalls all patches and clears cached state, preventing one session from leaking into the next.
+5. **`analyze`** — walks records and computes per-metric diffs between consecutive pipeline stages (e.g., `psnr_diff` from stage N−1 to N). This shows not just each stage’s accuracy but *where* accuracy changed across the pipeline.
+6. **`get_frontend_spec()`** returns `_AccuracyFrontend`, which produces:
+   - **`dashboard()`** → a **TableBlock** titled "Accuracy Summary" shown in the HTML report, containing `records_measured` count and mean values for each primary metric (`psnr_mean`, `mse_mean`, `cosine_sim_mean`).
+   - **`json_report()`** → aggregated metrics with mean/min/max/worst\_record per metric, for CI gates and automated triage.
+   - *(The green-to-red graph color overlay on individual nodes is contributed by the separate `per_layer_accuracy` lens, which operates at per-operator granularity.)*
 
 The lens never decides *when* to fire, *where* it is in the pipeline, or *what* the Archive schema is. The framework owns those. The lens owns only the question it answers. The hooks defined in the Lens Protocol constitute one of the stable public surfaces governed under §9.
 
