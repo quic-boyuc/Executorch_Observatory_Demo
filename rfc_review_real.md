@@ -129,6 +129,25 @@ python -m executorch.backends.xnnpack.debugger.observatory \
 
 Observatory parses only its own leading flags, then runs your script exactly as written and forwards the remaining arguments verbatim — so no edit to the script is needed.
 
+*How the zero-change capture works (and what Q2 is about):* when the session opens, the `pipeline_graph_collector` lens temporarily replaces a few standard pipeline functions with thin wrappers that call `Observatory.collect()` around the original, then puts the originals back when the session ends. In simplified form:
+
+```python
+import torchao.quantization.pt2e.quantize_pt2e as qt   # the module that owns convert_pt2e
+
+_original = qt.convert_pt2e                       # 1. save the real function
+
+def _patched(model, *args, **kwargs):
+    Observatory.collect("Calibrated Model", model)        # 2a. capture the input graph
+    result = _original(model, *args, **kwargs)            # 2b. call the real function
+    Observatory.collect("Quantized Model", result)        # 2c. capture the output graph
+    return result
+
+qt.convert_pt2e = _patched                        # 3. install for this session
+# ... on session end: qt.convert_pt2e = _original  (always restored, even on exception)
+```
+
+The same pattern wraps `prepare_pt2e` and `to_edge_transform_and_lower`. The patched set is a small, explicit list owned by one lens, and every original is restored on exit. This is what makes "zero code change" possible — and also what **Q2** asks reviewers to weigh in on.
+
 **2. Context + collection points** — the underlying mechanism the CLI uses. You activate the lenses you want, open a session, and mark the points to capture. Lenses are turned on (and tuned) by the `config` dict passed to `enter_context`, keyed by lens name:
 
 ```python
@@ -325,7 +344,7 @@ The motivation section argues that Model Explorer does not fit the in-pipeline, 
 *Recommendation:* add `fx_viewer` for the compile-debugging use case and keep Model Explorer for general model browsing. The two serve different stages and the doc treats them as complementary, not competing. Revisit upstreaming once the API boundaries are stable.
 
 **Q2 — Is monkey-patching pipeline entry points an acceptable capture mechanism, or do we need official pipeline hooks?**
-The "zero code change" CLI works by patching standard functions (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, ...) for the duration of a session, then restoring them. This is powerful but couples capture to internal function signatures, which can drift across ExecuTorch versions. Should patching stay the supported mechanism, or should ExecuTorch expose official observation hooks that lenses attach to instead?
+The "zero code change" CLI works by patching standard functions (`prepare_pt2e`, `convert_pt2e`, `to_edge_transform_and_lower`, ...) for the duration of a session, then restoring them — see the concrete before/after wrapper in *"How the zero-change capture works"* above. This is powerful but couples capture to internal function signatures, which can drift across ExecuTorch versions. Should patching stay the supported mechanism, or should ExecuTorch expose official observation hooks that lenses attach to instead?
 *Recommendation:* keep scoped patching for v1: it needs no core changes and is fully restored on session end. But treat the patched entry points as a small, explicit list owned by the `pipeline_graph_collector` lens, so a future migration to official hooks stays localized. Heavy lenses (e.g. accuracy simulation that runs real inference during compile) stay opt-in via lens recipes.
 
 **Q3 — Are we ready to treat the Lens protocol and the JSON schemas as stable contracts, and where is the core/backend line?**
