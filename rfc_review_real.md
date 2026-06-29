@@ -245,23 +245,30 @@ class PerLayerAccuracyLens(Lens):
     # ── Visualization (offline) ────────────────────────────────────────────
     @staticmethod
     def get_frontend_spec():
-        return _AccuracyFrontend()          # declares the report blocks (table + graph overlay)
+        return _AccuracyFrontend()          # declares the report blocks (table + graph)
 
 
 class _AccuracyFrontend(Frontend):
-    # record() -> the graph overlay for one record (a layer on the GraphBlock)
-    def record(self, record, analysis):
+    # record() -> the blocks shown for one record: a summary TABLE + the GRAPH
+    def record(self, digest, analysis, context):
+        metrics = digest["per_layer_accuracy"]            # {node_id: {psnr, cosine, mse}}
+
+        # (1) a per-record summary table (e.g. worst-N nodes by PSNR)
+        table = TableBlock(id="accuracy_table", rows=worst_nodes_table(metrics))
+
+        # (2) the FX graph, with this lens's accuracy overlay as a layer
         ext = GraphExtension(id="per_layer_accuracy", name="Per-Layer Accuracy")
-        for node_id, m in record.data["per_layer_accuracy"].items():
+        for node_id, m in metrics.items():
             ext.add_node_data(node_id, {"psnr_db": f"{m['psnr']:.2f}"})   # info-panel data
         ext.set_label_formatter(lambda d: [f"PSNR: {d.get('psnr_db', '')}"])  # on-node label
         ext.set_color_rule(NumericColorRule(attribute="psnr_db", cmap="reds"))  # color
         ext.set_sync_key("from_node")       # match nodes across graphs in compare mode
-        return [GraphLayerContribution(extension=ext)]   # stacked onto the record's GraphBlock
-    # (dashboard() may also return a session-level TableBlock summary — omitted)
+        graph = GraphBlock(id="fx_graph", extensions=[ext])
+
+        return ViewList(blocks=[table, graph])            # table + graph, in order
 ```
 
-The framework owns *when* each hook fires and *what* the Archive stores; the lens owns only the question it answers. When the report is built, Observatory renders each record as a **`GraphBlock`** and stacks every lens's **`GraphExtension`** onto it as a toggle. The result: nodes colored by accuracy, a `PSNR` label on each node, the full metrics in the info panel, and automatic node sync when two graphs are compared.
+So for each record this one lens contributes two blocks: a **`TableBlock`** summary and a **`GraphBlock`** carrying its `GraphExtension` overlay. The framework owns *when* each hook fires and *what* the Archive stores; the lens owns only the question it answers. When the report is built, Observatory renders these blocks per record and stacks every lens's overlay onto the graph as a toggle. The result: a summary table plus nodes colored by accuracy, a `PSNR` label on each node, the full metrics in the info panel, and automatic node sync when two graphs are compared.
 
 ## What You Get Out
 *Capture and analysis are kept separate, so one run produces one raw file and two derived views.*
@@ -288,25 +295,29 @@ The framework owns *when* each hook fires and *what* the Archive stores; the len
   `![Node Info Panel](demo_material/node_info_panel.png)`
 
 
-**Live reports — normal (single-run) mode:** each run produces three artifacts — the interactive HTML report, the machine-readable JSON summary, and the raw run log.
+**Live reports — normal (single-run) mode:**
 
-| Backend | Model | Nodes | Report | JSON Summary | Log |
-|---|---|---:|---|---|---|
-| xnnpack | `mobilebert` | 2361 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/run.log.txt) |
-| xnnpack | `resnet50` | 550 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/run.log.txt) |
-| xnnpack | `mv2` | 521 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/run.log.txt) |
-| qualcomm | `swin_v2_t` | 1494 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/run.log.txt) |
-| qualcomm | `mobilenet_v2` | 521 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.summary.json) | [Raw Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/run.log.txt) |
+| Backend | Model | Nodes | Report |
+|---|---|---:|---|
+| xnnpack | `mobilebert` | 2361 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mobilebert/observatory_report.html) |
+| xnnpack | `resnet50` | 550 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/resnet50/observatory_report.html) |
+| xnnpack | `mv2` | 521 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/xnnpack/mv2/observatory_report.html) |
+| qualcomm | `swin_v2_t` | 1494 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/swin_v2_t/observatory_report.html) |
+| qualcomm | `mobilenet_v2` | 521 | [HTML Report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html) |
 
-**Live reports — compare mode (same model, XNNPACK vs. Qualcomm QNN):** the `--compare` flow likewise emits the comparison HTML, a summary JSON, and a comparison log.
+*(Each report folder also contains a machine-readable JSON summary and the raw run log.)*
 
-| Model | Backend Pair | Comparison HTML | JSON Summary | Raw Log |
-|---|---|---|---|---|
-| MobileNetV2 | `xnnpack/mv2` vs `qualcomm/mobilenet_v2` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/comparison.log.txt) |
-| MobileNetV3 | `xnnpack/mv3` vs `qualcomm/mobilenet_v3` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/comparison.log.txt) |
-| InceptionV3 | `xnnpack/ic3` vs `qualcomm/inception_v3` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/comparison.log.txt) |
-| InceptionV4 | `xnnpack/ic4` vs `qualcomm/inception_v4` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/comparison.log.txt) |
-| ViT | `xnnpack/vit` vs `qualcomm/torchvision_vit` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html) | [Summary JSON](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.summary.json) | [Comparison Log](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/comparison.log.txt) |
+**Live reports — compare mode (same model, XNNPACK vs. Qualcomm QNN):**
+
+| Model | Backend Pair | Comparison HTML |
+|---|---|---|
+| MobileNetV2 | `xnnpack/mv2` vs `qualcomm/mobilenet_v2` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv2_vs_qnn_mobilenet_v2/observatory_comparison.html) |
+| MobileNetV3 | `xnnpack/mv3` vs `qualcomm/mobilenet_v3` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_mv3_vs_qnn_mobilenet_v3/observatory_comparison.html) |
+| InceptionV3 | `xnnpack/ic3` vs `qualcomm/inception_v3` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic3_vs_qnn_inception_v3/observatory_comparison.html) |
+| InceptionV4 | `xnnpack/ic4` vs `qualcomm/inception_v4` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_ic4_vs_qnn_inception_v4/observatory_comparison.html) |
+| ViT | `xnnpack/vit` vs `qualcomm/torchvision_vit` | [HTML Comparison](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/comparisons/xnn_vit_vs_qnn_torchvision_vit/observatory_comparison.html) |
+
+*(Each comparison folder also contains a summary JSON and a comparison log.)*
 
 # Scope & Stability
 
