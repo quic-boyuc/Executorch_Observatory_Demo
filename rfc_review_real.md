@@ -14,6 +14,8 @@ Today ExecuTorch has no convenient way to compare different graphs and debugging
 
 With this design, running a debugging workflow and producing a shareable report becomes standardized — and usually needs little or no change to existing scripts. `Observatory` does **not** replace `Inspector`, `ETRecord`, or `ETDump`; it coordinates them. The rest of this document explains the motivation, then describes each piece in detail.
 
+![Observatory and fx_viewer at a glance: the ExecuTorch compile pipeline feeds the Observatory framework, whose Lens hooks (instrument, serialize, analyze, visualize) and the fx_viewer produce an Archive JSON, a shareable Report HTML, and a Report JSON.](demo_material/teaser.png)
+
 # Motivation & Approach
 
 ## Why `fx_viewer`? The Graph Needs a Lightweight, Workflow-Aware Viewer
@@ -40,6 +42,10 @@ For that in-pipeline workflow, a few of Model Explorer's design choices add fric
 | Aspect | Model Explorer | `fx_viewer` |
 |---|---|---|
 | Custom per-node data | ExecuTorch only sets node *namespace* for grouping. Other values (accuracy, latency) need a separate node-data JSON, and only op nodes are supported. | Set programmatically; colors, labels, and any per-node data are baked into one payload |
+
+![Many pipeline stages compared side by side: the same node is matched and highlighted across every graph, with a synced per-node property table below.](demo_material/compare_graphs.png)
+
+![Per-node data drawn directly on the graph: nodes labeled with their per-layer metric and colored by it, with the layer/color-by controls and node detail panel shown alongside.](demo_material/debug_info_labeling.png)
 
 #### Share the result easily
 *A debugging view should attach to a GitHub issue or PR as a single file.*
@@ -286,20 +292,18 @@ So for each record this one lens contributes two blocks: a **`TableBlock`** summ
 | **Report HTML** | People | One self-contained, server-free dashboard with the interactive `fx_viewer` graph; shareable in a PR or email |
 | **Report JSON** | CI / LLM triage | Structured metrics and flagged regressions for automated gates |
 
-**Demo images:** _(placeholders — images to be attached; each caption notes what the screenshot should show)_
+**Demo images:**
 
 - **Session dashboard** — run metadata: command line, environment, models, and active lenses.
-  `![Session Dashboard](demo_material/session_dashboard.png)`
+  ![Session Dashboard](demo_material/session_dashboard.png)
 - **Record tree explorer (left panel)** — captured records nested by pipeline region; flat vs. folder views.
-  `![Record Tree Explorer](demo_material/records_explorer.png)`
-- **Interactive layered graph** — the canvas with minimap and search; a node selected, its info panel open (op, stack trace, per-op metrics).
-  `![Interactive FX Graph](demo_material/interactive_graph.png)`
+  ![Record Tree Explorer](demo_material/records_explorer.png)
+- **Interactive layered graph** — the canvas with minimap and search; a node selected, with its detail panel open.
+  ![Interactive FX Graph](demo_material/node-info.png)
 - **Color-by overlay + layer toggle** — nodes painted by an accuracy metric (green→red gradient), with the layer/color-by control visible.
-  `![Layer Overlay and Color-By](demo_material/layer_color_by.png)`
+  ![Layer Overlay and Color-By](demo_material/color-by.png)
 - **Cross-backend compare (N-way sync)** — two graphs side by side; selecting a node in one highlights and centers the matched node in the other.
-  `![Cross-Backend Compare](demo_material/cross_backend_compare.png)`
-- **Node info panel detail** _(optional)_ — close-up of one node's merged base + lens data (e.g. PSNR, cosine, MSE) in the info panel.
-  `![Node Info Panel](demo_material/node_info_panel.png)`
+  ![Cross-Backend Compare](demo_material/cross_backend_compare.png)
 
 
 **Live reports — normal (single-run) mode:**
