@@ -215,73 +215,39 @@ observed_passes = [observe_pass(p) for p in [FoldQDQ(), LayoutTransform()]]
 ### How a lens contributes a graph view with `fx_viewer`
 The visualize stage is where a lens meets `fx_viewer`. A lens declares a **`GraphBlock`** (an interactive FX graph) and attaches one or more **`GraphExtension`** layers — togglable overlays of colors, labels, and per-node data drawn on top of the graph. Many extensions can sit on the same graph, so one graph can show op type, partition, and accuracy as separate switchable layers.
 
-Here is a pseudo sketch of an **accuracy lens** that exercises *every* hook in the protocol, end to end — from one-time setup, through online capture, to offline analysis and the final graph overlay. The whole overlay (colors, labels, info-panel data, cross-graph sync) is built in Python, with no JavaScript:
+Here is the *essence* of an **accuracy lens** — capture per-node metrics, analyze them, then return both a table and a graph for each record. The whole overlay (colors, labels, per-node data, cross-graph sync) is built in Python, with no JavaScript:
 
 ```python
 class PerLayerAccuracyLens(Lens):
+    # session hooks install/restore patches; omitted here — see PR description
 
     @classmethod
-    def get_name(cls):
-        return "per_layer_accuracy"          # config key: config["per_layer_accuracy"]
-
-    # ── Registration + session lifecycle ───────────────────────────────────
-    # Optional/boilerplate, shown briefly: setup() does one-time init; the two
-    # session hooks install monkey-patches on entry and restore them on exit.
-    @classmethod
-    def setup(cls): cls._float_model = None
-    @classmethod
-    def on_session_start(cls, ctx): install_calibration_dataset_patches(cls)
-    @classmethod
-    def on_session_end(cls, ctx): uninstall_all_patches()   # always restore, even on exception
-
-    # ── Per collect() call (online capture) ────────────────────────────────
-    @classmethod
-    def observe(cls, artifact, ctx):
-        if not ctx.config.get("per_layer_accuracy", {}).get("enabled", True):
-            return None                     # lens turned off for this region -> skip
+    def observe(cls, artifact, ctx):                 # CAPTURE (online)
         if not is_graph_like(artifact):
-            return None                     # ignore records this lens does not care about
-        return evaluate_per_node(artifact, cls._float_model)   # {node_id: {psnr, cosine, mse}}
+            return None                              # skip records this lens ignores
+        return evaluate_per_node(artifact, cls._float_model)   # {node_id: {psnr, ...}}
 
-    @classmethod
-    def digest(cls, observation, ctx):
-        return observation                  # JSON-serializable form -> stored in the Record
-
-    # ── Analysis (offline, at report time) ─────────────────────────────────
     @staticmethod
-    def analyze(records, config):
-        result = AnalysisResult()
-        for record in records:             # e.g. rank nodes by degradation across stages
-            result.per_record_data[record.name] = summarize(record.data["per_layer_accuracy"])
-        return result
+    def analyze(records, config):                    # ANALYZE (offline)
+        ...                                          # e.g. rank nodes by degradation
 
-    # ── Visualization (offline) ────────────────────────────────────────────
-    @staticmethod
-    def get_frontend_spec():
-        return _AccuracyFrontend()          # declares the report blocks (table + graph)
-
-
-class _AccuracyFrontend(Frontend):
-    # record() -> the blocks shown for one record: a summary TABLE + the GRAPH
-    def record(self, digest, analysis, context):
-        metrics = digest["per_layer_accuracy"]            # {node_id: {psnr, cosine, mse}}
-
-        # (1) a per-record summary table (e.g. worst-N nodes by PSNR)
-        table = TableBlock(id="accuracy_table", rows=worst_nodes_table(metrics))
-
-        # (2) the FX graph, with this lens's accuracy overlay as a layer
-        ext = GraphExtension(id="per_layer_accuracy", name="Per-Layer Accuracy")
-        for node_id, m in metrics.items():
-            ext.add_node_data(node_id, {"psnr_db": f"{m['psnr']:.2f}"})   # info-panel data
-        ext.set_label_formatter(lambda d: [f"PSNR: {d.get('psnr_db', '')}"])  # on-node label
-        ext.set_color_rule(NumericColorRule(attribute="psnr_db", cmap="reds"))  # color
-        ext.set_sync_key("from_node")       # match nodes across graphs in compare mode
-        graph = GraphBlock(id="fx_graph", extensions=[ext])
-
-        return ViewList(blocks=[table, graph])            # table + graph, in order
+    # VISUALIZE (offline): each record returns a TABLE + the GRAPH with an overlay layer
+    class _Frontend(Frontend):
+        def record(self, digest, analysis, context):
+            metrics = digest["per_layer_accuracy"]
+            table = TableBlock(id="accuracy_table", rows=worst_nodes_table(metrics))
+            ext = GraphExtension(id="per_layer_accuracy", name="Per-Layer Accuracy")
+            for node_id, m in metrics.items():
+                ext.add_node_data(node_id, {"psnr_db": f"{m['psnr']:.2f}"})
+            ext.set_color_rule(NumericColorRule(attribute="psnr_db", cmap="reds"))
+            ext.set_sync_key("from_node")            # sync nodes across graphs in compare
+            graph = GraphBlock(id="fx_graph", extensions=[ext])
+            return ViewList(blocks=[table, graph])   # table + graph, in order
 ```
 
-So for each record this one lens contributes two blocks: a **`TableBlock`** summary and a **`GraphBlock`** carrying its `GraphExtension` overlay. The framework owns *when* each hook fires and *what* the Archive stores; the lens owns only the question it answers. When the report is built, Observatory renders these blocks per record and stacks every lens's overlay onto the graph as a toggle. The result: a summary table plus nodes colored by accuracy, a `PSNR` label on each node, the full metrics in the info panel, and automatic node sync when two graphs are compared.
+For each record this one lens contributes two blocks: a **`TableBlock`** summary and a **`GraphBlock`** carrying its `GraphExtension` overlay. The framework owns *when* each hook fires and *what* the Archive stores; the lens owns only the question it answers. The result: a summary table plus nodes colored by accuracy, labeled with their metric, full values in the info panel, and synced across graphs in compare mode.
+
+> **Full detail in the PR description.** The complete eight-method Lens protocol (`setup` / `on_session_start` / `on_session_end` / `observe` / `digest` / `analyze` / `html_frontend` / `json_frontend`) and a full worked custom lens (`AdbLogLens`) live in `pr_description_refined.md` (§"The Lens Protocol" and §"Worked Example").
 
 ## What You Get Out
 *Capture and analysis are kept separate, so one run produces one raw file and two derived views.*
