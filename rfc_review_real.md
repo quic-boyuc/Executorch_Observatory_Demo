@@ -17,7 +17,14 @@ With this design, running a debugging workflow and producing a shareable report 
 # Motivation & Approach
 
 ## Why `fx_viewer`? The Graph Needs a Lightweight, Workflow-Aware Viewer
-The `torch.fx` graph is ExecuTorch's core IR, and ExecuTorch already ships a Model Explorer integration (`devtools/visualization/`) for browsing it. Model Explorer is a powerful, mature tool, and the two are **complementary, not competing**: Model Explorer is for general model browsing, while `fx_viewer` targets one specific need it does not cover well — debugging a model *inside* the compile pipeline, across many stages at once. A few of Model Explorer's design choices add friction for that workflow. The groups below show each need and how `fx_viewer` meets it.
+The `torch.fx` graph is ExecuTorch's core IR. ExecuTorch already ships a Model Explorer integration (`devtools/visualization/`) for browsing it, and Model Explorer is a powerful, mature tool.
+
+`fx_viewer` is **complementary, not a replacement**. The two serve different jobs:
+
+- **Model Explorer** — general model browsing.
+- **`fx_viewer`** — one job Model Explorer does not cover well: debugging a model *inside* the compile pipeline, across many stages at once.
+
+For that in-pipeline workflow, a few of Model Explorer's design choices add friction. The groups below pair each need with how `fx_viewer` meets it.
 
 #### Compare many graphs at once
 *To trace a lowering, you often need to view several stages together, not just two.*
@@ -324,7 +331,7 @@ So for each record this one lens contributes two blocks: a **`TableBlock`** summ
 This section states what already exists, what this RFC asks to approve, what is planned later, and which parts are meant to be stable contracts.
 
 ## What's in the proposal, and what's planned later
-Everything described in this RFC is **already implemented as a proof-of-concept** in the draft branch — the same code that generated all the demos and reports above. The POC exists to make the proposal concrete and reviewable; it is **not** production-ready and the whole branch still needs thorough review before any part is merged. So the real boundary is not "shipped vs. proposed" — every feature here is *both* proposed and already prototyped. The table below separates **what the POC covers today** from **what is left as future work**.
+Everything described in this RFC is **already implemented as a proof-of-concept** in the draft branch — the same code that generated all the demos and reports above. The POC exists to make the proposal concrete and reviewable; it is **not** production-ready, and the whole branch still needs thorough review before any part is merged. The table below separates **what the POC covers today** from **what is left as future work**.
 
 | Area | In the POC (proposed in this RFC) | Future work |
 |---|---|---|
