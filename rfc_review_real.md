@@ -1,6 +1,6 @@
-# Proposing Visualizer and Debugging Framework
+# Proposing a Visualizer and Debugging Framework for ExecuTorch
 
-# Introduction
+# 1. Introduction
 
 Today ExecuTorch has no convenient way to compare different graphs and debugging artifacts in one place. This proposal adds two pieces that work together:
 
@@ -16,9 +16,24 @@ With this design, running a debugging workflow and producing a shareable report 
 
 ![Observatory and fx_viewer at a glance: the ExecuTorch compile pipeline feeds the Observatory framework, whose Lens hooks (instrument, serialize, analyze, visualize) and the fx_viewer produce an Archive JSON, a shareable Report HTML, and a Report JSON.](demo_material/teaser.png)
 
-# Motivation & Approach
+## 1.1 Draft Implementation
 
-## Why `fx_viewer`? The Graph Needs a Lightweight, Workflow-Aware Viewer
+A working proof-of-concept that produced every demo and report in this document lives on the draft branch:
+
+> **Draft branch:** _<add link to the draft branch / PR here>_ — see also the detailed PR write-up in `pr_description_refined.md`.
+
+## 1.2 What We Are Proposing (and What Is Open)
+
+We are proposing a **feature set** — backed by a draft implementation to make it concrete and testable. We are **not** asking to lock in a specific module layout or API surface yet. In particular:
+
+- The **feature set and workflow** (the capture/analyze/visualize split, the Lens idea, N-way graph compare, portable HTML/JSON outputs) is what we want to align on.
+- The **concrete module hierarchy, directory placement, and exact API framing** shown here are *illustrative* and **open to discussion** — including how `fx_viewer` and `Observatory` should relate to existing tools (Model Explorer, `Inspector`) and where they should live in the tree.
+
+We welcome different integration and contribution strategies. The decisions we are actively seeking input on are collected in **§5 (Open Questions)**, and are also flagged inline where they first come up.
+
+# 2. Motivation & Approach
+
+## 2.1 Why `fx_viewer`? The Graph Needs a Lightweight, Workflow-Aware Viewer
 The `torch.fx` graph is ExecuTorch's core IR. ExecuTorch already ships a Model Explorer integration (`devtools/visualization/`) for browsing it, and Model Explorer is a powerful, mature tool.
 
 `fx_viewer` is **complementary, not a replacement**. The two serve different jobs:
@@ -28,7 +43,7 @@ The `torch.fx` graph is ExecuTorch's core IR. ExecuTorch already ships a Model E
 
 For that in-pipeline workflow, a few of Model Explorer's design choices add friction. The groups below pair each need with how `fx_viewer` meets it.
 
-#### Compare many graphs at once
+#### 2.1.1 Compare many graphs at once
 *To trace a lowering, you often need to view several stages together, not just two.*
 
 | Aspect | Model Explorer (ExecuTorch integration) | `fx_viewer` |
@@ -36,7 +51,7 @@ For that in-pipeline workflow, a few of Model Explorer's design choices add fric
 | Graphs compared at once | 2 (split-pane) | N-way (3 or more) in one grid |
 | Node sync across panes | GUI only; matches by exact node id. Many-to-many sync needs a mapping JSON written and uploaded by hand. | Automatic, including many-to-many, from `from_node_root` lineage and `debug_handle` |
 
-#### Show your own data on the graph
+#### 2.1.2 Show your own data on the graph
 *The graph is the natural place to show accuracy, partitions, and hardware limits.*
 
 | Aspect | Model Explorer | `fx_viewer` |
@@ -47,7 +62,7 @@ For that in-pipeline workflow, a few of Model Explorer's design choices add fric
 
 ![Per-node data drawn directly on the graph: nodes labeled with their per-layer metric and colored by it, with the layer/color-by controls and node detail panel shown alongside.](demo_material/debug_info_labeling.png)
 
-#### Share the result easily
+#### 2.1.3 Share the result easily
 *A debugging view should attach to a GitHub issue or PR as a single file.*
 
 | Aspect | Model Explorer | `fx_viewer` |
@@ -55,7 +70,7 @@ For that in-pipeline workflow, a few of Model Explorer's design choices add fric
 | How you view it | Starts a local `model-explorer` server and opens a browser tab; a saved JSON still needs the server to open it | One standalone HTML file, opens in any browser, no server |
 | Shareable in an issue/PR | No (needs a server; local permalinks do not work elsewhere) | Yes (just send the HTML file) |
 
-#### Stay small and easy to extend
+#### 2.1.4 Stay small and easy to extend
 *A backend team should be able to read and change the viewer itself.*
 
 | Aspect | Model Explorer | `fx_viewer` |
@@ -64,10 +79,10 @@ For that in-pipeline workflow, a few of Model Explorer's design choices add fric
 | Frontend stack | Angular + three.js + d3 (~50k lines of frontend TS/HTML/SCSS) | Plain JavaScript on HTML5 Canvas (~4.5k lines, no framework) |
 | Graph layout | Computed in the browser on each load, which gets slow on large graphs | Pre-computed in Python and baked into the HTML, so it is expected to render faster on open *(head-to-head numbers still to be measured)* |
 
-## Why `Observatory`? The Debugging Workflow is Fragmented
+## 2.2 Why `Observatory`? The Debugging Workflow is Fragmented
 ExecuTorch already has strong low-level capture tools (`Inspector`, `ETRecord`/`ETDump`), but no layer to *coordinate* them. So each backend builds its own glue, and the results are hard to share and reuse. The groups below show each problem and how `Observatory` solves it.
 
-#### Write the debug logic once, reuse it everywhere
+#### 2.2.1 Write the debug logic once, reuse it everywhere
 *The same setup, collect, analyze, and clean-up steps should not be rebuilt per backend.*
 
 | Problem today | How `Observatory` solves it |
@@ -75,22 +90,29 @@ ExecuTorch already has strong low-level capture tools (`Inspector`, `ETRecord`/`
 | Each backend writes its own wrapper script to start, collect, analyze, and stop | A **Lens** holds one debugging concern; the framework runs the session lifecycle, storage, and report assembly |
 | Analysis logic is locked inside one backend's script | Lenses are reusable and opt-in, so the same analysis runs across backends |
 
-#### Turn scattered output into one shareable report
+#### 2.2.2 Turn scattered output into one shareable report
 *Findings should live in one place, for both people and CI.*
 
 | Problem today | How `Observatory` solves it |
 |---|---|
 | Output is split across console prints, CSV files, and screenshots | One self-contained HTML report for people, plus structured JSON for CI and automated triage |
 
-#### Re-analyze and compare without re-running
+#### 2.2.3 Re-analyze and compare without re-running
 *You should not have to re-run the compiler to ask a new question later.*
 
 | Problem today | How `Observatory` solves it |
 |---|---|
 | You cannot re-analyze or compare past runs without running the compiler again | Capture is split from analysis: a lightweight **Archive JSON** is saved during the run, so you can re-analyze it later or compare two runs with `--compare`, with no re-run |
 
+## 2.3 Relationship to Existing Tools (Open for Discussion)
+The sections above motivate the *features*, not a fixed integration plan. How `fx_viewer` and `Observatory` should sit next to ExecuTorch's existing tools is something we want reviewers to shape:
 
-# User-Facing Surfaces and Outputs
+- **vs. Model Explorer (`devtools/visualization/`):** we treat `fx_viewer` as *complementary* (in-pipeline debugging) rather than a replacement (general browsing) — but whether to ship a second viewer or push these features upstream into Model Explorer is open. See **§5, Q1**.
+- **vs. `Inspector` / `ETRecord` / `ETDump`:** `Observatory` is a *client* that coordinates these, not a replacement — but where it should live in the tree and who owns it is open. See **§5, Q4**.
+
+We are happy to adopt a different module layout or integration strategy if reviewers prefer it.
+
+# 3. User-Facing Surfaces and Outputs
 
 This section is the concrete proposal: what you trigger, how you extend it, and what you get back. Observatory has two kinds of surface, for two audiences:
 
@@ -117,7 +139,7 @@ This section is the concrete proposal: what you trigger, how you extend it, and 
 
 **Walkthrough video:** a full end-to-end run — zero-config script, the generated report, and the interactive `fx_viewer` graph — is shown here: [walkthrough_from_issue.mp4](demo_material/walkthrough_from_issue.mp4).
 
-## Surfaces for Running Debugging
+## 3.1 Surfaces for Running Debugging
 *There are really two surfaces: the CLI, and an in-code "context + collection point" pair. The `@observe_pass` decorator is just syntactic sugar that inserts collection points around a compiler pass for you.*
 
 | Surface | What it is | When to use it |
@@ -142,7 +164,7 @@ python -m executorch.backends.xnnpack.debugger.observatory \
 
 Observatory parses only its own leading flags, then runs your script exactly as written and forwards the remaining arguments verbatim — so no edit to the script is needed.
 
-*How the zero-change capture works (and what Q2 is about):* when the session opens, the `pipeline_graph_collector` lens temporarily replaces a few standard pipeline functions with thin wrappers that call `Observatory.collect()` around the original, then puts the originals back when the session ends. In simplified form:
+*How the zero-change capture works (this is the concern raised in §5, Q2):* when the session opens, the `pipeline_graph_collector` lens temporarily replaces a few standard pipeline functions with thin wrappers that call `Observatory.collect()` around the original, then puts the originals back when the session ends. In simplified form:
 
 ```python
 import torchao.quantization.pt2e.quantize_pt2e as qt   # the module that owns convert_pt2e
@@ -202,7 +224,7 @@ from executorch.devtools.observatory import observe_pass
 observed_passes = [observe_pass(p) for p in [FoldQDQ(), LayoutTransform()]]
 ```
 
-## The Lens Protocol: Surface for Extending Debugging
+## 3.2 The Lens Protocol: Surface for Extending Debugging
 *To add a new debugging concern, a maintainer writes one Python class and implements only the stages it needs. The framework handles the rest.*
 
 | Stage | Hook | What it does |
@@ -212,7 +234,7 @@ observed_passes = [observe_pass(p) for p in [FoldQDQ(), LayoutTransform()]]
 | Visualize | `get_frontend_spec` | Declare the report blocks this lens contributes (table, HTML, or graph overlay) |
 | Session | `on_session_start` / `on_session_end` | (Optional) install and restore monkey-patches for the run |
 
-### How a lens contributes a graph view with `fx_viewer`
+### 3.2.1 How a lens contributes a graph view with `fx_viewer`
 The visualize stage is where a lens meets `fx_viewer`. A lens declares a **`GraphBlock`** (an interactive FX graph) and attaches one or more **`GraphExtension`** layers — togglable overlays of colors, labels, and per-node data drawn on top of the graph. Many extensions can sit on the same graph, so one graph can show op type, partition, and accuracy as separate switchable layers.
 
 Here is the *essence* of an **accuracy lens** — capture per-node metrics, analyze them, then return both a table and a graph for each record. The whole overlay (colors, labels, per-node data, cross-graph sync) is built in Python, with no JavaScript:
@@ -249,7 +271,7 @@ For each record this one lens contributes two blocks: a **`TableBlock`** summary
 
 > **Full detail in the PR description.** The complete eight-method Lens protocol (`setup` / `on_session_start` / `on_session_end` / `observe` / `digest` / `analyze` / `html_frontend` / `json_frontend`) and a full worked custom lens (`AdbLogLens`) live in `pr_description_refined.md` (§"The Lens Protocol" and §"Worked Example").
 
-## What You Get Out
+## 3.3 What You Get Out
 *Capture and analysis are kept separate, so one run produces one raw file and two derived views.*
 
 | Output | For whom | What it is |
@@ -296,11 +318,11 @@ For each record this one lens contributes two blocks: a **`TableBlock`** summary
 
 *(Each comparison folder also contains a summary JSON and a comparison log.)*
 
-# Scope & Stability
+# 4. Scope & Stability
 
 This section states what already exists, what this RFC asks to approve, what is planned later, and which parts are meant to be stable contracts.
 
-## What's in the proposal, and what's planned later
+## 4.1 What's in the proposal, and what's planned later
 Everything described in this RFC is **already implemented as a proof-of-concept** in the draft branch — the same code that generated all the demos and reports above. The POC exists to make the proposal concrete and reviewable; it is **not** production-ready, and the whole branch still needs thorough review before any part is merged. The table below separates **what the POC covers today** from **what is left as future work**.
 
 | Area | In the POC (proposed in this RFC) | Future work |
@@ -310,7 +332,7 @@ Everything described in this RFC is **already implemented as a proof-of-concept*
 | **`fx_viewer`** | Pan/zoom/minimap, search, N-way node sync, multi-layer overlays, Python (build) + JS (runtime) API boundaries | Non-FX formats (TOSA, JIT, delegated graphs) |
 | **CLI** | Backend + generic wrappers, `--compare` mode (archive → regression report) | Live streaming-telemetry dashboard |
 
-## Ownership and stable surfaces
+## 4.2 Ownership and stable surfaces
 Ownership is split so backends can move fast without core sign-off:
 
 - **Core devtools** own `devtools/observatory/` and `devtools/fx_viewer/`, the Lens protocol, and generic lenses (graph, metadata, compile-time accuracy).
@@ -323,9 +345,9 @@ To protect downstream tooling and CI, four surfaces are treated as **stable, cha
 3. The **Archive JSON** schema
 4. The **Report JSON** schema *(proposed)*
 
-# Open Questions for Reviewers
+# 5. Open Questions for Reviewers
 
-We are seeking decisions on the following. Each question ends with a starting recommendation that reviewers can accept, amend, or reject.
+We are seeking decisions on the following. Each question ends with a starting recommendation that reviewers can accept, amend, or reject. As noted in **§1.2**, the feature set is what we want to align on — the module layout and integration strategy below are open. Q1 and Q4 are first raised in **§2.3** (relationship to existing tools); Q2 is first raised in **§3.1** (the zero-change capture mechanism).
 
 **Q1 — Should `fx_viewer` exist beside Model Explorer, or should these capabilities go upstream into it?**
 The motivation section argues that Model Explorer does not fit the in-pipeline, multi-stage compiler-debugging workflow (2-pane only, server-backed, manual sync/overlay files, closed to contribution). The fork in the road: add `fx_viewer` as a second, lightweight viewer in devtools for this use case, or instead push these features (N-way compare, programmatic overlays, standalone HTML) upstream into Model Explorer?
