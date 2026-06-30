@@ -4,13 +4,15 @@
 
 Today ExecuTorch has no convenient way to compare different graphs and debugging artifacts in one place. This proposal adds two pieces that work together:
 
-1. **`fx_viewer`** — a lightweight, extensible FX-graph viewer. It compares many graphs side by side, and packs dozens of intermediate graphs and other debugging results into a single shareable HTML file.
+1. **`fx_viewer`** — a lightweight, embeddable FX-graph viewer. Its value is *debugging on the graph itself*: view many intermediate graphs side by side with synchronized node selection, and overlay custom debug info (accuracy, partitions, metrics) as colors and labels directly on the nodes. It renders entirely in the browser with no server, so the view can live inside any shared HTML page.
 
-2. **`Observatory`** — a debugging framework built on top of `fx_viewer`. It manages the debugging workflow so that debug-logic maintainers can write their own hooks (called **Lenses**) for each stage:
+2. **`Observatory`** — the debugging framework that drives the workflow and assembles the report. Debug-logic maintainers write their own hooks (called **Lenses**) for each stage:
    - session setup and teardown (e.g. monkey-patching)
    - artifact collection and serialization
    - data analysis and comparison
    - visualization strategy
+
+In short: **Observatory owns the workflow and produces the report; `fx_viewer` provides the interactive graph view (and the multi-graph compare and overlays) embedded inside it.** A lens does its analysis in Python and hands the result to `fx_viewer` as an overlay layer.
 
 With this design, running a debugging workflow and producing a shareable report becomes standardized — and usually needs little or no change to existing scripts. `Observatory` does **not** replace `Inspector`, `ETRecord`, or `ETDump`; it coordinates them. The rest of this document explains the motivation, then describes each piece in detail.
 
