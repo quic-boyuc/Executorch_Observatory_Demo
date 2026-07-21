@@ -167,21 +167,7 @@ exporter.export_html("debug_report.html")
 
 This also makes `fx_viewer` CI-friendly: the HTML can be uploaded as a build artifact and opened directly from the CI dashboard.
 
-The viewer's JS runtime also exposes a lightweight API for embedding in custom web pages:
-
-```javascript
-// Embed in any HTML container
-const viewer = FXGraphViewer.create({
-    payload: graphPayload,
-    mount: { root: '#my-container' },
-});
-viewer.init();
-
-// Programmatic interaction
-viewer.selectNode('conv2d_1');
-viewer.setActiveExtension('accuracy');
-viewer.setColorBy('accuracy');
-```
+The viewer is also **embeddable** — `export_js(container_id)` returns a self-contained JS snippet that mounts the full interactive viewer (canvas, minimap, search, overlay toggles) into any DOM element. This is how Observatory embeds `fx_viewer` graphs into its unified HTML report.
 
 ---
 
@@ -444,3 +430,6 @@ The current `Inspector.export_fx_viewer_html()` hook only works when an ETRecord
 
 **Q4 — Should the JSON payload format be exposed as a stable public API?**  
 `GraphPayload` and `GraphExtensionPayload` are currently internal to `fx_viewer`. Exposing them as a stable schema would allow users to export JSON once and re-render HTML later without re-running the compiler, and would enable third-party tooling to consume the format. The cost is schema versioning and backward-compatibility maintenance. Should we expose the JSON format as a stable API, or keep it internal and only support HTML as the stable output?
+
+**Q5 — Should the JS embedding API (`export_js` / `FXGraphViewer.create`) be formalized as a stable contract?**  
+Currently `export_js(container_id)` returns a JS snippet that mounts the full viewer into a DOM element. Observatory and other tools (e.g. custom dashboards, Jupyter/Colab notebooks) rely on this to embed interactive graphs. Should the JS mount interface (`FXGraphViewer.create({ payload, mount })`) and programmatic methods (e.g. `selectNode`, `setColorBy`, `setLayers`) be documented and versioned as a stable API surface, or kept internal with only the Python `export_html` / `export_js` as the stable boundary?
