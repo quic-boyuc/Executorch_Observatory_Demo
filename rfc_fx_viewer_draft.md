@@ -18,6 +18,10 @@ Its primary job is one that the existing visualization tools do not cover well: 
 
 A working proof-of-concept is available in draft PR [#19288](https://github.com/pytorch/executorch/pull/19288). All demo HTML files linked above were generated from that implementation.
 
+▶ **Feature walkthrough video** (start at 0:21 — the CLI wrapper shown in the first 20s is part of Observatory, not fx_viewer):
+
+[![Watch the fx_viewer Walkthrough](demo_material/youtube_teaser.png)](https://youtu.be/NQuj-2LvhAc?t=21)
+
 ---
 
 ## 2. Motivation: What the Existing Tools Cannot Do
@@ -57,7 +61,7 @@ FXGraphCompareExporter(
 
 ![N-way compare screenshot](demo_material/compare_graphs.png)
 
-**Live demo:** [3-graph sync demo](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html) — shows reference vs. decomposed (1→many) vs. fused (many→1) sync behavior.
+**Live demo:** [MV2 XNNPACK ETRecord compare (2-pane)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html) — click any node in the Aten pane and watch the Edge dialect pane sync automatically.
 
 ---
 
@@ -67,7 +71,7 @@ FXGraphCompareExporter(
 
 **What ME provides:**
 - Mode 1: "Match node id" — node ids can change after quantization or lowering passes, and the matching does not handle many-to-many transformations (e.g. one ATen op decomposing into multiple quantized ops).
-- Mode 2: Generate and upload a mapping JSON file — you need to produce this file separately and upload it through the GUI for cross-graph sync to work. For large models this is impractical.
+- Mode 2: Generate and upload a mapping JSON file — you need to produce this file separately and upload it through the GUI for cross-graph sync to work.
 
 **What `fx_viewer` provides:** Automatic many-to-many sync — no mapping file needed.
 
@@ -82,7 +86,7 @@ Click "quantized_conv2d_1" in Quantized graph
   → auto-highlights "conv2d_1_lowered" in Device graph
 ```
 
-**Live demo:** [MV2 XNNPACK ETRecord compare](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html) — click any node in the Aten pane and watch the Edge dialect pane sync automatically.
+**Live demo:** [3-graph sync demo](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html) — shows reference vs. decomposed (1→many) vs. fused (many→1) sync behavior.
 
 > **Future work:** We plan to add support for QNN backend graph format (the device-side graph produced after QNN compilation) as an additional pane. This would enable end-to-end node sync from ATen IR all the way through to the on-device execution graph, covering the full compile-to-deploy pipeline in a single view.
 
@@ -134,9 +138,6 @@ exporter.export_html("accuracy_overlay.html")
 
 > **Note:** The overlay API is not limited to compile-time data. Runtime artifacts such as ETDump profiling results (latency, event counts) can be parsed and attached as a `GraphExtension` in exactly the same way — see §3 for a comparison with Arm's ETDump overlay approach.
 
-![Color-by overlay screenshot](demo_material/color-by.png)
-![Node info panel screenshot](demo_material/node-info.png)
-
 Multiple overlay layers can be stacked and toggled independently:
 
 ```python
@@ -146,6 +147,8 @@ exporter.add_extension(latency_ext)     # profiling data
 exporter.export_html("multi_layer.html")
 # → user can toggle each layer on/off in the HTML
 ```
+
+![Debug info labeling screenshot](demo_material/debug_info_labeling.png)
 
 ---
 
@@ -163,6 +166,22 @@ exporter.export_html("debug_report.html")
 ```
 
 This also makes `fx_viewer` CI-friendly: the HTML can be uploaded as a build artifact and opened directly from the CI dashboard.
+
+The viewer's JS runtime also exposes a lightweight API for embedding in custom web pages:
+
+```javascript
+// Embed in any HTML container
+const viewer = FXGraphViewer.create({
+    payload: graphPayload,
+    mount: { root: '#my-container' },
+});
+viewer.init();
+
+// Programmatic interaction
+viewer.selectNode('conv2d_1');
+viewer.setActiveExtension('accuracy');
+viewer.setColorBy('accuracy');
+```
 
 ---
 
@@ -192,7 +211,7 @@ This also makes `fx_viewer` CI-friendly: the HTML can be uploaded as a build art
 | "What does my model look like?" | ✅ Rich module hierarchy, collapsible layers | — |
 | "Which ops belong to which nn.Module?" | ✅ Namespace grouping | — |
 | "What changed between ATen and Edge IR?" | — | ✅ N-way compare, auto sync |
-| "Which layer lost accuracy after quantization?" | — | ✅ Accuracy overlay, color-by severity |
+| "Which layer lost accuracy after quantization?" | ⚠️ node_data_builder (single graph, GUI upload, see §2 Gap 3) | ✅ Programmatic overlay, multi-graph, baked into HTML |
 | "I need to attach this to a GitHub issue" | — | ✅ Standalone HTML |
 | "CI needs to check for graph regressions" | — | ✅ HTML artifact, no server |
 | "I need to extend the viewer for my backend" | — | ✅ In-tree, small codebase |
@@ -257,6 +276,7 @@ The two tools are complementary. Arm's extension is well-suited for deployment a
 | Cross-graph node sync | ❌ | ✅ (manual mapping file) | ✅ (automatic) |
 | Many-to-many node mapping | ❌ | ✅ (manual mapping file) | ✅ (automatic) |
 | Backend assignment overlay | ❌ | ❌ | ✅ (from ETRecord) |
+| Embeddable JS API for custom web pages | ❌ | ❌ | ✅ |
 | Standalone HTML output | ❌ | ❌ | ✅ |
 | No server required | ❌ | ❌ | ✅ |
 | CI-friendly artifact | ❌ | ❌ | ✅ |
@@ -375,17 +395,15 @@ inspector.export_fx_viewer_html("mv2_compare.html")
 
 This keeps the ETRecord-based workflow intact — users who already use `Inspector` get `fx_viewer` output without changing their setup.
 
-### 5.5 Payload-level relayout (no GraphModule needed)
+### 5.5 Dependencies
 
-```python
-# Re-render a previously exported payload with updated extension layers
-# Useful for re-analysis without re-running the compiler
-relaid = FXGraphExporter.relayout_payload_base(
-    base_payload,
-    extensions_payload,
-    include_layers=["accuracy"],
-)
+`fx_viewer` requires the `fast-sugiyama` package for graph layout computation:
+
+```bash
+pip install 'fast-sugiyama[all]'  # requires Python >= 3.11
 ```
+
+> **Note:** `fast-sugiyama` has known layout bugs in certain graph topologies. We plan to replace it with a pure-Python layout implementation that eliminates this external dependency entirely. Until then, `fast-sugiyama` is a required install-time dependency.
 
 ### 5.6 Stable API surface
 
@@ -400,7 +418,6 @@ The following are proposed as stable, change-controlled contracts:
 | `Inspector.export_fx_viewer_html()` | Inspector hook for ETRecord-based users |
 | `GraphExtension` | Overlay layer definition |
 | `ColorRule` subclasses | Color mapping rules |
-| `GraphPayload` / `GraphExtensionPayload` | JSON wire format (used by Observatory) |
 
 ---
 
@@ -409,10 +426,7 @@ The following are proposed as stable, change-controlled contracts:
 The following items are planned but out of scope for this RFC:
 
 - **QNN backend graph format support** — Add a pane for the device-side graph produced after QNN compilation, enabling end-to-end node sync from ATen IR through to the on-device execution graph.
-- **Non-FX graph formats** — Support for TOSA, JIT, and delegated subgraph formats as additional pane types.
 - **Pure-Python layout engine** — Replace `fast-sugiyama` with a dependency-free implementation to eliminate the external package requirement and fix known layout bugs.
-- **Live streaming telemetry dashboard** — Stream runtime events into the viewer in real time rather than from a static ETDump file.
-- **Nightly CI regression templates** — Pre-built compare workflows for automated graph regression detection across nightly builds.
 - **Runtime delegated accuracy** — Per-layer accuracy comparison for delegated (on-device) execution, not just compile-time simulation.
 
 ---
