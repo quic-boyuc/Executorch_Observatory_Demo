@@ -66,22 +66,14 @@ FXGraphCompareExporter(
 **What you need:** Click a node in the quantized graph → the corresponding node in the float graph highlights automatically. This is essential for tracing where accuracy degrades.
 
 **What ME provides:**
-- Mode 1: "Match node id" — only works if node names are identical across graphs (they usually are not after quantization).
-- Mode 2: Upload a mapping JSON file — you write this by hand:
-  ```json
-  { "type": "sync_navigation",
-    "mappingEntries": [
-      { "sourceNodeIds": ["quantized_conv2d_1"],
-        "targetNodeIds": ["conv2d_1", "conv2d_1_dq"] }
-    ] }
-  ```
-  This is tedious and error-prone for large models.
+- Mode 1: "Match node id" — node ids can change after quantization or lowering passes, and the matching does not handle many-to-many transformations (e.g. one ATen op decomposing into multiple quantized ops).
+- Mode 2: Generate and upload a mapping JSON file — you need to produce this file separately and upload it through the GUI for cross-graph sync to work. For large models this is impractical.
 
-**What `fx_viewer` provides:** Automatic many-to-many sync — no JSON to write.
+**What `fx_viewer` provides:** Automatic many-to-many sync — no mapping file needed.
 
-- When a pass transforms a node, PyTorch records the origin in `fx_node.meta["from_node"]`.
-- `FXGraphExporter` walks this chain to find the root node name (`from_node_root`).
-- The JS compare engine tries sync in order: `from_node_root` → `debug_handle` set-intersection → node id.
+- PyTorch's `Interpreter` base class (used by `ExportPass` and all ExecuTorch `PassBase` subclasses) records node provenance in `fx_node.meta["from_node"]` as each pass executes. This is a linked list of `NodeSource` entries tracing back to the original node.
+- `FXGraphExporter` walks this chain to extract `from_node_root` — the name of the original ancestor node before any passes ran.
+- The JS compare engine tries sync in order: `from_node_root` → `debug_handle` set-intersection → node id. This handles 1-to-many (decomposition), many-to-1 (fusion), and many-to-many cases automatically.
 
 ```
 Click "quantized_conv2d_1" in Quantized graph
@@ -92,6 +84,8 @@ Click "quantized_conv2d_1" in Quantized graph
 
 **Live demo:** [MV2 XNNPACK ETRecord compare](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html) — click any node in the Aten pane and watch the Edge dialect pane sync automatically.
 
+> **Future work:** We plan to add support for QNN backend graph format (the device-side graph produced after QNN compilation) as an additional pane. This would enable end-to-end node sync from ATen IR all the way through to the on-device execution graph, covering the full compile-to-deploy pipeline in a single view.
+
 ---
 
 ### Gap 3 — You cannot overlay your own analysis results on the graph
@@ -100,9 +94,10 @@ Click "quantized_conv2d_1" in Quantized graph
 
 **What ME provides:**
 - The raw ME API has a `node_data_builder` that supports per-node numeric overlays.
-- **Limitation 1:** Only works for **op nodes** — the ME documentation explicitly states: *"The custom data is only for op nodes, not layer nodes."* Placeholder, output, and get_attr nodes are excluded.
-- **Limitation 2:** The workflow requires: (1) build a `ModelNodeData` object, (2) save it to a JSON file, (3) start the ME server, (4) manually upload the JSON in the GUI.
+- **Limitation 1:** ME's ETRecord adapter (including Arm's `etrecord-adapter-model-explorer`) extracts only the **edge dialect graph** — a single flattened graph of op nodes. Placeholder, output, and get_attr nodes are collapsed into synthetic "Graph Inputs" / "Graph Outputs" boundary nodes and are not individually addressable for overlay. The overlay API therefore covers the same set of nodes that the adapter exposes.
+- **Limitation 2:** The workflow requires: (1) build a `ModelNodeData` object, (2) save it to a JSON file, (3) start the ME server, (4) upload the JSON through the GUI.
 - **Limitation 3:** The `devtools/visualization/` wrapper (`visualize_with_clusters`) only exposes `namespace` grouping — it does not expose the `node_data_builder` API at all.
+- **Limitation 4:** Overlay data is scoped to a single graph. ME has no mechanism to attach the same overlay across multiple graphs simultaneously.
 
 **What `fx_viewer` provides:** Programmatic overlay on any node type, baked into the HTML at export time.
 
@@ -136,6 +131,8 @@ ext.set_tooltip_formatter(lambda d: [
 exporter.add_extension(ext)
 exporter.export_html("accuracy_overlay.html")
 ```
+
+> **Note:** The overlay API is not limited to compile-time data. Runtime artifacts such as ETDump profiling results (latency, event counts) can be parsed and attached as a `GraphExtension` in exactly the same way — see §3 for a comparison with Arm's ETDump overlay approach.
 
 ![Color-by overlay screenshot](demo_material/color-by.png)
 ![Node info panel screenshot](demo_material/node-info.png)
@@ -211,11 +208,36 @@ We considered pushing these features upstream into ME. The blockers are architec
 
 ### Relationship to Arm's `executorch-extension-model-explorer`
 
-Arm recently released `executorch-extension-model-explorer`, which adds PTE, ETRecord, and ETDump adapters to Model Explorer. This strengthens the ME ecosystem for **deployment artifact inspection** (viewing `.pte` files, overlaying runtime latency from ETDump).
+Arm recently released `executorch-extension-model-explorer`. Based on the source code, it provides:
 
-`fx_viewer` targets a different stage: **compile-time pipeline debugging**. The two coexist:
-- Use Arm's extension to inspect the deployed artifact and runtime latency.
-- Use `fx_viewer` to debug the compile pipeline and accuracy degradation.
+- **ETRecord adapter** — extracts the **edge dialect graph only** (via `gen_graphs_from_etrecord` → `EDGE_DIALECT_GRAPH_KEY`), renders it in ME with delegate namespace grouping and node metadata.
+- **ETDump data provider** — overlays **runtime latency metrics** (avg/p50/min/max ms, event count) onto the edge dialect graph by matching `debug_handle` values from the ETDump.
+- **PTE adapter** — visualizes `.pte` program files.
+
+The same capabilities are achievable with `fx_viewer`:
+
+```python
+# ETRecord → multi-pane compare (Aten + edge dialect + backend overlay)
+export_etrecord_to_html("mv2.etrecord", "mv2_compare.html")
+
+# ETDump latency overlay — parse ETDump, attach as GraphExtension
+from executorch.devtools import Inspector
+inspector = Inspector(etdump_path="out.etdump", etrecord="mv2.etrecord")
+latency_ext = GraphExtension(id="latency", name="Runtime Latency")
+for event in inspector.event_blocks[0].events:
+    if event.debug_handles:
+        latency_ext.add_node_data(
+            event.name, {"avg_ms": event.perf_data.avg}
+        )
+latency_ext.set_color_rule(NumericColorRule(attribute="avg_ms", cmap="reds"))
+```
+
+Key differences:
+- Arm's extension shows **one graph** (edge dialect only); `fx_viewer` shows **N graphs** (Aten + intermediate + edge) in one view with automatic cross-pane sync.
+- Arm's ETDump overlay is limited to the ME node data API (op nodes in the edge graph); `fx_viewer`'s `GraphExtension` overlay works on any node in any graph, and is not limited to compile-time data — runtime artifacts like ETDump can be overlaid in the same way.
+- Arm's extension requires the ME server; `fx_viewer` produces standalone HTML.
+
+The two tools are complementary. Arm's extension is well-suited for deployment artifact inspection within the ME ecosystem. `fx_viewer` is better suited for multi-stage compile pipeline debugging and shareable standalone reports.
 
 ---
 
@@ -382,34 +404,16 @@ The following are proposed as stable, change-controlled contracts:
 
 ---
 
-## 6. Integration with Observatory (RFC-B)
+## 6. Future Work
 
-`fx_viewer` is designed to work standalone — the ETRecord demos above require no Observatory at all.
+The following items are planned but out of scope for this RFC:
 
-When used together with Observatory, the integration point is `GraphExtensionPayload`. An Observatory Lens computes analysis results during `analyze()` and contributes them as graph layers:
-
-```python
-from executorch.devtools.fx_viewer import GraphExtension, NumericColorRule
-from executorch.devtools.observatory.interfaces import RecordAnalysis, GraphLayerContribution
-
-class PerLayerAccuracyLens(Lens):
-    @staticmethod
-    def analyze(records, config) -> AnalysisResult:
-        result = AnalysisResult()
-        for record in records:
-            ext = GraphExtension(id="per_layer_accuracy", name="Per-Layer Accuracy")
-            for node_id, metrics in compute_metrics(record).items():
-                ext.add_node_data(node_id, metrics)
-            ext.set_color_rule(NumericColorRule(attribute="severity_score", cmap="reds"))
-            ext.set_sync_key("debug_handle")
-
-            record_analysis = RecordAnalysis()
-            record_analysis.add_graph_layer("accuracy", ext)
-            result.per_record_data[record.name] = record_analysis
-        return result
-```
-
-The Observatory report engine embeds the `fx_viewer` graph with the accuracy overlay into the unified HTML report automatically. See the Observatory RFC for the full Lens protocol and the end-to-end demo.
+- **QNN backend graph format support** — Add a pane for the device-side graph produced after QNN compilation, enabling end-to-end node sync from ATen IR through to the on-device execution graph.
+- **Non-FX graph formats** — Support for TOSA, JIT, and delegated subgraph formats as additional pane types.
+- **Pure-Python layout engine** — Replace `fast-sugiyama` with a dependency-free implementation to eliminate the external package requirement and fix known layout bugs.
+- **Live streaming telemetry dashboard** — Stream runtime events into the viewer in real time rather than from a static ETDump file.
+- **Nightly CI regression templates** — Pre-built compare workflows for automated graph regression detection across nightly builds.
+- **Runtime delegated accuracy** — Per-layer accuracy comparison for delegated (on-device) execution, not just compile-time simulation.
 
 ---
 
@@ -418,8 +422,11 @@ The Observatory report engine embeds the `fx_viewer` graph with the accuracy ove
 **Q1 — Should `fx_viewer` live in `devtools/fx_viewer/` or somewhere else?**  
 Current proposal: `devtools/fx_viewer/` as a sibling to `devtools/visualization/`. The two serve different jobs and have different dependencies. Alternative: nest under `devtools/visualization/` as a second backend. We prefer the sibling layout for clarity.
 
-**Q2 — Should `Inspector.export_fx_viewer_html()` be the primary entry point for ETRecord users, or should we also add a top-level `devtools` function?**  
-Current proposal: `Inspector.export_fx_viewer_html()` for users who already have an Inspector, and `export_etrecord_to_html()` as the standalone path. We could also expose a top-level `devtools.export_fx_viewer_html()` for discoverability.
+**Q2 — Should `fx_viewer` provide an extension surface for additional graph formats?**  
+Currently `fx_viewer` only accepts `torch.fx.GraphModule` and ETRecord bundles. Backend teams may want to visualize other graph representations — for example, the QNN backend graph (post-compilation device graph), `nn.Module` hierarchy, or TOSA IR. Should we define a formal `GraphFormatAdapter` protocol that third parties can implement to add new pane types, or keep the input surface narrow and add formats case-by-case?
 
-**Q3 — What is the stable schema version for `GraphPayload` / `GraphExtensionPayload`?**  
-These JSON schemas are the contract between the Python build step and the JS runtime, and between `fx_viewer` and Observatory. We propose marking them as stable at v1 when this RFC is accepted, with a `schema_version` field for future migration.
+**Q3 — Should single/multi-GraphModule visualization be added to the `Inspector` API?**  
+The current `Inspector.export_fx_viewer_html()` hook only works when an ETRecord is attached (it reads the full bundle). Users who have individual `GraphModule` objects — for example, from a custom pass pipeline — cannot use this path. Should `Inspector` gain a method like `Inspector.export_fx_viewer_html_from_graphs({"Aten": gm1, "Edge": gm2})`, or should users call `FXGraphCompareExporter` directly?
+
+**Q4 — Should the JSON payload format be exposed as a stable public API?**  
+`GraphPayload` and `GraphExtensionPayload` are currently internal to `fx_viewer`. Exposing them as a stable schema would allow users to export JSON once and re-render HTML later without re-running the compiler, and would enable third-party tooling to consume the format. The cost is schema versioning and backward-compatibility maintenance. Should we expose the JSON format as a stable API, or keep it internal and only support HTML as the stable output?
