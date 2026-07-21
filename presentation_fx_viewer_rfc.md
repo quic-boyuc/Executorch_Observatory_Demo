@@ -161,7 +161,8 @@ FXGraphCompareExporter(OrderedDict([
 | Overlay | Runtime latency | Any data (accuracy, latency, partition) |
 | Output | Requires ME server | Standalone HTML |
 
-**Complementary:** Arm = runtime profiling, fx_viewer = compile debugging.
+`fx_viewer` covers the same use cases + adds multi-graph compare, auto sync, standalone HTML.
+Arm's extension additionally provides ME's hierarchical layer browsing UI.
 
 ---
 

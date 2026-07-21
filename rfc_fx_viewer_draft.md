@@ -242,7 +242,7 @@ Key differences:
 - Arm's ETDump overlay is limited to the ME node data API (op nodes in the edge graph); `fx_viewer`'s `GraphExtension` overlay works on any node in any graph, and is not limited to compile-time data — runtime artifacts like ETDump can be overlaid in the same way.
 - Arm's extension requires the ME server; `fx_viewer` produces standalone HTML.
 
-The two tools are complementary. Arm's extension is well-suited for deployment artifact inspection within the ME ecosystem. `fx_viewer` is better suited for multi-stage compile pipeline debugging and shareable standalone reports.
+`fx_viewer` can produce the same visualizations as Arm's extension (single edge-dialect graph with latency overlay) and additionally supports multi-graph compare, automatic node sync, and standalone HTML. The one capability Arm's extension provides that `fx_viewer` does not is integration with Model Explorer's hierarchical layer browsing UI.
 
 ---
 
