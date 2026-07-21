@@ -224,25 +224,24 @@ Arm recently released `executorch-extension-model-explorer`, which adds PTE, ETR
 | Feature | `devtools/visualization/` (ME wrapper) | Raw ME API | `fx_viewer` |
 |---|:---:|:---:|:---:|
 | Single graph view | ✅ | ✅ | ✅ |
-| GraphModule as direct input | ⚠️ (wrapped back into EP) | ⚠️ (wrapped back into EP) | ✅ |
+| GraphModule as direct input | ✅ | ✅ | ✅ |
 | ETRecord as direct input | ❌ | ❌ | ✅ (one-liner) |
-| Per-node custom data overlay | ❌ (not exposed) | ✅ (op nodes only) | ✅ (all node types) |
+| Per-node custom data overlay | ❌ (not exposed) | ✅ (edge graph, op nodes) | ✅ (any graph, any node) |
 | Programmatic color mapping | ❌ | ✅ | ✅ |
-| Programmatic node labels | ❌ | ❌ | ✅ |
+| Minimap for large graph navigation | ❌ | ❌ | ✅ |
 | Multiple overlay layers (toggle) | ❌ | ✅ | ✅ |
+| Runtime artifact overlay (e.g. ETDump) | ❌ | ✅ (edge graph only) | ✅ (any graph) |
 | Multi-graph compare | ❌ | ✅ (2 graphs) | ✅ (N graphs) |
-| Cross-graph node sync | ❌ | ✅ (manual JSON) | ✅ (automatic) |
-| Many-to-many node mapping | ❌ | ✅ (manual JSON) | ✅ (automatic) |
+| Cross-graph node sync | ❌ | ✅ (manual mapping file) | ✅ (automatic) |
+| Many-to-many node mapping | ❌ | ✅ (manual mapping file) | ✅ (automatic) |
 | Backend assignment overlay | ❌ | ❌ | ✅ (from ETRecord) |
 | Standalone HTML output | ❌ | ❌ | ✅ |
 | No server required | ❌ | ❌ | ✅ |
 | CI-friendly artifact | ❌ | ❌ | ✅ |
 | Module hierarchy / collapsible layers | ❌ | ✅ | ❌ |
 | In-tree, modifiable by ExecuTorch | ❌ | ❌ | ✅ |
-| Zero external Python dependency | ❌ | ❌ | ✅ |
+| External Python dependency | `model-explorer` | `model-explorer` | `fast-sugiyama` (see §5) |
 | Python pre-computed layout | ❌ | ❌ | ✅ |
-
-> ⚠️ = partial support with caveats described in §2.
 
 ---
 
