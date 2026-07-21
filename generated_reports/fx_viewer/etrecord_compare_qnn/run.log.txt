@@ -1,0 +1,613 @@
+[QNN] Using QNN SDK at /home/boyucwsl/executorch/qairt/2.37.0.250724 (from QNN_SDK_ROOT)
+[INFO 2026-07-21 15:34:32,373 model.py:22] Loading mobilenet_v2 model
+[INFO 2026-07-21 15:34:32,449 model.py:24] Loaded mobilenet_v2 model
+[WARNING] the 1 th arg of node hardtanh_ is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh_ is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__1 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__1 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__2 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__2 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__3 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__3 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__4 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__4 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__5 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__5 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__6 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__6 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__7 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__7 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__8 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__8 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__9 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__9 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__10 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__10 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__11 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__11 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__12 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__12 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__13 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__13 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__14 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__14 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__15 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__15 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__16 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__16 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__17 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__17 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__18 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__18 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__19 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__19 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__20 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__20 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__21 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__21 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__22 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__22 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__23 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__23 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__24 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__24 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__25 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__25 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__26 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__26 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__27 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__27 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__28 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__28 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__29 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__29 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__30 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__30 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__31 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__31 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__32 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__32 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__33 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__33 is NumberType, might need to lift
+[WARNING] the 1 th arg of node hardtanh__34 is NumberType, might need to lift
+[WARNING] the 2 th arg of node hardtanh__34 is NumberType, might need to lift
+[INFO] [Qnn ExecuTorch]: Creating new backend bundle.
+[INFO] [Qnn ExecuTorch]: create QNN Logger with log_level 1
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[WARNING 2026-07-21 15:34:38,247 _program.py:1091] Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[WARNING 2026-07-21 15:34:39,081 _program.py:1091] Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[QNN Partitioner Op Support]: aten.linear.default | True
+[QNN Partitioner Op Support]: aten.view_copy.default | True
+[QNN Partitioner Op Support]: aten.adaptive_avg_pool2d.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.add.Tensor | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[QNN Partitioner Op Support]: aten.hardtanh.default | True
+[QNN Partitioner Op Support]: aten._native_batch_norm_legit_no_training.default | True
+[QNN Partitioner Op Support]: aten.convolution.default | True
+[INFO 2026-07-21 15:34:43,011 qnn_partitioner.py:215] Found 1 subgraphs to be partitioned.
+[INFO 2026-07-21 15:34:43,011 qnn_partitioner.py:228] Qnn partitioner will delegate torch mutable buffer with the same I/O address during the runtime, so if your model contains mutable buffer, then you can get the better performance with skip_mutable_buffer=False. If you encounter accuracy issue during the runtime, then please set `skip_mutable_buffer=True` and try again.
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[INFO] [Qnn ExecuTorch]: Initialize Qnn backend parameters for Qnn executorch backend type 2
+[INFO] [Qnn ExecuTorch]: Caching: Caching is in SAVE MODE.
+[INFO] [Qnn ExecuTorch]: Running level=3 optimization.
+[INFO 2026-07-21 15:34:43,278 qnn_preprocess.py:175] Processing Method(0): (1/1)
+[INFO 2026-07-21 15:34:43,489 qnn_preprocess.py:70] Visiting: aten_permute_copy_default, aten.permute_copy.default
+[INFO 2026-07-21 15:34:43,490 qnn_preprocess.py:70] Visiting: aten_convolution_default, aten.convolution.default
+[INFO 2026-07-21 15:34:43,492 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,494 qnn_preprocess.py:70] Visiting: getitem, getitem
+[INFO 2026-07-21 15:34:43,494 qnn_preprocess.py:70] Visiting: aten_hardtanh_default, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,495 qnn_preprocess.py:70] Visiting: aten_convolution_default_1, aten.convolution.default
+[INFO 2026-07-21 15:34:43,496 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_1, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,498 qnn_preprocess.py:70] Visiting: getitem_1, getitem
+[INFO 2026-07-21 15:34:43,498 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_1, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,499 qnn_preprocess.py:70] Visiting: aten_convolution_default_2, aten.convolution.default
+[INFO 2026-07-21 15:34:43,500 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_2, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,503 qnn_preprocess.py:70] Visiting: getitem_2, getitem
+[INFO 2026-07-21 15:34:43,503 qnn_preprocess.py:70] Visiting: aten_convolution_default_3, aten.convolution.default
+[INFO 2026-07-21 15:34:43,504 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_3, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,507 qnn_preprocess.py:70] Visiting: getitem_3, getitem
+[INFO 2026-07-21 15:34:43,508 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_2, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,508 qnn_preprocess.py:70] Visiting: aten_convolution_default_4, aten.convolution.default
+[INFO 2026-07-21 15:34:43,510 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_4, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,512 qnn_preprocess.py:70] Visiting: getitem_4, getitem
+[INFO 2026-07-21 15:34:43,512 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_3, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,512 qnn_preprocess.py:70] Visiting: aten_convolution_default_5, aten.convolution.default
+[INFO 2026-07-21 15:34:43,514 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_5, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,516 qnn_preprocess.py:70] Visiting: getitem_5, getitem
+[INFO 2026-07-21 15:34:43,516 qnn_preprocess.py:70] Visiting: aten_convolution_default_6, aten.convolution.default
+[INFO 2026-07-21 15:34:43,518 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_6, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,520 qnn_preprocess.py:70] Visiting: getitem_6, getitem
+[INFO 2026-07-21 15:34:43,520 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_4, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,520 qnn_preprocess.py:70] Visiting: aten_convolution_default_7, aten.convolution.default
+[INFO 2026-07-21 15:34:43,522 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_7, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,524 qnn_preprocess.py:70] Visiting: getitem_7, getitem
+[INFO 2026-07-21 15:34:43,524 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_5, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,525 qnn_preprocess.py:70] Visiting: aten_convolution_default_8, aten.convolution.default
+[INFO 2026-07-21 15:34:43,526 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_8, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,528 qnn_preprocess.py:70] Visiting: getitem_8, getitem
+[INFO 2026-07-21 15:34:43,528 qnn_preprocess.py:70] Visiting: aten_add_tensor, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,529 qnn_preprocess.py:70] Visiting: aten_convolution_default_9, aten.convolution.default
+[INFO 2026-07-21 15:34:43,530 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_9, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,532 qnn_preprocess.py:70] Visiting: getitem_9, getitem
+[INFO 2026-07-21 15:34:43,532 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_6, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,533 qnn_preprocess.py:70] Visiting: aten_convolution_default_10, aten.convolution.default
+[INFO 2026-07-21 15:34:43,534 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_10, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,536 qnn_preprocess.py:70] Visiting: getitem_10, getitem
+[INFO 2026-07-21 15:34:43,536 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_7, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,537 qnn_preprocess.py:70] Visiting: aten_convolution_default_11, aten.convolution.default
+[INFO 2026-07-21 15:34:43,538 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_11, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,539 qnn_preprocess.py:70] Visiting: getitem_11, getitem
+[INFO 2026-07-21 15:34:43,539 qnn_preprocess.py:70] Visiting: aten_convolution_default_12, aten.convolution.default
+[INFO 2026-07-21 15:34:43,541 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_12, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,542 qnn_preprocess.py:70] Visiting: getitem_12, getitem
+[INFO 2026-07-21 15:34:43,542 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_8, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,544 qnn_preprocess.py:70] Visiting: aten_convolution_default_13, aten.convolution.default
+[INFO 2026-07-21 15:34:43,547 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_13, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,549 qnn_preprocess.py:70] Visiting: getitem_13, getitem
+[INFO 2026-07-21 15:34:43,549 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_9, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,550 qnn_preprocess.py:70] Visiting: aten_convolution_default_14, aten.convolution.default
+[INFO 2026-07-21 15:34:43,552 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_14, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,554 qnn_preprocess.py:70] Visiting: getitem_14, getitem
+[INFO 2026-07-21 15:34:43,554 qnn_preprocess.py:70] Visiting: aten_add_tensor_1, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,555 qnn_preprocess.py:70] Visiting: aten_convolution_default_15, aten.convolution.default
+[INFO 2026-07-21 15:34:43,556 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_15, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,558 qnn_preprocess.py:70] Visiting: getitem_15, getitem
+[INFO 2026-07-21 15:34:43,559 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_10, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,559 qnn_preprocess.py:70] Visiting: aten_convolution_default_16, aten.convolution.default
+[INFO 2026-07-21 15:34:43,561 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_16, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,563 qnn_preprocess.py:70] Visiting: getitem_16, getitem
+[INFO 2026-07-21 15:34:43,563 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_11, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,564 qnn_preprocess.py:70] Visiting: aten_convolution_default_17, aten.convolution.default
+[INFO 2026-07-21 15:34:43,566 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_17, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,568 qnn_preprocess.py:70] Visiting: getitem_17, getitem
+[INFO 2026-07-21 15:34:43,568 qnn_preprocess.py:70] Visiting: aten_add_tensor_2, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,569 qnn_preprocess.py:70] Visiting: aten_convolution_default_18, aten.convolution.default
+[INFO 2026-07-21 15:34:43,570 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_18, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,573 qnn_preprocess.py:70] Visiting: getitem_18, getitem
+[INFO 2026-07-21 15:34:43,574 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_12, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,575 qnn_preprocess.py:70] Visiting: aten_convolution_default_19, aten.convolution.default
+[INFO 2026-07-21 15:34:43,577 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_19, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,579 qnn_preprocess.py:70] Visiting: getitem_19, getitem
+[INFO 2026-07-21 15:34:43,579 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_13, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,580 qnn_preprocess.py:70] Visiting: aten_convolution_default_20, aten.convolution.default
+[INFO 2026-07-21 15:34:43,581 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_20, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,583 qnn_preprocess.py:70] Visiting: getitem_20, getitem
+[INFO 2026-07-21 15:34:43,584 qnn_preprocess.py:70] Visiting: aten_convolution_default_21, aten.convolution.default
+[INFO 2026-07-21 15:34:43,585 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_21, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,588 qnn_preprocess.py:70] Visiting: getitem_21, getitem
+[INFO 2026-07-21 15:34:43,588 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_14, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,589 qnn_preprocess.py:70] Visiting: aten_convolution_default_22, aten.convolution.default
+[INFO 2026-07-21 15:34:43,590 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_22, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,592 qnn_preprocess.py:70] Visiting: getitem_22, getitem
+[INFO 2026-07-21 15:34:43,592 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_15, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,593 qnn_preprocess.py:70] Visiting: aten_convolution_default_23, aten.convolution.default
+[INFO 2026-07-21 15:34:43,595 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_23, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,597 qnn_preprocess.py:70] Visiting: getitem_23, getitem
+[INFO 2026-07-21 15:34:43,597 qnn_preprocess.py:70] Visiting: aten_add_tensor_3, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,599 qnn_preprocess.py:70] Visiting: aten_convolution_default_24, aten.convolution.default
+[INFO 2026-07-21 15:34:43,600 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_24, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,602 qnn_preprocess.py:70] Visiting: getitem_24, getitem
+[INFO 2026-07-21 15:34:43,602 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_16, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,604 qnn_preprocess.py:70] Visiting: aten_convolution_default_25, aten.convolution.default
+[INFO 2026-07-21 15:34:43,606 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_25, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,609 qnn_preprocess.py:70] Visiting: getitem_25, getitem
+[INFO 2026-07-21 15:34:43,609 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_17, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,611 qnn_preprocess.py:70] Visiting: aten_convolution_default_26, aten.convolution.default
+[INFO 2026-07-21 15:34:43,612 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_26, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,615 qnn_preprocess.py:70] Visiting: getitem_26, getitem
+[INFO 2026-07-21 15:34:43,615 qnn_preprocess.py:70] Visiting: aten_add_tensor_4, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,616 qnn_preprocess.py:70] Visiting: aten_convolution_default_27, aten.convolution.default
+[INFO 2026-07-21 15:34:43,617 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_27, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,620 qnn_preprocess.py:70] Visiting: getitem_27, getitem
+[INFO 2026-07-21 15:34:43,621 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_18, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,622 qnn_preprocess.py:70] Visiting: aten_convolution_default_28, aten.convolution.default
+[INFO 2026-07-21 15:34:43,624 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_28, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,626 qnn_preprocess.py:70] Visiting: getitem_28, getitem
+[INFO 2026-07-21 15:34:43,626 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_19, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,627 qnn_preprocess.py:70] Visiting: aten_convolution_default_29, aten.convolution.default
+[INFO 2026-07-21 15:34:43,630 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_29, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,632 qnn_preprocess.py:70] Visiting: getitem_29, getitem
+[INFO 2026-07-21 15:34:43,632 qnn_preprocess.py:70] Visiting: aten_add_tensor_5, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,634 qnn_preprocess.py:70] Visiting: aten_convolution_default_30, aten.convolution.default
+[INFO 2026-07-21 15:34:43,636 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_30, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,640 qnn_preprocess.py:70] Visiting: getitem_30, getitem
+[INFO 2026-07-21 15:34:43,640 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_20, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,641 qnn_preprocess.py:70] Visiting: aten_convolution_default_31, aten.convolution.default
+[INFO 2026-07-21 15:34:43,643 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_31, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,646 qnn_preprocess.py:70] Visiting: getitem_31, getitem
+[INFO 2026-07-21 15:34:43,646 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_21, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,647 qnn_preprocess.py:70] Visiting: aten_convolution_default_32, aten.convolution.default
+[INFO 2026-07-21 15:34:43,649 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_32, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,651 qnn_preprocess.py:70] Visiting: getitem_32, getitem
+[INFO 2026-07-21 15:34:43,651 qnn_preprocess.py:70] Visiting: aten_convolution_default_33, aten.convolution.default
+[INFO 2026-07-21 15:34:43,653 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_33, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,656 qnn_preprocess.py:70] Visiting: getitem_33, getitem
+[INFO 2026-07-21 15:34:43,656 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_22, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,657 qnn_preprocess.py:70] Visiting: aten_convolution_default_34, aten.convolution.default
+[INFO 2026-07-21 15:34:43,659 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_34, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,661 qnn_preprocess.py:70] Visiting: getitem_34, getitem
+[INFO 2026-07-21 15:34:43,661 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_23, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,662 qnn_preprocess.py:70] Visiting: aten_convolution_default_35, aten.convolution.default
+[INFO 2026-07-21 15:34:43,664 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_35, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,666 qnn_preprocess.py:70] Visiting: getitem_35, getitem
+[INFO 2026-07-21 15:34:43,666 qnn_preprocess.py:70] Visiting: aten_add_tensor_6, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,667 qnn_preprocess.py:70] Visiting: aten_convolution_default_36, aten.convolution.default
+[INFO 2026-07-21 15:34:43,669 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_36, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,672 qnn_preprocess.py:70] Visiting: getitem_36, getitem
+[INFO 2026-07-21 15:34:43,672 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_24, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,673 qnn_preprocess.py:70] Visiting: aten_convolution_default_37, aten.convolution.default
+[INFO 2026-07-21 15:34:43,676 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_37, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,679 qnn_preprocess.py:70] Visiting: getitem_37, getitem
+[INFO 2026-07-21 15:34:43,679 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_25, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,680 qnn_preprocess.py:70] Visiting: aten_convolution_default_38, aten.convolution.default
+[INFO 2026-07-21 15:34:43,682 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_38, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,684 qnn_preprocess.py:70] Visiting: getitem_38, getitem
+[INFO 2026-07-21 15:34:43,684 qnn_preprocess.py:70] Visiting: aten_add_tensor_7, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,686 qnn_preprocess.py:70] Visiting: aten_convolution_default_39, aten.convolution.default
+[INFO 2026-07-21 15:34:43,688 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_39, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,690 qnn_preprocess.py:70] Visiting: getitem_39, getitem
+[INFO 2026-07-21 15:34:43,690 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_26, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,691 qnn_preprocess.py:70] Visiting: aten_convolution_default_40, aten.convolution.default
+[INFO 2026-07-21 15:34:43,693 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_40, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,695 qnn_preprocess.py:70] Visiting: getitem_40, getitem
+[INFO 2026-07-21 15:34:43,695 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_27, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,696 qnn_preprocess.py:70] Visiting: aten_convolution_default_41, aten.convolution.default
+[INFO 2026-07-21 15:34:43,698 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_41, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,700 qnn_preprocess.py:70] Visiting: getitem_41, getitem
+[INFO 2026-07-21 15:34:43,700 qnn_preprocess.py:70] Visiting: aten_convolution_default_42, aten.convolution.default
+[INFO 2026-07-21 15:34:43,704 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_42, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,707 qnn_preprocess.py:70] Visiting: getitem_42, getitem
+[INFO 2026-07-21 15:34:43,707 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_28, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,708 qnn_preprocess.py:70] Visiting: aten_convolution_default_43, aten.convolution.default
+[INFO 2026-07-21 15:34:43,710 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_43, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,712 qnn_preprocess.py:70] Visiting: getitem_43, getitem
+[INFO 2026-07-21 15:34:43,712 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_29, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,713 qnn_preprocess.py:70] Visiting: aten_convolution_default_44, aten.convolution.default
+[INFO 2026-07-21 15:34:43,717 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_44, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,720 qnn_preprocess.py:70] Visiting: getitem_44, getitem
+[INFO 2026-07-21 15:34:43,720 qnn_preprocess.py:70] Visiting: aten_add_tensor_8, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,721 qnn_preprocess.py:70] Visiting: aten_convolution_default_45, aten.convolution.default
+[INFO 2026-07-21 15:34:43,724 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_45, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,726 qnn_preprocess.py:70] Visiting: getitem_45, getitem
+[INFO 2026-07-21 15:34:43,726 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_30, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,727 qnn_preprocess.py:70] Visiting: aten_convolution_default_46, aten.convolution.default
+[INFO 2026-07-21 15:34:43,728 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_46, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,730 qnn_preprocess.py:70] Visiting: getitem_46, getitem
+[INFO 2026-07-21 15:34:43,730 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_31, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,735 qnn_preprocess.py:70] Visiting: aten_convolution_default_47, aten.convolution.default
+[INFO 2026-07-21 15:34:43,741 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_47, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,743 qnn_preprocess.py:70] Visiting: getitem_47, getitem
+[INFO 2026-07-21 15:34:43,743 qnn_preprocess.py:70] Visiting: aten_add_tensor_9, aten.add.Tensor
+[INFO 2026-07-21 15:34:43,744 qnn_preprocess.py:70] Visiting: aten_convolution_default_48, aten.convolution.default
+[INFO 2026-07-21 15:34:43,747 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_48, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,750 qnn_preprocess.py:70] Visiting: getitem_48, getitem
+[INFO 2026-07-21 15:34:43,750 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_32, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,751 qnn_preprocess.py:70] Visiting: aten_convolution_default_49, aten.convolution.default
+[INFO 2026-07-21 15:34:43,753 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_49, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,756 qnn_preprocess.py:70] Visiting: getitem_49, getitem
+[INFO 2026-07-21 15:34:43,756 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_33, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,758 qnn_preprocess.py:70] Visiting: aten_convolution_default_50, aten.convolution.default
+[INFO 2026-07-21 15:34:43,763 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_50, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,765 qnn_preprocess.py:70] Visiting: getitem_50, getitem
+[INFO 2026-07-21 15:34:43,765 qnn_preprocess.py:70] Visiting: aten_convolution_default_51, aten.convolution.default
+[INFO 2026-07-21 15:34:43,785 qnn_preprocess.py:70] Visiting: aten__native_batch_norm_legit_no_training_default_51, aten._native_batch_norm_legit_no_training.default
+[INFO 2026-07-21 15:34:43,787 qnn_preprocess.py:70] Visiting: getitem_51, getitem
+[INFO 2026-07-21 15:34:43,787 qnn_preprocess.py:70] Visiting: aten_hardtanh_default_34, aten.hardtanh.default
+[INFO 2026-07-21 15:34:43,788 qnn_preprocess.py:70] Visiting: aten_adaptive_avg_pool2d_default, aten.adaptive_avg_pool2d.default
+[INFO 2026-07-21 15:34:43,789 qnn_preprocess.py:70] Visiting: aten_permute_copy_default_1, aten.permute_copy.default
+[INFO 2026-07-21 15:34:43,790 qnn_preprocess.py:70] Visiting: aten_view_copy_default, aten.view_copy.default
+[INFO 2026-07-21 15:34:43,790 qnn_preprocess.py:70] Visiting: aten_linear_default, aten.linear.default
+
+====== DDR bandwidth summary ======
+spill_bytes=0
+fill_bytes=0
+write_total_bytes=65536
+read_total_bytes=8796160
+
+[INFO] [Qnn ExecuTorch]: Destroy Qnn context
+/home/boyucwsl/.local/share/uv/python/cpython-3.11.14-linux-x86_64-gnu/lib/python3.11/copyreg.py:105: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+[WARNING 2026-07-21 15:34:44,509 _program.py:1091] Op aten.unbind.int was requested for preservation by partitioner.  This request is ignored because it is in a blocklist.
+[INFO] [Qnn ExecuTorch]: Destroy Qnn device
+[INFO] [Qnn ExecuTorch]: Destroy Qnn backend
+/home/boyucwsl/executorch/src/executorch/exir/tensor.py:83: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+Saved ETRecord to /tmp/mv2_etrecord_experiment/mv2_qnn_ship.etrecord
+Building graph payload model...
+Running fast-sugiyama layout...
+[INFO 2026-07-21 15:34:46,059 lib.rs:25] Creating new layout from 426 edges
+[INFO 2026-07-21 15:34:46,059 mod.rs:11] Splitting graph into its connected components
+[INFO 2026-07-21 15:34:46,059 mod.rs:132] Initializing graphs vertex weights
+[INFO 2026-07-21 15:34:46,059 mod.rs:149] Start building layout
+[INFO 2026-07-21 15:34:46,059 mod.rs:150] Configuration is: Config { minimum_length: 1, vertex_spacing: 252.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+[INFO 2026-07-21 15:34:46,059 mod.rs:184] Executing phase 0: Cycle Removal
+[INFO 2026-07-21 15:34:46,059 mod.rs:16] Graph contains no cycle
+[INFO 2026-07-21 15:34:46,059 mod.rs:194] Executing phase 1: Ranking
+[INFO 2026-07-21 15:34:46,059 mod.rs:35] Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+[INFO 2026-07-21 15:34:46,059 ranking.rs:144] Initializing ranks via topological sort.
+[INFO 2026-07-21 15:34:46,059 ranking.rs:28] building feasible tree
+[INFO 2026-07-21 15:34:46,059 ranking.rs:32] Trying to build tight tree.
+[INFO 2026-07-21 15:34:46,064 cut_values.rs:22] Initializing cut values
+[INFO 2026-07-21 15:34:46,064 cut_values.rs:56] Calculating cut values of tree edges
+[INFO 2026-07-21 15:34:46,064 low_lim.rs:10] initialzing low, lim and parent values of vertices
+[INFO 2026-07-21 15:34:46,064 mod.rs:208] Executing phase 2: Crossing Reduction
+[INFO 2026-07-21 15:34:46,064 mod.rs:206] Inserting dummy vertices for edges spanning more than 1 ranks
+[INFO 2026-07-21 15:34:46,064 mod.rs:293] Initializing order of vertices in each rank via dfs.
+[INFO 2026-07-21 15:34:46,064 mod.rs:333] Reducing crossings via bilayer sweep
+[INFO 2026-07-21 15:34:46,066 mod.rs:354] Didn't improve after 4 sweeps, returning
+[INFO 2026-07-21 15:34:46,066 mod.rs:229] Executing phase 3: Coordinate Calculation
+[INFO 2026-07-21 15:34:46,066 mod.rs:17] Creating individual layouts for coordinate calculation
+[INFO 2026-07-21 15:34:46,066 mod.rs:152] Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+[INFO 2026-07-21 15:34:46,066 mod.rs:24] creating layouts for vertical direction: Down, horizontal direction Right
+[INFO 2026-07-21 15:34:46,066 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,066 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,066 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,066 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,066 mod.rs:24] creating layouts for vertical direction: Down, horizontal direction Left
+[INFO 2026-07-21 15:34:46,066 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,066 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,066 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,066 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,066 mod.rs:24] creating layouts for vertical direction: Up, horizontal direction Right
+[INFO 2026-07-21 15:34:46,066 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,066 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,066 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,066 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,066 mod.rs:24] creating layouts for vertical direction: Up, horizontal direction Left
+[INFO 2026-07-21 15:34:46,066 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,066 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,066 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,066 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,066 mod.rs:56] Aligning all layouts to the one with the smallest width
+[INFO 2026-07-21 15:34:46,066 mod.rs:96] Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Running fast-sugiyama layout...
+[INFO 2026-07-21 15:34:46,424 lib.rs:25] Creating new layout from 581 edges
+[INFO 2026-07-21 15:34:46,424 mod.rs:11] Splitting graph into its connected components
+[INFO 2026-07-21 15:34:46,424 mod.rs:132] Initializing graphs vertex weights
+[INFO 2026-07-21 15:34:46,424 mod.rs:149] Start building layout
+[INFO 2026-07-21 15:34:46,424 mod.rs:150] Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+[INFO 2026-07-21 15:34:46,424 mod.rs:184] Executing phase 0: Cycle Removal
+[INFO 2026-07-21 15:34:46,424 mod.rs:16] Graph contains no cycle
+[INFO 2026-07-21 15:34:46,424 mod.rs:194] Executing phase 1: Ranking
+[INFO 2026-07-21 15:34:46,424 mod.rs:35] Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+[INFO 2026-07-21 15:34:46,424 ranking.rs:144] Initializing ranks via topological sort.
+[INFO 2026-07-21 15:34:46,424 ranking.rs:28] building feasible tree
+[INFO 2026-07-21 15:34:46,424 ranking.rs:32] Trying to build tight tree.
+[INFO 2026-07-21 15:34:46,433 cut_values.rs:22] Initializing cut values
+[INFO 2026-07-21 15:34:46,433 cut_values.rs:56] Calculating cut values of tree edges
+[INFO 2026-07-21 15:34:46,433 low_lim.rs:10] initialzing low, lim and parent values of vertices
+[INFO 2026-07-21 15:34:46,433 mod.rs:208] Executing phase 2: Crossing Reduction
+[INFO 2026-07-21 15:34:46,433 mod.rs:206] Inserting dummy vertices for edges spanning more than 1 ranks
+[INFO 2026-07-21 15:34:46,433 mod.rs:293] Initializing order of vertices in each rank via dfs.
+[INFO 2026-07-21 15:34:46,433 mod.rs:333] Reducing crossings via bilayer sweep
+[INFO 2026-07-21 15:34:46,435 mod.rs:354] Didn't improve after 4 sweeps, returning
+[INFO 2026-07-21 15:34:46,435 mod.rs:229] Executing phase 3: Coordinate Calculation
+[INFO 2026-07-21 15:34:46,435 mod.rs:17] Creating individual layouts for coordinate calculation
+[INFO 2026-07-21 15:34:46,435 mod.rs:152] Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+[INFO 2026-07-21 15:34:46,435 mod.rs:24] creating layouts for vertical direction: Down, horizontal direction Right
+[INFO 2026-07-21 15:34:46,435 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,435 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,435 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,435 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,435 mod.rs:24] creating layouts for vertical direction: Down, horizontal direction Left
+[INFO 2026-07-21 15:34:46,435 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,435 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,435 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,435 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,435 mod.rs:24] creating layouts for vertical direction: Up, horizontal direction Right
+[INFO 2026-07-21 15:34:46,435 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,435 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,435 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,435 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,435 mod.rs:24] creating layouts for vertical direction: Up, horizontal direction Left
+[INFO 2026-07-21 15:34:46,435 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,435 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,435 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,435 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,435 mod.rs:56] Aligning all layouts to the one with the smallest width
+[INFO 2026-07-21 15:34:46,436 mod.rs:96] Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Building graph payload model...
+Running fast-sugiyama layout...
+[INFO 2026-07-21 15:34:46,494 lib.rs:25] Creating new layout from 582 edges
+[INFO 2026-07-21 15:34:46,495 mod.rs:11] Splitting graph into its connected components
+[INFO 2026-07-21 15:34:46,495 mod.rs:132] Initializing graphs vertex weights
+[INFO 2026-07-21 15:34:46,495 mod.rs:149] Start building layout
+[INFO 2026-07-21 15:34:46,495 mod.rs:150] Configuration is: Config { minimum_length: 1, vertex_spacing: 259.0, dummy_vertices: true, dummy_size: 1.0, ranking_type: MinimizeEdgeLength, c_minimization: Median, transpose: true, check_layout: true, encode_edges: false }
+[INFO 2026-07-21 15:34:46,495 mod.rs:184] Executing phase 0: Cycle Removal
+[INFO 2026-07-21 15:34:46,495 mod.rs:16] Graph contains no cycle
+[INFO 2026-07-21 15:34:46,495 mod.rs:194] Executing phase 1: Ranking
+[INFO 2026-07-21 15:34:46,495 mod.rs:35] Start ranking, ranking type: MinimizeEdgeLength, minimum_length: 1
+[INFO 2026-07-21 15:34:46,495 ranking.rs:144] Initializing ranks via topological sort.
+[INFO 2026-07-21 15:34:46,495 ranking.rs:28] building feasible tree
+[INFO 2026-07-21 15:34:46,495 ranking.rs:32] Trying to build tight tree.
+[INFO 2026-07-21 15:34:46,505 cut_values.rs:22] Initializing cut values
+[INFO 2026-07-21 15:34:46,505 cut_values.rs:56] Calculating cut values of tree edges
+[INFO 2026-07-21 15:34:46,505 low_lim.rs:10] initialzing low, lim and parent values of vertices
+[INFO 2026-07-21 15:34:46,505 mod.rs:208] Executing phase 2: Crossing Reduction
+[INFO 2026-07-21 15:34:46,505 mod.rs:206] Inserting dummy vertices for edges spanning more than 1 ranks
+[INFO 2026-07-21 15:34:46,505 mod.rs:293] Initializing order of vertices in each rank via dfs.
+[INFO 2026-07-21 15:34:46,505 mod.rs:333] Reducing crossings via bilayer sweep
+[INFO 2026-07-21 15:34:46,507 mod.rs:354] Didn't improve after 4 sweeps, returning
+[INFO 2026-07-21 15:34:46,507 mod.rs:229] Executing phase 3: Coordinate Calculation
+[INFO 2026-07-21 15:34:46,507 mod.rs:17] Creating individual layouts for coordinate calculation
+[INFO 2026-07-21 15:34:46,507 mod.rs:152] Marking type one conflicts (edge crossings between dummy vertices and non dummy vertices)
+[INFO 2026-07-21 15:34:46,507 mod.rs:24] creating layouts for vertical direction: Down, horizontal direction Right
+[INFO 2026-07-21 15:34:46,507 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,507 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,507 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,507 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,507 mod.rs:24] creating layouts for vertical direction: Down, horizontal direction Left
+[INFO 2026-07-21 15:34:46,507 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,508 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,508 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,508 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,508 mod.rs:24] creating layouts for vertical direction: Up, horizontal direction Right
+[INFO 2026-07-21 15:34:46,508 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,508 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,508 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,508 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,508 mod.rs:24] creating layouts for vertical direction: Up, horizontal direction Left
+[INFO 2026-07-21 15:34:46,508 mod.rs:211] Creating vertical alignments
+[INFO 2026-07-21 15:34:46,508 mod.rs:254] calculating coordinates for layout.
+[INFO 2026-07-21 15:34:46,508 mod.rs:342] Placing vertices in blocks.
+[INFO 2026-07-21 15:34:46,508 mod.rs:259] move blocks as close together as possible
+[INFO 2026-07-21 15:34:46,508 mod.rs:56] Aligning all layouts to the one with the smallest width
+[INFO 2026-07-21 15:34:46,508 mod.rs:96] Calculate relative coordinates, by taking average between two medians of absolute x-coordinates for each layout direction
+[FX Graph Viewer] Compiling base graph payload...
+[ FX Graph Viewer ] Compiling extension payloads...
+Wrote compare HTML to /home/boyucwsl/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_qnn/mv2_etrecord_compare_qnn.html

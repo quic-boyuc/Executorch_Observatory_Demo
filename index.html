@@ -203,13 +203,15 @@
         <code>backends/qualcomm/utils/fx_viewer/examples</code>.
         These HTML files are tracked in this repo and published on GitHub Pages.
       </p>
-      <p class="muted">fx_viewer demos generated at: 2026-04-08 09:21:18 CST</p>
+      <p class="muted">fx_viewer demos generated at: 2026-07-21 15:34 CST</p>
       <div class="table-wrap">
       <table class="fx-table">
         <thead><tr><th>Demo</th><th>Status</th><th>What It Covers</th><th>Key Tests</th><th>Source Script</th><th>HTML</th><th>Log</th></tr></thead>
         <tbody>
           <tr><td>API Harness (Portable)</td><td>success</td><td>Unified fx_viewer API harness without Qualcomm SDK requirements.</td><td>js_01..js_08, adv_01..adv_04, js_99 (portable tutorial sequence).</td><td><code>backends/qualcomm/utils/fx_viewer/examples/generate_api_test_harness.py</code></td><td><a href="generated_reports/fx_viewer/harness/fx_viewer_api_test_harness_portable.html">report</a></td><td><a href="generated_reports/fx_viewer/harness/run.log.txt">log</a></td></tr>
 <tr><td>3-Graph Compare Demo</td><td>success</td><td>Reference vs decomposed (1-&gt;many) vs fused (many-&gt;1) sync behavior.</td><td>Auto sync order from_node_root -&gt; debug_handle -&gt; id; highlight/clear demo.</td><td><code>backends/qualcomm/utils/fx_viewer/examples/demo_3graph_compare.py</code></td><td><a href="generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html">report</a></td><td><a href="generated_reports/fx_viewer/three_graph_compare/run.log.txt">log</a></td></tr>
+<tr><td>MV2 ETRecord Compare (XNNPACK)</td><td>success</td><td>2-pane compare: aten -&gt; edge dialect, colored by XnnpackBackend overlay.</td><td>ETRecord adapter aten enrichment (run_decompositions + DebugHandleGeneratorPass); _debug_handle_map x _delegate_map overlay.</td><td><code>devtools/fx_viewer/examples/demo_etrecord_compare_xnnpack.py</code></td><td><a href="generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html">report</a></td><td><a href="generated_reports/fx_viewer/etrecord_compare_xnnpack/run.log.txt">log</a></td></tr>
+<tr><td>MV2 ETRecord Compare (QNN)</td><td>success</td><td>3-pane compare: aten -&gt; edge_after_transform -&gt; edge dialect, colored by QnnBackend overlay.</td><td>graph_map["edge_after_transform/forward"] pane from to_edge_transform_and_lower_to_qnn; QNN pass pipeline visible.</td><td><code>devtools/fx_viewer/examples/demo_etrecord_compare_qnn.py</code></td><td><a href="generated_reports/fx_viewer/etrecord_compare_qnn/mv2_etrecord_compare_qnn.html">report</a></td><td><a href="generated_reports/fx_viewer/etrecord_compare_qnn/run.log.txt">log</a></td></tr>
         </tbody>
       </table>
       </div>
