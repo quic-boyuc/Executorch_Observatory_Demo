@@ -2,205 +2,206 @@
 marp: true
 theme: default
 paginate: true
-title: "fx_viewer RFC — Key Concepts"
+style: |
+  section { font-size: 28px; }
+  h1 { font-size: 44px; }
+  h2 { font-size: 36px; }
+  table { font-size: 22px; }
+  li { margin-bottom: 0.3em; }
+  code { font-size: 22px; }
+  pre { font-size: 20px; }
+  img { max-height: 400px; display: block; margin: 0 auto; }
 ---
 
-# `fx_viewer` — Lightweight FX Graph Viewer for Compile-Pipeline Debugging
+# `fx_viewer`
 
-**RFC Overview Presentation**
+## Lightweight FX Graph Viewer for Compile-Pipeline Debugging
 
-ExecuTorch `devtools/fx_viewer/`
-
----
-
-## Agenda
-
-1. Problem: 5 Gaps in Existing Visualization
-2. Solution: What `fx_viewer` Provides
-3. Positioning: Complementary to Model Explorer
-4. Feature Comparison Matrix
-5. Live Demos
-6. Future Work & Open Questions
-7. **Appendix:** Observatory (RFC-B) — Motivation & Direction
+ExecuTorch `devtools/fx_viewer/` · RFC #21068
 
 ---
 
-## 1. The Problem — 5 Gaps
+## What is `fx_viewer`?
 
-When debugging a compile pipeline (quantization, lowering, delegation), developers need:
+- Self-contained FX graph viewer → **standalone HTML output**
+- Debug model across **multiple compile stages** at once
+- Automatic cross-graph node sync
+- Programmatic analysis overlay (color, labels, tooltips)
+- **Complementary** to Model Explorer, not a replacement
+
+---
+
+## Video Walkthrough
+
+> ⚠️ Start at **0:21** — the CLI shown in the first 20s is Observatory (RFC-B), not fx_viewer.
+
+[![Video thumbnail](demo_material/youtube_teaser.png)](https://youtu.be/NQuj-2LvhAc?t=21)
+
+---
+
+## 5 Gaps in Existing Visualization
 
 | # | Gap | Impact |
 |---|-----|--------|
-| 1 | Cannot view more than 2 graphs at once | Lose context across 3+ compile stages |
-| 2 | Cross-graph node sync requires manual mapping file | Tedious, error-prone for large models |
-| 3 | Cannot overlay custom analysis on the graph | Results stuck in separate tables |
-| 4 | Output requires a server to view/share | Cannot attach to GitHub issues or CI |
-| 5 | Viewer cannot be modified by ExecuTorch contributors | Feature requests wait for external release |
+| 1 | Max 2 graphs at once | Lose context across 3+ stages |
+| 2 | Manual mapping file for node sync | Tedious, breaks after passes |
+| 3 | No custom overlay on graph | Analysis stuck in tables |
+| 4 | Server required to view | Can't share / attach to CI |
+| 5 | External team owns viewer | Can't iterate quickly |
 
 ---
 
 ## Gap 1 — N-Way Graph Compare
 
-**Need:** View float → calibrated → quantized → edge → device graphs simultaneously
-
-**Model Explorer:** Fixed 2-pane split view
-
-**fx_viewer:** N-way grid in one HTML file
+- **Need:** View float → quantized → edge → device simultaneously
+- **Model Explorer:** 2-pane only
+- **fx_viewer:** N-way grid, one HTML file
 
 ```python
 FXGraphCompareExporter(OrderedDict([
     ("Float",     FXGraphExporter(float_gm)),
     ("Quantized", FXGraphExporter(quantized_gm)),
     ("Edge IR",   FXGraphExporter(edge_gm)),
-    ("Device",    FXGraphExporter(device_gm)),
-])).export_html("pipeline_compare.html")
+])).export_html("compare.html")
 ```
 
 ---
 
-## Gap 2 — Automatic Cross-Graph Node Sync
+## Gap 1 — Demo
 
-**Need:** Click a node in quantized graph → corresponding node highlights in float graph
+[![N-way compare](demo_material/compare_graphs.png)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html)
 
-**Model Explorer:** Manual mapping JSON file OR node-id match (breaks after passes)
+[Live: MV2 XNNPACK ETRecord compare (2-pane)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html)
 
-**fx_viewer:** Automatic many-to-many sync using `from_node` metadata
+---
 
-```
-Click "quantized_conv2d_1" in Quantized graph
-  → auto-highlights "conv2d_1" in Float graph
-  → auto-highlights "conv2d_1" in Edge IR graph
-  → auto-highlights "conv2d_1_lowered" in Device graph
-```
+## Gap 2 — Automatic Node Sync
 
-Sync order: `from_node_root` → `debug_handle` intersection → node id
+- **Need:** Click node in quantized → highlights in float/edge/device
+- **Model Explorer:**
+  - "Match node id" — breaks after quantization/lowering
+  - Manual mapping JSON — you produce & upload it yourself
+- **fx_viewer:** Automatic many-to-many sync
+  - Uses PyTorch `from_node` metadata (set by `ExportPass`)
+  - Fallback chain: `from_node_root` → `debug_handle` → node id
+
+---
+
+## Gap 2 — Demo
+
+[![3-graph sync](demo_material/compare_graphs.png)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html)
+
+[Live: 3-graph sync (decompose 1→many, fuse many→1)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html)
 
 ---
 
 ## Gap 3 — Programmatic Analysis Overlay
 
-**Need:** Color nodes by accuracy score, show metrics as labels directly on graph
+- **Need:** Color nodes by accuracy, show metrics as labels on graph
+- **Model Explorer limitations:**
+  - Adapter exposes only edge dialect graph (single graph)
+  - Requires separate JSON + GUI upload
+  - `devtools/visualization/` wrapper doesn't expose it at all
+  - Overlay scoped to single graph only
+- **fx_viewer:**
+  - Any node, any graph
+  - Color rules + labels + tooltips
+  - Baked into HTML at export time
 
-**Model Explorer:** `node_data_builder` exists but limited:
-- Only covers nodes exposed by the adapter (edge dialect graph)
-- Requires separate JSON file + GUI upload
-- Not exposed by `devtools/visualization/` wrapper
-- Scoped to single graph only
+---
 
-**fx_viewer:** Overlay on any node, any graph, baked into HTML at export
+## Gap 3 — Demo
+
+[![Debug info labeling](demo_material/debug_info_labeling.png)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html)
 
 ---
 
 ## Gap 4 — Standalone HTML, No Server
 
+- **Model Explorer:** Live server or JSON that needs server to open
+- **fx_viewer:**
+  - Single `.html` file — works offline
+  - Shareable: GitHub issue, email, CI artifact
+  - **Embeddable:** `export_js(container_id)` mounts viewer in any DOM element
+
+---
+
+## Gap 5 — In-Tree, Modifiable
+
 | | Model Explorer | fx_viewer |
 |---|---|---|
-| Output | Live server session or JSON (needs server to open) | Single `.html` file |
-| Sharing | Recipient must install ME | Open in any browser |
-| CI integration | ❌ | ✅ Upload as artifact |
-| Embeddable | ❌ | ✅ `export_js(container_id)` mounts into any DOM element |
+| Stack | Angular + three.js (~50k LoC) | Plain JS on Canvas (~4.5k LoC) |
+| Owner | External team | ExecuTorch devtools |
+| Add feature | Upstream PR + wait | Normal ExecuTorch PR |
+| Layout | Browser-computed | Python pre-computed |
 
 ---
 
-## Gap 5 — In-Tree, Modifiable by ExecuTorch
+## Positioning — When to Use Which
 
-| | Model Explorer | fx_viewer |
+| Scenario | ME | fx_viewer |
+|---|:---:|:---:|
+| Browse model structure | ✅ | — |
+| nn.Module hierarchy | ✅ | — |
+| Multi-stage compare | — | ✅ |
+| Accuracy overlay | ⚠️ | ✅ |
+| Attach to GitHub/CI | — | ✅ |
+| Extend for your backend | — | ✅ |
+
+**Both tools coexist.** Different jobs.
+
+---
+
+## Arm's `executorch-extension-model-explorer`
+
+| | Arm Extension | fx_viewer |
 |---|---|---|
-| Frontend | Angular + three.js + d3 (~50k LoC) | Plain JS on Canvas (~4.5k LoC) |
-| Ownership | External (`google-ai-edge`) | In-tree (`devtools/fx_viewer/`) |
-| To add a feature | Open upstream PR, wait for release | Normal ExecuTorch PR |
-| Layout | Browser-side (slow on large graphs) | Python pre-computed, baked into HTML |
-
----
-
-## 2. Solution Summary
-
-`fx_viewer` fills these gaps with:
-
-- **N-way graph grid** — any number of compile stages side by side
-- **Automatic node sync** — leverages PyTorch's `from_node` metadata chain
-- **`GraphExtension` overlay API** — color rules, labels, tooltips, toggleable layers
-- **Standalone HTML** — one file, works offline, CI-friendly, embeddable
-- **Small in-tree codebase** — ~4.5k LoC JS, no framework, no build step
-
----
-
-## 3. Positioning — Complementary, Not a Replacement
-
-| Scenario | Model Explorer | fx_viewer |
-|---|---|---|
-| "What does my model look like?" | ✅ | — |
-| "Which ops belong to which nn.Module?" | ✅ | — |
-| "What changed between ATen and Edge IR?" | — | ✅ |
-| "Which layer lost accuracy after quantization?" | ⚠️ (limited) | ✅ |
-| "Attach graph to GitHub issue" | — | ✅ |
-| "CI graph regression check" | — | ✅ |
-| "Extend viewer for my backend" | — | ✅ |
-
-**Rule of thumb:** Model Explorer for browsing structure; `fx_viewer` for debugging across compile stages.
-
----
-
-## Relationship to Arm's `executorch-extension-model-explorer`
-
-| Dimension | Arm Extension | fx_viewer |
-|---|---|---|
-| Target | Deployment artifact inspection (`.pte`, ETDump latency) | Compile-time pipeline debugging |
-| Graphs | Edge dialect only (single graph) | N graphs (Aten + intermediate + edge) |
-| Overlay | Runtime latency from ETDump | Any data (accuracy, partition, latency) |
+| Target | Deploy artifact (.pte, ETDump) | Compile-time debugging |
+| Graphs | Edge dialect only (1 graph) | N graphs with auto sync |
+| Overlay | Runtime latency | Any data (accuracy, latency, partition) |
 | Output | Requires ME server | Standalone HTML |
-| Sync | N/A (single graph) | Automatic cross-pane sync |
 
-**Complementary:** Arm extension for runtime profiling; `fx_viewer` for compile-time debugging.
+**Complementary:** Arm = runtime profiling, fx_viewer = compile debugging.
 
 ---
 
-## 4. Feature Comparison Matrix
+## Feature Matrix
 
-| Feature | `devtools/visualization/` | Raw ME API | fx_viewer |
+| Feature | ME wrapper | Raw ME | fx_viewer |
 |---|:---:|:---:|:---:|
-| Single graph view | ✅ | ✅ | ✅ |
-| ETRecord as direct input | ❌ | ❌ | ✅ |
-| Multi-graph compare | ❌ | ✅ (2) | ✅ (N) |
-| Cross-graph node sync | ❌ | ✅ (manual) | ✅ (auto) |
-| Per-node custom overlay | ❌ | ✅ (edge, op nodes) | ✅ (any) |
-| Standalone HTML output | ❌ | ❌ | ✅ |
-| No server required | ❌ | ❌ | ✅ |
-| Embeddable JS API | ❌ | ❌ | ✅ |
-| In-tree, modifiable | ❌ | ❌ | ✅ |
-| Module hierarchy / layers | ❌ | ✅ | ❌ |
-| External dependency | `model-explorer` | `model-explorer` | `fast-sugiyama` |
+| N-graph compare | ❌ | 2 | N |
+| Auto node sync | ❌ | manual | ✅ |
+| Custom overlay | ❌ | ✅ (limited) | ✅ |
+| Standalone HTML | ❌ | ❌ | ✅ |
+| Embeddable JS | ❌ | ❌ | ✅ |
+| In-tree | ❌ | ❌ | ✅ |
+| Module hierarchy | ❌ | ✅ | ❌ |
 
 ---
 
-## 5. Live Demos
+## Live Demos (open in any browser)
 
-All demos are standalone HTML — open in any browser, no installation:
-
-- **[MV2 XNNPACK ETRecord (2-pane)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html)**
-  Aten → Edge with backend overlay. Click any node to see sync.
-
-- **[MV2 QNN ETRecord (3-pane)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_qnn/mv2_etrecord_compare_qnn.html)**
-  Aten → Edge After Transform → Edge. Shows intermediate pass results.
-
-- **[3-Graph Sync Demo](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html)**
-  Decomposition (1→many) and fusion (many→1) sync behavior.
+- [MV2 XNNPACK (2-pane)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_xnnpack/mv2_etrecord_compare_xnnpack.html) — Aten → Edge, backend overlay
+- [MV2 QNN (3-pane)](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/etrecord_compare_qnn/mv2_etrecord_compare_qnn.html) — Aten → Edge After Transform → Edge
+- [3-Graph Sync](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/fx_viewer/three_graph_compare/demo_3graph_compare.html) — decomposition & fusion sync
 
 ---
 
-## 6. Future Work & Open Questions
+## Future Work
 
-### Future Work
-- QNN backend graph format as additional pane
-- Pure-Python layout engine (replace `fast-sugiyama`)
-- Runtime delegated accuracy (on-device, not just compile-time simulation)
+- **QNN backend graph** — device-side graph as additional pane
+- **Pure-Python layout** — replace `fast-sugiyama`, remove external dep
+- **Runtime delegated accuracy** — on-device per-layer comparison
 
-### Key Open Questions
-- Q1: Module location (`devtools/fx_viewer/` vs. nested under `visualization/`)
-- Q2: Extension surface for non-FX graph formats (QNN device graph, TOSA)?
-- Q3: Expose `Inspector.export_fx_viewer_html_from_graphs(...)` for standalone GraphModules?
-- Q4: Stable JSON payload schema as public API?
-- Q5: Formalize JS embedding API (`FXGraphViewer.create`) as stable contract?
+---
+
+## Open Questions
+
+- **Q1:** Module location — `devtools/fx_viewer/` or under `visualization/`?
+- **Q2:** Extension surface for non-FX graph formats?
+- **Q3:** Add `export_fx_viewer_html_from_graphs(...)` to Inspector?
+- **Q4:** Expose JSON payload as stable public API?
+- **Q5:** Formalize JS embedding API as stable contract?
 
 ---
 
@@ -214,125 +215,113 @@ All demos are standalone HTML — open in any browser, no installation:
 
 ## Observatory — The Problem
 
-Backend debugging needs are **diverse and fragmented**:
+Backend debugging is **fragmented:**
 
-| Backend team says... | Current reality |
-|---|---|
-| "I need per-layer accuracy analysis" | Write a custom script, results in console/CSV |
-| "I need to overlay HTP profiler data" | Separate tool, separate tutorial |
-| "I need to compare two runs for regression" | Re-run compiler, diff manually |
-| "I need ADB logs correlated with graph nodes" | Copy-paste between terminals |
+- Per-layer accuracy → custom script, results in console
+- HTP profiler → separate tool, separate tutorial
+- ADB logs → copy-paste between terminals
+- Regression detection → re-run compiler, diff manually
 
-**No standard interface** → each tool is a one-off script.
-**No unified output** → results scattered across console, CSV, screenshots.
+**No standard interface.** No unified output format.
 
 ---
 
-## Observatory — Motivation vs. Existing Tools
+## Observatory — Motivation
 
-| Need | ETRecord + Inspector API | Observatory |
+| Need | Current (Inspector + scripts) | Observatory |
 |---|---|---|
-| Multi-backend debug tool integration | Each backend writes its own scripts | Unified Lens interface → unified report |
-| Custom analysis (accuracy, profiler, logs) | Hack Inspector API or standalone scripts | Lens defines capture/analyze/visualize |
-| Cross-run comparison (regression) | Re-run compiler | Archive JSON → offline re-analyze & compare |
-| Setup complexity | ETRecord + RuntimeConfig + Inspector + Visualizer | `enable Lens` → run → report generated |
-| Backend-specific tool fragmentation | Independent tutorials per tool | One Lens per tool, shared interface |
-| Pressure on core API | Every new need extends Inspector | Lens is opt-in plugin, core API unchanged |
+| Multi-backend tools | Each backend writes scripts | Unified Lens interface |
+| Custom analysis output | Console / CSV / screenshots | Unified HTML report |
+| Cross-run comparison | Re-run everything | Archive JSON → offline compare |
+| Setup complexity | ETRecord + Config + Inspector + … | Enable Lens → run → done |
+| New debug capability | Extend Inspector API | Add a Lens (plugin) |
 
 ---
 
-## Observatory — Key Design Principles
+## Observatory — Design Principles
 
-1. **Does not replace ETRecord / ETDump / Inspector**
-   - Uses them as data sources, does not modify their formats
-   - Extra analysis results go through Lens → Archive JSON (separate schema)
-
-2. **Lens = Plugin, not Core**
-   - Backend teams own their Lenses (e.g. `backends/qualcomm/debugger/observatory/`)
-   - Adding a new debug capability = adding a Lens file, not modifying core APIs
-
-3. **Offline re-analysis**
-   - Archive JSON separates raw captures from analysis results
-   - Same archive can be re-analyzed with different Lens configurations
+- **Does not replace** ETRecord / ETDump / Inspector
+  - Uses them as data sources
+  - Extra results go through Lens → Archive JSON
+- **Lens = plugin, not core**
+  - Backend teams own their Lenses
+  - Adding capability = adding a file, not modifying core
+- **Offline re-analysis**
+  - Archive separates captures from results
+  - Re-analyze same data with different Lens configs
 
 ---
 
-## Observatory — Architecture (High-Level)
+## Observatory — Architecture
 
 ```
-┌─────────────────────────────────────────────────────┐
-│ Observatory (coordination layer)                     │
-│  ┌─────────┐  ┌─────────┐  ┌──────────┐           │
-│  │ Lens A  │  │ Lens B  │  │ Lens C   │  ...      │
-│  │accuracy │  │profiler │  │ADB logs  │           │
-│  └────┬────┘  └────┬────┘  └────┬─────┘           │
-│       │             │             │                  │
-│       ▼             ▼             ▼                  │
-│  ┌──────────────────────────────────────────────┐   │
-│  │ Archive JSON → Report HTML (standalone)      │   │
-│  │              → with embedded fx_viewer graphs │   │
-│  └──────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────┘
-       ▲ uses as data source (does not replace)
-       │
-┌──────┴──────────────────────────────┐
-│ ETRecord / ETDump / Inspector API   │
-│ (unchanged, well-specified role)    │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ Observatory (coordination layer)         │
+│                                          │
+│  Lens A    Lens B    Lens C    ...      │
+│  accuracy  profiler  ADB logs           │
+│     │         │         │                │
+│     ▼         ▼         ▼                │
+│  ┌────────────────────────────────────┐  │
+│  │ Archive JSON → Report HTML        │  │
+│  │ (embeds fx_viewer graphs)         │  │
+│  └────────────────────────────────────┘  │
+└──────────────────────────────────────────┘
+       ▲ uses (does not replace)
+┌──────┴──────────────────────────┐
+│ ETRecord / ETDump / Inspector   │
+│ (unchanged)                     │
+└─────────────────────────────────┘
 ```
 
 ---
 
-## Observatory — Where fx_viewer Fits In
+## Observatory — fx_viewer Integration
 
-When a Lens produces **graph-level** analysis (e.g. per-node accuracy scores):
+- Lens produces graph-level analysis (e.g. per-node PSNR)
+- Results become `GraphExtension` overlays
+- Observatory calls `fx_viewer` to render graph + overlays
+- Final HTML report contains embedded interactive viewer
 
-1. Lens computes results during `analyze()`
-2. Results are contributed as `GraphExtension` overlays
-3. Observatory report engine calls `fx_viewer` to render the graph with overlays
-4. Final HTML report contains interactive graph viewer embedded via JS API
+**Both work standalone:**
+- fx_viewer: direct Python API → HTML
+- Observatory: tables/charts without graphs
 
-**fx_viewer works standalone** — Observatory is one consumer of its embedding API.
-**Observatory works standalone** — reports can contain tables/charts without graphs.
-
-Together: Lens analysis → graph overlay → interactive standalone HTML report.
+**Together:** Lens → overlay → interactive graph report
 
 ---
 
-## Observatory — End-to-End Value (Joint Demo)
+## Observatory — Demo
 
-**Scenario:** Qualcomm backend, MobileNet V2, per-layer accuracy analysis
+[qualcomm/mobilenet_v2 report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html)
 
 ```bash
 observatory run --lens accuracy examples/qualcomm/mobilenet_v2.py
 ```
 
-**What happens:**
-1. Observatory patches pipeline → captures graphs at each stage
-2. Accuracy Lens computes per-node PSNR/MSE/cosine
-3. fx_viewer renders 4-way graph grid with accuracy color overlay
-4. One standalone HTML: navigate across compile stages + see which nodes lost accuracy
-
-**Demo:** [qualcomm/mobilenet_v2 report](https://quic-boyuc.github.io/Executorch_Observatory_Demo/generated_reports/qualcomm/mobilenet_v2/observatory_report.html)
+- Captures graphs at each compile stage
+- Computes per-node accuracy
+- Renders 4-way graph with color overlay
+- One standalone HTML file
 
 ---
 
-## Summary — Two Independent, Complementary RFCs
+## Summary
 
-| | RFC-A: fx_viewer | RFC-B: Observatory |
+| | fx_viewer (RFC-A) | Observatory (RFC-B) |
 |---|---|---|
-| **What** | FX graph viewer | Debugging workflow framework |
-| **Core value** | N-way compare + auto sync + overlay + standalone HTML | Unified Lens interface + archive + report |
-| **Independent?** | ✅ Standalone Python API | ✅ Works with tables/charts only |
-| **Together** | Observatory embeds fx_viewer graphs with Lens-produced overlays |
-| **Does not replace** | Model Explorer | ETRecord / Inspector API |
+| **What** | Graph viewer | Workflow framework |
+| **Value** | N-way compare + sync + overlay + HTML | Lens plugins + archive + report |
+| **Independent?** | ✅ | ✅ |
+| **Together** | Observatory embeds fx_viewer with Lens overlays |
+| **Replaces** | Nothing | Nothing |
 
 ---
 
 ## Thank You
 
-- **RFC-A (fx_viewer):** [GitHub Issue #21068](https://github.com/pytorch/executorch/issues/21068)
-- **Video walkthrough:** [https://youtu.be/NQuj-2LvhAc](https://youtu.be/NQuj-2LvhAc) (start at 0:21)
-- **Live demos:** Open in any browser — links in RFC
+- **RFC:** [#21068](https://github.com/pytorch/executorch/issues/21068)
+- **Video:** [youtu.be/NQuj-2LvhAc](https://youtu.be/NQuj-2LvhAc) (start 0:21)
+- **Demos:** Open links in any browser — no install
 
-Questions & feedback welcome!
+Feedback welcome!
